@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import logoImage from "@/assets/real-life-academy-logo.png";
 import { removeBackground } from "@/lib/removeBackground";
-const CACHE_KEY = 'rla-logo-v2';
+const CACHE_KEY = 'rla-logo-v3';
 export const GTALogo = () => {
   const [processedLogo, setProcessedLogo] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(true);
@@ -49,7 +49,19 @@ export const GTALogo = () => {
     };
     processLogo();
   }, []);
-  return <div className="gta-logo-wrapper inline-block animate-slide-up">
-      
-    </div>;
+  return (
+    <div className="gta-logo-wrapper inline-block animate-slide-up">
+      {isProcessing ? (
+        <div className="text-center py-8">
+          <p className="text-muted-foreground">Carregando logo...</p>
+        </div>
+      ) : (
+        <img
+          src={processedLogo || logoImage}
+          alt="Real Life Academy"
+          className="w-full h-auto max-w-[600px] mx-auto relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+        />
+      )}
+    </div>
+  );
 };
