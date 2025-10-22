@@ -81,10 +81,29 @@ export const removeBackground = async (imageElement: HTMLImageElement): Promise<
     );
     const data = outputImageData.data;
     
-    // Apply inverted mask to alpha channel
-    for (let i = 0; i < result[0].mask.data.length; i++) {
-      // Invert the mask value (1 - value) to keep the subject instead of the background
-      const alpha = Math.round((1 - result[0].mask.data[i]) * 255);
+    // Find the mask with the largest area (usually the background or main subject)
+    let largestMaskIndex = 0;
+    let largestMaskSize = 0;
+    
+    for (let i = 0; i < result.length; i++) {
+      let size = 0;
+      for (let j = 0; j < result[i].mask.data.length; j++) {
+        size += result[i].mask.data[j];
+      }
+      if (size > largestMaskSize) {
+        largestMaskSize = size;
+        largestMaskIndex = i;
+      }
+    }
+    
+    // Use the largest mask and invert it to keep only the text
+    const mask = result[largestMaskIndex].mask;
+    
+    for (let i = 0; i < mask.data.length; i++) {
+      const maskValue = mask.data[i];
+      // If mask value is high (background), make it transparent
+      // If mask value is low (text), keep it opaque
+      const alpha = Math.round((1 - maskValue) * 255);
       data[i * 4 + 3] = alpha;
     }
     
