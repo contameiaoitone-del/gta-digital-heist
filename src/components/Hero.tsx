@@ -31,32 +31,35 @@ export const Hero = () => {
 
       {/* Content */}
       <div className="container mx-auto px-4 z-10 text-center animate-fade-in">
-        <div className="max-w-5xl mx-auto space-y-8">
+        <div className="max-w-5xl mx-auto flex flex-col items-center">
           {/* Badge */}
-          <div className="inline-block">
+          <div className="mb-8 inline-block">
             <span className="px-6 py-2 bg-primary/20 border border-primary text-primary rounded-full text-sm font-bold uppercase tracking-wider shadow-soft-pink animate-glow-pulse">
               O Treinamento Mais Completo do Brasil
             </span>
           </div>
 
-          {/* GTA-Style Logo */}
-          <GTALogo />
+          {/* Logo - Centralizada */}
+          <div className="mb-8 w-full flex justify-center">
+            <GTALogo />
+          </div>
 
-          {/* Subtitle */}
-          <p className="text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{
+          {/* Título Principal */}
+          <p className="mb-6 text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{
           animationDelay: "0.2s"
         }}>
             Domine o Mercado Digital e Construa Sua Liberdade Financeira
           </p>
 
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up" style={{
+          {/* Subtítulo */}
+          <p className="mb-8 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up" style={{
           animationDelay: "0.3s"
         }}>
             Tráfego Pago • Infoprodutos • E-commerce • IA • Prestação de Serviços • E muito mais
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 animate-slide-up" style={{
+          <div className="mb-10 flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style={{
           animationDelay: "0.4s"
         }}>
             <Button variant="hero" size="xl" className="group">
@@ -70,7 +73,7 @@ export const Hero = () => {
           </div>
 
           {/* Social Proof */}
-          <div className="pt-8 flex flex-col sm:flex-row gap-6 justify-center items-center text-sm animate-slide-up" style={{
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center text-sm animate-slide-up" style={{
           animationDelay: "0.5s"
         }}>
             <div className="flex items-center gap-2">
