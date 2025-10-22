@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import logoImage from "@/assets/real-life-academy-logo.png";
 import { removeBackground } from "@/lib/removeBackground";
 
+const CACHE_KEY = 'rla-logo-v2';
+
 export const GTALogo = () => {
   const [processedLogo, setProcessedLogo] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(true);
@@ -9,6 +11,15 @@ export const GTALogo = () => {
   useEffect(() => {
     const processLogo = async () => {
       try {
+        // Check cache first
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          console.log('Using cached logo');
+          setProcessedLogo(cached);
+          setIsProcessing(false);
+          return;
+        }
+
         // Load the original image
         const response = await fetch(logoImage);
         const blob = await response.blob();
@@ -24,6 +35,13 @@ export const GTALogo = () => {
         // Remove background
         const processedBlob = await removeBackground(img);
         const processedUrl = URL.createObjectURL(processedBlob);
+        
+        // Cache the result
+        try {
+          localStorage.setItem(CACHE_KEY, processedUrl);
+        } catch (e) {
+          console.warn('Failed to cache logo:', e);
+        }
         
         setProcessedLogo(processedUrl);
         setIsProcessing(false);
@@ -55,7 +73,7 @@ export const GTALogo = () => {
           <img 
             src={processedLogo || logoImage} 
             alt="Real Life Academy" 
-            className="w-full h-auto max-w-[600px] mx-auto relative z-10 drop-shadow-[0_0_40px_rgba(255,105,180,0.7)] drop-shadow-[0_0_80px_rgba(138,43,226,0.5)]"
+            className="w-full h-auto max-w-[600px] mx-auto relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
           />
         )}
       </div>
