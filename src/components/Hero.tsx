@@ -40,7 +40,7 @@ export const Hero = () => {
           </div>
 
           {/* GTA-Style Logo */}
-          
+          <GTALogo />
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{
