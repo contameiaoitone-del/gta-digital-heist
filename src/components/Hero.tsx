@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
-import heroImage from "@/assets/gta-beach.png";
+import heroImage from "@/assets/hero-background.png";
 import { GTALogo } from "@/components/GTALogo";
 import { PalmTree } from "@/components/decorative/PalmTree";
 export const Hero = () => {
