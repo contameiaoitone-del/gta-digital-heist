@@ -17,40 +17,45 @@ All colors MUST be HSL.
     --popover: 240 8% 12%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 328 100% 54%;
+    --primary: 330 85% 65%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 271 81% 56%;
+    --secondary: 270 60% 70%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 240 5% 26%;
     --muted-foreground: 240 5% 65%;
 
-    --accent: 189 100% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 185 70% 75%;
+    --accent-foreground: 240 10% 8%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 240 8% 20%;
     --input: 240 8% 20%;
-    --ring: 328 100% 54%;
+    --ring: 330 85% 65%;
 
     --radius: 0.5rem;
 
-    --neon-pink: 328 100% 54%;
-    --neon-purple: 271 81% 56%;
-    --neon-cyan: 189 100% 50%;
-    --neon-orange: 16 100% 60%;
-    --neon-yellow: 48 100% 67%;
+    --neon-pink: 330 85% 65%;
+    --neon-purple: 270 60% 70%;
+    --neon-cyan: 185 70% 75%;
+    --neon-orange: 20 90% 70%;
+    --neon-yellow: 45 90% 75%;
+    --sunset-peach: 25 85% 75%;
+    --ocean-mint: 165 55% 75%;
+    --sky-lavender: 260 50% 80%;
+    --sand-beige: 40 60% 85%;
     
-    --gradient-sunset: linear-gradient(135deg, hsl(328 100% 54%), hsl(271 81% 56%), hsl(16 100% 60%));
-    --gradient-vice: linear-gradient(180deg, hsl(271 81% 56%), hsl(189 100% 50%));
-    --gradient-hero: linear-gradient(135deg, hsl(240 10% 8%) 0%, hsl(271 81% 56% / 0.3) 50%, hsl(328 100% 54% / 0.3) 100%);
+    --gradient-sunset: linear-gradient(180deg, hsl(260 50% 80%) 0%, hsl(330 85% 65%) 30%, hsl(20 90% 70%) 60%, hsl(45 90% 75%) 100%);
+    --gradient-vice: linear-gradient(180deg, hsl(270 60% 70%) 0%, hsl(330 85% 65%) 50%, hsl(185 70% 75%) 100%);
+    --gradient-ocean: linear-gradient(180deg, hsl(165 55% 75%) 0%, hsl(185 70% 75%) 50%, hsl(200 60% 80%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(240 10% 8%) 0%, hsl(270 60% 20% / 0.6) 50%, hsl(330 70% 25% / 0.6) 100%);
     
-    --shadow-neon-pink: 0 0 20px hsl(328 100% 54% / 0.5), 0 0 40px hsl(328 100% 54% / 0.3);
-    --shadow-neon-purple: 0 0 20px hsl(271 81% 56% / 0.5), 0 0 40px hsl(271 81% 56% / 0.3);
-    --shadow-neon-cyan: 0 0 20px hsl(189 100% 50% / 0.5), 0 0 40px hsl(189 100% 50% / 0.3);
+    --shadow-soft-pink: 0 8px 32px hsl(330 85% 65% / 0.35), 0 0 64px hsl(330 85% 65% / 0.15);
+    --shadow-soft-purple: 0 8px 32px hsl(270 60% 70% / 0.35), 0 0 64px hsl(270 60% 70% / 0.15);
+    --shadow-soft-cyan: 0 8px 32px hsl(185 70% 75% / 0.35), 0 0 64px hsl(185 70% 75% / 0.15);
 
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -114,25 +119,191 @@ All colors MUST be HSL.
   .text-neon-orange {
     color: hsl(var(--neon-orange));
   }
+  .text-sunset-peach {
+    color: hsl(var(--sunset-peach));
+  }
   .bg-gradient-sunset {
     background: var(--gradient-sunset);
   }
   .bg-gradient-vice {
     background: var(--gradient-vice);
   }
+  .bg-gradient-ocean {
+    background: var(--gradient-ocean);
+  }
   .bg-gradient-hero {
     background: var(--gradient-hero);
   }
-  .shadow-neon-pink {
-    box-shadow: var(--shadow-neon-pink);
+  .shadow-soft-pink {
+    box-shadow: var(--shadow-soft-pink);
   }
-  .shadow-neon-purple {
-    box-shadow: var(--shadow-neon-purple);
+  .shadow-soft-purple {
+    box-shadow: var(--shadow-soft-purple);
   }
-  .shadow-neon-cyan {
-    box-shadow: var(--shadow-neon-cyan);
+  .shadow-soft-cyan {
+    box-shadow: var(--shadow-soft-cyan);
   }
   .transition-smooth {
     transition: var(--transition-smooth);
+  }
+  
+  /* GTA Logo Styles */
+  .gta-logo-shape {
+    position: relative;
+    display: inline-block;
+    padding: 2rem 3rem;
+    background: linear-gradient(135deg,
+      hsl(240 10% 8% / 0.95) 0%,
+      hsl(270 60% 20% / 0.9) 50%,
+      hsl(330 70% 25% / 0.9) 100%
+    );
+    clip-path: polygon(
+      0% 12%,
+      8% 0%,
+      92% 0%,
+      100% 12%,
+      100% 100%,
+      0% 100%
+    );
+    box-shadow:
+      0 0 0 3px hsl(330 85% 65%),
+      0 0 0 6px hsl(270 60% 70%),
+      0 0 0 9px hsl(20 90% 70%),
+      0 8px 32px rgba(0, 0, 0, 0.6);
+  }
+  
+  .gta-title {
+    font-family: 'Bebas Neue', cursive;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    line-height: 0.85;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-shadow:
+      -3px -3px 0 #fff,
+       3px -3px 0 #fff,
+      -3px  3px 0 #fff,
+       3px  3px 0 #fff,
+       0px -3px 0 #fff,
+       0px  3px 0 #fff,
+      -3px  0px 0 #fff,
+       3px  0px 0 #fff,
+       4px  4px 0 rgba(0, 0, 0, 0.8),
+       5px  5px 0 rgba(0, 0, 0, 0.7),
+       6px  6px 0 rgba(0, 0, 0, 0.6),
+       7px  7px 0 rgba(0, 0, 0, 0.5),
+       8px  8px 0 rgba(0, 0, 0, 0.4),
+       0 0 30px rgba(255, 105, 180, 0.6),
+       0 0 60px rgba(138, 43, 226, 0.4);
+  }
+  
+  .gta-word {
+    display: block;
+    background: linear-gradient(180deg, 
+      hsl(330 85% 65%) 0%,
+      hsl(320 90% 60%) 30%,
+      hsl(270 80% 65%) 60%,
+      hsl(20 90% 70%) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: clamp(3rem, 12vw, 8rem);
+    font-weight: 900;
+    line-height: 0.8;
+  }
+  
+  .gta-word-academy {
+    font-size: clamp(2.5rem, 10vw, 7rem);
+  }
+  
+  .logo-border-top {
+    position: absolute;
+    top: -6px;
+    left: 8%;
+    right: 8%;
+    height: 6px;
+    background: linear-gradient(90deg,
+      hsl(330 85% 65%) 0%,
+      hsl(270 80% 65%) 50%,
+      hsl(20 90% 70%) 100%
+    );
+    clip-path: polygon(3% 0%, 97% 0%, 100% 100%, 0% 100%);
+  }
+  
+  .logo-border-left {
+    position: absolute;
+    top: 0;
+    left: -6px;
+    width: 6px;
+    height: 25%;
+    background: hsl(330 85% 65%);
+  }
+  
+  .logo-border-right {
+    position: absolute;
+    top: 0;
+    right: -6px;
+    width: 6px;
+    height: 25%;
+    background: hsl(20 90% 70%);
+  }
+  
+  .atmospheric-haze {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 50% 20%, hsl(330 85% 65% / 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 20% 60%, hsl(270 60% 70% / 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, hsl(20 90% 70% / 0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  
+  .noise-texture::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  
+  @media (max-width: 768px) {
+    .gta-logo-shape {
+      padding: 1.25rem 1.875rem;
+      box-shadow:
+        0 0 0 2px hsl(330 85% 65%),
+        0 0 0 4px hsl(270 60% 70%),
+        0 0 0 6px hsl(20 90% 70%),
+        0 8px 24px rgba(0, 0, 0, 0.6);
+    }
+    
+    .gta-title {
+      text-shadow:
+        -2px -2px 0 #fff,
+         2px -2px 0 #fff,
+        -2px  2px 0 #fff,
+         2px  2px 0 #fff,
+         0px -2px 0 #fff,
+         0px  2px 0 #fff,
+        -2px  0px 0 #fff,
+         2px  0px 0 #fff,
+         3px  3px 0 rgba(0, 0, 0, 0.8),
+         4px  4px 0 rgba(0, 0, 0, 0.6),
+         0 0 20px rgba(255, 105, 180, 0.5);
+    }
+    
+    .logo-border-top {
+      height: 4px;
+      top: -4px;
+    }
+    
+    .logo-border-left,
+    .logo-border-right {
+      width: 4px;
+    }
   }
 }
