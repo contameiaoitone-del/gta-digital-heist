@@ -59,7 +59,7 @@ export const GTALogo = () => {
         <img
           src={processedLogo || logoImage}
           alt="Real Life Academy"
-          className="w-full h-auto max-w-[500px] mx-auto block relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+          className="w-full h-auto max-w-[700px] mx-auto block relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
         />
       )}
     </div>

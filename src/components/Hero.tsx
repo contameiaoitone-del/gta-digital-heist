@@ -33,19 +33,19 @@ export const Hero = () => {
       <div className="container mx-auto px-4 z-10 text-center animate-fade-in">
         <div className="max-w-5xl mx-auto flex flex-col items-center">
           {/* Badge */}
-          <div className="mb-8 inline-block">
+          <div className="mb-6 inline-block">
             <span className="px-6 py-2 bg-primary/20 border border-primary text-primary rounded-full text-sm font-bold uppercase tracking-wider shadow-soft-pink animate-glow-pulse">
               O Treinamento Mais Completo do Brasil
             </span>
           </div>
 
           {/* Logo - Centralizada */}
-          <div className="mb-8 w-full flex justify-center">
+          <div className="mb-4 w-full flex justify-center">
             <GTALogo />
           </div>
 
           {/* Título Principal */}
-          <p className="mb-6 text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{
+          <p className="mb-4 text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{
           animationDelay: "0.2s"
         }}>
             Domine o Mercado Digital e Construa Sua Liberdade Financeira
