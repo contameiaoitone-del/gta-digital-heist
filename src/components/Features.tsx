@@ -42,9 +42,10 @@ const features = [
 
 export const Features = () => {
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden">
+    <section className="py-20 md:py-32 relative overflow-hidden painted-texture">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-secondary/20 via-background to-background"></div>
+      <div className="atmospheric-haze opacity-50"></div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16 animate-slide-up">
@@ -64,10 +65,17 @@ export const Features = () => {
           {features.map((feature, index) => (
             <Card
               key={index}
-              className="p-6 bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-neon-pink group"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="p-6 bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-500 hover:scale-105 group relative"
+              style={{ 
+                animationDelay: `${index * 0.1}s`,
+                boxShadow: '0 8px 32px hsl(var(--primary) / 0.15), 0 0 60px hsl(var(--primary) / 0.08)'
+              }}
             >
-              <div className={`inline-flex p-3 rounded-lg bg-${feature.color}/10 mb-4 group-hover:animate-glow-pulse`}>
+              <div className={`inline-flex p-3 rounded-lg bg-${feature.color}/10 mb-4 group-hover:scale-110 transition-transform duration-500`}
+                style={{
+                  filter: 'drop-shadow(0 0 20px currentColor) drop-shadow(0 0 40px currentColor)'
+                }}
+              >
                 <feature.icon className={`h-6 w-6 text-${feature.color}`} />
               </div>
               <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">

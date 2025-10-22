@@ -5,17 +5,36 @@ import luxuryImage from "@/assets/gta-luxury.png";
 export const Guarantee = () => {
   return (
     <section className="py-20 md:py-32 relative overflow-hidden">
+      {/* Ocean Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-ocean opacity-20"></div>
+      <div className="atmospheric-haze opacity-60"></div>
+      
+      {/* Water Reflections */}
+      <div className="absolute bottom-0 left-0 right-0 h-64 z-0 opacity-30"
+        style={{
+          background: 'linear-gradient(0deg, hsl(185 85% 70% / 0.15) 0%, transparent 100%)',
+          animation: 'water-shimmer 4s ease-in-out infinite'
+        }}
+      ></div>
+      
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Side - Image */}
             <div className="relative animate-fade-in">
               <div className="absolute inset-0 bg-gradient-sunset opacity-20 rounded-2xl blur-3xl"></div>
-              <img 
-                src={luxuryImage} 
-                alt="Garantia" 
-                className="relative rounded-2xl border-2 border-primary/30 shadow-2xl"
-              />
+              <div className="relative">
+                <img 
+                  src={luxuryImage} 
+                  alt="Garantia" 
+                  className="relative rounded-2xl shadow-2xl"
+                  style={{
+                    border: '4px solid transparent',
+                    background: 'linear-gradient(hsl(240 8% 12%), hsl(240 8% 12%)) padding-box, linear-gradient(135deg, hsl(185 85% 70%), hsl(330 100% 70%), hsl(270 85% 60%)) border-box',
+                    boxShadow: '0 0 60px hsl(185 85% 70% / 0.4), 0 20px 60px rgba(0, 0, 0, 0.4)'
+                  }}
+                />
+              </div>
             </div>
 
             {/* Right Side - Content */}

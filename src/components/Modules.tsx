@@ -70,6 +70,27 @@ export const Modules = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background"></div>
       </div>
+      
+      {/* Urban Skyline */}
+      <div className="absolute inset-0 opacity-[0.04] z-0">
+        <svg viewBox="0 0 1200 400" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" preserveAspectRatio="xMidYMax slice">
+          <defs>
+            <linearGradient id="skylineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="hsl(270, 85%, 60%)" stopOpacity="0.6"/>
+              <stop offset="100%" stopColor="transparent"/>
+            </linearGradient>
+          </defs>
+          <rect x="50" y="100" width="80" height="300" fill="url(#skylineGradient)"/>
+          <rect x="150" y="180" width="100" height="220" fill="url(#skylineGradient)"/>
+          <rect x="270" y="250" width="70" height="150" fill="url(#skylineGradient)"/>
+          <rect x="360" y="50" width="90" height="350" fill="url(#skylineGradient)"/>
+          <rect x="470" y="140" width="85" height="260" fill="url(#skylineGradient)"/>
+          <rect x="580" y="270" width="120" height="130" fill="url(#skylineGradient)"/>
+          <rect x="720" y="120" width="60" height="280" fill="url(#skylineGradient)"/>
+        </svg>
+      </div>
+      
+      <div className="atmospheric-haze opacity-30 z-0"></div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16 animate-slide-up">
@@ -88,11 +109,22 @@ export const Modules = () => {
           {modules.map((module, index) => (
             <div
               key={index}
-              className="bg-card/60 backdrop-blur-sm border border-border rounded-lg p-6 hover:border-primary/50 transition-all duration-300 hover:scale-105 animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="bg-card/60 backdrop-blur-sm border-2 border-border rounded-lg p-6 hover:border-primary/50 transition-all duration-500 hover:scale-105 animate-fade-in relative overflow-hidden group"
+              style={{ 
+                animationDelay: `${index * 0.1}s`,
+                boxShadow: '0 8px 32px hsl(var(--primary) / 0.1)'
+              }}
             >
+              {/* Gradient Border Effect */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(135deg, hsl(330 100% 70% / 0.1), hsl(270 85% 60% / 0.1), hsl(185 85% 70% / 0.1))',
+                  filter: 'blur(20px)'
+                }}
+              ></div>
+              <div className="relative z-10">
               <div className="mb-4">
-                <span className="text-primary text-5xl font-bold opacity-30">
+                <span className="text-primary text-5xl font-bold opacity-30 neon-glow">
                   0{index + 1}
                 </span>
               </div>
@@ -107,6 +139,7 @@ export const Modules = () => {
                   </li>
                 ))}
               </ul>
+              </div>
             </div>
           ))}
         </div>

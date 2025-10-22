@@ -4,15 +4,22 @@ import { ArrowRight, Clock, Users, Zap } from "lucide-react";
 export const CTA = () => {
   return (
     <section className="py-20 md:py-32 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/10 to-background"></div>
+      {/* Background Effects - Dramatic Sunset */}
+      <div className="absolute inset-0 bg-gradient-sunset opacity-30"></div>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent"></div>
+      <div className="god-rays opacity-50"></div>
+      <div className="atmospheric-haze"></div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto text-center space-y-8">
           {/* Urgency Badge */}
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/20 border border-primary rounded-full animate-glow-pulse">
-            <Clock className="h-5 w-5 text-primary" />
+          <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary/20 border-2 border-primary rounded-full animate-glow-pulse relative overflow-hidden group"
+            style={{
+              boxShadow: 'var(--shadow-volumetric-pink)',
+              animation: 'pulse-glow 2s ease-in-out infinite'
+            }}
+          >
+            <Clock className="h-5 w-5 text-primary animate-pulse" />
             <span className="text-primary font-bold text-sm uppercase tracking-wider">
               Vagas Limitadas
             </span>
@@ -51,9 +58,11 @@ export const CTA = () => {
 
           {/* CTA Button */}
           <div className="pt-4 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <Button variant="hero" size="xl" className="group text-xl">
-              COMEÇAR MINHA JORNADA AGORA
-              <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+            <Button variant="hero" size="xl" className="group text-xl relative overflow-hidden">
+              <span className="relative z-10">COMEÇAR MINHA JORNADA AGORA</span>
+              <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform relative z-10" />
+              {/* Shine Effect */}
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             </Button>
             <p className="text-sm text-muted-foreground mt-4">
               ✓ Acesso imediato ao conteúdo completo • ✓ Garantia de 30 dias

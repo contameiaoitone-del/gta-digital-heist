@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import heroImage from "@/assets/gta-beach.png";
 import { GTALogo } from "@/components/GTALogo";
+import { PalmTree } from "@/components/decorative/PalmTree";
 
 export const Hero = () => {
   return (
@@ -18,6 +19,7 @@ export const Hero = () => {
 
       {/* Atmospheric Effects */}
       <div className="atmospheric-haze z-0"></div>
+      <div className="god-rays z-0"></div>
       <div className="absolute inset-0 z-0 noise-texture"></div>
       
       {/* Retro Grid Effect */}
@@ -26,43 +28,12 @@ export const Hero = () => {
         <div className="absolute inset-0 bg-[linear-gradient(0deg,transparent_49%,hsl(270_60%_70%_/_0.2)_50%,transparent_51%)] bg-[length:80px_80px]"></div>
       </div>
 
-      {/* Palm Tree Silhouettes */}
-      <div className="absolute bottom-0 left-0 w-64 h-96 opacity-20 z-0 hidden md:block">
-        <svg viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-          <defs>
-            <linearGradient id="palmGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="hsl(270, 60%, 30%)" stopOpacity="0.8"/>
-              <stop offset="100%" stopColor="transparent"/>
-            </linearGradient>
-          </defs>
-          <path d="M100 300 L105 200 Q108 180 110 160 L108 140 Q107 120 105 100" stroke="url(#palmGradient1)" strokeWidth="4" fill="none"/>
-          <path d="M105 120 Q80 100 60 90 Q40 85 20 85" stroke="url(#palmGradient1)" strokeWidth="3" fill="none"/>
-          <path d="M105 125 Q90 110 75 105 Q60 102 45 105" stroke="url(#palmGradient1)" strokeWidth="3" fill="none"/>
-          <path d="M105 115 Q120 95 140 85 Q160 80 180 82" stroke="url(#palmGradient1)" strokeWidth="3" fill="none"/>
-          <path d="M105 120 Q115 105 125 100 Q140 95 155 98" stroke="url(#palmGradient1)" strokeWidth="3" fill="none"/>
-          <path d="M105 130 Q95 145 85 155 Q75 165 65 175" stroke="url(#palmGradient1)" strokeWidth="3" fill="none"/>
-          <path d="M105 130 Q115 145 125 155 Q135 165 145 175" stroke="url(#palmGradient1)" strokeWidth="3" fill="none"/>
-        </svg>
-      </div>
-      
-      <div className="absolute bottom-0 right-0 w-72 h-[28rem] opacity-15 z-0 hidden lg:block">
-        <svg viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-          <defs>
-            <linearGradient id="palmGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="hsl(330, 85%, 40%)" stopOpacity="0.8"/>
-              <stop offset="100%" stopColor="transparent"/>
-            </linearGradient>
-          </defs>
-          <path d="M100 300 L95 180 Q92 160 90 140 L92 120 Q93 100 95 80" stroke="url(#palmGradient2)" strokeWidth="5" fill="none"/>
-          <path d="M95 100 Q70 80 50 70 Q30 65 10 65" stroke="url(#palmGradient2)" strokeWidth="4" fill="none"/>
-          <path d="M95 105 Q80 90 65 85 Q50 82 35 85" stroke="url(#palmGradient2)" strokeWidth="4" fill="none"/>
-          <path d="M95 95 Q110 75 130 65 Q150 60 170 62" stroke="url(#palmGradient2)" strokeWidth="4" fill="none"/>
-          <path d="M95 100 Q105 85 115 80 Q130 75 145 78" stroke="url(#palmGradient2)" strokeWidth="4" fill="none"/>
-          <path d="M95 110 Q85 125 75 135 Q65 145 55 155" stroke="url(#palmGradient2)" strokeWidth="4" fill="none"/>
-          <path d="M95 110 Q105 125 115 135 Q125 145 135 155" stroke="url(#palmGradient2)" strokeWidth="4" fill="none"/>
-          <path d="M95 108 Q100 90 105 80 Q110 70 115 65" stroke="url(#palmGradient2)" strokeWidth="3" fill="none"/>
-        </svg>
-      </div>
+      {/* Palm Tree Silhouettes - Multiple for depth */}
+      <PalmTree size="medium" position="left" opacity={0.2} gradientId="palm1" gradientColor="hsl(270, 60%, 30%)" className="z-0" />
+      <PalmTree size="small" position="left" opacity={0.12} gradientId="palm2" gradientColor="hsl(280, 55%, 35%)" className="z-0 left-48" />
+      <PalmTree size="large" position="right" opacity={0.15} gradientId="palm3" gradientColor="hsl(330, 85%, 40%)" className="z-0" />
+      <PalmTree size="medium" position="right" opacity={0.18} gradientId="palm4" gradientColor="hsl(320, 75%, 45%)" className="z-0 right-48" />
+
 
       {/* Content */}
       <div className="container mx-auto px-4 z-10 text-center animate-fade-in">
