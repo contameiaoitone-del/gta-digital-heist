@@ -3,17 +3,11 @@ import { ArrowRight, Play } from "lucide-react";
 import heroImage from "@/assets/gta-beach.png";
 import { GTALogo } from "@/components/GTALogo";
 import { PalmTree } from "@/components/decorative/PalmTree";
-
 export const Hero = () => {
-  return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+  return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={heroImage} 
-          alt="Real Life Academy Hero" 
-          className="w-full h-full object-cover opacity-40"
-        />
+        <img src={heroImage} alt="Real Life Academy Hero" className="w-full h-full object-cover opacity-40" />
         <div className="absolute inset-0 bg-gradient-hero"></div>
       </div>
 
@@ -46,19 +40,25 @@ export const Hero = () => {
           </div>
 
           {/* GTA-Style Logo */}
-          <GTALogo />
+          
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{ animationDelay: "0.2s" }}>
+          <p className="text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{
+          animationDelay: "0.2s"
+        }}>
             Domine o Mercado Digital e Construa Sua Liberdade Financeira
           </p>
 
-          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up" style={{ animationDelay: "0.3s" }}>
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up" style={{
+          animationDelay: "0.3s"
+        }}>
             Tráfego Pago • Infoprodutos • E-commerce • IA • Prestação de Serviços • E muito mais
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 animate-slide-up" style={{ animationDelay: "0.4s" }}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 animate-slide-up" style={{
+          animationDelay: "0.4s"
+        }}>
             <Button variant="hero" size="xl" className="group">
               COMEÇAR AGORA
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -70,12 +70,12 @@ export const Hero = () => {
           </div>
 
           {/* Social Proof */}
-          <div className="pt-8 flex flex-col sm:flex-row gap-6 justify-center items-center text-sm animate-slide-up" style={{ animationDelay: "0.5s" }}>
+          <div className="pt-8 flex flex-col sm:flex-row gap-6 justify-center items-center text-sm animate-slide-up" style={{
+          animationDelay: "0.5s"
+        }}>
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-8 h-8 rounded-full bg-gradient-sunset border-2 border-background"></div>
-                ))}
+                {[1, 2, 3, 4].map(i => <div key={i} className="w-8 h-8 rounded-full bg-gradient-sunset border-2 border-background"></div>)}
               </div>
               <span className="text-muted-foreground">
                 <span className="text-neon-pink font-bold">+5.000</span> alunos ativos
@@ -90,6 +90,5 @@ export const Hero = () => {
 
       {/* Bottom Gradient */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-0"></div>
-    </section>
-  );
+    </section>;
 };
