@@ -1,0 +1,74 @@
+import { Button } from "@/components/ui/button";
+import { Shield, ArrowRight } from "lucide-react";
+import luxuryImage from "@/assets/gta-luxury.png";
+
+export const Guarantee = () => {
+  return (
+    <section className="py-20 md:py-32 relative overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Side - Image */}
+            <div className="relative animate-fade-in">
+              <div className="absolute inset-0 bg-gradient-sunset opacity-20 rounded-2xl blur-3xl"></div>
+              <img 
+                src={luxuryImage} 
+                alt="Garantia" 
+                className="relative rounded-2xl border-2 border-primary/30 shadow-2xl"
+              />
+            </div>
+
+            {/* Right Side - Content */}
+            <div className="space-y-6 animate-slide-up">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary rounded-full">
+                <Shield className="h-5 w-5 text-primary" />
+                <span className="text-primary font-bold text-sm uppercase tracking-wider">
+                  Garantia Incondicional
+                </span>
+              </div>
+
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                <span className="text-neon-pink">GARANTIA</span> de{" "}
+                <span className="text-neon-cyan">30 DIAS</span>
+              </h2>
+
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+                Você tem <span className="text-primary font-bold">30 dias completos</span> para experimentar 
+                todo o conteúdo da Real Life Academy. Se por qualquer motivo você não ficar satisfeito, 
+                devolvemos 100% do seu investimento.
+              </p>
+
+              <div className="space-y-4 pt-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-foreground/80">
+                    <span className="font-bold text-foreground">Sem perguntas:</span> Basta enviar um email e processamos seu reembolso
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-foreground/80">
+                    <span className="font-bold text-foreground">Risco zero:</span> Você não tem nada a perder, apenas a ganhar
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-foreground/80">
+                    <span className="font-bold text-foreground">Suporte total:</span> Nossa equipe está sempre disponível para ajudar
+                  </p>
+                </div>
+              </div>
+
+              <div className="pt-6">
+                <Button variant="hero" size="xl" className="group">
+                  GARANTIR MINHA VAGA AGORA
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

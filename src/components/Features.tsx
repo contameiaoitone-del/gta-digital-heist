@@ -1,0 +1,85 @@
+import { TrendingUp, ShoppingCart, Megaphone, Sparkles, Users, DollarSign } from "lucide-react";
+import { Card } from "@/components/ui/card";
+
+const features = [
+  {
+    icon: Megaphone,
+    title: "Tráfego Pago",
+    description: "Domine Facebook Ads, Google Ads e TikTok Ads. Aprenda a escalar campanhas que realmente convertem.",
+    color: "neon-pink",
+  },
+  {
+    icon: TrendingUp,
+    title: "Infoprodutos",
+    description: "Crie e venda produtos digitais com estratégias de lançamento, perpétuo e vendas no WhatsApp.",
+    color: "neon-purple",
+  },
+  {
+    icon: ShoppingCart,
+    title: "E-commerce",
+    description: "Monte e escale sua loja virtual do zero. Estratégias para dropshipping e produtos próprios.",
+    color: "neon-cyan",
+  },
+  {
+    icon: Sparkles,
+    title: "IA & Automação",
+    description: "Use Inteligência Artificial para criar sites, copy, criativos e automatizar seu negócio.",
+    color: "neon-orange",
+  },
+  {
+    icon: Users,
+    title: "Prestação de Serviços",
+    description: "Aprenda a oferecer serviços digitais e construir uma agência lucrativa do zero.",
+    color: "neon-pink",
+  },
+  {
+    icon: DollarSign,
+    title: "Monetização Total",
+    description: "Múltiplas fontes de renda. Aprenda todas as formas de ganhar dinheiro online.",
+    color: "neon-cyan",
+  },
+];
+
+export const Features = () => {
+  return (
+    <section className="py-20 md:py-32 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-secondary/20 via-background to-background"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-16 animate-slide-up">
+          <span className="text-primary font-bold text-sm uppercase tracking-wider">
+            O que você vai aprender
+          </span>
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mt-4 mb-6">
+            <span className="text-neon-pink">TUDO</span> Sobre o{" "}
+            <span className="text-neon-cyan">Mercado Digital</span>
+          </h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Um treinamento completo com todas as habilidades necessárias para você conquistar sua liberdade financeira
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+          {features.map((feature, index) => (
+            <Card
+              key={index}
+              className="p-6 bg-card/50 backdrop-blur-sm border-border hover:border-primary/50 transition-all duration-300 hover:scale-105 hover:shadow-neon-pink group"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <div className={`inline-flex p-3 rounded-lg bg-${feature.color}/10 mb-4 group-hover:animate-glow-pulse`}>
+                <feature.icon className={`h-6 w-6 text-${feature.color}`} />
+              </div>
+              <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
+                {feature.title}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                {feature.description}
+              </p>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
