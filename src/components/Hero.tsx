@@ -24,17 +24,17 @@ export const Hero = () => {
 
       {/* Palm Tree Silhouettes - Multiple for depth */}
       <PalmTree size="medium" position="left" opacity={0.2} gradientId="palm1" gradientColor="hsl(270, 60%, 30%)" className="z-0" />
-      <PalmTree size="small" position="left" opacity={0.12} gradientId="palm2" gradientColor="hsl(280, 55%, 35%)" className="z-0 left-48" />
+      <PalmTree size="small" position="left" opacity={0.12} gradientId="palm2" gradientColor="hsl(280, 55%, 35%)" className="z-0 left-48 hidden sm:block" />
       <PalmTree size="large" position="right" opacity={0.15} gradientId="palm3" gradientColor="hsl(330, 85%, 40%)" className="z-0" />
-      <PalmTree size="medium" position="right" opacity={0.18} gradientId="palm4" gradientColor="hsl(320, 75%, 45%)" className="z-0 right-48" />
+      <PalmTree size="medium" position="right" opacity={0.18} gradientId="palm4" gradientColor="hsl(320, 75%, 45%)" className="z-0 right-48 hidden sm:block" />
 
 
       {/* Content */}
-      <div className="container mx-auto px-4 z-10 text-center animate-fade-in">
+      <div className="container mx-auto px-6 sm:px-4 z-10 text-center animate-fade-in">
         <div className="max-w-5xl mx-auto flex flex-col items-center">
           {/* Badge */}
-          <div className="mb-6 inline-block">
-            <span className="px-6 py-2 bg-primary/20 border border-primary text-primary rounded-full text-sm font-bold uppercase tracking-wider shadow-soft-pink animate-glow-pulse">
+          <div className="mb-4 sm:mb-6 inline-block">
+            <span className="px-4 sm:px-6 py-2 bg-primary/20 border border-primary text-primary rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider shadow-soft-pink animate-glow-pulse">
               O Treinamento Mais Completo do Brasil
             </span>
           </div>
@@ -45,40 +45,40 @@ export const Hero = () => {
           </div>
 
           {/* Título Principal */}
-          <p className="mb-4 text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{
+          <p className="mb-3 sm:mb-4 text-lg sm:text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{
           animationDelay: "0.2s"
         }}>
             Domine o Mercado Digital e Construa Sua Liberdade Financeira
           </p>
 
           {/* Subtítulo */}
-          <p className="mb-8 text-base md:text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up" style={{
+          <p className="mb-6 sm:mb-8 text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up" style={{
           animationDelay: "0.3s"
         }}>
             Tráfego Pago • Infoprodutos • E-commerce • IA • Prestação de Serviços • E muito mais
           </p>
 
           {/* CTA Buttons */}
-          <div className="mb-10 flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style={{
+          <div className="mb-8 sm:mb-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto animate-slide-up" style={{
           animationDelay: "0.4s"
         }}>
-            <Button variant="hero" size="xl" className="group">
+            <Button variant="hero" size="lg" className="group w-full sm:w-auto">
               COMEÇAR AGORA
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button variant="neon" size="xl" className="group">
+            <Button variant="neon" size="lg" className="group w-full sm:w-auto">
               <Play className="mr-2 h-5 w-5" />
               ASSISTIR DEMO
             </Button>
           </div>
 
           {/* Social Proof */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center text-sm animate-slide-up" style={{
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center text-xs sm:text-sm animate-slide-up" style={{
           animationDelay: "0.5s"
         }}>
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map(i => <div key={i} className="w-8 h-8 rounded-full bg-gradient-sunset border-2 border-background"></div>)}
+                {[1, 2, 3, 4].map(i => <div key={i} className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-sunset border-2 border-background"></div>)}
               </div>
               <span className="text-muted-foreground">
                 <span className="text-neon-pink font-bold">+5.000</span> alunos ativos

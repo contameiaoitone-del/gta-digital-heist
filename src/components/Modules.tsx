@@ -60,7 +60,7 @@ const modules = [
 
 export const Modules = () => {
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden">
+    <section className="py-16 sm:py-20 md:py-32 relative overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -93,23 +93,23 @@ export const Modules = () => {
       <div className="atmospheric-haze opacity-30 z-0"></div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16 animate-slide-up">
+        <div className="text-center mb-12 sm:mb-16 animate-slide-up">
           <span className="text-accent font-bold text-sm uppercase tracking-wider">
             Conteúdo Completo
           </span>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mt-4 mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mt-4 mb-4 sm:mb-6">
             <span className="text-neon-purple">+300 AULAS</span> Práticas
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             6 módulos completos com tudo que você precisa para dominar o mercado digital
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
           {modules.map((module, index) => (
             <div
               key={index}
-              className="bg-card/60 backdrop-blur-sm border-2 border-border rounded-lg p-6 hover:border-primary/50 transition-all duration-500 hover:scale-105 animate-fade-in relative overflow-hidden group"
+              className="bg-card/60 backdrop-blur-sm border-2 border-border rounded-lg p-5 sm:p-6 hover:border-primary/50 transition-all duration-500 hover:scale-105 animate-fade-in relative overflow-hidden group"
               style={{ 
                 animationDelay: `${index * 0.1}s`,
                 boxShadow: '0 8px 32px hsl(var(--primary) / 0.1)'
@@ -124,18 +124,18 @@ export const Modules = () => {
               ></div>
               <div className="relative z-10">
               <div className="mb-4">
-                <span className="text-primary text-5xl font-bold opacity-30 neon-glow">
+                <span className="text-primary text-4xl sm:text-5xl font-bold opacity-30 neon-glow">
                   0{index + 1}
                 </span>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-primary">
+              <h3 className="text-lg sm:text-xl font-bold mb-4 text-primary">
                 {module.title}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2 sm:space-y-3">
                 {module.topics.map((topic, topicIndex) => (
                   <li key={topicIndex} className="flex items-start gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
-                    <span className="text-foreground/80">{topic}</span>
+                    <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-accent flex-shrink-0 mt-0.5" />
+                    <span className="text-foreground/80 text-sm sm:text-base">{topic}</span>
                   </li>
                 ))}
               </ul>
