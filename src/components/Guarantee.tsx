@@ -47,14 +47,20 @@ export const Guarantee = () => {
               </div>
 
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                <span className="text-neon-pink">GARANTIA</span> de{" "}
-                <span className="text-neon-cyan">30 DIAS</span>
+                <span className="text-neon-pink">TÁ PREPARADO</span> pra{" "}
+                <span className="text-neon-cyan">TRABALHAR DE VERDADE</span>
               </h2>
 
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-                Você tem <span className="text-primary font-bold">30 dias completos</span> para experimentar 
-                todo o conteúdo da Real Life Academy. Se você implementar o método, assistir as aulas e ainda assim não ver NENHUM resultado, 
-                devolvemos <span className="text-neon-cyan font-bold">100% do seu investimento</span> - sem burocracia, sem perguntas.
+                Ganhar dinheiro é uma habilidade. Como qualquer outra habilidade, ela pode ser aprendida, e a velocidade com que isso acontece depende do seu esforço, dos seus coaches e do ambiente de aprendizagem em que você aprende.
+              </p>
+
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+                Nossos coaches usam os modelos de negócios que ensinam, sabem o que é preciso para ser lucrativo e são os primeiros a identificar e utilizar novas tecnologias e estratégias disruptivas sempre que elas surgem.
+              </p>
+
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+                Não há lugar melhor no planeta para aprender a ganhar dinheiro online hoje em dia.
               </p>
 
               <div className="space-y-4 pt-4">
