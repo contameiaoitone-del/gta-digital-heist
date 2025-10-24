@@ -46,17 +46,17 @@ export const Hero = () => {
             </div>
 
             {/* Título Principal */}
-            <h1 className="mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground font-bold max-w-3xl mx-auto leading-tight animate-slide-up" style={{
+            <h1 className="mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl text-foreground font-bold max-w-3xl mx-auto leading-tight animate-slide-up" style={{
               animationDelay: "0.2s",
-              textShadow: "0 0 40px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8), 0 4px 30px hsl(var(--primary) / 0.6), 2px 2px 4px rgba(0,0,0,1)"
+              textShadow: "0 0 30px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.7), 0 4px 20px hsl(var(--primary) / 0.4), 2px 2px 4px rgba(0,0,0,0.9)"
             }}>
-              Fazer dinheiro na Internet é uma <span className="text-neon-pink">Habilidade</span>.
+              Fazer dinheiro na Internet é uma <span className="text-neon-pink soft-glow">Habilidade</span>.
             </h1>
 
             {/* Subtítulo */}
-            <p className="mb-12 text-lg sm:text-xl md:text-2xl text-foreground/95 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{
+            <p className="mb-12 text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{
               animationDelay: "0.3s",
-              textShadow: "0 0 30px rgba(0,0,0,0.95), 0 0 15px rgba(0,0,0,0.9), 2px 2px 4px rgba(0,0,0,1)"
+              textShadow: "0 0 20px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8), 2px 2px 4px rgba(0,0,0,0.9)"
             }}>
               O tempo está passando, o mundo está girando, e a única constante é a mudança implacável.
             </p>

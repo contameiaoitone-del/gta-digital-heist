@@ -24,7 +24,7 @@ All colors MUST be HSL.
     --secondary-foreground: 0 0% 100%;
 
     --muted: 240 5% 26%;
-    --muted-foreground: 240 5% 65%;
+    --muted-foreground: 240 5% 72%;
 
     --accent: 185 85% 70%;
     --accent-foreground: 240 10% 8%;
@@ -38,10 +38,10 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
-    --neon-pink: 330 100% 70%;
-    --neon-purple: 270 85% 60%;
-    --neon-cyan: 185 85% 70%;
-    --neon-orange: 25 100% 78%;
+    --neon-pink: 330 85% 65%;
+    --neon-purple: 270 85% 68%;
+    --neon-cyan: 190 100% 65%;
+    --neon-orange: 25 90% 70%;
     --neon-yellow: 45 100% 80%;
     --sunset-peach: 25 100% 78%;
     --ocean-mint: 185 85% 70%;
@@ -64,14 +64,14 @@ All colors MUST be HSL.
       hsl(var(--background) / 0.2) 100%
     );
     
-    --shadow-soft-pink: 0 8px 32px hsl(330 100% 70% / 0.35), 0 0 64px hsl(330 100% 70% / 0.15);
-    --shadow-soft-purple: 0 8px 32px hsl(270 85% 60% / 0.35), 0 0 64px hsl(270 85% 60% / 0.15);
-    --shadow-soft-cyan: 0 8px 32px hsl(185 85% 70% / 0.35), 0 0 64px hsl(185 85% 70% / 0.15);
+    --shadow-soft-pink: 0 20px 60px -15px hsl(330 85% 65% / 0.22);
+    --shadow-soft-purple: 0 20px 60px -15px hsl(270 85% 68% / 0.22);
+    --shadow-soft-cyan: 0 20px 60px -15px hsl(190 100% 65% / 0.22);
     
     /* Volumetric Shadows (God Rays Effect) */
-    --shadow-volumetric-pink: 0 0 40px hsl(330 100% 70% / 0.4), 0 0 80px hsl(330 100% 70% / 0.25), 0 0 120px hsl(330 100% 70% / 0.15);
-    --shadow-volumetric-purple: 0 0 40px hsl(270 85% 60% / 0.4), 0 0 80px hsl(270 85% 60% / 0.25), 0 0 120px hsl(270 85% 60% / 0.15);
-    --shadow-volumetric-cyan: 0 0 40px hsl(185 85% 70% / 0.4), 0 0 80px hsl(185 85% 70% / 0.25), 0 0 120px hsl(185 85% 70% / 0.15);
+    --shadow-volumetric-pink: 0 8px 32px hsl(330 85% 65% / 0.18), 0 0 80px hsl(330 85% 65% / 0.10);
+    --shadow-volumetric-purple: 0 8px 32px hsl(270 85% 68% / 0.18), 0 0 80px hsl(270 85% 68% / 0.10);
+    --shadow-volumetric-cyan: 0 8px 32px hsl(190 100% 65% / 0.18), 0 0 80px hsl(190 100% 65% / 0.10);
 
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -196,10 +196,16 @@ All colors MUST be HSL.
   /* Neon Glow Effect */
   .neon-glow {
     text-shadow:
-      0 0 10px currentColor,
-      0 0 20px currentColor,
-      0 0 40px currentColor;
-    animation: neon-flicker 3s ease-in-out infinite;
+      0 0 8px currentColor,
+      0 0 16px currentColor,
+      0 0 24px currentColor;
+  }
+  
+  /* Soft Glow Effect */
+  .soft-glow {
+    text-shadow: 
+      0 0 6px currentColor,
+      0 0 12px currentColor;
   }
   
   @keyframes neon-flicker {
