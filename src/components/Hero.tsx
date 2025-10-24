@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import heroImage from "@/assets/gta-hero-vice-city.png";
 import { GTALogo } from "@/components/GTALogo";
-import { PalmTree } from "@/components/decorative/PalmTree";
 export const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -34,10 +33,6 @@ export const Hero = () => {
         <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49%,hsl(330_85%_65%_/_0.2)_50%,transparent_51%)] bg-[length:80px_80px]"></div>
         <div className="absolute inset-0 bg-[linear-gradient(0deg,transparent_49%,hsl(270_60%_70%_/_0.2)_50%,transparent_51%)] bg-[length:80px_80px]"></div>
       </div>
-
-      {/* Palm Tree Silhouettes with Glow */}
-      <PalmTree size="medium" position="left" opacity={0.15} gradientId="palm1" gradientColor="hsl(270, 60%, 30%)" className="z-0" />
-      <PalmTree size="large" position="right" opacity={0.15} gradientId="palm3" gradientColor="hsl(330, 85%, 40%)" className="z-0" />
 
 
       {/* Content with Glassmorphism Card */}
