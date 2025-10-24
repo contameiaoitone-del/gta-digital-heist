@@ -1,13 +1,48 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
-import heroImage from "@/assets/gta-luxury.png";
+import { useState, useEffect } from "react";
+import gtaLuxury from "@/assets/gta-luxury.png";
+import gtaLaptop from "@/assets/gta-laptop-growth.png";
+import gtaCityscape from "@/assets/gta-cityscape-night.png";
+import gtaOffice from "@/assets/gta-office-money.png";
 import { GTALogo } from "@/components/GTALogo";
 import { PalmTree } from "@/components/decorative/PalmTree";
+
+const backgroundImages = [gtaLuxury, gtaLaptop, gtaCityscape, gtaOffice];
+
 export const Hero = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % backgroundImages.length);
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image with Overlay */}
+      {/* Background Slideshow with Ken Burns Effect */}
       <div className="absolute inset-0 z-0">
-        <img src={heroImage} alt="Real Life Academy Hero" className="w-full h-full object-cover opacity-40" />
+        {backgroundImages.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentIndex ? 'opacity-40' : 'opacity-0'
+            }`}
+            style={{ willChange: 'transform, opacity' }}
+          >
+            <img 
+              src={image} 
+              alt={`Real Life Academy Background ${index + 1}`}
+              className={`w-full h-full object-cover ${
+                index === currentIndex 
+                  ? (index % 2 === 0 ? 'animate-ken-burns' : 'animate-ken-burns-alt')
+                  : ''
+              }`}
+            />
+          </div>
+        ))}
         <div className="absolute inset-0 bg-gradient-hero"></div>
       </div>
 
