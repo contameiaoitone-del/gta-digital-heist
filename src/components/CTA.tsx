@@ -21,20 +21,20 @@ export const CTA = () => {
           >
             <Clock className="h-5 w-5 text-primary animate-pulse" />
             <span className="text-primary font-bold text-sm uppercase tracking-wider">
-              Vagas Limitadas
+              Últimas 47 Vagas do Mês
             </span>
           </div>
 
           {/* Main Headline */}
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight animate-slide-up">
-            Transforme Sua Vida{" "}
-            <span className="text-neon-pink block md:inline">AGORA</span>
+            Sua Vaga Expira em{" "}
+            <span className="text-neon-pink block md:inline">48 HORAS</span>
           </h2>
 
           {/* Subheadline */}
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto animate-slide-up" style={{ animationDelay: "0.1s" }}>
-            Junte-se a milhares de pessoas que já estão construindo sua{" "}
-            <span className="text-neon-cyan font-bold">liberdade financeira</span> através do mercado digital
+            Não deixe para amanhã. Amanhã você vai se arrepender de não ter começado <span className="text-neon-cyan font-bold">HOJE</span>. 
+            Garanta sua vaga antes que feche ou o preço suba
           </p>
 
           {/* Stats */}
@@ -59,13 +59,13 @@ export const CTA = () => {
           {/* CTA Button */}
           <div className="pt-4 animate-slide-up" style={{ animationDelay: "0.3s" }}>
             <Button variant="hero" size="xl" className="group text-xl relative overflow-hidden">
-              <span className="relative z-10">COMEÇAR MINHA JORNADA AGORA</span>
+              <span className="relative z-10">QUERO GARANTIR MINHA VAGA AGORA</span>
               <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform relative z-10" />
               {/* Shine Effect */}
               <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             </Button>
             <p className="text-sm text-muted-foreground mt-4">
-              ✓ Acesso imediato ao conteúdo completo • ✓ Garantia de 30 dias
+              ✓ Acesso IMEDIATO em 2 minutos • ✓ Garantia incondicional de 30 dias • ✓ Comece a faturar esta semana
             </p>
           </div>
 
@@ -77,7 +77,7 @@ export const CTA = () => {
               ))}
             </div>
             <p className="text-muted-foreground">
-              <span className="text-neon-cyan font-bold">287 pessoas</span> garantiram sua vaga nas últimas 24 horas
+              <span className="text-neon-cyan font-bold">287 pessoas</span> garantiram vaga nas últimas 24h • Restam apenas <span className="text-neon-pink font-bold">47 vagas</span>
             </p>
           </div>
         </div>

@@ -98,10 +98,10 @@ export const Modules = () => {
             Conteúdo Completo
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mt-4 mb-4 sm:mb-6">
-            <span className="text-neon-purple">+300 AULAS</span> Práticas
+            <span className="text-neon-purple">+300 AULAS</span> Que Valem <span className="text-neon-cyan">+R$50K</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            6 módulos completos com tudo que você precisa para dominar o mercado digital
+            O passo a passo EXATO para você sair do zero e bater sua primeira meta de <span className="text-primary font-bold">R$10K/mês</span> em até 90 dias
           </p>
         </div>
 

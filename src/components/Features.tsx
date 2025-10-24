@@ -6,36 +6,42 @@ const features = [
     icon: Megaphone,
     title: "Tráfego Pago",
     description: "Domine Facebook Ads, Google Ads e TikTok Ads. Aprenda a escalar campanhas que realmente convertem.",
+    result: "→ Você vai saber exatamente como transformar R$100 em R$500+ todo dia",
     color: "neon-pink",
   },
   {
     icon: TrendingUp,
     title: "Infoprodutos",
     description: "Crie e venda produtos digitais com estratégias de lançamento, perpétuo e vendas no WhatsApp.",
+    result: "→ Crie produtos digitais do zero e venda no automático 24/7",
     color: "neon-purple",
   },
   {
     icon: ShoppingCart,
     title: "E-commerce",
     description: "Monte e escale sua loja virtual do zero. Estratégias para dropshipping e produtos próprios.",
+    result: "→ Monte sua loja em 48h e comece a vender sem estoque",
     color: "neon-cyan",
   },
   {
     icon: Sparkles,
     title: "IA & Automação",
     description: "Use Inteligência Artificial para criar sites, copy, criativos e automatizar seu negócio.",
+    result: "→ Trabalhe 2h/dia enquanto a IA faz o trabalho pesado pra você",
     color: "neon-orange",
   },
   {
     icon: Users,
     title: "Prestação de Serviços",
     description: "Aprenda a oferecer serviços digitais e construir uma agência lucrativa do zero.",
+    result: "→ Capture seu primeiro cliente em até 7 dias e cobre R$3k+/mês",
     color: "neon-pink",
   },
   {
     icon: DollarSign,
     title: "Monetização Total",
     description: "Múltiplas fontes de renda. Aprenda todas as formas de ganhar dinheiro online.",
+    result: "→ Tenha 3-5 fontes de renda diversificadas e blindadas",
     color: "neon-cyan",
   },
 ];
@@ -81,8 +87,11 @@ export const Features = () => {
               <h3 className="text-lg sm:text-xl font-bold mb-3 group-hover:text-primary transition-colors">
                 {feature.title}
               </h3>
-              <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
+              <p className="text-muted-foreground leading-relaxed text-sm sm:text-base mb-3">
                 {feature.description}
+              </p>
+              <p className="text-primary font-semibold text-sm">
+                {feature.result}
               </p>
             </Card>
           ))}

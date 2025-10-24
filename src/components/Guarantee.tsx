@@ -53,27 +53,33 @@ export const Guarantee = () => {
 
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
                 Você tem <span className="text-primary font-bold">30 dias completos</span> para experimentar 
-                todo o conteúdo da Real Life Academy. Se por qualquer motivo você não ficar satisfeito, 
-                devolvemos 100% do seu investimento.
+                todo o conteúdo da Real Life Academy. Se você implementar o método, assistir as aulas e ainda assim não ver NENHUM resultado, 
+                devolvemos <span className="text-neon-cyan font-bold">100% do seu investimento</span> - sem burocracia, sem perguntas.
               </p>
 
               <div className="space-y-4 pt-4">
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
                   <p className="text-foreground/80">
-                    <span className="font-bold text-foreground">Sem perguntas:</span> Basta enviar um email e processamos seu reembolso
+                    <span className="font-bold text-foreground">Sem perguntas:</span> Um único email e você recebe 100% de volta em até 24h
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
                   <p className="text-foreground/80">
-                    <span className="font-bold text-foreground">Risco zero:</span> Você não tem nada a perder, apenas a ganhar
+                    <span className="font-bold text-foreground">Risco zero:</span> Todo o risco é nosso. Ou você ama, ou não paga nada
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
                   <p className="text-foreground/80">
-                    <span className="font-bold text-foreground">Suporte total:</span> Nossa equipe está sempre disponível para ajudar
+                    <span className="font-bold text-foreground">Suporte VIP:</span> Acesso direto ao time por WhatsApp 24/7
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                  <p className="text-foreground/80">
+                    <span className="font-bold text-foreground">Você só perde se não tentar:</span> O único erro é ficar parado
                   </p>
                 </div>
               </div>

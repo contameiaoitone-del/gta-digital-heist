@@ -35,7 +35,7 @@ export const Hero = () => {
           {/* Badge */}
           <div className="mb-4 sm:mb-6 inline-block">
             <span className="px-4 sm:px-6 py-2 bg-primary/20 border border-primary text-primary rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider shadow-soft-pink animate-glow-pulse">
-              O Treinamento Mais Completo do Brasil
+              +5.000 Alunos Já Faturando Alto
             </span>
           </div>
 
@@ -48,14 +48,15 @@ export const Hero = () => {
           <p className="mb-3 sm:mb-4 text-lg sm:text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{
           animationDelay: "0.2s"
         }}>
-            Domine o Mercado Digital e Construa Sua Liberdade Financeira
+            Escape da <span className="text-neon-pink">Matrix 9-5</span> e Construa Seu{" "}
+            <span className="text-neon-cyan">Império Digital</span> em 90 Dias
           </p>
 
           {/* Subtítulo */}
           <p className="mb-6 sm:mb-8 text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up" style={{
           animationDelay: "0.3s"
         }}>
-            Tráfego Pago • Infoprodutos • E-commerce • IA • Prestação de Serviços • E muito mais
+            O método exato que +5.000 pessoas usaram para largar o emprego e faturar <span className="text-neon-cyan font-bold">R$10k-50k/mês</span> com negócios digitais - mesmo começando do ZERO
           </p>
 
           {/* CTA Buttons */}
