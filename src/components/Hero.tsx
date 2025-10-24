@@ -10,7 +10,7 @@ export const Hero = () => {
         <img 
           src={heroImage} 
           alt="Real Life Academy - Vice City" 
-          className="w-full h-full object-cover opacity-50 object-[35%_center] md:object-[25%_center]" 
+          className="w-full h-full object-cover opacity-30 object-[35%_center] md:object-[25%_center]" 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/40"></div>
       </div>
