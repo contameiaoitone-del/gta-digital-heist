@@ -46,15 +46,14 @@ export const Hero = () => {
           <p className="mb-3 sm:mb-4 text-lg sm:text-xl md:text-2xl lg:text-3xl text-foreground/90 max-w-3xl mx-auto font-semibold animate-slide-up" style={{
           animationDelay: "0.2s"
         }}>
-            Escape da <span className="text-neon-pink">Matrix 9-5</span> e Construa Seu{" "}
-            <span className="text-neon-cyan">Império Digital</span> em 90 Dias
+            Fazer dinheiro na Internet é uma <span className="text-neon-pink">Habilidade</span>.
           </p>
 
           {/* Subtítulo */}
           <p className="mb-6 sm:mb-8 text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up" style={{
           animationDelay: "0.3s"
         }}>
-            O método exato que +5.000 pessoas usaram para largar o emprego e faturar <span className="text-neon-cyan font-bold">R$10k-50k/mês</span> com negócios digitais - mesmo começando do ZERO
+            O tempo está passando, o mundo está girando, e a única constante é a mudança implacável.
           </p>
 
           {/* CTA Buttons */}
