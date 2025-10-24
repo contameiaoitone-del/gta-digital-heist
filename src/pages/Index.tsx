@@ -4,6 +4,8 @@ import { Modules } from "@/components/Modules";
 import { Testimonials } from "@/components/Testimonials";
 import { Results } from "@/components/Results";
 import { Pricing } from "@/components/Pricing";
+import { MoneyBackGuarantee } from "@/components/MoneyBackGuarantee";
+import { FAQ } from "@/components/FAQ";
 import { Guarantee } from "@/components/Guarantee";
 import { WhoShouldNotJoin } from "@/components/WhoShouldNotJoin";
 import { CTA } from "@/components/CTA";
@@ -18,6 +20,8 @@ const Index = () => {
       <Testimonials />
       <Results />
       <Pricing />
+      <MoneyBackGuarantee />
+      <FAQ />
       <Guarantee />
       <WhoShouldNotJoin />
       <CTA />
