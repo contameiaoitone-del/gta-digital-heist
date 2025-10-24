@@ -116,29 +116,6 @@ export const Results = () => {
                   {/* Result Screenshot */}
                   <div className="relative aspect-[3/2] overflow-hidden">
                     <img src={result.image} alt={`Resultado de ${result.name}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                    
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent opacity-90" />
-
-                    {/* Badge */}
-                    <div className="absolute top-3 left-3 px-3 py-1 rounded-lg bg-accent/90 backdrop-blur-sm">
-                      <span className="text-xs font-bold text-accent-foreground">
-                        {result.badge}
-                      </span>
-                    </div>
-
-                    {/* Result Amount */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-                      <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary soft-glow mb-1">
-                        {result.result}
-                      </div>
-                      <div className="text-sm sm:text-base text-muted-foreground">
-                        {result.period}
-                      </div>
-                      <div className="text-xs sm:text-sm text-foreground mt-2">
-                        por <span className="font-bold">{result.name}</span>
-                      </div>
-                    </div>
                   </div>
 
                   {/* Hover Glow Effect */}
