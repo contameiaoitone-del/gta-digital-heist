@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Shield, ArrowRight } from "lucide-react";
-import luxuryImage from "@/assets/gta-luxury.png";
+import luxuryImage from "@/assets/guarantee-hero.png";
 
 export const Guarantee = () => {
   return (
