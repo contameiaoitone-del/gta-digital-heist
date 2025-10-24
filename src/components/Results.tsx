@@ -60,12 +60,8 @@ export const Results = () => {
               Resultados Comprovados
             </span>
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6">
-            <span className="text-neon-cyan neon-glow">PRINTS</span>{" "}
-            <span className="text-foreground">QUE</span>{" "}
-            <span className="text-neon-pink neon-glow">FALAM</span>{" "}
-            <span className="text-foreground">POR</span>{" "}
-            <span className="text-neon-orange neon-glow">SI</span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 text-foreground">
+            PRINTS QUE <span className="text-primary">FALAM POR SI</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Resultados reais de alunos reais. Sem photoshop, sem mentira, só dinheiro no bolso.
