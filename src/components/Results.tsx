@@ -1,5 +1,7 @@
 import { TrendingUp, DollarSign, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import officeImage from "@/assets/gta-office-money.png";
 const results = [{
   id: 1,
@@ -45,6 +47,15 @@ const results = [{
   badge: "Marketing Digital"
 }];
 export const Results = () => {
+  const [emblaRef] = useEmblaCarousel(
+    { 
+      loop: true,
+      align: "start",
+      slidesToScroll: 1,
+    },
+    [Autoplay({ delay: 3000, stopOnInteraction: false })]
+  );
+
   return <section className="relative py-16 sm:py-20 md:py-32 overflow-hidden bg-card/20">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-card/50 to-background/50" />
@@ -96,44 +107,48 @@ export const Results = () => {
           </Card>
         </div>
 
-        {/* Results Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {results.map((result, index) => <Card key={result.id} className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-2 border-border hover:border-accent/50 transition-all duration-500 hover:scale-105 animate-slide-up" style={{
-          animationDelay: `${index * 0.1}s`
-        }}>
-              {/* Result Screenshot */}
-              <div className="relative aspect-[3/2] overflow-hidden">
-                <img src={result.image} alt={`Resultado de ${result.name}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent opacity-90" />
+        {/* Results Carousel */}
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex gap-6">
+            {results.map((result, index) => (
+              <div key={result.id} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0">
+                <Card className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-2 border-border hover:border-accent/50 transition-all duration-500 hover:scale-105 h-full">
+                  {/* Result Screenshot */}
+                  <div className="relative aspect-[3/2] overflow-hidden">
+                    <img src={result.image} alt={`Resultado de ${result.name}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent opacity-90" />
 
-                {/* Badge */}
-                <div className="absolute top-3 left-3 px-3 py-1 rounded-lg bg-accent/90 backdrop-blur-sm">
-                  <span className="text-xs font-bold text-accent-foreground">
-                    {result.badge}
-                  </span>
-                </div>
+                    {/* Badge */}
+                    <div className="absolute top-3 left-3 px-3 py-1 rounded-lg bg-accent/90 backdrop-blur-sm">
+                      <span className="text-xs font-bold text-accent-foreground">
+                        {result.badge}
+                      </span>
+                    </div>
 
-                {/* Result Amount */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-                  <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary neon-glow mb-1">
-                    {result.result}
+                    {/* Result Amount */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+                      <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary soft-glow mb-1">
+                        {result.result}
+                      </div>
+                      <div className="text-sm sm:text-base text-muted-foreground">
+                        {result.period}
+                      </div>
+                      <div className="text-xs sm:text-sm text-foreground mt-2">
+                        por <span className="font-bold">{result.name}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-sm sm:text-base text-muted-foreground">
-                    {result.period}
+
+                  {/* Hover Glow Effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-primary/10" />
                   </div>
-                  <div className="text-xs sm:text-sm text-foreground mt-2">
-                    por <span className="font-bold">{result.name}</span>
-                  </div>
-                </div>
+                </Card>
               </div>
-
-              {/* Hover Glow Effect */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-primary/10" />
-              </div>
-            </Card>)}
+            ))}
+          </div>
         </div>
 
         {/* Bottom Text */}
