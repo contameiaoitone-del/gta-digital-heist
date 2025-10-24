@@ -65,23 +65,6 @@ export const Hero = () => {
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
-
-          {/* Social Proof */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center text-xs sm:text-sm animate-slide-up" style={{
-          animationDelay: "0.5s"
-        }}>
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map(i => <div key={i} className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-sunset border-2 border-background"></div>)}
-              </div>
-              <span className="text-muted-foreground">
-                <span className="text-neon-pink font-bold">+5.000</span> alunos ativos
-              </span>
-            </div>
-            <div className="text-muted-foreground">
-              ⭐⭐⭐⭐⭐ <span className="text-neon-cyan font-bold">4.9/5</span> de avaliação
-            </div>
-          </div>
         </div>
       </div>
 
