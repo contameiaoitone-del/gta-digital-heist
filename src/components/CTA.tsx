@@ -1,9 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, Users, Zap } from "lucide-react";
+import cityscapeImage from "@/assets/gta-cityscape-night.png";
 
 export const CTA = () => {
   return (
     <section className="py-20 md:py-32 relative overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img src={cityscapeImage} alt="Real Life Academy Billboard" className="w-full h-full object-cover opacity-25" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
+      </div>
       {/* Background Effects - Dramatic Sunset */}
       <div className="absolute inset-0 bg-gradient-sunset opacity-30"></div>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent"></div>

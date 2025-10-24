@@ -1,5 +1,6 @@
 import { TrendingUp, ShoppingCart, Megaphone, Sparkles, Users, DollarSign } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import laptopImage from "@/assets/gta-laptop-growth.png";
 
 const features = [
   {
@@ -54,17 +55,26 @@ export const Features = () => {
       <div className="atmospheric-haze opacity-50"></div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-12 sm:mb-16 animate-slide-up">
-          <span className="text-primary font-bold text-sm uppercase tracking-wider">
-            O que você vai aprender
-          </span>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mt-4 mb-4 sm:mb-6">
-            <span className="text-neon-pink">TUDO</span> Sobre o{" "}
-            <span className="text-neon-cyan">Mercado Digital</span>
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Um treinamento completo com todas as habilidades necessárias para você conquistar sua liberdade financeira
-          </p>
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center mb-12 sm:mb-16 animate-fade-in">
+          <div className="text-center md:text-left order-2 md:order-1">
+            <span className="text-primary font-bold text-sm uppercase tracking-wider">
+              O que você vai aprender
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-4 mb-4 sm:mb-6">
+              <span className="text-neon-pink">TUDO</span> Sobre o{" "}
+              <span className="text-neon-cyan">Mercado Digital</span>
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto md:mx-0">
+              Um treinamento completo com todas as habilidades necessárias para você conquistar sua liberdade financeira
+            </p>
+          </div>
+          <div className="relative animate-slide-up order-1 md:order-2" style={{ animationDelay: "0.2s" }}>
+            <img 
+              src={laptopImage} 
+              alt="Crescimento de +450% com negócios digitais na Real Life Academy" 
+              className="w-full h-auto rounded-lg shadow-[0_0_50px_rgba(236,72,153,0.3)] border border-primary/20 hover:scale-105 transition-transform duration-500"
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">

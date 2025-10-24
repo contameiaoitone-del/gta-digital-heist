@@ -1,5 +1,6 @@
 import { TrendingUp, DollarSign, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import officeImage from "@/assets/gta-office-money.png";
 
 const results = [
   {
@@ -81,11 +82,22 @@ export const Results = () => {
           </p>
         </div>
 
+        {/* Hero Image - Office Success */}
+        <div className="mb-12 sm:mb-16 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          <Card className="overflow-hidden border-2 border-primary/30 bg-card/50 backdrop-blur-sm hover:border-primary/50 hover:shadow-[0_0_60px_rgba(236,72,153,0.4)] transition-all duration-500">
+            <img 
+              src={officeImage} 
+              alt="Escritório de sucesso com resultados reais - Bitcoin e crescimento financeiro" 
+              className="w-full h-auto"
+            />
+          </Card>
+        </div>
+
         {/* Stats Bar */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16">
           <Card className="p-4 sm:p-6 bg-card/50 backdrop-blur-sm border-2 border-primary/30 text-center hover:border-primary/50 transition-all duration-300 hover:scale-105">
             <DollarSign className="w-8 h-8 sm:w-10 sm:h-10 text-primary mx-auto mb-2" />
-            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-1">R$12M+</div>
+            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-1">R$24M+</div>
             <div className="text-xs sm:text-sm text-muted-foreground">Gerados pelos alunos</div>
           </Card>
           <Card className="p-4 sm:p-6 bg-card/50 backdrop-blur-sm border-2 border-accent/30 text-center hover:border-accent/50 transition-all duration-300 hover:scale-105">
@@ -95,7 +107,7 @@ export const Results = () => {
           </Card>
           <Card className="p-4 sm:p-6 bg-card/50 backdrop-blur-sm border-2 border-secondary/30 text-center hover:border-secondary/50 transition-all duration-300 hover:scale-105">
             <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 text-secondary mx-auto mb-2" />
-            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary mb-1">97%</div>
+            <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-secondary mb-1">94%</div>
             <div className="text-xs sm:text-sm text-muted-foreground">Taxa de sucesso</div>
           </Card>
         </div>

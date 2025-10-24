@@ -1,5 +1,6 @@
 import { Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import cityscapeImage from "@/assets/gta-cityscape-night.png";
 
 const testimonials = [
   {
@@ -31,6 +32,11 @@ const testimonials = [
 export const Testimonials = () => {
   return (
     <section className="relative py-16 sm:py-20 md:py-32 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img src={cityscapeImage} alt="Vice City Skyline - Real Life Academy" className="w-full h-full object-cover opacity-15" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
+      </div>
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-card/30 to-background" />
       <div className="atmospheric-haze" />
