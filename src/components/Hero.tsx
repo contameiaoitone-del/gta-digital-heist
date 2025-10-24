@@ -57,16 +57,12 @@ export const Hero = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className="mb-8 sm:mb-10 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto animate-slide-up" style={{
+          <div className="mb-8 sm:mb-10 flex justify-center items-center w-full sm:w-auto animate-slide-up" style={{
           animationDelay: "0.4s"
         }}>
             <Button variant="hero" size="lg" className="group w-full sm:w-auto">
               COMEÇAR AGORA
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button variant="neon" size="lg" className="group w-full sm:w-auto">
-              <Play className="mr-2 h-5 w-5" />
-              ASSISTIR DEMO
             </Button>
           </div>
 
