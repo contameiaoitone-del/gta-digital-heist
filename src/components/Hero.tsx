@@ -7,15 +7,12 @@ export const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img src={heroImage} alt="Real Life Academy - Vice City" className="w-full h-full object-cover opacity-65" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,hsl(var(--background))_100%)]"></div>
-        <div className="absolute inset-0 bg-gradient-hero"></div>
+        <img src={heroImage} alt="Real Life Academy - Vice City" className="w-full h-full object-cover opacity-90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/40"></div>
       </div>
 
       {/* Atmospheric Effects */}
-      <div className="atmospheric-haze z-0"></div>
-      <div className="god-rays z-0"></div>
-      <div className="absolute inset-0 z-0 noise-texture"></div>
+      <div className="absolute inset-0 z-0 noise-texture opacity-30"></div>
       
       {/* Retro Grid Effect - Reduced opacity */}
       <div className="absolute inset-0 z-0 opacity-5">
@@ -31,24 +28,25 @@ export const Hero = () => {
       {/* Content with Glassmorphism Card */}
       <div className="container mx-auto px-6 sm:px-4 z-10 text-center animate-fade-in">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
-          {/* Glassmorphism Content Card */}
-          <div className="hero-content-card w-full">
+          {/* Content without card background */}
+          <div className="w-full">
             {/* Logo - Centralizada */}
             <div className="mb-8 w-full flex justify-center">
               <GTALogo />
             </div>
 
             {/* Título Principal */}
-            <h1 className="mb-5 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-foreground font-bold max-w-3xl mx-auto leading-tight animate-slide-up" style={{
+            <h1 className="mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground font-bold max-w-3xl mx-auto leading-tight animate-slide-up" style={{
               animationDelay: "0.2s",
-              textShadow: "0 2px 20px hsl(var(--primary) / 0.3)"
+              textShadow: "0 0 40px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8), 0 4px 30px hsl(var(--primary) / 0.6), 2px 2px 4px rgba(0,0,0,1)"
             }}>
               Fazer dinheiro na Internet é uma <span className="text-neon-pink">Habilidade</span>.
             </h1>
 
             {/* Subtítulo */}
-            <p className="mb-10 text-base sm:text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{
-              animationDelay: "0.3s"
+            <p className="mb-12 text-lg sm:text-xl md:text-2xl text-foreground/95 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{
+              animationDelay: "0.3s",
+              textShadow: "0 0 30px rgba(0,0,0,0.95), 0 0 15px rgba(0,0,0,0.9), 2px 2px 4px rgba(0,0,0,1)"
             }}>
               O tempo está passando, o mundo está girando, e a única constante é a mudança implacável.
             </p>
