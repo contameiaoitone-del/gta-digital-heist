@@ -1,61 +1,51 @@
 import { TrendingUp, DollarSign, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import officeImage from "@/assets/gta-office-money.png";
-
-const results = [
-  {
-    id: 1,
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-    name: "João Pedro",
-    result: "R$47.328",
-    period: "em 30 dias",
-    badge: "Tráfego Pago",
-  },
-  {
-    id: 2,
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-    name: "Mariana Santos",
-    result: "R$89.432",
-    period: "em 45 dias",
-    badge: "E-commerce",
-  },
-  {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&h=400&fit=crop",
-    name: "Felipe Oliveira",
-    result: "R$156.890",
-    period: "em 60 dias",
-    badge: "Infoprodutos",
-  },
-  {
-    id: 4,
-    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop",
-    name: "Beatriz Lima",
-    result: "R$23.567",
-    period: "em 21 dias",
-    badge: "Dropshipping",
-  },
-  {
-    id: 5,
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-    name: "Lucas Ferreira",
-    result: "R$95.234",
-    period: "em 38 dias",
-    badge: "Orgânico",
-  },
-  {
-    id: 6,
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-    name: "Camila Rocha",
-    result: "R$67.891",
-    period: "em 29 dias",
-    badge: "Marketing Digital",
-  },
-];
-
+const results = [{
+  id: 1,
+  image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+  name: "João Pedro",
+  result: "R$47.328",
+  period: "em 30 dias",
+  badge: "Tráfego Pago"
+}, {
+  id: 2,
+  image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+  name: "Mariana Santos",
+  result: "R$89.432",
+  period: "em 45 dias",
+  badge: "E-commerce"
+}, {
+  id: 3,
+  image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&h=400&fit=crop",
+  name: "Felipe Oliveira",
+  result: "R$156.890",
+  period: "em 60 dias",
+  badge: "Infoprodutos"
+}, {
+  id: 4,
+  image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop",
+  name: "Beatriz Lima",
+  result: "R$23.567",
+  period: "em 21 dias",
+  badge: "Dropshipping"
+}, {
+  id: 5,
+  image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+  name: "Lucas Ferreira",
+  result: "R$95.234",
+  period: "em 38 dias",
+  badge: "Orgânico"
+}, {
+  id: 6,
+  image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+  name: "Camila Rocha",
+  result: "R$67.891",
+  period: "em 29 dias",
+  badge: "Marketing Digital"
+}];
 export const Results = () => {
-  return (
-    <section className="relative py-16 sm:py-20 md:py-32 overflow-hidden bg-card/20">
+  return <section className="relative py-16 sm:py-20 md:py-32 overflow-hidden bg-card/20">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-card/50 to-background/50" />
       <div className="atmospheric-haze" />
@@ -83,13 +73,11 @@ export const Results = () => {
         </div>
 
         {/* Hero Image - Office Success */}
-        <div className="mb-12 sm:mb-16 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+        <div className="mb-12 sm:mb-16 animate-fade-in" style={{
+        animationDelay: "0.2s"
+      }}>
           <Card className="overflow-hidden border-2 border-primary/30 bg-card/50 backdrop-blur-sm hover:border-primary/50 hover:shadow-[0_0_60px_rgba(236,72,153,0.4)] transition-all duration-500">
-            <img 
-              src={officeImage} 
-              alt="Escritório de sucesso com resultados reais - Bitcoin e crescimento financeiro" 
-              className="w-full h-auto"
-            />
+            
           </Card>
         </div>
 
@@ -114,19 +102,12 @@ export const Results = () => {
 
         {/* Results Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {results.map((result, index) => (
-            <Card
-              key={result.id}
-              className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-2 border-border hover:border-accent/50 transition-all duration-500 hover:scale-105 animate-slide-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
+          {results.map((result, index) => <Card key={result.id} className="group relative overflow-hidden bg-card/50 backdrop-blur-sm border-2 border-border hover:border-accent/50 transition-all duration-500 hover:scale-105 animate-slide-up" style={{
+          animationDelay: `${index * 0.1}s`
+        }}>
               {/* Result Screenshot */}
               <div className="relative aspect-[3/2] overflow-hidden">
-                <img
-                  src={result.image}
-                  alt={`Resultado de ${result.name}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
+                <img src={result.image} alt={`Resultado de ${result.name}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent opacity-90" />
@@ -156,8 +137,7 @@ export const Results = () => {
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-primary/10" />
               </div>
-            </Card>
-          ))}
+            </Card>)}
         </div>
 
         {/* Bottom Text */}
@@ -172,6 +152,5 @@ export const Results = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
