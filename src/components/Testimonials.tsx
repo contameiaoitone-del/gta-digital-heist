@@ -50,12 +50,8 @@ export const Testimonials = () => {
               📹 Prova Real
             </span>
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6">
-            <span className="text-neon-pink neon-glow">ALUNOS</span>{" "}
-            <span className="text-foreground">QUE</span>{" "}
-            <span className="text-neon-cyan neon-glow">SAÍRAM</span>{" "}
-            <span className="text-foreground">DO</span>{" "}
-            <span className="text-neon-orange neon-glow">ZERO</span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 text-foreground">
+            ALUNOS QUE <span className="text-primary">SAÍRAM DO ZERO</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Veja os depoimentos reais de quem já está vivendo a vida que você ainda sonha
