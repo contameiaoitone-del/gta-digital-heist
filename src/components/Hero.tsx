@@ -3,9 +3,7 @@ import { ArrowRight, Play } from "lucide-react";
 import heroImage from "@/assets/gta-hero-vice-city.png";
 import { GTALogo } from "@/components/GTALogo";
 import { PalmTree } from "@/components/decorative/PalmTree";
-
 export const Hero = () => {
-
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
@@ -36,9 +34,7 @@ export const Hero = () => {
         <div className="max-w-5xl mx-auto flex flex-col items-center">
           {/* Badge */}
           <div className="mb-4 sm:mb-6 inline-block">
-            <span className="px-4 sm:px-6 py-2 bg-primary/20 border border-primary text-primary rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider shadow-soft-pink animate-glow-pulse">
-              +5.000 Alunos Já Faturando Alto
-            </span>
+            
           </div>
 
           {/* Logo - Centralizada */}
