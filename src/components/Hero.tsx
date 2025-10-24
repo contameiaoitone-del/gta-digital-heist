@@ -7,7 +7,11 @@ export const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img src={heroImage} alt="Real Life Academy - Vice City" className="w-full h-full object-cover opacity-90" />
+        <img 
+          src={heroImage} 
+          alt="Real Life Academy - Vice City" 
+          className="w-full h-full object-cover opacity-50 object-[35%_center] md:object-[25%_center]" 
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/40"></div>
       </div>
 
