@@ -9,7 +9,7 @@ export const Hero = () => {
         <img 
           src={heroImage} 
           alt="Real Life Academy - Vice City" 
-          className="w-full h-full object-cover opacity-20 object-[35%_center] md:object-[15%_center]" 
+          className="w-full h-full object-cover opacity-20 object-[35%_center] md:object-[5%_center]" 
         />
         {/* Neon Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20"></div>
