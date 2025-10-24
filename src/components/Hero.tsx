@@ -10,23 +10,34 @@ export const Hero = () => {
         <img 
           src={heroImage} 
           alt="Real Life Academy - Vice City" 
-          className="w-full h-full object-cover opacity-30 object-[35%_center] md:object-[25%_center]" 
+          className="w-full h-full object-cover opacity-20 object-[35%_center] md:object-[15%_center]" 
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/40"></div>
+        {/* Neon Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20"></div>
+        {/* Vignette Effect */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,transparent_50%,hsl(var(--background)/0.6)_100%)]"></div>
+        {/* Bottom Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
       </div>
+
+      {/* Scanline Effect */}
+      <div className="absolute inset-0 z-0 opacity-10 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(255,255,255,0.03)_2px,rgba(255,255,255,0.03)_4px)]"></div>
+
+      {/* Animated Color Glow */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-neon-purple/5 via-transparent to-neon-pink/5 animate-pulse"></div>
 
       {/* Atmospheric Effects */}
       <div className="absolute inset-0 z-0 noise-texture opacity-30"></div>
       
-      {/* Retro Grid Effect - Reduced opacity */}
-      <div className="absolute inset-0 z-0 opacity-5">
+      {/* Retro Grid Effect - Increased opacity */}
+      <div className="absolute inset-0 z-0 opacity-10">
         <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49%,hsl(330_85%_65%_/_0.2)_50%,transparent_51%)] bg-[length:80px_80px]"></div>
         <div className="absolute inset-0 bg-[linear-gradient(0deg,transparent_49%,hsl(270_60%_70%_/_0.2)_50%,transparent_51%)] bg-[length:80px_80px]"></div>
       </div>
 
-      {/* Palm Tree Silhouettes - Reduced opacity for cleaner look */}
-      <PalmTree size="medium" position="left" opacity={0.08} gradientId="palm1" gradientColor="hsl(270, 60%, 30%)" className="z-0" />
-      <PalmTree size="large" position="right" opacity={0.1} gradientId="palm3" gradientColor="hsl(330, 85%, 40%)" className="z-0" />
+      {/* Palm Tree Silhouettes with Glow */}
+      <PalmTree size="medium" position="left" opacity={0.15} gradientId="palm1" gradientColor="hsl(270, 60%, 30%)" className="z-0" />
+      <PalmTree size="large" position="right" opacity={0.15} gradientId="palm3" gradientColor="hsl(330, 85%, 40%)" className="z-0" />
 
 
       {/* Content with Glassmorphism Card */}
