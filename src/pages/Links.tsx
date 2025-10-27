@@ -1,6 +1,7 @@
 import { Youtube, ExternalLink, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import gtaHero from "@/assets/gta-hero-vice-city.png";
+import rpCloseBanner from "@/assets/rp-close-banner.png";
 
 const Links = () => {
   const links = [
@@ -15,6 +16,7 @@ const Links = () => {
       url: "#",
       icon: ExternalLink,
       description: "Sistema de vendas completo",
+      image: rpCloseBanner,
     },
     {
       name: "Real Life Academy",
@@ -61,30 +63,65 @@ const Links = () => {
               rel="noopener noreferrer"
               className="block group"
             >
-              <div className="relative bg-card border border-border rounded-lg p-6 transition-all duration-300 hover:border-primary hover:shadow-[0_0_30px_hsl(var(--primary)_/_0.3)] hover:scale-[1.02]">
-                {/* Icon */}
-                <div className="flex items-center gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                    <link.icon className="w-6 h-6 text-primary" />
-                  </div>
+              {link.image ? (
+                // Link com imagem
+                <div 
+                  className="relative rounded-lg overflow-hidden aspect-[16/5] md:aspect-[16/4] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_hsl(var(--primary)_/_0.4)]"
+                  style={{
+                    backgroundImage: `url(${link.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                >
+                  {/* Overlay escuro para legibilidade */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-300" />
                   
-                  {/* Text */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-                      {link.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {link.description}
-                    </p>
+                  {/* Conteúdo */}
+                  <div className="relative h-full flex items-end p-6">
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-4">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 transition-colors border border-white/20">
+                          <link.icon className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-bold text-white drop-shadow-lg">
+                            {link.name}
+                          </h3>
+                          <p className="text-sm text-white/90 drop-shadow-md">
+                            {link.description}
+                          </p>
+                        </div>
+                      </div>
+                      <ExternalLink className="w-5 h-5 text-white/80 group-hover:text-white transition-colors flex-shrink-0" />
+                    </div>
                   </div>
 
-                  {/* Arrow */}
-                  <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
+                  {/* Hover glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/0 via-neon-pink/0 to-neon-purple/0 group-hover:from-neon-cyan/10 group-hover:via-neon-pink/10 group-hover:to-neon-purple/10 transition-all duration-300 pointer-events-none" />
                 </div>
+              ) : (
+                // Link sem imagem (estilo original)
+                <div className="relative bg-card border border-border rounded-lg p-6 transition-all duration-300 hover:border-primary hover:shadow-[0_0_30px_hsl(var(--primary)_/_0.3)] hover:scale-[1.02]">
+                  <div className="flex items-center gap-4">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                      <link.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                        {link.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {link.description}
+                      </p>
+                    </div>
 
-                {/* Hover glow effect */}
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-neon-cyan/0 via-neon-pink/0 to-neon-purple/0 group-hover:from-neon-cyan/5 group-hover:via-neon-pink/5 group-hover:to-neon-purple/5 transition-all duration-300 pointer-events-none" />
-              </div>
+                    <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
+                  </div>
+
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-neon-cyan/0 via-neon-pink/0 to-neon-purple/0 group-hover:from-neon-cyan/5 group-hover:via-neon-pink/5 group-hover:to-neon-purple/5 transition-all duration-300 pointer-events-none" />
+                </div>
+              )}
             </a>
           ))}
         </div>
