@@ -66,11 +66,12 @@ const Links = () => {
               {link.image ? (
                 // Link com imagem
                 <div 
-                  className="relative rounded-lg overflow-hidden aspect-[16/5] md:aspect-[16/4] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_hsl(var(--primary)_/_0.4)]"
+                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_hsl(var(--primary)_/_0.4)] bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-orange-900/40"
                   style={{
                     backgroundImage: `url(${link.image})`,
-                    backgroundSize: 'cover',
+                    backgroundSize: 'contain',
                     backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
                   }}
                 >
                   {/* Overlay escuro para legibilidade */}
