@@ -74,28 +74,6 @@ const Links = () => {
                     backgroundRepeat: 'no-repeat',
                   }}
                 >
-                  {/* Overlay escuro para legibilidade */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-300" />
-                  
-                  {/* Conteúdo */}
-                  <div className="relative h-full flex items-end p-6">
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 transition-colors border border-white/20">
-                          <link.icon className="w-6 h-6 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-bold text-white drop-shadow-lg">
-                            {link.name}
-                          </h3>
-                          <p className="text-sm text-white/90 drop-shadow-md">
-                            {link.description}
-                          </p>
-                        </div>
-                      </div>
-                      <ExternalLink className="w-5 h-5 text-white/80 group-hover:text-white transition-colors flex-shrink-0" />
-                    </div>
-                  </div>
 
                   {/* Hover glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/0 via-neon-pink/0 to-neon-purple/0 group-hover:from-neon-cyan/10 group-hover:via-neon-pink/10 group-hover:to-neon-purple/10 transition-all duration-300 pointer-events-none" />
