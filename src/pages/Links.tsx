@@ -48,7 +48,7 @@ const Links = () => {
             <img 
               src={caioDalcinLogo} 
               alt="Caio Dalcin" 
-              className="h-20 md:h-28 w-auto"
+              className="h-32 md:h-40 w-auto"
             />
           </div>
         </div>
