@@ -1,6 +1,6 @@
 import { Youtube, ExternalLink, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import gtaHero from "@/assets/gta-hero-vice-city.png";
+import gtaHero from "@/assets/gta-collage-background.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
 import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
