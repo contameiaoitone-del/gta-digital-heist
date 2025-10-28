@@ -112,11 +112,8 @@ const Links = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-12 text-center">
-          <div className="w-full h-px bg-gradient-to-r from-transparent via-neon-pink/50 to-transparent mb-6" />
-          <p className="text-sm text-neon-pink/70" style={{ textShadow: '0 0 10px rgba(255,105,180,0.3)' }}>
-            © 2024 Real Life Academy. Todos os direitos reservados.
-          </p>
+        <div className="mt-12">
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-neon-pink/50 to-transparent" />
         </div>
       </div>
     </div>
