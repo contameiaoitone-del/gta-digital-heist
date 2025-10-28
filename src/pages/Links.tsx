@@ -48,7 +48,7 @@ const Links = () => {
             <img 
               src={caioDalcinLogo} 
               alt="Caio Dalcin" 
-              className="h-48 md:h-56 w-auto drop-shadow-[0_0_20px_rgba(255,105,180,0.6)]"
+              className="h-48 md:h-56 w-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
             />
           </div>
         </div>
