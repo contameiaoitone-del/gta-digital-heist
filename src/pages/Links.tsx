@@ -4,6 +4,7 @@ import gtaHero from "@/assets/gta-hero-vice-city.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
 import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
+import caioDalcinLogo from "@/assets/caio-dalcin-logo.png";
 
 const Links = () => {
   const links = [
@@ -43,9 +44,13 @@ const Links = () => {
               className="w-full h-full rounded-full object-cover"
             />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">
-            <span className="text-white neon-glow">Caio Dalcin</span>
-          </h1>
+          <div className="flex justify-center mb-2">
+            <img 
+              src={caioDalcinLogo} 
+              alt="Caio Dalcin" 
+              className="h-12 md:h-16 w-auto"
+            />
+          </div>
         </div>
 
         {/* Links */}
