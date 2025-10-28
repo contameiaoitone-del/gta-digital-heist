@@ -28,14 +28,10 @@ const Links = () => {
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Background Image with Overlay */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-35 noise-texture"
+        className="absolute inset-0 bg-cover bg-center opacity-20 noise-texture"
         style={{ backgroundImage: `url(${gtaHero})` }}
       />
-      <div className="absolute inset-0 bg-gradient-radial from-background/70 via-background/85 to-background" />
-      
-      {/* Atmospheric Effects */}
-      <div className="absolute inset-0 atmospheric-haze opacity-40" />
-      <div className="absolute inset-0 god-rays opacity-30" />
+      <div className="absolute inset-0 bg-gradient-radial from-background/80 via-background/95 to-background" />
 
       {/* Content */}
       <div className="relative z-10 container max-w-2xl mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-screen">
@@ -70,20 +66,14 @@ const Links = () => {
               {link.image ? (
                 // Link com imagem
                 <div 
-                  className="relative rounded-lg overflow-hidden min-h-[140px] md:min-h-[160px] transition-all duration-300 hover:scale-[1.03] hover:shadow-volumetric-pink backdrop-blur-sm border-2 border-neon-pink/30 bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-orange-900/40"
+                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] transition-all duration-300 hover:scale-[1.02] border-2 border-neon-pink/30 hover:border-neon-pink/50"
                   style={{
                     backgroundImage: `url(${link.image})`,
                     backgroundSize: 'contain',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                   }}
-                >
-                  {/* Neon border effect */}
-                  <div className="absolute inset-0 rounded-lg border-2 border-transparent bg-gradient-to-r from-neon-cyan via-neon-pink to-neon-purple opacity-0 group-hover:opacity-50 transition-opacity duration-300 pointer-events-none" style={{ WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude', padding: '2px' }} />
-                  
-                  {/* Hover glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/0 via-neon-pink/0 to-neon-purple/0 group-hover:from-neon-cyan/20 group-hover:via-neon-pink/20 group-hover:to-neon-purple/20 transition-all duration-300 pointer-events-none" />
-                </div>
+                />
               ) : (
                 // Link sem imagem (estilo original)
                 <div className="relative bg-card/50 backdrop-blur-md border-2 border-neon-pink/20 rounded-lg p-6 transition-all duration-300 hover:border-neon-pink/50 hover:shadow-volumetric-pink hover:scale-[1.03] animate-glow-pulse">
