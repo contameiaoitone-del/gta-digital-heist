@@ -69,7 +69,7 @@ const Links = () => {
               {link.image ? (
                 // Link com imagem
                 <div 
-                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] bg-background/10 gta-card-border clip-gta"
+                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] bg-background/10 gta-card-border"
                   style={{
                     backgroundImage: `url(${link.image})`,
                     backgroundSize: 'contain',
@@ -78,7 +78,7 @@ const Links = () => {
                   }}
                 >
                   <div className="external-link-icon">
-                    <ExternalLink className="w-4 h-4 text-neon-pink" />
+                    <ExternalLink className="w-4 h-4 text-white" />
                   </div>
                 </div>
               ) : (
