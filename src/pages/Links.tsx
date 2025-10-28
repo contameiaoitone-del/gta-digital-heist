@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import gtaHero from "@/assets/gta-hero-vice-city.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
 import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
+import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 
 const Links = () => {
   const links = [
@@ -36,17 +37,15 @@ const Links = () => {
         {/* Logo/Avatar */}
         <div className="mb-8 text-center">
           <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-vice p-1">
-            <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
-              <GraduationCap className="w-12 h-12 text-primary" />
-            </div>
+            <img 
+              src={caioDalcinProfile} 
+              alt="Caio Dalcin" 
+              className="w-full h-full rounded-full object-cover"
+            />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
-            <span className="text-neon-cyan neon-glow">Real Life</span>{" "}
-            <span className="text-neon-pink neon-glow">Academy</span>
+            <span className="text-neon-cyan neon-glow">Caio Dalcin</span>
           </h1>
-          <p className="text-muted-foreground">
-            Transformando vendedores em campeões
-          </p>
         </div>
 
         {/* Links */}
