@@ -36,7 +36,7 @@ const Links = () => {
       <div className="relative z-10 container max-w-2xl mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-screen">
         {/* Logo/Avatar */}
         <div className="mb-8 text-center">
-          <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-vice p-1">
+          <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-vice p-1">
             <img 
               src={caioDalcinProfile} 
               alt="Caio Dalcin" 
@@ -44,7 +44,7 @@ const Links = () => {
             />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
-            <span className="text-neon-cyan neon-glow">Caio Dalcin</span>
+            <span className="text-white neon-glow">Caio Dalcin</span>
           </h1>
         </div>
 
