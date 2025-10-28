@@ -70,7 +70,7 @@ const Links = () => {
               {link.image ? (
                 // Link com imagem
                 <div 
-                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] transition-all duration-300 hover:scale-[1.03] hover:shadow-volumetric-pink backdrop-blur-sm border border-neon-pink/20 bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-orange-900/40 animate-glow-pulse"
+                  className="relative rounded-lg overflow-hidden min-h-[140px] md:min-h-[160px] transition-all duration-300 hover:scale-[1.03] hover:shadow-volumetric-pink backdrop-blur-sm border-2 border-neon-pink/30 bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-orange-900/40"
                   style={{
                     backgroundImage: `url(${link.image})`,
                     backgroundSize: 'contain',
@@ -79,7 +79,7 @@ const Links = () => {
                   }}
                 >
                   {/* Neon border effect */}
-                  <div className="absolute inset-0 rounded-lg border-2 border-transparent bg-gradient-to-r from-neon-cyan via-neon-pink to-neon-purple opacity-0 group-hover:opacity-30 transition-opacity duration-300 pointer-events-none" style={{ WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude', padding: '2px' }} />
+                  <div className="absolute inset-0 rounded-lg border-2 border-transparent bg-gradient-to-r from-neon-cyan via-neon-pink to-neon-purple opacity-0 group-hover:opacity-50 transition-opacity duration-300 pointer-events-none" style={{ WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude', padding: '2px' }} />
                   
                   {/* Hover glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/0 via-neon-pink/0 to-neon-purple/0 group-hover:from-neon-cyan/20 group-hover:via-neon-pink/20 group-hover:to-neon-purple/20 transition-all duration-300 pointer-events-none" />
