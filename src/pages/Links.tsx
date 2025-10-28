@@ -28,16 +28,16 @@ const Links = () => {
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Background Image with Overlay */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20 noise-texture"
+        className="absolute inset-0 bg-cover bg-center opacity-15 noise-texture"
         style={{ backgroundImage: `url(${gtaHero})` }}
       />
-      <div className="absolute inset-0 bg-gradient-radial from-background/80 via-background/95 to-background" />
+      <div className="absolute inset-0 bg-gradient-radial from-background/85 via-background/95 to-background" />
 
       {/* Content */}
       <div className="relative z-10 container max-w-2xl mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-screen">
         {/* Logo/Avatar */}
         <div className="mb-8 text-center">
-          <div className="w-40 h-40 mx-auto mb-4 rounded-full bg-gradient-vice p-1 shadow-volumetric-pink animate-glow-pulse">
+          <div className="w-48 h-48 mx-auto mb-4 rounded-full bg-gradient-vice p-1 shadow-volumetric-pink animate-glow-pulse">
             <img 
               src={caioDalcinProfile} 
               alt="Caio Dalcin" 
@@ -48,7 +48,7 @@ const Links = () => {
             <img 
               src={caioDalcinLogo} 
               alt="Caio Dalcin" 
-              className="h-40 md:h-48 w-auto drop-shadow-[0_0_20px_rgba(255,105,180,0.6)]"
+              className="h-48 md:h-56 w-auto drop-shadow-[0_0_20px_rgba(255,105,180,0.6)]"
             />
           </div>
         </div>
