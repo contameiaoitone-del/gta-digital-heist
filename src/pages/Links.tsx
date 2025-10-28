@@ -40,7 +40,7 @@ const Links = () => {
       <div className="relative z-10 container max-w-2xl mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-screen">
         {/* Logo/Avatar */}
         <div className="mb-8 text-center">
-          <div className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-4 rounded-full bg-gradient-vice p-1 animate-glow-pulse gta-avatar-border">
+          <div className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-4 rounded-full gta-avatar-border">
             <img 
               src={caioDalcinProfile} 
               alt="Caio Dalcin" 
