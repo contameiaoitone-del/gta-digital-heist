@@ -28,10 +28,10 @@ const Links = () => {
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Background Image with Overlay */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-15 noise-texture"
+        className="absolute inset-0 bg-cover bg-center opacity-10 noise-texture"
         style={{ backgroundImage: `url(${gtaHero})` }}
       />
-      <div className="absolute inset-0 bg-gradient-radial from-background/85 via-background/95 to-background" />
+      <div className="absolute inset-0 bg-gradient-radial from-background/90 via-background/97 to-background" />
 
       {/* Content */}
       <div className="relative z-10 container max-w-2xl mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-screen">
