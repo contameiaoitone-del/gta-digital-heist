@@ -2,6 +2,7 @@ import { Youtube, ExternalLink, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import gtaHero from "@/assets/gta-hero-vice-city.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
+import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 
 const Links = () => {
   const links = [
@@ -23,6 +24,7 @@ const Links = () => {
       url: "#",
       icon: GraduationCap,
       description: "A academia que vai mudar sua vida",
+      image: realLifeAcademyBanner,
     },
   ];
 
