@@ -28,16 +28,20 @@ const Links = () => {
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Background Image with Overlay */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20"
+        className="absolute inset-0 bg-cover bg-center opacity-35 noise-texture"
         style={{ backgroundImage: `url(${gtaHero})` }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
+      <div className="absolute inset-0 bg-gradient-radial from-background/70 via-background/85 to-background" />
+      
+      {/* Atmospheric Effects */}
+      <div className="absolute inset-0 atmospheric-haze opacity-40" />
+      <div className="absolute inset-0 god-rays opacity-30" />
 
       {/* Content */}
       <div className="relative z-10 container max-w-2xl mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-screen">
         {/* Logo/Avatar */}
         <div className="mb-8 text-center">
-          <div className="w-40 h-40 mx-auto mb-4 rounded-full bg-gradient-vice p-1">
+          <div className="w-40 h-40 mx-auto mb-4 rounded-full bg-gradient-vice p-1 shadow-volumetric-pink animate-glow-pulse">
             <img 
               src={caioDalcinProfile} 
               alt="Caio Dalcin" 
@@ -48,7 +52,7 @@ const Links = () => {
             <img 
               src={caioDalcinLogo} 
               alt="Caio Dalcin" 
-              className="h-40 md:h-48 w-auto"
+              className="h-40 md:h-48 w-auto drop-shadow-[0_0_20px_rgba(255,105,180,0.6)]"
             />
           </div>
         </div>
@@ -66,7 +70,7 @@ const Links = () => {
               {link.image ? (
                 // Link com imagem
                 <div 
-                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_hsl(var(--primary)_/_0.4)] bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-orange-900/40"
+                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] transition-all duration-300 hover:scale-[1.03] hover:shadow-volumetric-pink backdrop-blur-sm border border-neon-pink/20 bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-orange-900/40 animate-glow-pulse"
                   style={{
                     backgroundImage: `url(${link.image})`,
                     backgroundSize: 'contain',
@@ -74,20 +78,22 @@ const Links = () => {
                     backgroundRepeat: 'no-repeat',
                   }}
                 >
-
+                  {/* Neon border effect */}
+                  <div className="absolute inset-0 rounded-lg border-2 border-transparent bg-gradient-to-r from-neon-cyan via-neon-pink to-neon-purple opacity-0 group-hover:opacity-30 transition-opacity duration-300 pointer-events-none" style={{ WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)', WebkitMaskComposite: 'xor', maskComposite: 'exclude', padding: '2px' }} />
+                  
                   {/* Hover glow effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/0 via-neon-pink/0 to-neon-purple/0 group-hover:from-neon-cyan/10 group-hover:via-neon-pink/10 group-hover:to-neon-purple/10 transition-all duration-300 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/0 via-neon-pink/0 to-neon-purple/0 group-hover:from-neon-cyan/20 group-hover:via-neon-pink/20 group-hover:to-neon-purple/20 transition-all duration-300 pointer-events-none" />
                 </div>
               ) : (
                 // Link sem imagem (estilo original)
-                <div className="relative bg-card border border-border rounded-lg p-6 transition-all duration-300 hover:border-primary hover:shadow-[0_0_30px_hsl(var(--primary)_/_0.3)] hover:scale-[1.02]">
+                <div className="relative bg-card/50 backdrop-blur-md border-2 border-neon-pink/20 rounded-lg p-6 transition-all duration-300 hover:border-neon-pink/50 hover:shadow-volumetric-pink hover:scale-[1.03] animate-glow-pulse">
                   <div className="flex items-center gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                      <link.icon className="w-6 h-6 text-primary" />
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-neon-cyan/20 to-neon-pink/20 flex items-center justify-center group-hover:from-neon-cyan/30 group-hover:to-neon-pink/30 transition-colors shadow-soft-pink">
+                      <link.icon className="w-6 h-6 text-neon-pink" />
                     </div>
                     
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                      <h3 className="text-lg font-bold text-foreground group-hover:text-neon-pink transition-colors" style={{ textShadow: '0 0 10px rgba(255,105,180,0.3)' }}>
                         {link.name}
                       </h3>
                       <p className="text-sm text-muted-foreground">
@@ -95,10 +101,10 @@ const Links = () => {
                       </p>
                     </div>
 
-                    <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
+                    <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors flex-shrink-0" />
                   </div>
 
-                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-neon-cyan/0 via-neon-pink/0 to-neon-purple/0 group-hover:from-neon-cyan/5 group-hover:via-neon-pink/5 group-hover:to-neon-purple/5 transition-all duration-300 pointer-events-none" />
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-neon-cyan/0 via-neon-pink/0 to-neon-purple/0 group-hover:from-neon-cyan/10 group-hover:via-neon-pink/10 group-hover:to-neon-purple/10 transition-all duration-300 pointer-events-none" />
                 </div>
               )}
             </a>
@@ -107,7 +113,8 @@ const Links = () => {
 
         {/* Footer */}
         <div className="mt-12 text-center">
-          <p className="text-sm text-muted-foreground">
+          <div className="w-full h-px bg-gradient-to-r from-transparent via-neon-pink/50 to-transparent mb-6" />
+          <p className="text-sm text-neon-pink/70" style={{ textShadow: '0 0 10px rgba(255,105,180,0.3)' }}>
             © 2024 Real Life Academy. Todos os direitos reservados.
           </p>
         </div>
