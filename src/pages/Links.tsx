@@ -7,12 +7,6 @@ import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 const Links = () => {
   const links = [
     {
-      name: "YouTube",
-      url: "https://youtube.com/@reallifeacademy",
-      icon: Youtube,
-      description: "Conteúdo gratuito sobre vendas",
-    },
-    {
       name: "RP Close",
       url: "#",
       icon: ExternalLink,
