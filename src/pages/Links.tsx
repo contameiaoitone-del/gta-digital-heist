@@ -66,7 +66,7 @@ const Links = () => {
               {link.image ? (
                 // Link com imagem
                 <div 
-                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] transition-all duration-300 hover:scale-[1.02] border-2 border-neon-pink/30 hover:border-neon-pink/50 md:backdrop-blur-md bg-background/20"
+                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] transition-all duration-300 hover:scale-[1.02] border-2 border-neon-pink/30 hover:border-neon-pink/50 md:backdrop-blur-sm bg-background/10"
                   style={{
                     backgroundImage: `url(${link.image})`,
                     backgroundSize: 'contain',
