@@ -5,6 +5,7 @@ import rpCloseBanner from "@/assets/rp-close-banner.png";
 import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 import caioDalcinLogo from "@/assets/caio-dalcin-logo.png";
+import GameLoader from "@/components/GameLoader";
 
 const Links = () => {
   const links = [
@@ -26,6 +27,8 @@ const Links = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
+      <GameLoader />
+      
       {/* Background Image with Overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-10 noise-texture"
@@ -37,7 +40,7 @@ const Links = () => {
       <div className="relative z-10 container max-w-2xl mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-screen">
         {/* Logo/Avatar */}
         <div className="mb-8 text-center">
-          <div className="w-48 h-48 mx-auto mb-4 rounded-full bg-gradient-vice p-1 shadow-volumetric-pink animate-glow-pulse">
+          <div className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 mx-auto mb-4 rounded-full bg-gradient-vice p-1 animate-glow-pulse gta-avatar-border">
             <img 
               src={caioDalcinProfile} 
               alt="Caio Dalcin" 
@@ -66,14 +69,18 @@ const Links = () => {
               {link.image ? (
                 // Link com imagem
                 <div 
-                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] transition-all duration-300 hover:scale-[1.02] border-2 border-neon-pink/30 hover:border-neon-pink/50 md:backdrop-blur-sm bg-background/10"
+                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] bg-background/10 gta-card-border clip-gta"
                   style={{
                     backgroundImage: `url(${link.image})`,
                     backgroundSize: 'contain',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                   }}
-                />
+                >
+                  <div className="external-link-icon">
+                    <ExternalLink className="w-4 h-4 text-neon-pink" />
+                  </div>
+                </div>
               ) : (
                 // Link sem imagem (estilo original)
                 <div className="relative bg-card/50 backdrop-blur-md border-2 border-neon-pink/20 rounded-lg p-6 transition-all duration-300 hover:border-neon-pink/50 hover:shadow-volumetric-pink hover:scale-[1.03] animate-glow-pulse">

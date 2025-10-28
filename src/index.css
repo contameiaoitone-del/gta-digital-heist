@@ -74,6 +74,7 @@ All colors MUST be HSL.
     --shadow-volumetric-cyan: 0 8px 32px hsl(190 100% 65% / 0.18), 0 0 80px hsl(190 100% 65% / 0.10);
 
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-gta: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -403,9 +404,128 @@ All colors MUST be HSL.
       top: -4px;
     }
     
-    .logo-border-left,
-    .logo-border-right {
-      width: 4px;
-    }
+  .logo-border-left,
+  .logo-border-right {
+    width: 4px;
   }
+}
+
+/* GTA VI Avatar Styles */
+.gta-avatar-border {
+  position: relative;
+  box-shadow:
+    0 0 0 2px hsl(330 100% 70%),
+    0 0 0 4px hsl(270 85% 60%),
+    0 0 0 6px hsl(25 100% 70%),
+    0 0 0 8px hsl(185 85% 70%),
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 60px hsl(330 100% 70% / 0.4);
+}
+
+.gta-avatar-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    hsl(0 0% 100% / 0.03) 2px,
+    hsl(0 0% 100% / 0.03) 4px
+  );
+  pointer-events: none;
+  animation: scanline-move 8s linear infinite;
+}
+
+@keyframes scanline-move {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+/* GTA VI Card Styles */
+.gta-card-border {
+  box-shadow:
+    0 0 0 2px hsl(330 100% 70% / 0.6),
+    0 0 0 4px hsl(270 85% 60% / 0.5),
+    0 0 0 6px hsl(25 100% 70% / 0.4),
+    0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gta-card-border:hover {
+  box-shadow:
+    0 0 0 2px hsl(330 100% 70%),
+    0 0 0 4px hsl(270 85% 60%),
+    0 0 0 6px hsl(25 100% 70%),
+    0 0 0 8px hsl(185 85% 70%),
+    0 12px 48px rgba(0, 0, 0, 0.6),
+    0 0 80px hsl(330 100% 70% / 0.5);
+  transform: scale(1.03);
+}
+
+.gta-card-border:active {
+  animation: flash-glow 0.3s ease-out;
+}
+
+@keyframes flash-glow {
+  0%, 100% { opacity: 1; }
+  50% { 
+    opacity: 0.9;
+    box-shadow:
+      0 0 0 2px hsl(330 100% 70%),
+      0 0 0 4px hsl(270 85% 60%),
+      0 0 0 6px hsl(25 100% 70%),
+      0 0 0 8px hsl(185 85% 70%),
+      0 0 100px hsl(330 100% 70% / 0.8);
+  }
+}
+
+.clip-gta {
+  clip-path: polygon(
+    0% 3%,
+    3% 0%,
+    97% 0%,
+    100% 3%,
+    100% 97%,
+    97% 100%,
+    3% 100%,
+    0% 97%
+  );
+}
+
+.external-link-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  background: hsl(var(--background) / 0.9);
+  backdrop-filter: blur(8px);
+  border: 2px solid hsl(330 100% 70% / 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 10;
+}
+
+.external-link-icon:hover {
+  border-color: hsl(330 100% 70%);
+  box-shadow: 0 0 20px hsl(330 100% 70% / 0.6);
+  transform: scale(1.1);
+}
+
+.shadow-volumetric-pink {
+  box-shadow: var(--shadow-volumetric-pink);
+}
+
+.shadow-volumetric-purple {
+  box-shadow: var(--shadow-volumetric-purple);
+}
+
+.shadow-volumetric-cyan {
+  box-shadow: var(--shadow-volumetric-cyan);
+}
 }
