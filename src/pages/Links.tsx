@@ -11,7 +11,7 @@ const Links = () => {
   const links = [
     {
       name: "RP Close",
-      url: "https://pay.kirvano.com/39e2de92-bd2a-427c-9547-ac6469374f17",
+      url: "#",
       icon: ExternalLink,
       description: "Sistema de vendas completo",
       image: rpCloseBanner,
