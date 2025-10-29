@@ -1,4 +1,4 @@
-import { Youtube, ExternalLink, GraduationCap } from "lucide-react";
+import { Youtube, ExternalLink, GraduationCap, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import gtaHero from "@/assets/gta-collage-background.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
@@ -6,8 +6,12 @@ import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 import caioDalcinLogo from "@/assets/caio-dalcin-logo.png";
 import GameLoader from "@/components/GameLoader";
+import gtaTheme from "@/assets/gta-theme.mp3";
+import { useBackgroundMusic } from "@/hooks/useBackgroundMusic";
 
 const Links = () => {
+  const { isPlaying, togglePlay } = useBackgroundMusic(gtaTheme, 0.4);
+  
   const links = [
     {
       name: "RP Close",
@@ -28,6 +32,19 @@ const Links = () => {
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <GameLoader />
+      
+      {/* Music Control Button */}
+      <button
+        onClick={togglePlay}
+        className="fixed bottom-6 left-6 z-50 bg-background/95 backdrop-blur-md rounded-full p-4 shadow-lg border border-white/10 hover:border-neon-pink/50 transition-all duration-300 group"
+        aria-label={isPlaying ? "Pausar música" : "Tocar música"}
+      >
+        {isPlaying ? (
+          <Volume2 className="w-5 h-5 text-neon-pink group-hover:scale-110 transition-transform" />
+        ) : (
+          <VolumeX className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink group-hover:scale-110 transition-transform" />
+        )}
+      </button>
       
       {/* Background Image with Overlay */}
       <div 
