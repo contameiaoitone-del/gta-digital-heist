@@ -18,7 +18,7 @@ const Links = () => {
     },
     {
       name: "Real Life Academy",
-      url: "#",
+      url: "/",
       icon: GraduationCap,
       description: "A academia que vai mudar sua vida",
       image: realLifeAcademyBanner,
