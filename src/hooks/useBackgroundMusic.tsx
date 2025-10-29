@@ -1,41 +1,36 @@
-import { useEffect, useRef, useState } from "react";
-import { toast } from "@/hooks/use-toast";
+import { useEffect, useRef } from "react";
 
 export const useBackgroundMusic = (audioSrc: string, volume: number = 0.4) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [userInteracted, setUserInteracted] = useState(false);
 
   useEffect(() => {
-    // Create audio element
+    // Create and configure audio element
     const audio = new Audio(audioSrc);
     audio.loop = true;
     audio.volume = volume;
+    audio.autoplay = true;
     audioRef.current = audio;
 
-    // Try to play automatically
-    const playAudio = async () => {
-      try {
-        await audio.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.log("Autoplay blocked, waiting for user interaction");
-        // Add one-time click listener to start audio
-        const handleInteraction = async () => {
-          try {
-            await audio.play();
-            setIsPlaying(true);
-            setUserInteracted(true);
-            document.removeEventListener("click", handleInteraction);
-          } catch (err) {
-            console.error("Failed to play audio:", err);
-          }
+    // Force play immediately
+    const playAudio = () => {
+      audio.play().catch(() => {
+        // Retry on any interaction
+        const retry = () => {
+          audio.play().catch(() => {});
+          document.removeEventListener("click", retry);
+          document.removeEventListener("touchstart", retry);
+          document.removeEventListener("keydown", retry);
         };
-        document.addEventListener("click", handleInteraction);
-      }
+        document.addEventListener("click", retry, { once: true });
+        document.addEventListener("touchstart", retry, { once: true });
+        document.addEventListener("keydown", retry, { once: true });
+      });
     };
 
+    // Try multiple times to ensure playback
     playAudio();
+    setTimeout(playAudio, 100);
+    setTimeout(playAudio, 500);
 
     // Cleanup
     return () => {
@@ -45,22 +40,4 @@ export const useBackgroundMusic = (audioSrc: string, volume: number = 0.4) => {
       }
     };
   }, [audioSrc, volume]);
-
-  const togglePlay = async () => {
-    if (!audioRef.current) return;
-
-    try {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        await audioRef.current.play();
-        setIsPlaying(true);
-      }
-    } catch (error) {
-      console.error("Error toggling audio:", error);
-    }
-  };
-
-  return { isPlaying, togglePlay };
 };
