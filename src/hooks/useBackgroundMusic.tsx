@@ -32,8 +32,30 @@ export const useBackgroundMusic = (audioSrc: string, volume: number = 0.4) => {
     setTimeout(playAudio, 100);
     setTimeout(playAudio, 500);
 
+    // Pause audio when page is hidden (user leaves site)
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        audio.pause();
+      } else {
+        audio.play().catch(() => {});
+      }
+    };
+
+    // Pause audio when page is closed/navigated away
+    const handlePageHide = () => {
+      audio.pause();
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", handlePageHide);
+    window.addEventListener("blur", handlePageHide);
+
     // Cleanup
     return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", handlePageHide);
+      window.removeEventListener("blur", handlePageHide);
+      
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current = null;
