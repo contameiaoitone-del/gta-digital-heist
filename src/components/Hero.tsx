@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
-import heroImage from "@/assets/gta-hero-new.png";
+import heroImage from "@/assets/real-life-academy-collage.png";
 import { GTALogo } from "@/components/GTALogo";
 export const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
