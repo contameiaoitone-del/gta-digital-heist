@@ -1,4 +1,4 @@
-import gtaLaptopGrowth from "@/assets/gta-laptop-growth.png";
+import realLifeAcademyHero from "@/assets/real-life-academy-hero.png";
 
 export const About = () => {
   return (
@@ -12,7 +12,7 @@ export const About = () => {
           <div className="relative group">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-neon-pink/20 blur-3xl group-hover:blur-2xl transition-all duration-500" />
             <img 
-              src={gtaLaptopGrowth} 
+              src={realLifeAcademyHero} 
               alt="Real Life Academy - Transforme sua vida digital"
               className="relative rounded-lg shadow-2xl w-full animate-fade-in"
             />
