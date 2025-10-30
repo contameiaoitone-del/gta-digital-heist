@@ -1,35 +1,35 @@
-import { Brain, Target, TrendingUp, Zap, Users, Rocket } from "lucide-react";
+import { DollarSign, Megaphone, Sparkles, Users, Video, Package } from "lucide-react";
 
 const modules = [
   {
-    icon: Brain,
-    title: "Mentalidade Vencedora",
-    description: "Desenvolva o mindset necessário para alcançar seus objetivos"
+    icon: DollarSign,
+    title: "Escale do Zero a R$10k/mês",
+    description: "Escale do zero a R$10k/mês o mais rápido possível"
   },
   {
-    icon: Target,
-    title: "Estratégias Validadas",
-    description: "Aprenda métodos testados e aprovados que realmente funcionam"
+    icon: Megaphone,
+    title: "Domine Tráfego Pago Completamente",
+    description: "Meta Ads, Google Ads, Tiktok Ads 100% avançado com tudo que você precisa saber e atualizado. Aprenda e já comece a monetizar isso"
   },
   {
-    icon: TrendingUp,
-    title: "Crescimento Acelerado",
-    description: "Técnicas para escalar seus resultados de forma consistente"
-  },
-  {
-    icon: Zap,
-    title: "Ação Imediata",
-    description: "Planos de ação práticos para aplicar desde o primeiro dia"
+    icon: Sparkles,
+    title: "Aprenda a Fazer Sites com IA",
+    description: "Domine as ferramentas de IA para criar sites profissionais e lucrativos"
   },
   {
     icon: Users,
-    title: "Networking Estratégico",
-    description: "Conecte-se com pessoas que pensam grande como você"
+    title: "Networking com Alunos de Resultado",
+    description: "Tenha acesso a uma comunidade exclusiva no whatsapp com alunos que já estão ganhando dinheiro de verdade e tenha acesso ao que funciona em tempo real"
   },
   {
-    icon: Rocket,
-    title: "Lançamento do Seu Negócio",
-    description: "Do planejamento até os primeiros resultados financeiros"
+    icon: Video,
+    title: "Acompanhamento Semanal ao Vivo",
+    description: "Entre em call 2x por semana e tenha um direcionamento personalizado tirando todas as suas dúvidas"
+  },
+  {
+    icon: Package,
+    title: "Infoprodutos",
+    description: "Tenha acesso a estratégias e funis validados que estão funcionando no momento, funis de x1 do whatsapp, tráfego direto, tudo"
   }
 ];
 
