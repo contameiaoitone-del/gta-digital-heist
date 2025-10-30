@@ -205,8 +205,9 @@ All colors MUST be HSL.
   /* Soft Glow Effect */
   .soft-glow {
     text-shadow: 
-      0 0 6px currentColor,
-      0 0 12px currentColor;
+      0 0 3px currentColor,
+      0 0 6px currentColor;
+    filter: brightness(0.95);
   }
   
   @keyframes neon-flicker {
