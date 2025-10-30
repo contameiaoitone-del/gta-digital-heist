@@ -40,35 +40,35 @@ export const GuaranteeSection = () => {
 
             {/* Content Side */}
             <div className="space-y-6 animate-fade-in" style={{ animationDelay: "200ms" }}>
-              <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+              <h2 className="font-heading uppercase tracking-wide">
                 Garantia de
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-neon-pink to-primary">
                   7 Dias
                 </span>
               </h2>
               
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <p className="text-lg font-body text-muted-foreground" style={{ lineHeight: "1.7" }}>
                 Se não estiver 100% satisfeito, devolvemos seu dinheiro sem complicações.
               </p>
 
               <div className="space-y-4 pt-4">
                 <div className="flex items-start gap-3">
                   <Shield className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
-                  <p className="text-muted-foreground">
+                  <p className="font-body text-muted-foreground">
                     <span className="text-foreground font-semibold">Garantia incondicional:</span> Você tem 7 dias completos para testar todo o conteúdo
                   </p>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <Shield className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
-                  <p className="text-muted-foreground">
+                  <p className="font-body text-muted-foreground">
                     <span className="text-foreground font-semibold">Reembolso total:</span> Se não gostar, basta pedir e devolvemos 100% do investimento
                   </p>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <Shield className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
-                  <p className="text-muted-foreground">
+                  <p className="font-body text-muted-foreground">
                     <span className="text-foreground font-semibold">Sem burocracia:</span> Processo simples e rápido, sem perguntas complicadas
                   </p>
                 </div>
@@ -77,7 +77,7 @@ export const GuaranteeSection = () => {
               <Button
                 onClick={handleCTAClick}
                 size="lg"
-                className="text-lg mt-6 animate-glow-pulse"
+                className="text-lg font-body font-bold uppercase tracking-wide mt-6 animate-glow-pulse"
               >
                 Entrar na Real Life Academy
               </Button>

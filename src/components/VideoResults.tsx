@@ -60,13 +60,13 @@ export const VideoResults = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="font-heading uppercase tracking-wide mb-4">
             Resultados Reais de
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-neon-pink to-primary">
               Membros Reais
             </span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto" style={{ lineHeight: "1.7" }}>
             Veja como nossos membros estão transformando conhecimento em resultados mensuráveis.
           </p>
         </div>
@@ -120,13 +120,13 @@ export const VideoResults = () => {
 
                     {/* Label */}
                     <div className="absolute bottom-4 left-4 px-3 py-1 bg-primary/90 backdrop-blur-sm rounded-full">
-                      <span className="text-sm font-bold text-white">{video.label}</span>
+                      <span className="text-sm font-body font-bold text-white uppercase tracking-wider">{video.label}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Name */}
-                <p className="text-center mt-3 font-semibold text-foreground">{video.name}</p>
+                <p className="text-center mt-3 font-body font-semibold text-foreground">{video.name}</p>
               </div>
             ))}
           </div>
@@ -137,7 +137,7 @@ export const VideoResults = () => {
               variant="ghost"
               size="sm"
               onClick={() => setIsMuted(!isMuted)}
-              className="bg-primary/90 hover:bg-primary text-white backdrop-blur-sm gap-2"
+              className="bg-primary/90 hover:bg-primary text-white backdrop-blur-sm gap-2 font-body font-bold"
             >
               {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
               {isMuted ? "ATIVAR SOM" : "SOM ATIVADO"}
@@ -145,7 +145,7 @@ export const VideoResults = () => {
           </div>
         </div>
 
-        <p className="text-center text-muted-foreground mt-12 animate-fade-in">
+        <p className="text-center font-body text-muted-foreground mt-12 animate-fade-in">
           Centenas de alunos já transformaram suas vidas com a Real Life Academy.
         </p>
       </div>

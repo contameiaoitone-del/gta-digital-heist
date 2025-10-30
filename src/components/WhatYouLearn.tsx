@@ -41,13 +41,13 @@ export const WhatYouLearn = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="font-heading uppercase tracking-wide mb-4">
             O que você vai
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-neon-pink to-primary">
               dominar
             </span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto" style={{ lineHeight: "1.7" }}>
             Um sistema completo com tudo que você precisa para transformar sua vida digital
           </p>
         </div>
@@ -67,11 +67,11 @@ export const WhatYouLearn = () => {
                   <module.icon className="w-6 h-6 text-primary" />
                 </div>
                 
-                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+                <h3 className="text-xl font-heading uppercase tracking-wide mb-2 group-hover:text-primary transition-colors">
                   {module.title}
                 </h3>
                 
-                <p className="text-muted-foreground">
+                <p className="font-body text-muted-foreground">
                   {module.description}
                 </p>
               </div>
