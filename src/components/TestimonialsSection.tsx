@@ -53,13 +53,13 @@ export const TestimonialsSection = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="font-heading uppercase tracking-wide mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
             O que nossos alunos
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-neon-pink to-primary">
               estão dizendo
             </span>
           </h2>
-          <p className="text-lg font-body text-muted-foreground max-w-2xl mx-auto" style={{ lineHeight: "1.7" }}>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Depoimentos reais de quem já está transformando conhecimento em resultados
           </p>
         </div>
@@ -83,7 +83,7 @@ export const TestimonialsSection = () => {
                 </div>
 
                 {/* Testimonial text */}
-                <p className="font-body text-muted-foreground mb-6 italic" style={{ lineHeight: "1.7" }}>
+                <p className="text-muted-foreground mb-6 italic">
                   "{testimonial.text}"
                 </p>
 
@@ -95,8 +95,8 @@ export const TestimonialsSection = () => {
                     className="w-12 h-12 rounded-full border-2 border-primary/20"
                   />
                   <div>
-                    <p className="font-body font-semibold text-foreground">{testimonial.name}</p>
-                    <p className="text-sm font-body text-muted-foreground">{testimonial.role}</p>
+                    <p className="font-semibold text-foreground">{testimonial.name}</p>
+                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                   </div>
                 </div>
               </div>

@@ -106,35 +106,13 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-body;
+    @apply bg-background text-foreground;
+    font-family: 'Barlow', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
+    font-family: 'Bebas Neue', cursive;
     letter-spacing: 0.05em;
-  }
-
-  h1 {
-    @apply text-5xl md:text-6xl lg:text-7xl font-heading uppercase tracking-wider;
-    line-height: 1.1;
-  }
-
-  h2 {
-    @apply text-4xl md:text-5xl lg:text-6xl font-heading uppercase tracking-wide;
-    line-height: 1.1;
-  }
-
-  h3 {
-    @apply text-3xl md:text-4xl font-heading uppercase tracking-wide;
-  }
-
-  p, li, span {
-    @apply font-body;
-    line-height: 1.6;
-  }
-
-  .text-display {
-    @apply font-display text-6xl md:text-7xl lg:text-8xl uppercase tracking-wider;
   }
 }
 

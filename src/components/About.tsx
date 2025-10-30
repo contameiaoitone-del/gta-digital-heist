@@ -20,14 +20,14 @@ export const About = () => {
 
           {/* Content Side */}
           <div className="space-y-6 animate-fade-in">
-            <h2 className="font-heading uppercase tracking-wide">
+            <h2 className="text-4xl md:text-5xl font-bold leading-tight">
               Sua jornada para a
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-neon-pink to-primary animate-glow-pulse">
                 liberdade financeira
               </span>
             </h2>
             
-            <p className="text-lg font-body text-muted-foreground" style={{ lineHeight: "1.7" }}>
+            <p className="text-lg text-muted-foreground leading-relaxed">
               Real Life Academy não é apenas mais um curso. É um sistema completo e testado que te guia do zero até os primeiros resultados no marketing digital.
             </p>
 
@@ -36,7 +36,7 @@ export const About = () => {
                 <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
                   <div className="w-3 h-3 rounded-full bg-primary animate-glow-pulse" />
                 </div>
-                <p className="font-body text-muted-foreground">
+                <p className="text-muted-foreground">
                   <span className="text-foreground font-semibold">Método validado</span> por centenas de alunos que já transformaram suas vidas
                 </p>
               </div>
@@ -45,7 +45,7 @@ export const About = () => {
                 <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
                   <div className="w-3 h-3 rounded-full bg-primary animate-glow-pulse" />
                 </div>
-                <p className="font-body text-muted-foreground">
+                <p className="text-muted-foreground">
                   <span className="text-foreground font-semibold">Conteúdo direto ao ponto</span>, sem enrolação ou teoria desnecessária
                 </p>
               </div>
@@ -54,7 +54,7 @@ export const About = () => {
                 <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
                   <div className="w-3 h-3 rounded-full bg-primary animate-glow-pulse" />
                 </div>
-                <p className="font-body text-muted-foreground">
+                <p className="text-muted-foreground">
                   <span className="text-foreground font-semibold">Suporte especializado</span> para te guiar em cada etapa da jornada
                 </p>
               </div>

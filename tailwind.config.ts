@@ -13,11 +13,6 @@ export default {
       },
     },
     extend: {
-      fontFamily: {
-        heading: ['Bebas Neue', 'cursive'],
-        body: ['Barlow', 'sans-serif'],
-        display: ['Bebas Neue', 'cursive'],
-      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

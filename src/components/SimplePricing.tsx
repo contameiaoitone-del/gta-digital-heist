@@ -17,9 +17,9 @@ export const SimplePricing = () => {
           {/* Heading */}
           <div className="text-center mb-12 animate-fade-in">
             <div className="inline-block px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-              <span className="text-primary font-body font-semibold">🔥 Oferta Exclusiva</span>
+              <span className="text-primary font-semibold">🔥 Oferta Exclusiva</span>
             </div>
-            <h2 className="font-heading uppercase tracking-wide mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Comece sua jornada
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-neon-pink to-primary">
                 hoje mesmo
@@ -35,22 +35,22 @@ export const SimplePricing = () => {
             <div className="relative bg-card/90 backdrop-blur-sm rounded-2xl border border-primary/20 p-8 md:p-12">
               <div className="text-center mb-8">
                 <div className="flex items-center justify-center gap-3 mb-4">
-                  <span className="text-3xl md:text-4xl font-heading text-muted-foreground line-through">
+                  <span className="text-3xl md:text-4xl text-muted-foreground line-through">
                     R$ 1.997
                   </span>
                   <div className="px-3 py-1 rounded-full bg-destructive/20 border border-destructive">
-                    <span className="text-destructive font-body font-bold text-sm uppercase tracking-wide">-70% OFF</span>
+                    <span className="text-destructive font-bold text-sm">-70% OFF</span>
                   </div>
                 </div>
                 
                 <div className="flex items-baseline justify-center gap-2 mb-2">
-                  <span className="text-2xl font-body text-muted-foreground">12x de</span>
-                  <span className="text-5xl md:text-6xl font-heading font-bold text-primary">
+                  <span className="text-2xl text-muted-foreground">12x de</span>
+                  <span className="text-5xl md:text-6xl font-bold text-primary">
                     R$ 49,70
                   </span>
                 </div>
                 
-                <p className="font-body text-muted-foreground">
+                <p className="text-muted-foreground">
                   ou R$ 497,00 à vista
                 </p>
               </div>
@@ -69,7 +69,7 @@ export const SimplePricing = () => {
                     <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
                       <Check className="w-3 h-3 text-primary" />
                     </div>
-                    <span className="font-body text-foreground">{feature}</span>
+                    <span className="text-foreground">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -78,7 +78,7 @@ export const SimplePricing = () => {
               <Button
                 onClick={handleCTAClick}
                 size="lg"
-                className="w-full text-lg font-body font-bold uppercase tracking-wide py-6 mb-6 animate-glow-pulse"
+                className="w-full text-lg py-6 mb-6 animate-glow-pulse"
               >
                 Garantir Minha Vaga Agora
               </Button>
@@ -87,22 +87,22 @@ export const SimplePricing = () => {
               <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border/50">
                 <div className="flex flex-col items-center text-center">
                   <Shield className="w-6 h-6 text-primary mb-2" />
-                  <span className="text-xs font-body text-muted-foreground">Garantia de 7 dias</span>
+                  <span className="text-xs text-muted-foreground">Garantia de 7 dias</span>
                 </div>
                 <div className="flex flex-col items-center text-center">
                   <Check className="w-6 h-6 text-primary mb-2" />
-                  <span className="text-xs font-body text-muted-foreground">Compra 100% segura</span>
+                  <span className="text-xs text-muted-foreground">Compra 100% segura</span>
                 </div>
                 <div className="flex flex-col items-center text-center">
                   <Headphones className="w-6 h-6 text-primary mb-2" />
-                  <span className="text-xs font-body text-muted-foreground">Suporte VIP</span>
+                  <span className="text-xs text-muted-foreground">Suporte VIP</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Guarantee Text */}
-          <p className="text-center font-body text-muted-foreground mt-8 animate-fade-in" style={{ animationDelay: "400ms" }}>
+          <p className="text-center text-muted-foreground mt-8 animate-fade-in" style={{ animationDelay: "400ms" }}>
             🔒 Garantia incondicional de 7 dias. Se não gostar, devolvemos 100% do seu investimento.
           </p>
         </div>
