@@ -6,11 +6,7 @@ export const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={heroImage} 
-          alt="Real Life Academy - Vice City" 
-          className="w-full h-full object-cover opacity-20 object-center md:object-[15%_center]" 
-        />
+        <img src={heroImage} alt="Real Life Academy - Vice City" className="w-full h-full object-cover opacity-20 object-center md:object-[15%_center]" />
         {/* Neon Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20"></div>
         {/* Vignette Effect */}
@@ -47,24 +43,22 @@ export const Hero = () => {
 
             {/* Título Principal */}
             <h1 className="mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl text-foreground font-bold max-w-3xl mx-auto leading-tight animate-slide-up" style={{
-              animationDelay: "0.2s",
-              textShadow: "0 0 30px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.7), 0 4px 20px hsl(var(--primary) / 0.4), 2px 2px 4px rgba(0,0,0,0.9)"
-            }}>
+            animationDelay: "0.2s",
+            textShadow: "0 0 30px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.7), 0 4px 20px hsl(var(--primary) / 0.4), 2px 2px 4px rgba(0,0,0,0.9)"
+          }}>
               Fazer dinheiro na Internet é uma <span className="text-neon-pink soft-glow">Habilidade</span>.
             </h1>
 
             {/* Subtítulo */}
             <p className="mb-12 text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{
-              animationDelay: "0.3s",
-              textShadow: "0 0 20px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8), 2px 2px 4px rgba(0,0,0,0.9)"
-            }}>
-              O tempo está passando, o mundo está girando, e a única constante é a mudança implacável.
-            </p>
+            animationDelay: "0.3s",
+            textShadow: "0 0 20px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8), 2px 2px 4px rgba(0,0,0,0.9)"
+          }}>O tempo está passando, o mundo está mudando, e você está ficando para trás. Tome o controle do seu futuro e aprenda de verdade a sair do ZERO para pelo menos seus primeiros R$10.000/mês </p>
 
             {/* CTA Buttons */}
             <div className="flex justify-center items-center w-full sm:w-auto animate-slide-up" style={{
-              animationDelay: "0.4s"
-            }}>
+            animationDelay: "0.4s"
+          }}>
               <Button variant="hero" size="lg" className="group w-full sm:w-auto">
                 COMEÇAR AGORA
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
