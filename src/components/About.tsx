@@ -28,35 +28,32 @@ export const About = () => {
             </h2>
             
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Real Life Academy não é apenas mais um curso. É um sistema completo e testado que te guia do zero até os primeiros resultados no marketing digital.
+              Real Life Academy não é apenas mais um curso. É uma comunidade, um ecosistema completo e testado para te guiar do absoluto zero até os seus primeiros resultados na internet. Sem balela e sem enrolação, nada de curso de vender curso, ou outras porcárias do mercado; o Real Life Academy é feito para quem não sabe absolutamente nada sobre o mercado digital e mesmo quem já ganha algum dinheiro escalar seus ganhos. Com 2 pilares base sendo eles:
             </p>
 
-            <div className="space-y-4">
+            <div className="space-y-6 mt-8">
               <div className="flex items-start gap-3">
                 <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
                   <div className="w-3 h-3 rounded-full bg-primary animate-glow-pulse" />
                 </div>
-                <p className="text-muted-foreground">
-                  <span className="text-foreground font-semibold">Método validado</span> por centenas de alunos que já transformaram suas vidas
-                </p>
+                <div>
+                  <p className="text-foreground font-semibold text-lg mb-2">1. Prestação de Serviço</p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Aprender e dominar uma de diversas habilidades digitais altamente procuradas, e conseguir clientes cobrando por isso, é o caminho mais fácil para sair do zero sem gastar absolutamente nada e efetivamente ganhar dinheiro na internet.
+                  </p>
+                </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
                   <div className="w-3 h-3 rounded-full bg-primary animate-glow-pulse" />
                 </div>
-                <p className="text-muted-foreground">
-                  <span className="text-foreground font-semibold">Conteúdo direto ao ponto</span>, sem enrolação ou teoria desnecessária
-                </p>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
-                  <div className="w-3 h-3 rounded-full bg-primary animate-glow-pulse" />
+                <div>
+                  <p className="text-foreground font-semibold text-lg mb-2">2. Infoprodutos</p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Entenda o melhor caminho para efetivamente criar o seu próprio produto digital e como vender ele com um método validado que vai encurtar o seu caminho e fazer você ganhar dinheiro pra ontem sem ter que investir rios de dinheiro. E não, "Fundo de Funil" nada de curso de vender curso, afiliação, lowticket, lowticket na gringa, nutra, e outras porcarias que até funcionam mas você tem que gastar rios de dinheiro pra validar. Tudo que você já conhece do mercado vai ser exposto com as melhores estratégias e o que realmente está funcionando em tempo real, sempre focando em te entregar pronto o que já funciona para que você gaste pouco e consiga escalar infoprodutos no digital como nunca.
+                  </p>
                 </div>
-                <p className="text-muted-foreground">
-                  <span className="text-foreground font-semibold">Suporte especializado</span> para te guiar em cada etapa da jornada
-                </p>
               </div>
             </div>
           </div>
