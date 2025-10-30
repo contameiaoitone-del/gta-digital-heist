@@ -46,7 +46,7 @@ export const Hero = () => {
             animationDelay: "0.2s",
             textShadow: "0 0 30px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.7), 0 4px 20px hsl(var(--primary) / 0.4), 2px 2px 4px rgba(0,0,0,0.9)"
           }}>
-              Fazer dinheiro na Internet é uma <span className="text-neon-pink soft-glow">Habilidade</span>.
+              Fazer dinheiro na Internet é uma <span className="text-neon-pink">Habilidade</span>.
             </h1>
 
             {/* Subtítulo */}
