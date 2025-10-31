@@ -2,7 +2,7 @@ import realLifeAcademyHero from "@/assets/real-life-academy-hero.png";
 
 export const About = () => {
   return (
-    <section className="relative pt-0 pb-8 md:pt-12 md:pb-12 overflow-hidden bg-gradient-to-b from-background via-background/95 to-background">
+    <section className="relative pt-4 pb-8 md:pt-12 md:pb-12 overflow-hidden bg-gradient-to-b from-background via-background/95 to-background">
       {/* Subtle grid effect */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(236,72,153,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(236,72,153,0.03)_1px,transparent_1px)] bg-[size:50px_50px]" />
       
