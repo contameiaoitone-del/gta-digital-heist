@@ -49,7 +49,7 @@ export const VideoResults = () => {
         </div>
 
         {/* Video Carousel */}
-        <div className="relative max-w-4xl mx-auto">
+        <div className="relative max-w-md mx-auto">
           {/* Navigation Buttons */}
           {videos.length > 1 && (
             <>
@@ -57,7 +57,7 @@ export const VideoResults = () => {
                 variant="ghost"
                 size="icon"
                 onClick={prevVideo}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-background/80 hover:bg-background backdrop-blur-sm"
+                className="absolute -left-4 md:left-0 top-1/2 -translate-y-1/2 z-20 bg-background/80 hover:bg-background backdrop-blur-sm rounded-full"
               >
                 <ChevronLeft className="w-6 h-6" />
               </Button>
@@ -66,24 +66,28 @@ export const VideoResults = () => {
                 variant="ghost"
                 size="icon"
                 onClick={nextVideo}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-background/80 hover:bg-background backdrop-blur-sm"
+                className="absolute -right-4 md:right-0 top-1/2 -translate-y-1/2 z-20 bg-background/80 hover:bg-background backdrop-blur-sm rounded-full"
               >
                 <ChevronRight className="w-6 h-6" />
               </Button>
             </>
           )}
 
-          {/* Video Player */}
-          <div className="px-12">
-            <div className="relative rounded-lg overflow-hidden border-4 border-primary/50 bg-gradient-to-br from-primary/20 to-neon-pink/20">
-              <div className="aspect-video relative">
+          {/* Video Player - Vertical Format (Mobile Style) */}
+          <div className="px-4 md:px-8">
+            <div className="relative rounded-2xl overflow-hidden border-[6px] border-foreground/80 bg-gradient-to-br from-primary/20 to-neon-pink/20 shadow-2xl">
+              {/* Mobile screen effect - notch simulation */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-foreground/90 rounded-b-3xl z-10" />
+              
+              {/* Vertical aspect ratio (9:16 - mobile format) */}
+              <div className="relative w-full" style={{ paddingBottom: '177.78%' }}>
                 <iframe
                   id={`panda-${currentVideo.videoId}`}
                   src={`https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=${currentVideo.videoId}`}
                   style={{ border: 'none' }}
                   allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture"
                   allowFullScreen={true}
-                  className="w-full h-full"
+                  className="absolute inset-0 w-full h-full"
                 />
               </div>
             </div>
