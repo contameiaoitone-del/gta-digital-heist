@@ -28,13 +28,13 @@ export const VideoResults = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Resultados Reais de
+            O que nossos alunos
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-neon-pink to-primary">
-              Membros Reais
+              estão dizendo
             </span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Veja como nossos membros estão transformando conhecimento em resultados mensuráveis.
+            Depoimentos reais de quem já está transformando conhecimento em resultados
           </p>
         </div>
 

@@ -46,13 +46,13 @@ export const TestimonialsSection = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            O que nossos alunos
+            Resultados Reais de
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-neon-pink to-primary">
-              estão dizendo
+              Membros Reais
             </span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Depoimentos reais de quem já está transformando conhecimento em resultados
+            Veja como nossos membros estão transformando conhecimento em resultados mensuráveis.
           </p>
         </div>
 
