@@ -1,48 +1,19 @@
-import { Star } from "lucide-react";
+import result1 from "@/assets/result-1.jpeg";
+import result2 from "@/assets/result-2.jpeg";
+import result3 from "@/assets/result-3.jpeg";
+import result4 from "@/assets/result-4.jpeg";
+import result5 from "@/assets/result-5.jpeg";
+import result6 from "@/assets/result-6.jpeg";
+import result7 from "@/assets/result-7.jpeg";
 
-const testimonials = [
-  {
-    name: "João Silva",
-    role: "Empreendedor Digital",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Joao",
-    text: "Em apenas 30 dias já tive meu primeiro resultado. O método da Real Life Academy realmente funciona!",
-    rating: 5
-  },
-  {
-    name: "Maria Santos",
-    role: "Afiliada",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria",
-    text: "Nunca pensei que seria possível ter resultados tão rápidos. A comunidade me ajudou em cada passo!",
-    rating: 5
-  },
-  {
-    name: "Pedro Costa",
-    role: "Aluno RLA",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Pedro",
-    text: "O suporte é incrível! Sempre que preciso, recebo ajuda imediata. Valeu cada centavo investido.",
-    rating: 5
-  },
-  {
-    name: "Ana Lima",
-    role: "Marketing Digital",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ana",
-    text: "Saí do zero e já estou fazendo minhas primeiras vendas. O conteúdo é direto ao ponto e funcional!",
-    rating: 5
-  },
-  {
-    name: "Carlos Oliveira",
-    role: "Produtor de Conteúdo",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos",
-    text: "Melhor investimento que fiz em 2024. A Real Life Academy mudou minha visão sobre negócios digitais.",
-    rating: 5
-  },
-  {
-    name: "Juliana Ferreira",
-    role: "Gestora de Tráfego",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Juliana",
-    text: "Os módulos são bem estruturados e fáceis de seguir. Em 2 meses já consegui meus primeiros clientes!",
-    rating: 5
-  }
+const results = [
+  { image: result1, alt: "Resultados de vendas - Bryan Santos" },
+  { image: result2, alt: "Dashboard de lucros - R$ 4.055,79" },
+  { image: result3, alt: "Pagamentos recebidos - Matheus" },
+  { image: result4, alt: "Notificações de vendas - Bryan Santos" },
+  { image: result5, alt: "Pagamentos Pix - Natan Piovezan" },
+  { image: result6, alt: "Investimentos recebidos - Natan Piovezan" },
+  { image: result7, alt: "Extrato de pagamentos recebidos" }
 ];
 
 export const TestimonialsSection = () => {
@@ -64,41 +35,23 @@ export const TestimonialsSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {testimonials.map((testimonial, index) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
+          {results.map((result, index) => (
             <div
               key={index}
-              className="group relative p-6 rounded-lg bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:scale-105 animate-fade-in"
+              className="group relative rounded-lg overflow-hidden bg-card/30 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:scale-105 animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Glow effect */}
               <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/0 via-primary/0 to-neon-pink/0 group-hover:from-primary/10 group-hover:to-neon-pink/10 transition-all duration-300" />
               
               <div className="relative z-10">
-                {/* Rating */}
-                <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                  ))}
-                </div>
-
-                {/* Testimonial text */}
-                <p className="text-muted-foreground mb-6 italic">
-                  "{testimonial.text}"
-                </p>
-
-                {/* Author */}
-                <div className="flex items-center gap-3 pt-4 border-t border-border/50">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full border-2 border-primary/20"
-                  />
-                  <div>
-                    <p className="font-semibold text-foreground">{testimonial.name}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                  </div>
-                </div>
+                <img
+                  src={result.image}
+                  alt={result.alt}
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
               </div>
             </div>
           ))}
