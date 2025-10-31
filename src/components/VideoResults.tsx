@@ -1,43 +1,24 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const videos = [
   {
     id: 1,
-    thumbnail: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=800&h=600&fit=crop",
-    name: "Rafael M.",
-    label: "DÚVIDAS"
+    videoId: "d491c5fe-05c2-4207-b968-88a57933ea74",
+    name: "Resultado 1",
+    label: "DEPOIMENTO"
   },
   {
     id: 2,
-    thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
-    name: "Lucas S.",
-    label: "RESULTADOS"
-  },
-  {
-    id: 3,
-    thumbnail: "https://images.unsplash.com/photo-1639149888905-fb39731f2e6c?w=800&h=600&fit=crop",
-    name: "Thiago P.",
-    label: "TRANSFORMAÇÃO"
-  },
-  {
-    id: 4,
-    thumbnail: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&h=600&fit=crop",
-    name: "Bruno C.",
-    label: "1º VENDA"
-  },
-  {
-    id: 5,
-    thumbnail: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&h=600&fit=crop",
-    name: "Gabriel F.",
-    label: "MUDANÇA"
+    videoId: "a764c6e9-ffbd-4cf7-8755-44fed0f19a12",
+    name: "Resultado 2",
+    label: "DEPOIMENTO"
   }
 ];
 
 export const VideoResults = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMuted, setIsMuted] = useState(false);
 
   const nextVideo = () => {
     setCurrentIndex((prev) => (prev + 1) % videos.length);
@@ -47,11 +28,7 @@ export const VideoResults = () => {
     setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
   };
 
-  const visibleVideos = [
-    videos[currentIndex],
-    videos[(currentIndex + 1) % videos.length],
-    videos[(currentIndex + 2) % videos.length]
-  ];
+  const currentVideo = videos[currentIndex];
 
   return (
     <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-b from-background/95 via-background to-background/95">
@@ -72,77 +49,71 @@ export const VideoResults = () => {
         </div>
 
         {/* Video Carousel */}
-        <div className="relative max-w-6xl mx-auto">
+        <div className="relative max-w-4xl mx-auto">
           {/* Navigation Buttons */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={prevVideo}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-background/80 hover:bg-background backdrop-blur-sm"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={nextVideo}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-background/80 hover:bg-background backdrop-blur-sm"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </Button>
-
-          {/* Videos Grid */}
-          <div className="grid md:grid-cols-3 gap-4 md:gap-6 px-12">
-            {visibleVideos.map((video, index) => (
-              <div
-                key={video.id}
-                className={`relative group cursor-pointer transition-all duration-300 ${
-                  index === 1 ? "md:scale-110 z-10" : "opacity-70 hover:opacity-100"
-                }`}
+          {videos.length > 1 && (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={prevVideo}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-background/80 hover:bg-background backdrop-blur-sm"
               >
-                {/* Video Container with Purple Border */}
-                <div className="relative rounded-lg overflow-hidden border-4 border-primary/50 bg-gradient-to-br from-primary/20 to-neon-pink/20">
-                  {/* Thumbnail */}
-                  <div className="aspect-[9/16] relative">
-                    <img
-                      src={video.thumbnail}
-                      alt={video.name}
-                      className="w-full h-full object-cover"
-                    />
-                    
-                    {/* Play Button Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-colors">
-                      <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center animate-glow-pulse">
-                        <div className="w-0 h-0 border-l-[16px] border-l-white border-t-[10px] border-t-transparent border-b-[10px] border-b-transparent ml-1" />
-                      </div>
-                    </div>
+                <ChevronLeft className="w-6 h-6" />
+              </Button>
 
-                    {/* Label */}
-                    <div className="absolute bottom-4 left-4 px-3 py-1 bg-primary/90 backdrop-blur-sm rounded-full">
-                      <span className="text-sm font-bold text-white">{video.label}</span>
-                    </div>
-                  </div>
-                </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={nextVideo}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-background/80 hover:bg-background backdrop-blur-sm"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </Button>
+            </>
+          )}
 
-                {/* Name */}
-                <p className="text-center mt-3 font-semibold text-foreground">{video.name}</p>
+          {/* Video Player */}
+          <div className="px-12">
+            <div className="relative rounded-lg overflow-hidden border-4 border-primary/50 bg-gradient-to-br from-primary/20 to-neon-pink/20">
+              <div className="aspect-video relative">
+                <iframe
+                  id={`panda-${currentVideo.videoId}`}
+                  src={`https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=${currentVideo.videoId}`}
+                  style={{ border: 'none' }}
+                  allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture"
+                  allowFullScreen={true}
+                  className="w-full h-full"
+                />
               </div>
-            ))}
+            </div>
+            
+            {/* Video Info */}
+            <div className="flex items-center justify-center gap-4 mt-4">
+              <p className="text-center font-semibold text-foreground">{currentVideo.name}</p>
+              <span className="px-3 py-1 bg-primary/90 backdrop-blur-sm rounded-full text-sm font-bold text-white">
+                {currentVideo.label}
+              </span>
+            </div>
           </div>
 
-          {/* Audio Control */}
-          <div className="absolute top-4 left-16 z-20">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsMuted(!isMuted)}
-              className="bg-primary/90 hover:bg-primary text-white backdrop-blur-sm gap-2"
-            >
-              {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-              {isMuted ? "ATIVAR SOM" : "SOM ATIVADO"}
-            </Button>
-          </div>
+          {/* Video Indicators */}
+          {videos.length > 1 && (
+            <div className="flex justify-center gap-2 mt-8">
+              {videos.map((video, index) => (
+                <button
+                  key={video.id}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === currentIndex
+                      ? "bg-primary w-8"
+                      : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                  }`}
+                  aria-label={`Ir para vídeo ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         <p className="text-center text-muted-foreground mt-12 animate-fade-in">
