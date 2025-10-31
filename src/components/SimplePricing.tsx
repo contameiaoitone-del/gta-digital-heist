@@ -46,7 +46,7 @@ export const SimplePricing = () => {
                 <div className="flex items-baseline justify-center gap-2 mb-2">
                   <span className="text-2xl text-muted-foreground">12x de</span>
                   <span className="text-5xl md:text-6xl font-bold text-primary">
-                    R$ 49,70
+                    R$ 50,94
                   </span>
                 </div>
                 
