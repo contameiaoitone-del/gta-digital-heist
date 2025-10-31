@@ -16,23 +16,42 @@ export const GuaranteeSection = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Badge Side */}
             <div className="flex justify-center animate-fade-in">
-              <div className="relative">
-                {/* Glow effect */}
-                <div className="absolute inset-0 bg-primary/30 blur-3xl rounded-full animate-glow-pulse" />
+              <div className="relative w-72 h-72">
+                {/* Outer glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-neon-pink/40 blur-3xl rounded-full animate-glow-pulse" />
                 
-                {/* Badge */}
-                <div className="relative w-64 h-64 flex items-center justify-center">
-                  {/* Outer circle with wavy edges effect */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-neon-pink opacity-90 animate-glow-pulse" 
+                {/* Badge Container */}
+                <div className="relative w-full h-full flex items-center justify-center">
+                  {/* Outer decorative ring with stamp effect */}
+                  <div 
+                    className="absolute inset-0 rounded-full opacity-80"
+                    style={{
+                      background: 'conic-gradient(from 0deg, hsl(var(--primary)), hsl(var(--neon-pink)), hsl(var(--primary)), hsl(var(--neon-pink)), hsl(var(--primary)))',
+                      animation: 'spin 20s linear infinite'
+                    }}
+                  />
+                  
+                  {/* Middle ring - creates stamp border effect */}
+                  <div className="absolute inset-3 rounded-full bg-background/95 backdrop-blur-sm" />
+                  
+                  {/* Main gradient circle */}
+                  <div className="absolute inset-6 rounded-full bg-gradient-to-br from-primary via-neon-pink to-primary shadow-2xl shadow-primary/50" 
                        style={{
-                         clipPath: "polygon(50% 0%, 60% 5%, 70% 2%, 80% 8%, 88% 5%, 95% 12%, 98% 20%, 100% 30%, 98% 40%, 95% 50%, 98% 60%, 100% 70%, 98% 80%, 95% 88%, 88% 95%, 80% 92%, 70% 98%, 60% 95%, 50% 100%, 40% 95%, 30% 98%, 20% 92%, 12% 95%, 5% 88%, 2% 80%, 0% 70%, 2% 60%, 5% 50%, 2% 40%, 0% 30%, 2% 20%, 5% 12%, 12% 5%, 20% 8%, 30% 2%, 40% 5%)"
+                         animation: 'pulse 3s ease-in-out infinite'
                        }}
                   />
                   
-                  {/* Inner content */}
-                  <div className="relative z-10 text-center">
-                    <div className="text-8xl font-black text-white mb-2">7</div>
-                    <div className="text-lg font-bold text-white uppercase tracking-wider">Dias</div>
+                  {/* Inner glow circle */}
+                  <div className="absolute inset-12 rounded-full bg-gradient-to-br from-white/10 to-transparent backdrop-blur-sm" />
+                  
+                  {/* Content */}
+                  <div className="relative z-10 text-center transform hover:scale-105 transition-transform duration-300">
+                    <div className="text-8xl font-black text-white mb-1 drop-shadow-2xl" style={{ textShadow: '0 0 30px rgba(255,255,255,0.5)' }}>
+                      7
+                    </div>
+                    <div className="text-xl font-bold text-white uppercase tracking-[0.3em] drop-shadow-lg">
+                      Dias
+                    </div>
                   </div>
                 </div>
               </div>
