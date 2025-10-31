@@ -4,6 +4,10 @@ import heroImage from "@/assets/real-life-academy-collage.png";
 import { GTALogo } from "@/components/GTALogo";
 
 export const Hero = () => {
+  const handleCTAClick = () => {
+    window.open("https://pay.kirvano.com/c5dc9a65-1621-4ae1-825e-6ed36793fb6c", "_blank");
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -73,7 +77,7 @@ export const Hero = () => {
               className="flex justify-center items-center w-full sm:w-auto animate-slide-up" 
               style={{ animationDelay: "0.4s" }}
             >
-              <Button variant="hero" size="lg" className="group w-full sm:w-auto">
+              <Button variant="hero" size="lg" className="group w-full sm:w-auto" onClick={handleCTAClick}>
                 COMEÇAR AGORA
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>

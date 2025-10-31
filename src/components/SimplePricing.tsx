@@ -3,7 +3,7 @@ import { Check, Shield, Headphones } from "lucide-react";
 
 export const SimplePricing = () => {
   const handleCTAClick = () => {
-    window.open("https://pay.kiwify.com.br/6vO97Hd", "_blank");
+    window.open("https://pay.kirvano.com/c5dc9a65-1621-4ae1-825e-6ed36793fb6c", "_blank");
   };
 
   return (
