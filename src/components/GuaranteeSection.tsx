@@ -96,8 +96,9 @@ export const GuaranteeSection = () => {
               <div className="flex justify-center md:justify-start">
                 <Button
                   onClick={handleCTAClick}
+                  variant="hero"
                   size="lg"
-                  className="text-lg mt-6 animate-glow-pulse"
+                  className="text-lg mt-6"
                 >
                   Entrar na Real Life Academy
                 </Button>

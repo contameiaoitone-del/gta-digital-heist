@@ -76,8 +76,9 @@ export const SimplePricing = () => {
               {/* CTA Button */}
               <Button
                 onClick={handleCTAClick}
+                variant="hero"
                 size="lg"
-                className="w-full text-lg py-6 mb-6 animate-glow-pulse"
+                className="w-full text-lg py-6 mb-6"
               >
                 Garantir Minha Vaga Agora
               </Button>
