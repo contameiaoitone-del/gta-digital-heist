@@ -58,7 +58,7 @@ export const GuaranteeSection = () => {
             </div>
 
             {/* Content Side */}
-            <div className="space-y-6 animate-fade-in" style={{ animationDelay: "200ms" }}>
+            <div className="space-y-6 animate-fade-in text-center md:text-left" style={{ animationDelay: "200ms" }}>
               <h2 className="text-4xl md:text-5xl font-bold leading-tight">
                 Garantia de
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-neon-pink to-primary">
@@ -71,21 +71,21 @@ export const GuaranteeSection = () => {
               </p>
 
               <div className="space-y-4 pt-4">
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-3 text-left">
                   <Shield className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <p className="text-muted-foreground">
                     <span className="text-foreground font-semibold">Garantia incondicional:</span> Você tem 7 dias completos para testar todo o conteúdo
                   </p>
                 </div>
 
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-3 text-left">
                   <Shield className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <p className="text-muted-foreground">
                     <span className="text-foreground font-semibold">Reembolso total:</span> Se não gostar, basta pedir e devolvemos 100% do investimento
                   </p>
                 </div>
 
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-3 text-left">
                   <Shield className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
                   <p className="text-muted-foreground">
                     <span className="text-foreground font-semibold">Sem burocracia:</span> Processo simples e rápido, sem perguntas complicadas
@@ -93,13 +93,15 @@ export const GuaranteeSection = () => {
                 </div>
               </div>
 
-              <Button
-                onClick={handleCTAClick}
-                size="lg"
-                className="text-lg mt-6 animate-glow-pulse"
-              >
-                Entrar na Real Life Academy
-              </Button>
+              <div className="flex justify-center md:justify-start">
+                <Button
+                  onClick={handleCTAClick}
+                  size="lg"
+                  className="text-lg mt-6 animate-glow-pulse"
+                >
+                  Entrar na Real Life Academy
+                </Button>
+              </div>
             </div>
           </div>
         </div>
