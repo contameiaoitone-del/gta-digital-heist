@@ -9,7 +9,7 @@ export const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pb-8 md:pb-12">
+    <section className="relative flex overflow-hidden items-start justify-start pt-6 pb-0 md:min-h-screen md:items-center md:justify-center md:pt-8 md:pb-12">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -63,7 +63,7 @@ export const Hero = () => {
 
             {/* Subtítulo */}
             <p 
-              className="mb-12 text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-slide-up" 
+              className="mb-8 md:mb-12 text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-slide-up"
               style={{
                 animationDelay: "0.3s",
                 textShadow: "0 0 20px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8), 2px 2px 4px rgba(0,0,0,0.9)"
@@ -87,7 +87,7 @@ export const Hero = () => {
       </div>
 
       {/* Bottom Gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-4 md:h-8 bg-gradient-to-t from-background to-transparent z-0"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-2 md:h-8 bg-gradient-to-t from-background to-transparent z-0"></div>
     </section>
   );
 };
