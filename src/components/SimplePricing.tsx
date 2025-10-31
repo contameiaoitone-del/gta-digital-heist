@@ -13,7 +13,7 @@ export const SimplePricing = () => {
       <div className="absolute inset-0 bg-[linear-gradient(rgba(236,72,153,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(236,72,153,0.05)_1px,transparent_1px)] bg-[size:50px_50px]" />
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           {/* Heading */}
           <div className="text-center mb-12 animate-fade-in">
             <div className="inline-block px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
