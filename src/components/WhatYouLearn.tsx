@@ -56,22 +56,42 @@ export const WhatYouLearn = () => {
           {modules.map((module, index) => (
             <div
               key={index}
-              className="group relative p-6 rounded-lg bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:scale-105 animate-fade-in"
-              style={{ animationDelay: `${index * 100}ms` }}
+              className="group relative p-6 rounded-lg bg-card/50 backdrop-blur-sm border-2 border-border/50 hover:border-primary transition-all duration-500 hover:shadow-[0_0_30px_hsl(330_85%_65%_/_0.4),_0_0_60px_hsl(330_85%_65%_/_0.2)] hover:scale-[1.05] animate-fade-in overflow-hidden"
+              style={{ 
+                animationDelay: `${index * 100}ms`,
+                transform: "perspective(1000px) rotateX(0deg) rotateY(0deg)",
+                transition: "all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)"
+              }}
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                e.currentTarget.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)";
+              }}
             >
+              {/* Animated border glow */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-border-run" style={{ backgroundSize: "200% 100%" }}></div>
+              
               {/* Glow effect on hover */}
               <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/0 via-primary/0 to-neon-pink/0 group-hover:from-primary/10 group-hover:to-neon-pink/10 transition-all duration-300" />
               
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <module.icon className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-gradient-to-br group-hover:from-primary group-hover:to-secondary group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-[0_0_20px_hsl(330_85%_65%_/_0.3)] group-hover:shadow-[0_0_40px_hsl(330_85%_65%_/_0.8)] group-hover:animate-neon-flicker">
+                  <module.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
                 </div>
                 
-                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+                <h3 className="text-xl font-gta font-bold mb-2 group-hover:text-neon-pink transition-colors duration-300">
                   {module.title}
                 </h3>
                 
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground group-hover:text-foreground/90 transition-colors duration-300">
                   {module.description}
                 </p>
               </div>

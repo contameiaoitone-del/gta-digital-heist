@@ -13,6 +13,11 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        gta: ['Bebas Neue', 'sans-serif'],
+        heading: ['Teko', 'sans-serif'],
+        body: ['Barlow', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -123,23 +128,45 @@ export default {
             transform: "scale(1.15) translate(-5%, -5%)",
           },
         },
-        "ken-burns-alt": {
-          "0%": {
-            transform: "scale(1) translate(0, 0)",
-          },
-          "100%": {
-            transform: "scale(1.12) translate(5%, 3%)",
-          },
-        },
+         "ken-burns-alt": {
+           "0%": {
+             transform: "scale(1) translate(0, 0)",
+           },
+           "100%": {
+             transform: "scale(1.12) translate(5%, 3%)",
+           },
+         },
+         "neon-flicker": {
+           "0%, 100%": { opacity: "1", filter: "brightness(1)" },
+           "2%": { opacity: "0.9", filter: "brightness(0.95)" },
+           "4%": { opacity: "1", filter: "brightness(1)" },
+           "8%": { opacity: "0.95", filter: "brightness(0.98)" },
+           "10%": { opacity: "1", filter: "brightness(1)" },
+         },
+         "pulse-neon": {
+           "0%, 100%": {
+             boxShadow: "0 0 20px hsl(var(--neon-pink) / 0.5), 0 0 40px hsl(var(--neon-pink) / 0.3), 0 0 60px hsl(var(--neon-pink) / 0.2)",
+           },
+           "50%": {
+             boxShadow: "0 0 30px hsl(var(--neon-pink) / 0.7), 0 0 60px hsl(var(--neon-pink) / 0.5), 0 0 90px hsl(var(--neon-pink) / 0.3), 0 0 120px hsl(var(--neon-pink) / 0.2)",
+           },
+         },
+         "border-run": {
+           "0%": { backgroundPosition: "0% 0%" },
+           "100%": { backgroundPosition: "200% 0%" },
+         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         "slide-up": "slide-up 0.6s ease-out",
-        "fade-in": "fade-in 0.8s ease-out",
-        "ken-burns": "ken-burns 7s ease-out forwards",
-        "ken-burns-alt": "ken-burns-alt 7s ease-out forwards",
+         "fade-in": "fade-in 0.8s ease-out",
+         "ken-burns": "ken-burns 7s ease-out forwards",
+         "ken-burns-alt": "ken-burns-alt 7s ease-out forwards",
+         "neon-flicker": "neon-flicker 4s ease-in-out infinite",
+         "pulse-neon": "pulse-neon 2s ease-in-out infinite",
+         "border-run": "border-run 3s linear infinite",
       },
     },
   },

@@ -202,6 +202,26 @@ All colors MUST be HSL.
       0 0 24px currentColor;
   }
   
+  /* Intense Neon Glow Effect */
+  .neon-intense {
+    text-shadow:
+      0 0 4px currentColor,
+      0 0 8px currentColor,
+      0 0 16px currentColor,
+      0 0 24px currentColor,
+      0 0 40px currentColor;
+    filter: brightness(1.1) saturate(1.2);
+  }
+  
+  /* Neon Border Effect */
+  .neon-border {
+    box-shadow:
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      0 0 30px currentColor,
+      inset 0 0 10px currentColor;
+  }
+  
   /* Soft Glow Effect */
   .soft-glow {
     text-shadow: 
