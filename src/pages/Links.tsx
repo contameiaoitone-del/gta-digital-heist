@@ -2,7 +2,7 @@ import { Youtube, ExternalLink, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import gtaHero from "@/assets/gta-collage-background.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
-import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
+import rpZapBanner from "@/assets/rp-zap-banner.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 import caioDalcinLogo from "@/assets/caio-dalcin-logo.png";
 import GameLoader from "@/components/GameLoader";
@@ -21,11 +21,11 @@ const Links = () => {
       image: rpCloseBanner,
     },
     {
-      name: "Real Life Academy",
-      url: "/",
-      icon: GraduationCap,
-      description: "A academia que vai mudar sua vida",
-      image: realLifeAcademyBanner,
+      name: "RP Zap",
+      url: "https://example.com/rp-zap",
+      icon: ExternalLink,
+      description: "RP Zap",
+      image: rpZapBanner,
     },
   ];
 
