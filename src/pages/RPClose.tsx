@@ -276,9 +276,9 @@ const RPClose = () => {
                 <span className="text-[hsl(var(--gta-magenta))]">RP Close</span>
               </CardTitle>
               <div className="space-y-2">
-                <p className="text-sm text-gray-500 line-through">De R$ 997,00</p>
-                <p className="text-5xl font-gta text-[hsl(var(--gta-magenta))]">R$ 497,00</p>
-                <p className="text-gray-400">ou 12x de R$ 49,70</p>
+                <p className="text-sm text-gray-500 line-through">De R$ 97,00/mês</p>
+                <p className="text-5xl font-gta text-[hsl(var(--gta-magenta))]">R$ 37,00</p>
+                <p className="text-gray-400">por mês</p>
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
