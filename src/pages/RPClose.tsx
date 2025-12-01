@@ -14,7 +14,7 @@ const RPClose = () => {
     {
       icon: Target,
       title: "Estratégias de Tráfego",
-      description: "Dicas práticas de como rodar anúncios que convertem de verdade"
+      description: "Como realmente fazer tráfego da forma correta, e escalar da forma certa."
     },
     {
       icon: Users,
