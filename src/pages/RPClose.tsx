@@ -6,6 +6,14 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import Autoplay from "embla-carousel-autoplay";
 import { CheckCircle2, XCircle, PlayCircle, Target, TrendingUp, Users, Zap, Shield, Clock, Award } from "lucide-react";
 import { Footer } from "@/components/Footer";
+import rpCloseResult1 from "@/assets/rp-close-result-1.png";
+import rpCloseResult2 from "@/assets/rp-close-result-2.png";
+import rpCloseResult3 from "@/assets/rp-close-result-3.png";
+import rpCloseResult4 from "@/assets/rp-close-result-4.png";
+import rpCloseResult5 from "@/assets/rp-close-result-5.png";
+import rpCloseResult6 from "@/assets/rp-close-result-6.png";
+import rpCloseResult7 from "@/assets/rp-close-result-7.png";
+import rpCloseResult8 from "@/assets/rp-close-result-8.png";
 
 const RPClose = () => {
   const handleCTAClick = () => {
@@ -296,15 +304,25 @@ const RPClose = () => {
             className="w-full"
           >
             <CarouselContent>
-              {/* Placeholder items - você vai enviar as imagens reais */}
-              {[1, 2, 3, 4, 5].map((_, index) => (
+              {[
+                rpCloseResult1,
+                rpCloseResult2,
+                rpCloseResult3,
+                rpCloseResult4,
+                rpCloseResult5,
+                rpCloseResult6,
+                rpCloseResult7,
+                rpCloseResult8
+              ].map((image, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-2">
                     <Card className="bg-zinc-900 border-zinc-800 overflow-hidden">
                       <CardContent className="p-0">
-                        <div className="aspect-[9/16] bg-zinc-800 flex items-center justify-center">
-                          <p className="text-gray-500 text-sm">Print de Resultado {index + 1}</p>
-                        </div>
+                        <img 
+                          src={image} 
+                          alt={`Resultado de aluno ${index + 1}`}
+                          className="w-full h-auto object-cover"
+                        />
                       </CardContent>
                     </Card>
                   </div>
