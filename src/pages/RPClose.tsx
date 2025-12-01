@@ -220,7 +220,7 @@ const RPClose = () => {
                       <module.icon className="w-6 h-6 text-[hsl(var(--gta-magenta))]" />
                     </div>
                     <div className="flex-1">
-                      <CardTitle className="text-xl text-white">{module.title}</CardTitle>
+                      <CardTitle className="text-xl text-white font-normal">{module.title}</CardTitle>
                     </div>
                   </div>
                 </CardHeader>
