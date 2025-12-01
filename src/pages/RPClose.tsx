@@ -124,10 +124,6 @@ const RPClose = () => {
                 <Clock className="w-4 h-4 text-[hsl(var(--gta-orange))]" />
                 <span>Acesso imediato</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Award className="w-4 h-4 text-[hsl(var(--gta-orange))]" />
-                <span>Certificado incluso</span>
-              </div>
             </div>
           </div>
         </div>
