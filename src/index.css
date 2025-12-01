@@ -38,6 +38,10 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
+    /* GTA Clean Color Palette */
+    --gta-magenta: 318 100% 42%;
+    --gta-orange: 27 100% 49%;
+    
     --neon-pink: 330 85% 65%;
     --neon-purple: 270 85% 68%;
     --neon-cyan: 190 100% 65%;
