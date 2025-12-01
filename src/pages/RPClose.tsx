@@ -23,13 +23,13 @@ const RPClose = () => {
     },
     {
       icon: TrendingUp,
-      title: "Bastidores das Operações",
-      description: "O que funciona (e o que não funciona) no meu dia a dia escalando"
+      title: "Testes em Tempo Real",
+      description: "O que deu certo E o que deu errado - acesso aos meus testes sem filtro"
     },
     {
       icon: Zap,
-      title: "Conteúdos Exclusivos",
-      description: "Acesso a stories destacados com cases, resultados e estratégias"
+      title: "A Verdade Sobre o Digital",
+      description: "Bastidores reais, não apenas resultados bonitinhos - a realidade das operações"
     }
   ];
 
@@ -91,7 +91,7 @@ const RPClose = () => {
 
             {/* Subheadline */}
             <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto">
-              Conteúdo diário sobre tráfego, X1 no WhatsApp e estratégias reais para escalar suas operações
+              Acesso aos meus testes em tempo real - o que funciona, o que falha, e a verdade sobre o digital sem filtro
             </p>
 
             {/* VSL Video Placeholder */}
@@ -170,15 +170,15 @@ const RPClose = () => {
               <span className="text-[hsl(var(--gta-magenta))]">RP Close</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Acesso exclusivo ao meu close friends com conteúdo real, prático e sem filtro
+              Testes em tempo real, resultados verdadeiros e bastidores sem filtro - o que funciona e o que falha
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: Target, title: "Conteúdo Real", desc: "Bastidores sem filtro do dia a dia" },
-              { icon: Zap, title: "Aplicação Direta", desc: "Estratégias que você aplica hoje" },
-              { icon: TrendingUp, title: "Atualização Constante", desc: "Conteúdo novo todo dia" }
+              { icon: Target, title: "Transparência Total", desc: "O que funciona E o que falha nos testes" },
+              { icon: Zap, title: "Testes em Tempo Real", desc: "Acesso aos bastidores das operações" },
+              { icon: TrendingUp, title: "Sem Filtro", desc: "A verdade sobre o digital, não só resultados bonitos" }
             ].map((item, i) => (
               <Card key={i} className="bg-zinc-900 border-zinc-800 text-center hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300">
                 <CardContent className="pt-6 space-y-3">
@@ -285,11 +285,11 @@ const RPClose = () => {
               <div className="space-y-3">
                 {[
                   "Acesso ao close friends do Instagram",
-                  "Conteúdo diário sobre tráfego e vendas",
-                  "Bastidores reais das operações",
-                  "Estratégias de X1 no WhatsApp",
-                  "Stories destacados com cases e resultados",
-                  "Suporte direto via DM"
+                  "Testes em tempo real - o que funciona e o que falha",
+                  "Bastidores sem filtro das operações",
+                  "Estratégias de tráfego e X1 no WhatsApp",
+                  "A verdade sobre o digital, não apenas resultados bonitinhos",
+                  "Stories destacados com cases reais e aprendizados"
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <CheckCircle2 className="w-5 h-5 text-[hsl(var(--gta-magenta))] flex-shrink-0" />
