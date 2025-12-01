@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import { CheckCircle2, XCircle, PlayCircle, Target, TrendingUp, Users, Zap, Shield, Clock, Award } from "lucide-react";
 import { Footer } from "@/components/Footer";
 
@@ -261,6 +263,55 @@ const RPClose = () => {
               </CardContent>
             </Card>
           </div>
+        </div>
+      </section>
+
+      {/* Results Section */}
+      <section className="py-20 px-4 relative bg-black">
+        <div className="container relative z-10 max-w-5xl mx-auto">
+          <div className="text-center space-y-6 mb-12">
+            <Badge variant="outline" className="border-[hsl(var(--gta-orange))] text-[hsl(var(--gta-orange))] px-4 py-2 bg-transparent">
+              💰 Resultados Reais
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-gta uppercase">
+              <span className="text-white">O Que os Membros</span>
+              <br />
+              <span className="text-[hsl(var(--gta-magenta))]">Estão Conquistando</span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Prints reais de quem está aplicando o conteúdo do close friends
+            </p>
+          </div>
+
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            plugins={[
+              Autoplay({
+                delay: 3000,
+              }),
+            ]}
+            className="w-full"
+          >
+            <CarouselContent>
+              {/* Placeholder items - você vai enviar as imagens reais */}
+              {[1, 2, 3, 4, 5].map((_, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                  <div className="p-2">
+                    <Card className="bg-zinc-900 border-zinc-800 overflow-hidden">
+                      <CardContent className="p-0">
+                        <div className="aspect-[9/16] bg-zinc-800 flex items-center justify-center">
+                          <p className="text-gray-500 text-sm">Print de Resultado {index + 1}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
       </section>
 
