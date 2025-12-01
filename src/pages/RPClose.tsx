@@ -13,56 +13,56 @@ const RPClose = () => {
   const modules = [
     {
       icon: Target,
-      title: "Fundamentos de Fechamento",
-      description: "Aprenda os pilares essenciais para fechar vendas com consistência"
+      title: "Estratégias de Tráfego",
+      description: "Dicas práticas de como rodar anúncios que convertem de verdade"
     },
     {
       icon: Users,
-      title: "Psicologia do Cliente",
-      description: "Entenda o que move seu cliente a tomar a decisão de compra"
+      title: "X1 no WhatsApp",
+      description: "Como eu faço atendimento e fecho vendas direto no WhatsApp"
     },
     {
       icon: TrendingUp,
-      title: "Técnicas de Persuasão",
-      description: "Domine as estratégias comprovadas de alta conversão"
+      title: "Bastidores das Operações",
+      description: "O que funciona (e o que não funciona) no meu dia a dia escalando"
     },
     {
       icon: Zap,
-      title: "Objeções e Contornos",
-      description: "Transforme objeções em oportunidades de fechamento"
+      title: "Conteúdos Exclusivos",
+      description: "Acesso a stories destacados com cases, resultados e estratégias"
     }
   ];
 
   const forWho = [
-    "Vendedores que querem aumentar suas conversões",
-    "Prestadores de serviço que perdem vendas na etapa final",
-    "Empreendedores que precisam fechar mais negócios",
-    "Profissionais que querem dominar o fechamento"
+    "Quem quer aprender tráfego pago na prática",
+    "Empreendedores que querem escalar suas operações",
+    "Quem quer ver os bastidores do que realmente funciona",
+    "Profissionais que querem acesso a conteúdo exclusivo e direto"
   ];
 
   const notForWho = [
-    "Quem busca fórmulas mágicas sem esforço",
-    "Quem não está disposto a praticar e aplicar",
-    "Quem quer resultados sem agir",
-    "Quem não tem comprometimento com o processo"
+    "Quem busca teoria sem aplicação prática",
+    "Quem não tem interesse em tráfego ou vendas",
+    "Quem quer conteúdo superficial e genérico",
+    "Quem não está disposto a investir em conhecimento"
   ];
 
   const faqs = [
     {
-      question: "Quanto tempo leva para ver resultados?",
-      answer: "Os primeiros resultados podem aparecer já na primeira semana de aplicação, mas o domínio completo vem com a prática consistente das técnicas ensinadas."
+      question: "Como funciona o acesso?",
+      answer: "Você entra no meu close friends do Instagram e tem acesso a todo conteúdo exclusivo que eu posto diariamente sobre tráfego, vendas, bastidores e estratégias."
     },
     {
-      question: "Preciso ter experiência prévia em vendas?",
-      answer: "Não! O treinamento foi desenvolvido tanto para iniciantes quanto para vendedores experientes que querem melhorar seus resultados."
+      question: "Que tipo de conteúdo vou encontrar?",
+      answer: "Bastidores reais das minhas operações, dicas de tráfego pago, estratégias de X1 no WhatsApp, stories destacados com cases e resultados, e muito mais conteúdo prático."
     },
     {
-      question: "Qual o formato do treinamento?",
-      answer: "Videoaulas práticas e diretas ao ponto, com exemplos reais e scripts prontos para você aplicar imediatamente."
+      question: "É uma assinatura recorrente?",
+      answer: "Sim, é uma assinatura mensal. Você pode cancelar quando quiser, sem burocracia."
     },
     {
-      question: "Tem suporte?",
-      answer: "Sim! Você terá acesso a suporte direto para tirar suas dúvidas durante todo o treinamento."
+      question: "Preciso ter experiência com tráfego?",
+      answer: "Não! Compartilho desde o básico até estratégias avançadas. O conteúdo é direto e aplicável, seja você iniciante ou já experiente."
     }
   ];
 
@@ -79,19 +79,19 @@ const RPClose = () => {
           <div className="max-w-4xl mx-auto text-center space-y-8">
             {/* Badge */}
             <Badge variant="outline" className="border-[hsl(var(--gta-magenta))] text-[hsl(var(--gta-magenta))] px-4 py-2 text-sm bg-transparent">
-              🎯 Treinamento de Alta Conversão
+              🔥 Close Friends Exclusivo
             </Badge>
 
             {/* Headline */}
             <h1 className="text-5xl md:text-7xl font-gta uppercase leading-tight">
-              <span className="text-[hsl(var(--gta-magenta))]">Domine a Arte</span>
+              <span className="text-[hsl(var(--gta-magenta))]">Acesso aos Bastidores</span>
               <br />
-              <span className="text-white">do Fechamento</span>
+              <span className="text-white">do Que Realmente Funciona</span>
             </h1>
 
             {/* Subheadline */}
             <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto">
-              Transforme suas oportunidades em vendas fechadas com as técnicas que os top closers usam
+              Conteúdo diário sobre tráfego, X1 no WhatsApp e estratégias reais para escalar suas operações
             </p>
 
             {/* VSL Video Placeholder */}
@@ -111,7 +111,7 @@ const RPClose = () => {
               size="lg" 
               className="text-lg px-8 py-6 mt-8 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold"
             >
-              Quero Dominar o Fechamento Agora
+              Quero Acesso aos Bastidores Agora
             </Button>
 
             {/* Trust Indicators */}
@@ -138,19 +138,19 @@ const RPClose = () => {
         <div className="container relative z-10 max-w-4xl mx-auto">
           <div className="text-center space-y-6 mb-12">
             <h2 className="text-4xl md:text-5xl font-gta uppercase">
-              <span className="text-[hsl(var(--gta-magenta))]">Você está perdendo</span> <span className="text-white">vendas?</span>
+              <span className="text-[hsl(var(--gta-magenta))]">Cansado de Conteúdo</span> <span className="text-white">Superficial?</span>
             </h2>
             <p className="text-xl text-gray-400">
-              Não é por falta de oportunidades... é por não saber fechar!
+              Todo mundo promete resultados, mas ninguém mostra os bastidores reais...
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              "Leads qualificados que não fecham",
-              "Dificuldade em contornar objeções",
-              "Conversas que não avançam",
-              "Perda de vendas no final do funil"
+              "Cursos genéricos que não mostram a realidade",
+              "Gurus que vendem sonhos mas não mostram processos",
+              "Conteúdo superficial que não gera resultado",
+              "Falta de acesso ao que realmente funciona na prática"
             ].map((problem, i) => (
               <Card key={i} className="bg-zinc-900 border-zinc-800 hover:border-red-500/50 transition-all duration-300">
                 <CardContent className="pt-6 flex items-start gap-3">
@@ -168,21 +168,21 @@ const RPClose = () => {
         <div className="container relative z-10 max-w-5xl mx-auto">
           <div className="text-center space-y-6 mb-12">
             <Badge variant="outline" className="border-[hsl(var(--gta-orange))] text-[hsl(var(--gta-orange))] px-4 py-2 bg-transparent">
-              💎 A Solução
+              🎯 A Solução
             </Badge>
             <h2 className="text-4xl md:text-5xl font-gta uppercase">
               <span className="text-[hsl(var(--gta-magenta))]">RP Close</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              O treinamento que vai transformar você em um closer de alta performance
+              Acesso exclusivo ao meu close friends com conteúdo real, prático e sem filtro
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: Target, title: "Técnicas Validadas", desc: "Métodos testados e aprovados" },
-              { icon: Zap, title: "Aplicação Imediata", desc: "Scripts prontos para usar" },
-              { icon: TrendingUp, title: "Resultados Rápidos", desc: "Veja mudanças em dias" }
+              { icon: Target, title: "Conteúdo Real", desc: "Bastidores sem filtro do dia a dia" },
+              { icon: Zap, title: "Aplicação Direta", desc: "Estratégias que você aplica hoje" },
+              { icon: TrendingUp, title: "Atualização Constante", desc: "Conteúdo novo todo dia" }
             ].map((item, i) => (
               <Card key={i} className="bg-zinc-900 border-zinc-800 text-center hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300">
                 <CardContent className="pt-6 space-y-3">
@@ -288,12 +288,12 @@ const RPClose = () => {
             <CardContent className="space-y-6">
               <div className="space-y-3">
                 {[
-                  "Acesso vitalício ao treinamento completo",
-                  "Atualizações gratuitas",
-                  "Suporte direto",
-                  "Certificado de conclusão",
-                  "Grupo exclusivo de alunos",
-                  "Bônus: Scripts de fechamento"
+                  "Acesso ao close friends do Instagram",
+                  "Conteúdo diário sobre tráfego e vendas",
+                  "Bastidores reais das operações",
+                  "Estratégias de X1 no WhatsApp",
+                  "Stories destacados com cases e resultados",
+                  "Suporte direto via DM"
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <CheckCircle2 className="w-5 h-5 text-[hsl(var(--gta-magenta))] flex-shrink-0" />
@@ -338,8 +338,7 @@ const RPClose = () => {
                   Garantia Incondicional de 7 Dias
                 </h3>
                 <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-                  Se você aplicar o conteúdo e não ver resultados, ou simplesmente não gostar, 
-                  devolvemos 100% do seu investimento. Sem perguntas, sem burocracia.
+                  Se você não gostar do conteúdo nos primeiros 7 dias, devolvemos 100% do seu investimento. Sem perguntas, sem burocracia.
                 </p>
               </div>
             </CardContent>
@@ -379,12 +378,12 @@ const RPClose = () => {
       <section className="py-20 px-4 relative bg-black">
         <div className="container relative z-10 max-w-4xl mx-auto text-center space-y-8">
           <h2 className="text-4xl md:text-6xl font-gta uppercase">
-            <span className="text-white">Pronto Para Ser Um</span>
+            <span className="text-white">Pronto Para Ter Acesso</span>
             <br />
-            <span className="text-[hsl(var(--gta-magenta))]">Top Closer?</span>
+            <span className="text-[hsl(var(--gta-magenta))]">Aos Bastidores?</span>
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Junte-se aos profissionais que dominaram a arte do fechamento
+            Entre agora no close friends e veja o que realmente funciona
           </p>
           <Button 
             onClick={handleCTAClick}
