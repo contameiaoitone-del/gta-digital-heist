@@ -19,7 +19,7 @@ const RPClose = () => {
     {
       icon: Users,
       title: "X1 no WhatsApp",
-      description: "Como eu faço atendimento e fecho vendas direto no WhatsApp"
+      description: "Como eu rodo meus funis 100% no automatico e faço vendas todos os dias literalmente sem atender nenhum lead."
     },
     {
       icon: TrendingUp,
