@@ -176,7 +176,7 @@ const RPClose = () => {
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: Target, title: "Transparência Total", desc: "O que funciona E o que falha nos testes" },
+              { icon: Target, title: "Transparência Total", desc: "Eu mostro o que funciona e também o que deu errado" },
               { icon: Zap, title: "Testes em Tempo Real", desc: "Acesso aos bastidores das operações" },
               { icon: TrendingUp, title: "Sem Filtro", desc: "A verdade sobre o digital, não só resultados bonitos" }
             ].map((item, i) => (
