@@ -142,7 +142,7 @@ const RPZap = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
-            {["Não sabe como criar um infoproduto que venda", "Gasta dinheiro em tráfego sem ter retorno", "Não consegue fechar vendas no WhatsApp", "Acha que precisa de muito dinheiro para começar"].map((problem, i) => <Card key={i} className="bg-zinc-900/80 border-zinc-800 hover:border-red-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-10px_rgba(239,68,68,0.3)] group" style={{
+            {["Não sabe como criar um infoproduto que venda", "Gasta dinheiro demais com tráfego sem ter retorno", "Não consegue escalar porque demora pra sacar das plataformas", "Outros negócios precisam de muito dinheiro pra começar"].map((problem, i) => <Card key={i} className="bg-zinc-900/80 border-zinc-800 hover:border-red-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-10px_rgba(239,68,68,0.3)] group" style={{
             animationDelay: `${i * 100}ms`
           }}>
                 <CardContent className="pt-5 md:pt-6 flex items-start gap-3">
