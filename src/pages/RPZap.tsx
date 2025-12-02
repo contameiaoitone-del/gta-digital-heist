@@ -4,70 +4,43 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CheckCircle2, XCircle, PlayCircle, Bot, MessageSquare, Rocket, Repeat, Shield, Clock, Award, Zap, Target, TrendingUp } from "lucide-react";
 import { Footer } from "@/components/Footer";
-
 const RPZap = () => {
   const handleCTAClick = () => {
     window.open("https://pay.cakto.com.br/3dsuw79_671863", "_blank");
   };
-
-  const modules = [
-    {
-      icon: Bot,
-      title: "Automação Inteligente",
-      description: "Configure seu sistema de vendas automatizado do zero"
-    },
-    {
-      icon: MessageSquare,
-      title: "Scripts de Conversão",
-      description: "Mensagens otimizadas que vendem enquanto você dorme"
-    },
-    {
-      icon: Rocket,
-      title: "Funil Automatizado",
-      description: "Do primeiro contato ao fechamento, tudo no piloto automático"
-    },
-    {
-      icon: Repeat,
-      title: "Follow-up Automático",
-      description: "Nunca mais perca vendas por falta de acompanhamento"
-    }
-  ];
-
-  const forWho = [
-    "Empreendedores que querem vender 24/7 automaticamente",
-    "Profissionais que perdem tempo com mensagens manuais",
-    "Quem quer escalar vendas sem aumentar o time",
-    "Negócios que precisam de previsibilidade nas vendas"
-  ];
-
-  const notForWho = [
-    "Quem busca ganhos sem estruturar processos",
-    "Quem não está disposto a configurar o sistema",
-    "Quem quer resultados sem investir tempo inicial",
-    "Quem não tem um produto/serviço para vender"
-  ];
-
-  const faqs = [
-    {
-      question: "Preciso de conhecimento técnico?",
-      answer: "Não! O treinamento é 100% prático e feito para qualquer pessoa implementar, mesmo sem experiência técnica. Mostramos tudo passo a passo."
-    },
-    {
-      question: "Funciona para qualquer nicho?",
-      answer: "Sim! O sistema é adaptável para diversos tipos de negócios: consultoria, infoprodutos, serviços, agências, e-commerce e muito mais."
-    },
-    {
-      question: "Quanto tempo leva para configurar?",
-      answer: "Com dedicação, você consegue ter seu sistema básico funcionando em 1-2 dias. A otimização contínua acontece ao longo das semanas."
-    },
-    {
-      question: "Preciso de ferramentas pagas?",
-      answer: "Mostramos opções gratuitas e pagas. É possível começar sem investimento adicional e ir escalando conforme os resultados aparecem."
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-black scroll-smooth">
+  const modules = [{
+    icon: Bot,
+    title: "Automação Inteligente",
+    description: "Configure seu sistema de vendas automatizado do zero"
+  }, {
+    icon: MessageSquare,
+    title: "Scripts de Conversão",
+    description: "Mensagens otimizadas que vendem enquanto você dorme"
+  }, {
+    icon: Rocket,
+    title: "Funil Automatizado",
+    description: "Do primeiro contato ao fechamento, tudo no piloto automático"
+  }, {
+    icon: Repeat,
+    title: "Follow-up Automático",
+    description: "Nunca mais perca vendas por falta de acompanhamento"
+  }];
+  const forWho = ["Empreendedores que querem vender 24/7 automaticamente", "Profissionais que perdem tempo com mensagens manuais", "Quem quer escalar vendas sem aumentar o time", "Negócios que precisam de previsibilidade nas vendas"];
+  const notForWho = ["Quem busca ganhos sem estruturar processos", "Quem não está disposto a configurar o sistema", "Quem quer resultados sem investir tempo inicial", "Quem não tem um produto/serviço para vender"];
+  const faqs = [{
+    question: "Preciso de conhecimento técnico?",
+    answer: "Não! O treinamento é 100% prático e feito para qualquer pessoa implementar, mesmo sem experiência técnica. Mostramos tudo passo a passo."
+  }, {
+    question: "Funciona para qualquer nicho?",
+    answer: "Sim! O sistema é adaptável para diversos tipos de negócios: consultoria, infoprodutos, serviços, agências, e-commerce e muito mais."
+  }, {
+    question: "Quanto tempo leva para configurar?",
+    answer: "Com dedicação, você consegue ter seu sistema básico funcionando em 1-2 dias. A otimização contínua acontece ao longo das semanas."
+  }, {
+    question: "Preciso de ferramentas pagas?",
+    answer: "Mostramos opções gratuitas e pagas. É possível começar sem investimento adicional e ir escalando conforme os resultados aparecem."
+  }];
+  return <div className="min-h-screen bg-black scroll-smooth">
       {/* Hero Section with VSL */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-black">
         {/* Atmospheric gradient */}
@@ -87,9 +60,9 @@ const RPZap = () => {
 
             {/* Headline */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-gta uppercase leading-tight animate-fade-in">
-              <span className="text-[hsl(var(--gta-magenta))] drop-shadow-[0_0_30px_hsl(var(--gta-magenta)/0.5)]">Venda no WhatsApp</span>
+              <span className="text-[hsl(var(--gta-magenta))] drop-shadow-[0_0_30px_hsl(var(--gta-magenta)/0.5)]">LOWTICKET NO WHATSAPP</span>
               <br />
-              <span className="text-white">no Automático</span>
+              <span className="text-white">AUTOMATICO E DIRETO NO PIX</span>
             </h1>
 
             {/* Subheadline */}
@@ -115,11 +88,7 @@ const RPZap = () => {
             {/* CTA Button */}
             <div className="relative inline-block">
               <div className="absolute inset-0 bg-[hsl(var(--gta-magenta))]/50 blur-xl rounded-lg animate-pulse" />
-              <Button 
-                onClick={handleCTAClick}
-                size="lg" 
-                className="relative text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 mt-4 md:mt-8 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-105 transition-all duration-300 shadow-[0_0_30px_hsl(var(--gta-magenta)/0.4)]"
-              >
+              <Button onClick={handleCTAClick} size="lg" className="relative text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 mt-4 md:mt-8 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-105 transition-all duration-300 shadow-[0_0_30px_hsl(var(--gta-magenta)/0.4)]">
                 <Zap className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Quero Automatizar Minhas Vendas
               </Button>
@@ -160,23 +129,14 @@ const RPZap = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
-            {[
-              "Perder vendas porque não respondeu rápido",
-              "Gastar horas respondendo as mesmas perguntas",
-              "Não conseguir atender todos os leads",
-              "Depender da sua disponibilidade para vender"
-            ].map((problem, i) => (
-              <Card 
-                key={i} 
-                className="bg-zinc-900/80 border-zinc-800 hover:border-red-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-10px_rgba(239,68,68,0.3)] group"
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
+            {["Perder vendas porque não respondeu rápido", "Gastar horas respondendo as mesmas perguntas", "Não conseguir atender todos os leads", "Depender da sua disponibilidade para vender"].map((problem, i) => <Card key={i} className="bg-zinc-900/80 border-zinc-800 hover:border-red-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-10px_rgba(239,68,68,0.3)] group" style={{
+            animationDelay: `${i * 100}ms`
+          }}>
                 <CardContent className="pt-5 md:pt-6 flex items-start gap-3">
                   <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-1 group-hover:animate-pulse" />
                   <p className="text-white text-sm md:text-base">{problem}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -200,16 +160,21 @@ const RPZap = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {[
-              { icon: Bot, title: "100% Automatizado", desc: "Configure uma vez, venda sempre" },
-              { icon: Rocket, title: "Escalável", desc: "Atenda 10 ou 10.000 leads" },
-              { icon: Repeat, title: "Consistente", desc: "Mesma qualidade para todos" }
-            ].map((item, i) => (
-              <Card 
-                key={i} 
-                className="bg-zinc-900/80 border-zinc-800 text-center hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_50px_-15px_hsl(var(--gta-magenta)/0.3)] group"
-                style={{ animationDelay: `${i * 150}ms` }}
-              >
+            {[{
+            icon: Bot,
+            title: "100% Automatizado",
+            desc: "Configure uma vez, venda sempre"
+          }, {
+            icon: Rocket,
+            title: "Escalável",
+            desc: "Atenda 10 ou 10.000 leads"
+          }, {
+            icon: Repeat,
+            title: "Consistente",
+            desc: "Mesma qualidade para todos"
+          }].map((item, i) => <Card key={i} className="bg-zinc-900/80 border-zinc-800 text-center hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_50px_-15px_hsl(var(--gta-magenta)/0.3)] group" style={{
+            animationDelay: `${i * 150}ms`
+          }}>
                 <CardContent className="pt-6 md:pt-8 pb-6 md:pb-8 space-y-3 md:space-y-4">
                   <div className="relative inline-block">
                     <div className="absolute inset-0 bg-[hsl(var(--gta-magenta))]/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -218,8 +183,7 @@ const RPZap = () => {
                   <h3 className="font-gta text-lg md:text-xl text-white">{item.title}</h3>
                   <p className="text-gray-400 text-xs md:text-sm">{item.desc}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -234,12 +198,9 @@ const RPZap = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
-            {modules.map((module, i) => (
-              <Card 
-                key={i} 
-                className="bg-zinc-900/80 border-zinc-800 hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_-10px_hsl(var(--gta-magenta)/0.25)] group"
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
+            {modules.map((module, i) => <Card key={i} className="bg-zinc-900/80 border-zinc-800 hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_-10px_hsl(var(--gta-magenta)/0.25)] group" style={{
+            animationDelay: `${i * 100}ms`
+          }}>
                 <CardHeader className="pb-2 md:pb-4">
                   <div className="flex items-start gap-3 md:gap-4">
                     <div className="p-2.5 md:p-3 rounded-lg border border-[hsl(var(--gta-magenta))]/30 bg-[hsl(var(--gta-magenta))]/10 group-hover:bg-[hsl(var(--gta-magenta))]/20 group-hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300">
@@ -253,8 +214,7 @@ const RPZap = () => {
                 <CardContent>
                   <p className="text-gray-400 text-sm md:text-base">{module.description}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -271,16 +231,12 @@ const RPZap = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {forWho.map((item, i) => (
-                  <div 
-                    key={i} 
-                    className="flex items-start gap-3 group"
-                    style={{ animationDelay: `${i * 100}ms` }}
-                  >
+                {forWho.map((item, i) => <div key={i} className="flex items-start gap-3 group" style={{
+                animationDelay: `${i * 100}ms`
+              }}>
                     <CheckCircle2 className="w-5 h-5 text-[hsl(var(--gta-magenta))] flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                     <p className="text-white text-sm md:text-base">{item}</p>
-                  </div>
-                ))}
+                  </div>)}
               </CardContent>
             </Card>
 
@@ -292,16 +248,12 @@ const RPZap = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {notForWho.map((item, i) => (
-                  <div 
-                    key={i} 
-                    className="flex items-start gap-3 group"
-                    style={{ animationDelay: `${i * 100}ms` }}
-                  >
+                {notForWho.map((item, i) => <div key={i} className="flex items-start gap-3 group" style={{
+                animationDelay: `${i * 100}ms`
+              }}>
                     <XCircle className="w-5 h-5 text-[hsl(var(--gta-orange))] flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                     <p className="text-gray-400 text-sm md:text-base">{item}</p>
-                  </div>
-                ))}
+                  </div>)}
               </CardContent>
             </Card>
           </div>
@@ -333,32 +285,17 @@ const RPZap = () => {
             </CardHeader>
             <CardContent className="space-y-6 relative z-10">
               <div className="space-y-3">
-                {[
-                  "Acesso vitalício ao treinamento completo",
-                  "Atualizações gratuitas de estratégias",
-                  "Suporte direto para implementação",
-                  "Templates prontos de automação",
-                  "Comunidade exclusiva de membros",
-                  "Bônus: Scripts de conversão testados"
-                ].map((item, i) => (
-                  <div 
-                    key={i} 
-                    className="flex items-center gap-3 group"
-                    style={{ animationDelay: `${i * 50}ms` }}
-                  >
+                {["Acesso vitalício ao treinamento completo", "Atualizações gratuitas de estratégias", "Suporte direto para implementação", "Templates prontos de automação", "Comunidade exclusiva de membros", "Bônus: Scripts de conversão testados"].map((item, i) => <div key={i} className="flex items-center gap-3 group" style={{
+                animationDelay: `${i * 50}ms`
+              }}>
                     <CheckCircle2 className="w-5 h-5 text-[hsl(var(--gta-magenta))] flex-shrink-0 group-hover:scale-110 transition-transform" />
                     <p className="text-white text-sm md:text-base">{item}</p>
-                  </div>
-                ))}
+                  </div>)}
               </div>
 
               <div className="relative">
                 <div className="absolute inset-0 bg-[hsl(var(--gta-magenta))]/40 blur-xl rounded-lg animate-pulse" />
-                <Button 
-                  onClick={handleCTAClick}
-                  size="lg" 
-                  className="relative w-full text-sm md:text-lg py-5 md:py-6 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-[1.02] transition-all duration-300"
-                >
+                <Button onClick={handleCTAClick} size="lg" className="relative w-full text-sm md:text-lg py-5 md:py-6 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-[1.02] transition-all duration-300">
                   <Target className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                   Garantir Minha Vaga Agora
                 </Button>
@@ -415,20 +352,14 @@ const RPZap = () => {
           </div>
 
           <Accordion type="single" collapsible className="space-y-3 md:space-y-4">
-            {faqs.map((faq, i) => (
-              <AccordionItem 
-                key={i} 
-                value={`item-${i}`}
-                className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-4 md:px-6 hover:border-[hsl(var(--gta-magenta))]/30 transition-colors duration-300 data-[state=open]:border-[hsl(var(--gta-magenta))]/50"
-              >
+            {faqs.map((faq, i) => <AccordionItem key={i} value={`item-${i}`} className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-4 md:px-6 hover:border-[hsl(var(--gta-magenta))]/30 transition-colors duration-300 data-[state=open]:border-[hsl(var(--gta-magenta))]/50">
                 <AccordionTrigger className="text-left text-white hover:text-[hsl(var(--gta-magenta))] transition-colors text-sm md:text-base py-4">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-400 text-sm md:text-base pb-4">
                   {faq.answer}
                 </AccordionContent>
-              </AccordionItem>
-            ))}
+              </AccordionItem>)}
           </Accordion>
         </div>
       </section>
@@ -450,11 +381,7 @@ const RPZap = () => {
           
           <div className="relative inline-block">
             <div className="absolute inset-0 bg-[hsl(var(--gta-magenta))]/50 blur-2xl rounded-lg animate-pulse" />
-            <Button 
-              onClick={handleCTAClick}
-              size="lg" 
-              className="relative text-sm md:text-lg px-8 md:px-12 py-5 md:py-6 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-105 transition-all duration-300 shadow-[0_0_40px_hsl(var(--gta-magenta)/0.5)]"
-            >
+            <Button onClick={handleCTAClick} size="lg" className="relative text-sm md:text-lg px-8 md:px-12 py-5 md:py-6 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-105 transition-all duration-300 shadow-[0_0_40px_hsl(var(--gta-magenta)/0.5)]">
               <TrendingUp className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               Garantir Acesso Agora
             </Button>
@@ -463,8 +390,6 @@ const RPZap = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default RPZap;
