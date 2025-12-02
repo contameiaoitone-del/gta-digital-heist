@@ -66,9 +66,7 @@ const RPZap = () => {
             </h1>
 
             {/* Subheadline */}
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400 max-w-2xl mx-auto px-4">
-              Monte seu robô de vendas que trabalha 24/7 e converte leads em clientes enquanto você dorme
-            </p>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400 max-w-2xl mx-auto px-4">Crie seu próprio infoproduto de lowticket com I.A e venda no Whatsapp 100% automatico e receba direto no Pix</p>
 
             {/* VSL Video Placeholder */}
             <div className="relative max-w-2xl mx-auto aspect-video rounded-lg overflow-hidden border border-white/20 bg-black group cursor-pointer hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-500">
