@@ -132,7 +132,9 @@ const RPZap = () => {
         <div className="container relative z-10 max-w-4xl mx-auto">
           <div className="text-center space-y-4 md:space-y-6 mb-8 md:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-gta uppercase px-2">
-              <span className="text-[hsl(var(--gta-magenta))]">Você já tentou</span> <span className="text-white">vender no digital?</span>
+              <span className="text-[hsl(var(--gta-magenta))]">Já tentou</span> <span className="text-white">tráfego direto, dropshipping,</span>
+              <br className="hidden sm:block" />
+              <span className="text-white">encapsulados e outras coisas</span> <span className="text-[hsl(var(--gta-magenta))]">sem sucesso?</span>
             </h2>
             <p className="text-base md:text-xl text-gray-400">
               Se identificou com algum desses problemas?
