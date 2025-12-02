@@ -370,11 +370,6 @@ const RPClose = () => {
             {/* Animated border gradient */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[hsl(var(--gta-magenta))]/20 to-transparent animate-pulse" />
             
-            {/* Most Popular Badge */}
-            <div className="absolute -right-12 top-8 rotate-45 bg-[hsl(var(--gta-orange))] text-white text-xs font-bold px-12 py-1 shadow-lg">
-              MAIS POPULAR
-            </div>
-            
             <CardHeader className="text-center space-y-4 relative z-10">
               <Badge variant="outline" className="border-[hsl(var(--gta-magenta))] text-[hsl(var(--gta-magenta))] px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm mx-auto bg-transparent animate-pulse">
                 🔥 Oferta Especial
