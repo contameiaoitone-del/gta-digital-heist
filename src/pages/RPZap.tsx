@@ -4,106 +4,71 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CheckCircle2, XCircle, PlayCircle, Bot, MessageSquare, Rocket, Repeat, Shield, Clock, Award, Zap, Target, TrendingUp, Sparkles, Package, DollarSign, Megaphone, BarChart3, HandCoins } from "lucide-react";
 import { Footer } from "@/components/Footer";
-
 const RPZap = () => {
   const handleCTAClick = () => {
     window.open("https://pay.cakto.com.br/3dsuw79_671863", "_blank");
   };
-
-  const modules = [
-    {
-      icon: Sparkles,
-      title: "Seja Bem Vindo",
-      description: "Entenda a metodologia completa e prepare sua mentalidade para a operação"
-    },
-    {
-      icon: Package,
-      title: "Estruturando a Operação",
-      description: "Configure toda sua estrutura de vendas do zero, passo a passo"
-    },
-    {
-      icon: Target,
-      title: "Criando Oferta",
-      description: "Crie seu infoproduto de lowticket usando Inteligência Artificial"
-    },
-    {
-      icon: Megaphone,
-      title: "Campanhas",
-      description: "Monte suas campanhas no Meta Ads que convertem de verdade"
-    },
-    {
-      icon: BarChart3,
-      title: "Hacks do ROI",
-      description: "Otimize suas campanhas e escale seus resultados com estratégias avançadas"
-    }
-  ];
-
-  const forWho = [
-    "Quem quer começar no digital com pouco investimento",
-    "Quem quer criar e vender seu próprio infoproduto",
-    "Quem quer aprender tráfego pago do zero",
-    "Quem quer uma metodologia validada de vendas no WhatsApp"
-  ];
-
-  const notForWho = [
-    "Quem busca esquemas de dinheiro fácil",
-    "Quem não está disposto a aprender tráfego pago",
-    "Quem quer resultados sem executar as aulas",
-    "Quem não tem R$20-50/dia para investir em tráfego inicial"
-  ];
-
-  const faqs = [
-    {
-      question: "Quanto preciso investir em tráfego para começar?",
-      answer: "Recomendo começar com R$20-50 por dia em tráfego. Com essa verba você já consegue validar sua oferta e começar a ter resultados. Conforme for vendendo, você reinveste e escala."
-    },
-    {
-      question: "Funciona mesmo entregando o produto antes de receber?",
-      answer: "Sim! A estratégia Pay After Delivery quebra completamente a objeção do cliente. Ele recebe o produto, vê o valor, e paga com confiança. A taxa de pagamento é altíssima quando você entrega valor real."
-    },
-    {
-      question: "Preciso de experiência com Meta Ads?",
-      answer: "Não! O treinamento ensina do zero. Você vai aprender a criar campanhas mesmo nunca tendo mexido no gerenciador de anúncios. Tudo passo a passo."
-    },
-    {
-      question: "Quanto tempo leva pra criar meu infoproduto com IA?",
-      answer: "Com as ferramentas e prompts que eu ensino, você consegue criar seu infoproduto em 1-3 dias. Nada de meses desenvolvendo conteúdo."
-    },
-    {
-      question: "Por que receber no Pix e não em plataformas?",
-      answer: "Recebendo direto no Pix você não paga taxas de plataforma (que podem chegar a 10-15%). 100% do dinheiro vai pra você. Isso faz diferença enorme na margem."
-    }
-  ];
-
-  const methodology = [
-    {
-      icon: Package,
-      step: "01",
-      title: "Crie",
-      description: "Infoproduto com IA"
-    },
-    {
-      icon: Megaphone,
-      step: "02",
-      title: "Atraia",
-      description: "Tráfego via Meta Ads"
-    },
-    {
-      icon: MessageSquare,
-      step: "03",
-      title: "Venda",
-      description: "WhatsApp + Pay After Delivery"
-    },
-    {
-      icon: HandCoins,
-      step: "04",
-      title: "Receba",
-      description: "Direto no Pix"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-black scroll-smooth">
+  const modules = [{
+    icon: Sparkles,
+    title: "Seja Bem Vindo",
+    description: "Entenda a metodologia completa e prepare sua mentalidade para a operação"
+  }, {
+    icon: Package,
+    title: "Estruturando a Operação",
+    description: "Configure toda sua estrutura de vendas do zero, passo a passo"
+  }, {
+    icon: Target,
+    title: "Criando Oferta",
+    description: "Crie seu infoproduto de lowticket usando Inteligência Artificial"
+  }, {
+    icon: Megaphone,
+    title: "Campanhas",
+    description: "Monte suas campanhas no Meta Ads que convertem de verdade"
+  }, {
+    icon: BarChart3,
+    title: "Hacks do ROI",
+    description: "Otimize suas campanhas e escale seus resultados com estratégias avançadas"
+  }];
+  const forWho = ["Quem quer começar no digital com pouco investimento", "Quem quer criar e vender seu próprio infoproduto", "Quem quer aprender tráfego pago do zero", "Quem quer uma metodologia validada de vendas no WhatsApp"];
+  const notForWho = ["Quem busca esquemas de dinheiro fácil", "Quem não está disposto a aprender tráfego pago", "Quem quer resultados sem executar as aulas", "Quem não tem R$20-50/dia para investir em tráfego inicial"];
+  const faqs = [{
+    question: "Quanto preciso investir em tráfego para começar?",
+    answer: "Recomendo começar com R$20-50 por dia em tráfego. Com essa verba você já consegue validar sua oferta e começar a ter resultados. Conforme for vendendo, você reinveste e escala."
+  }, {
+    question: "Funciona mesmo entregando o produto antes de receber?",
+    answer: "Sim! A estratégia Pay After Delivery quebra completamente a objeção do cliente. Ele recebe o produto, vê o valor, e paga com confiança. A taxa de pagamento é altíssima quando você entrega valor real."
+  }, {
+    question: "Preciso de experiência com Meta Ads?",
+    answer: "Não! O treinamento ensina do zero. Você vai aprender a criar campanhas mesmo nunca tendo mexido no gerenciador de anúncios. Tudo passo a passo."
+  }, {
+    question: "Quanto tempo leva pra criar meu infoproduto com IA?",
+    answer: "Com as ferramentas e prompts que eu ensino, você consegue criar seu infoproduto em 1-3 dias. Nada de meses desenvolvendo conteúdo."
+  }, {
+    question: "Por que receber no Pix e não em plataformas?",
+    answer: "Recebendo direto no Pix você não paga taxas de plataforma (que podem chegar a 10-15%). 100% do dinheiro vai pra você. Isso faz diferença enorme na margem."
+  }];
+  const methodology = [{
+    icon: Package,
+    step: "01",
+    title: "Crie",
+    description: "Infoproduto com IA"
+  }, {
+    icon: Megaphone,
+    step: "02",
+    title: "Atraia",
+    description: "Tráfego via Meta Ads"
+  }, {
+    icon: MessageSquare,
+    step: "03",
+    title: "Venda",
+    description: "WhatsApp + Pay After Delivery"
+  }, {
+    icon: HandCoins,
+    step: "04",
+    title: "Receba",
+    description: "Direto no Pix"
+  }];
+  return <div className="min-h-screen bg-black scroll-smooth">
       {/* Hero Section with VSL */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-black">
         {/* Atmospheric gradient */}
@@ -129,8 +94,7 @@ const RPZap = () => {
             </h1>
 
             {/* Subheadline */}
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400 max-w-3xl mx-auto px-4">
-              Crie seu próprio infoproduto de lowticket com I.A, rode tráfego no Meta Ads e venda no WhatsApp com a estratégia <span className="text-[hsl(var(--gta-magenta))] font-semibold">Pay After Delivery</span> - recebendo direto no Pix
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400 max-w-3xl mx-auto px-4">Crie seu próprio infoproduto de lowticket com I.A e venda no WhatsApp com a estratégia Pay After Delivery - recebendo direto no Pix<span className="text-[hsl(var(--gta-magenta))] font-semibold">Pay After Delivery</span> - recebendo direto no Pix
             </p>
 
             {/* VSL Video Placeholder */}
@@ -176,19 +140,14 @@ const RPZap = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
-            {[
-              "Não sabe como criar um infoproduto que venda",
-              "Gasta dinheiro em tráfego sem ter retorno",
-              "Não consegue fechar vendas no WhatsApp",
-              "Acha que precisa de muito dinheiro para começar"
-            ].map((problem, i) => (
-              <Card key={i} className="bg-zinc-900/80 border-zinc-800 hover:border-red-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-10px_rgba(239,68,68,0.3)] group" style={{ animationDelay: `${i * 100}ms` }}>
+            {["Não sabe como criar um infoproduto que venda", "Gasta dinheiro em tráfego sem ter retorno", "Não consegue fechar vendas no WhatsApp", "Acha que precisa de muito dinheiro para começar"].map((problem, i) => <Card key={i} className="bg-zinc-900/80 border-zinc-800 hover:border-red-500/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_40px_-10px_rgba(239,68,68,0.3)] group" style={{
+            animationDelay: `${i * 100}ms`
+          }}>
                 <CardContent className="pt-5 md:pt-6 flex items-start gap-3">
                   <XCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-1 group-hover:animate-pulse" />
                   <p className="text-white text-sm md:text-base">{problem}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -213,24 +172,21 @@ const RPZap = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {[
-              {
-                icon: Sparkles,
-                title: "Infoproduto com IA",
-                desc: "Crie seu produto em dias, não meses"
-              },
-              {
-                icon: HandCoins,
-                title: "Pay After Delivery",
-                desc: "Entregue primeiro, receba depois - sem objeções"
-              },
-              {
-                icon: DollarSign,
-                title: "Direto no Pix",
-                desc: "Sem taxas de plataforma, 100% pra você"
-              }
-            ].map((item, i) => (
-              <Card key={i} className="bg-zinc-900/80 border-zinc-800 text-center hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_50px_-15px_hsl(var(--gta-magenta)/0.3)] group" style={{ animationDelay: `${i * 150}ms` }}>
+            {[{
+            icon: Sparkles,
+            title: "Infoproduto com IA",
+            desc: "Crie seu produto em dias, não meses"
+          }, {
+            icon: HandCoins,
+            title: "Pay After Delivery",
+            desc: "Entregue primeiro, receba depois - sem objeções"
+          }, {
+            icon: DollarSign,
+            title: "Direto no Pix",
+            desc: "Sem taxas de plataforma, 100% pra você"
+          }].map((item, i) => <Card key={i} className="bg-zinc-900/80 border-zinc-800 text-center hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_50px_-15px_hsl(var(--gta-magenta)/0.3)] group" style={{
+            animationDelay: `${i * 150}ms`
+          }}>
                 <CardContent className="pt-6 md:pt-8 pb-6 md:pb-8 space-y-3 md:space-y-4">
                   <div className="relative inline-block">
                     <div className="absolute inset-0 bg-[hsl(var(--gta-magenta))]/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -239,8 +195,7 @@ const RPZap = () => {
                   <h3 className="font-gta text-lg md:text-xl text-white">{item.title}</h3>
                   <p className="text-gray-400 text-xs md:text-sm">{item.desc}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -260,12 +215,9 @@ const RPZap = () => {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {methodology.map((step, i) => (
-              <div key={i} className="relative group">
+            {methodology.map((step, i) => <div key={i} className="relative group">
                 {/* Connection line */}
-                {i < methodology.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 right-0 w-full h-0.5 bg-gradient-to-r from-[hsl(var(--gta-magenta))]/50 to-transparent transform translate-x-1/2 -translate-y-1/2 z-0" />
-                )}
+                {i < methodology.length - 1 && <div className="hidden md:block absolute top-1/2 right-0 w-full h-0.5 bg-gradient-to-r from-[hsl(var(--gta-magenta))]/50 to-transparent transform translate-x-1/2 -translate-y-1/2 z-0" />}
                 
                 <Card className="bg-zinc-900/80 border-zinc-800 text-center hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300 hover:-translate-y-2 relative z-10">
                   <CardContent className="pt-6 pb-6 space-y-3">
@@ -279,8 +231,7 @@ const RPZap = () => {
                     <p className="text-gray-400 text-xs md:text-sm">{step.description}</p>
                   </CardContent>
                 </Card>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -298,8 +249,9 @@ const RPZap = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {modules.map((module, i) => (
-              <Card key={i} className="bg-zinc-900/80 border-zinc-800 hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_-10px_hsl(var(--gta-magenta)/0.25)] group" style={{ animationDelay: `${i * 100}ms` }}>
+            {modules.map((module, i) => <Card key={i} className="bg-zinc-900/80 border-zinc-800 hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_40px_-10px_hsl(var(--gta-magenta)/0.25)] group" style={{
+            animationDelay: `${i * 100}ms`
+          }}>
                 <CardHeader className="pb-2 md:pb-4">
                   <div className="flex items-start gap-3 md:gap-4">
                     <div className="p-2.5 md:p-3 rounded-lg border border-[hsl(var(--gta-magenta))]/30 bg-[hsl(var(--gta-magenta))]/10 group-hover:bg-[hsl(var(--gta-magenta))]/20 group-hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300">
@@ -313,8 +265,7 @@ const RPZap = () => {
                 <CardContent>
                   <p className="text-gray-400 text-sm md:text-base">{module.description}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -331,12 +282,12 @@ const RPZap = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {forWho.map((item, i) => (
-                  <div key={i} className="flex items-start gap-3 group" style={{ animationDelay: `${i * 100}ms` }}>
+                {forWho.map((item, i) => <div key={i} className="flex items-start gap-3 group" style={{
+                animationDelay: `${i * 100}ms`
+              }}>
                     <CheckCircle2 className="w-5 h-5 text-[hsl(var(--gta-magenta))] flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                     <p className="text-white text-sm md:text-base">{item}</p>
-                  </div>
-                ))}
+                  </div>)}
               </CardContent>
             </Card>
 
@@ -348,12 +299,12 @@ const RPZap = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {notForWho.map((item, i) => (
-                  <div key={i} className="flex items-start gap-3 group" style={{ animationDelay: `${i * 100}ms` }}>
+                {notForWho.map((item, i) => <div key={i} className="flex items-start gap-3 group" style={{
+                animationDelay: `${i * 100}ms`
+              }}>
                     <XCircle className="w-5 h-5 text-[hsl(var(--gta-orange))] flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                     <p className="text-gray-400 text-sm md:text-base">{item}</p>
-                  </div>
-                ))}
+                  </div>)}
               </CardContent>
             </Card>
           </div>
@@ -385,19 +336,12 @@ const RPZap = () => {
             </CardHeader>
             <CardContent className="space-y-6 relative z-10">
               <div className="space-y-3">
-                {[
-                  "Acesso vitalício ao treinamento completo",
-                  "Método de criação de infoproduto com IA",
-                  "Estratégias de campanhas no Meta Ads",
-                  "Metodologia Pay After Delivery",
-                  "Scripts de vendas testados para WhatsApp",
-                  "Bônus: Templates de anúncios que convertem"
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 group" style={{ animationDelay: `${i * 50}ms` }}>
+                {["Acesso vitalício ao treinamento completo", "Método de criação de infoproduto com IA", "Estratégias de campanhas no Meta Ads", "Metodologia Pay After Delivery", "Scripts de vendas testados para WhatsApp", "Bônus: Templates de anúncios que convertem"].map((item, i) => <div key={i} className="flex items-center gap-3 group" style={{
+                animationDelay: `${i * 50}ms`
+              }}>
                     <CheckCircle2 className="w-5 h-5 text-[hsl(var(--gta-magenta))] flex-shrink-0 group-hover:scale-110 transition-transform" />
                     <p className="text-white text-sm md:text-base">{item}</p>
-                  </div>
-                ))}
+                  </div>)}
               </div>
 
               <div className="relative">
@@ -459,16 +403,14 @@ const RPZap = () => {
           </div>
 
           <Accordion type="single" collapsible className="space-y-3 md:space-y-4">
-            {faqs.map((faq, i) => (
-              <AccordionItem key={i} value={`item-${i}`} className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-4 md:px-6 hover:border-[hsl(var(--gta-magenta))]/30 transition-colors duration-300 data-[state=open]:border-[hsl(var(--gta-magenta))]/50">
+            {faqs.map((faq, i) => <AccordionItem key={i} value={`item-${i}`} className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-4 md:px-6 hover:border-[hsl(var(--gta-magenta))]/30 transition-colors duration-300 data-[state=open]:border-[hsl(var(--gta-magenta))]/50">
                 <AccordionTrigger className="text-left text-white hover:text-[hsl(var(--gta-magenta))] transition-colors text-sm md:text-base py-4">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-400 text-sm md:text-base pb-4">
                   {faq.answer}
                 </AccordionContent>
-              </AccordionItem>
-            ))}
+              </AccordionItem>)}
           </Accordion>
         </div>
       </section>
@@ -499,8 +441,6 @@ const RPZap = () => {
       </section>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default RPZap;
