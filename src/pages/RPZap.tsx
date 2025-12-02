@@ -94,7 +94,8 @@ const RPZap = () => {
             </h1>
 
             {/* Subheadline */}
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400 max-w-3xl mx-auto px-4">Crie seu próprio infoproduto de lowticket com I.A e venda no WhatsApp com a estratégia Pay After Delivery - recebendo direto no Pix<span className="text-[hsl(var(--gta-magenta))] font-semibold">Pay After Delivery</span> - recebendo direto no Pix
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-400 max-w-3xl mx-auto px-4">
+              Crie seu próprio infoproduto de lowticket com I.A e venda no WhatsApp com a estratégia <span className="text-[hsl(var(--gta-magenta))] font-semibold">Pay After Delivery</span> - recebendo direto no Pix
             </p>
 
             {/* VSL Video Placeholder */}
