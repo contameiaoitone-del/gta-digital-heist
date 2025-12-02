@@ -339,7 +339,7 @@ const RPZap = () => {
             </CardHeader>
             <CardContent className="space-y-6 relative z-10">
               <div className="space-y-3">
-                {["Acesso vitalício ao treinamento completo", "Método de criação de infoproduto com IA", "Estratégias de campanhas no Meta Ads", "Metodologia Pay After Delivery", "Scripts de vendas testados para WhatsApp", "Bônus: Templates de anúncios que convertem"].map((item, i) => <div key={i} className="flex items-center gap-3 group" style={{
+                {["Acesso vitalício ao treinamento completo", "Método de criação de infoproduto com IA", "Estratégias de campanhas no Meta Ads", "Metodologia Pay After Delivery", "Scripts de vendas testados para WhatsApp"].map((item, i) => <div key={i} className="flex items-center gap-3 group" style={{
                 animationDelay: `${i * 50}ms`
               }}>
                     <CheckCircle2 className="w-5 h-5 text-[hsl(var(--gta-magenta))] flex-shrink-0 group-hover:scale-110 transition-transform" />
