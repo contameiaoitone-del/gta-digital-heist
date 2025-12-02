@@ -93,20 +93,7 @@ const RPZap = () => {
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 md:gap-6 text-xs md:text-sm text-gray-400 pt-4">
-              <div className="flex items-center justify-center gap-2 hover:text-white transition-colors">
-                <Shield className="w-4 h-4 text-[hsl(var(--gta-orange))]" />
-                <span>Garantia de 7 dias</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 hover:text-white transition-colors">
-                <Clock className="w-4 h-4 text-[hsl(var(--gta-orange))]" />
-                <span>Acesso imediato</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 hover:text-white transition-colors">
-                <Award className="w-4 h-4 text-[hsl(var(--gta-orange))]" />
-                <span>Suporte completo</span>
-              </div>
-            </div>
+            
           </div>
         </div>
       </section>
