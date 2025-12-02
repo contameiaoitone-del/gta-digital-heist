@@ -79,14 +79,14 @@ const RPClose = () => {
   return (
     <div className="min-h-screen bg-black">
       {/* Hero Section with VSL */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-black">
         {/* Atmospheric Background */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 opacity-10 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:50px_50px]" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[hsl(var(--gta-magenta))]/10 rounded-full blur-[120px]" />
         </div>
 
-        <div className="container relative z-10 py-12 md:py-20 px-4">
+        <div className="container relative z-10 py-8 md:py-16 px-4">
           <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
             {/* Badge */}
             <Badge variant="outline" className="border-[hsl(var(--gta-magenta))] text-[hsl(var(--gta-magenta))] px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm bg-transparent animate-fade-in animate-pulse">
