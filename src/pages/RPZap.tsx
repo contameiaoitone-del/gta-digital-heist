@@ -55,7 +55,7 @@ const RPZap = () => {
           <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
             {/* Badge */}
             <Badge variant="outline" className="border-[hsl(var(--gta-magenta))] text-[hsl(var(--gta-magenta))] px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm bg-transparent animate-pulse">
-              ⚡ Sistema de Vendas Automatizado
+              ⚡ RP Zap
             </Badge>
 
             {/* Headline */}
