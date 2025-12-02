@@ -178,7 +178,7 @@ const RPZap = () => {
             {[{
             icon: Sparkles,
             title: "Infoproduto com IA",
-            desc: "Crie seu produto em dias, não meses"
+            desc: "Crie seu produto em minutos, não meses"
           }, {
             icon: HandCoins,
             title: "Pay After Delivery",
