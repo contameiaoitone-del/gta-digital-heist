@@ -88,7 +88,7 @@ const RPZap = () => {
               <div className="absolute inset-0 bg-[hsl(var(--gta-magenta))]/50 blur-xl rounded-lg animate-pulse" />
               <Button onClick={handleCTAClick} size="lg" className="relative text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 mt-4 md:mt-8 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-105 transition-all duration-300 shadow-[0_0_30px_hsl(var(--gta-magenta)/0.4)]">
                 <Zap className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                Quero Automatizar Minhas Vendas
+                Entrar no RP Zap agora!
               </Button>
             </div>
 
