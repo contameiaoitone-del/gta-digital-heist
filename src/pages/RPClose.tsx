@@ -6,6 +6,8 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import Autoplay from "embla-carousel-autoplay";
 import { CheckCircle2, XCircle, PlayCircle, Target, TrendingUp, Users, Zap, Shield, Clock, Award } from "lucide-react";
 import { Footer } from "@/components/Footer";
+import { PalmTree } from "@/components/decorative/PalmTree";
+import { UrbanSkyline } from "@/components/decorative/UrbanSkyline";
 import rpCloseResult1 from "@/assets/rp-close-result-1.png";
 import rpCloseResult2 from "@/assets/rp-close-result-2.png";
 import rpCloseResult3 from "@/assets/rp-close-result-3.png";
@@ -14,6 +16,8 @@ import rpCloseResult5 from "@/assets/rp-close-result-5.png";
 import rpCloseResult6 from "@/assets/rp-close-result-6.png";
 import rpCloseResult7 from "@/assets/rp-close-result-7.png";
 import rpCloseResult8 from "@/assets/rp-close-result-8.png";
+import gtaSunset from "@/assets/gta-sunset.png";
+import gtaCityscape from "@/assets/gta-cityscape-night.png";
 
 const RPClose = () => {
   const handleCTAClick = () => {
@@ -80,10 +84,32 @@ const RPClose = () => {
     <div className="min-h-screen bg-black">
       {/* Hero Section with VSL */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
-        {/* Subtle Grid Background */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:50px_50px]" />
+        {/* GTA Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src={gtaSunset} 
+            alt="" 
+            className="w-full h-full object-cover opacity-30"
+          />
+          {/* Vignette Overlay */}
+          <div className="absolute inset-0 bg-gradient-radial from-transparent via-black/60 to-black" />
         </div>
+
+        {/* Atmospheric Effects */}
+        <div className="absolute inset-0">
+          {/* Scanlines */}
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(transparent_50%,rgba(255,255,255,0.05)_50%)] bg-[length:100%_4px]" />
+          {/* Noise Texture */}
+          <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E")`
+          }} />
+          {/* Magenta Glow from Top */}
+          <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-[hsl(var(--gta-magenta))]/10 to-transparent" />
+        </div>
+
+        {/* Decorative Palm Trees */}
+        <PalmTree size="medium" position="left" opacity={0.15} gradientColor="hsl(var(--gta-magenta))" />
+        <PalmTree size="small" position="right" opacity={0.1} gradientColor="hsl(var(--gta-orange))" />
 
         <div className="container relative z-10 py-20 px-4">
           <div className="max-w-4xl mx-auto text-center space-y-8">
@@ -141,6 +167,9 @@ const RPClose = () => {
 
       {/* Problem Section */}
       <section className="py-20 px-4 relative bg-black">
+        {/* Gradient Transition */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[hsl(var(--gta-magenta))]/5 to-transparent" />
+        
         <div className="container relative z-10 max-w-4xl mx-auto">
           <div className="text-center space-y-6 mb-12">
             <h2 className="text-4xl md:text-5xl font-gta uppercase">
@@ -171,6 +200,11 @@ const RPClose = () => {
 
       {/* Solution Section */}
       <section className="py-20 px-4 relative bg-black">
+        {/* Subtle Grid Background */}
+        <div className="absolute inset-0 opacity-[0.02]">
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(212,0,166,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(212,0,166,0.1)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        </div>
+        
         <div className="container relative z-10 max-w-5xl mx-auto">
           <div className="text-center space-y-6 mb-12">
             <Badge variant="outline" className="border-[hsl(var(--gta-orange))] text-[hsl(var(--gta-orange))] px-4 py-2 bg-transparent">
@@ -204,6 +238,9 @@ const RPClose = () => {
 
       {/* Modules Section */}
       <section className="py-20 px-4 relative bg-black">
+        {/* Atmospheric Haze */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--gta-orange))]/5 via-transparent to-[hsl(var(--gta-magenta))]/5" />
+        
         <div className="container relative z-10 max-w-5xl mx-auto">
           <div className="text-center space-y-6 mb-12">
             <h2 className="text-4xl md:text-5xl font-gta uppercase text-white">
@@ -334,7 +371,24 @@ const RPClose = () => {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-20 px-4 relative bg-black">
+      <section className="py-20 px-4 relative bg-black overflow-hidden">
+        {/* God Rays Effect */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full">
+            <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--gta-magenta))]/30 via-transparent to-transparent" 
+                 style={{
+                   clipPath: 'polygon(40% 0%, 60% 0%, 55% 100%, 45% 100%)',
+                   animation: 'pulse 4s ease-in-out infinite'
+                 }} 
+            />
+          </div>
+        </div>
+
+        {/* Urban Skyline Decoration */}
+        <div className="absolute bottom-0 left-0 right-0 opacity-10">
+          <UrbanSkyline variant="night" />
+        </div>
+        
         <div className="container relative z-10 max-w-2xl mx-auto">
           <Card className="bg-zinc-900 border-[hsl(var(--gta-magenta))]/50">
             <CardHeader className="text-center space-y-4">
@@ -440,7 +494,24 @@ const RPClose = () => {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 px-4 relative bg-black">
+      <section className="py-20 px-4 relative bg-black overflow-hidden">
+        {/* Cityscape Background */}
+        <div className="absolute inset-0">
+          <img 
+            src={gtaCityscape} 
+            alt="" 
+            className="w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black" />
+        </div>
+
+        {/* Decorative Palm Trees */}
+        <PalmTree size="large" position="left" opacity={0.1} gradientColor="hsl(var(--gta-magenta))" />
+        <PalmTree size="medium" position="right" opacity={0.08} gradientColor="hsl(var(--gta-orange))" />
+
+        {/* Scanlines */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[linear-gradient(transparent_50%,rgba(255,255,255,0.05)_50%)] bg-[length:100%_4px]" />
+        
         <div className="container relative z-10 max-w-4xl mx-auto text-center space-y-8">
           <h2 className="text-4xl md:text-6xl font-gta uppercase">
             <span className="text-white">Pronto Para Ter Acesso</span>
