@@ -6,6 +6,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import Autoplay from "embla-carousel-autoplay";
 import { CheckCircle2, XCircle, PlayCircle, Target, TrendingUp, Users, Zap, Shield, Clock, Award } from "lucide-react";
 import { Footer } from "@/components/Footer";
+import { useRef, useEffect } from "react";
 import rpCloseResult1 from "@/assets/rp-close-result-1.png";
 import rpCloseResult2 from "@/assets/rp-close-result-2.png";
 import rpCloseResult3 from "@/assets/rp-close-result-3.png";
@@ -16,7 +17,35 @@ import rpCloseResult7 from "@/assets/rp-close-result-7.png";
 import rpCloseResult8 from "@/assets/rp-close-result-8.png";
 
 const RPClose = () => {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Função para pausar o vídeo do PandaVideo
+  const pauseVideo = () => {
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow?.postMessage(
+        JSON.stringify({ type: "pause" }),
+        "*"
+      );
+    }
+  };
+
+  // Pausar quando a página perde visibilidade (troca de aba)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        pauseVideo();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
   const handleCTAClick = () => {
+    pauseVideo(); // Pausa o vídeo antes de abrir o checkout
     window.open("https://pay.cakto.com.br/pcg9vjz_641934", "_blank");
   };
 
@@ -108,6 +137,7 @@ const RPClose = () => {
             {/* VSL Video */}
             <div className="relative max-w-sm mx-auto aspect-[9/16] rounded-lg overflow-hidden border border-white/20 shadow-[0_0_50px_rgba(212,0,166,0.2)] animate-fade-in" style={{ animationDelay: '0.3s' }}>
               <iframe 
+                ref={iframeRef}
                 id="panda-1094d3a9-cf13-4844-87a0-d3e29fa73e01" 
                 src="https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=1094d3a9-cf13-4844-87a0-d3e29fa73e01" 
                 className="absolute inset-0 w-full h-full"
