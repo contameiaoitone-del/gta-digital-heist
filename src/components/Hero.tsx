@@ -1,10 +1,30 @@
+import { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import heroImage from "@/assets/real-life-academy-collage.png";
 import { GTALogo } from "@/components/GTALogo";
 
 export const Hero = () => {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const pauseVideo = () => {
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow?.postMessage({ type: 'pause' }, '*');
+    }
+  };
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        pauseVideo();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
   const handleCTAClick = () => {
+    pauseVideo();
     window.open("https://pay.kirvano.com/c5dc9a65-1621-4ae1-825e-6ed36793fb6c", "_blank");
   };
 
@@ -63,7 +83,7 @@ export const Hero = () => {
 
             {/* Subtítulo */}
             <p 
-              className="mb-8 md:mb-12 text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-slide-up"
+              className="mb-8 text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-slide-up"
               style={{
                 animationDelay: "0.3s",
                 textShadow: "0 0 20px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8), 2px 2px 4px rgba(0,0,0,0.9)"
@@ -71,6 +91,22 @@ export const Hero = () => {
             >
               O tempo está passando, o mundo está mudando, e você está ficando para trás. Tome o controle do seu futuro e aprenda de verdade a sair do ZERO para pelo menos seus primeiros R$10.000/mês
             </p>
+
+            {/* VSL Video */}
+            <div 
+              className="relative max-w-sm mx-auto mb-8 aspect-[9/16] rounded-lg overflow-hidden border border-white/20 shadow-[0_0_50px_rgba(212,0,166,0.2)] animate-slide-up" 
+              style={{ animationDelay: '0.35s' }}
+            >
+              <iframe 
+                ref={iframeRef}
+                id="panda-86126053-4c22-4460-9555-f3f2abbac6c4" 
+                src="https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=86126053-4c22-4460-9555-f3f2abbac6c4" 
+                className="absolute inset-0 w-full h-full"
+                style={{ border: 'none' }}
+                allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" 
+                allowFullScreen
+              />
+            </div>
 
             {/* CTA Buttons */}
             <div 
