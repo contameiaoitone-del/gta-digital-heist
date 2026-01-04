@@ -3,7 +3,7 @@ import { Shield } from "lucide-react";
 
 export const GuaranteeSection = () => {
   const handleCTAClick = () => {
-    window.open("https://pay.kirvano.com/c5dc9a65-1621-4ae1-825e-6ed36793fb6c", "_blank");
+    window.open("https://pay.cakto.com.br/35g8dhq_697665", "_blank");
   };
 
   return (
