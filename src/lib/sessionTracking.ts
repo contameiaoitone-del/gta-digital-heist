@@ -5,6 +5,15 @@ const SCK_COOKIE_NAME = '_sck';
 const SCK_STORAGE_KEY = 'visitor_sck';
 
 /**
+ * Initialize session tracking on app load
+ */
+export function initSessionTracking(): void {
+  // Ensure SCK exists on first load
+  getOrCreateSCK();
+  console.log('[Session Tracking] Initialized');
+}
+
+/**
  * Generate a unique session cookie key
  */
 function generateSCK(): string {

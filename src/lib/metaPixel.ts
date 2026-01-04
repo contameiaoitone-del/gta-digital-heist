@@ -1,3 +1,43 @@
+// Meta Pixel utility functions for client-side tracking
+
+declare global {
+  interface Window {
+    fbq: any;
+    _fbq: any;
+  }
+}
+
+// Initialize Meta Pixel - should be called once at app startup
+export const initMetaPixel = (pixelId: string): void => {
+  if (typeof window === 'undefined') return;
+  
+  // Don't initialize twice
+  if (window.fbq) return;
+
+  // Meta Pixel base code
+  (function(f: any, b: Document, e: string, v: string, n?: any, t?: HTMLScriptElement, s?: Element) {
+    if (f.fbq) return;
+    n = f.fbq = function() {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = true;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e) as HTMLScriptElement;
+    t.async = true;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s?.parentNode?.insertBefore(t, s);
+  })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+  // Initialize with pixel ID
+  window.fbq('init', pixelId);
+  
+  console.log('[Meta Pixel] Initialized with ID:', pixelId);
+};
+
 // Get _fbp cookie (Meta Pixel browser ID)
 export function getFbp(): string | null {
   const match = document.cookie.match(/_fbp=([^;]+)/);
@@ -31,8 +71,8 @@ export function firePixelEvent(
   eventId: string, 
   params?: Record<string, any>
 ): void {
-  if (typeof window !== 'undefined' && (window as any).fbq) {
-    (window as any).fbq('track', eventName, params || {}, { eventID: eventId });
+  if (typeof window !== 'undefined' && window.fbq) {
+    window.fbq('track', eventName, params || {}, { eventID: eventId });
     console.log(`[Meta Pixel] Browser event fired: ${eventName}`, { eventId, params });
   } else {
     console.warn('[Meta Pixel] fbq not available');
