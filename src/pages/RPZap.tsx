@@ -1,11 +1,41 @@
+import { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CheckCircle2, XCircle, PlayCircle, Bot, MessageSquare, Rocket, Repeat, Shield, Clock, Award, Zap, Target, TrendingUp, Sparkles, Package, DollarSign, Megaphone, BarChart3, HandCoins } from "lucide-react";
 import { Footer } from "@/components/Footer";
+
 const RPZap = () => {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Função para pausar o vídeo do PandaVideo
+  const pauseVideo = () => {
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow?.postMessage(
+        JSON.stringify({ type: "pause" }),
+        "*"
+      );
+    }
+  };
+
+  // Pausar quando a página perde visibilidade (troca de aba)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        pauseVideo();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
   const handleCTAClick = () => {
+    pauseVideo(); // Pausa o vídeo antes de abrir o checkout
     window.open("https://pay.cakto.com.br/3dsuw79_671863", "_blank");
   };
   const modules = [{
@@ -98,19 +128,17 @@ const RPZap = () => {
               Crie seu próprio infoproduto de lowticket com I.A e venda no WhatsApp com a estratégia <span className="text-[hsl(var(--gta-magenta))] font-semibold">Pay After Delivery</span> - recebendo direto no Pix
             </p>
 
-            {/* VSL Video Placeholder */}
-            <div className="relative max-w-2xl mx-auto aspect-video rounded-lg overflow-hidden border border-white/20 bg-black group cursor-pointer hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--gta-magenta))]/5 to-transparent" />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                <div className="text-center space-y-3 md:space-y-4">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-[hsl(var(--gta-magenta))]/30 rounded-full blur-xl animate-pulse" />
-                    <PlayCircle className="w-16 h-16 md:w-24 md:h-24 mx-auto text-[hsl(var(--gta-magenta))] relative z-10 group-hover:scale-110 transition-transform duration-300" />
-                  </div>
-                  <p className="text-gray-400 font-semibold text-sm md:text-base">Assista ao Vídeo de Apresentação</p>
-                  <p className="text-xs md:text-sm text-gray-500">(Vídeo será adicionado em breve)</p>
-                </div>
-              </div>
+            {/* VSL Video */}
+            <div className="relative max-w-sm mx-auto aspect-[9/16] rounded-lg overflow-hidden border border-white/20 shadow-[0_0_50px_rgba(212,0,166,0.2)] animate-fade-in" style={{ animationDelay: '0.3s' }}>
+              <iframe 
+                ref={iframeRef}
+                id="panda-4dcc2c5f-e6aa-4fa7-bd4f-838928028135" 
+                src="https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=4dcc2c5f-e6aa-4fa7-bd4f-838928028135" 
+                className="absolute inset-0 w-full h-full"
+                style={{ border: 'none' }}
+                allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" 
+                allowFullScreen
+              />
             </div>
 
             {/* CTA Button */}
