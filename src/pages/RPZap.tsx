@@ -59,13 +59,15 @@ const RPZap = () => {
 
   const handleCTAClick = () => {
     pauseVideo(); // Pausa o vídeo antes de abrir o checkout
-    trackInitiateCheckout({
+    const sck = trackInitiateCheckout({
       contentName: 'RP Zap',
       contentIds: ['rp-zap'],
       value: 197.00,
       currency: 'BRL',
     });
-    window.open("https://pay.cakto.com.br/3dsuw79_671863", "_blank");
+    // Append SCK to checkout URL for session tracking through CaktoPay
+    const checkoutUrl = `https://pay.cakto.com.br/3dsuw79_671863?sck=${sck}`;
+    window.open(checkoutUrl, "_blank");
   };
   const modules = [{
     icon: Sparkles,

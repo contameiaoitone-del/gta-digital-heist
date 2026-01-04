@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -39,6 +40,39 @@ interface MetaEvent {
   };
 }
 
+// Save session data for SCK lookup
+async function saveSessionData(
+  supabase: any,
+  sck: string,
+  fbp: string | null,
+  fbc: string | null,
+  ipAddress: string,
+  userAgent: string,
+  pageLocation: string | null
+): Promise<void> {
+  try {
+    const { error } = await supabase
+      .from('visitor_sessions')
+      .upsert({
+        sck,
+        fbp,
+        fbc,
+        ip_address: ipAddress,
+        user_agent: userAgent,
+        page_location: pageLocation,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'sck' });
+    
+    if (error) {
+      console.error('[SCK] Error saving session:', error);
+    } else {
+      console.log('[SCK] Session saved for:', sck);
+    }
+  } catch (error) {
+    console.error('[SCK] Exception saving session:', error);
+  }
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -47,6 +81,8 @@ serve(async (req) => {
   try {
     const META_PIXEL_ID = Deno.env.get('META_PIXEL_ID');
     const META_ACCESS_TOKEN = Deno.env.get('META_ACCESS_TOKEN');
+    const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
     if (!META_PIXEL_ID || !META_ACCESS_TOKEN) {
       console.error('Missing META_PIXEL_ID or META_ACCESS_TOKEN');
@@ -56,6 +92,9 @@ serve(async (req) => {
       });
     }
 
+    // Initialize Supabase client for session storage
+    const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
+
     const body = await req.json();
     console.log('Received event:', JSON.stringify(body, null, 2));
 
@@ -63,6 +102,7 @@ serve(async (req) => {
       event_name,
       event_id,
       event_source_url,
+      sck,
       email,
       phone,
       first_name,
@@ -82,6 +122,11 @@ serve(async (req) => {
                      req.headers.get('cf-connecting-ip') || 
                      '';
     const userAgent = req.headers.get('user-agent') || '';
+
+    // Save session data for InitiateCheckout events (for webhook lookup)
+    if (event_name === 'InitiateCheckout' && sck) {
+      await saveSessionData(supabase, sck, fbp, fbc, clientIp, userAgent, event_source_url);
+    }
 
     // Build user_data with hashed PII
     const userData: MetaEvent['user_data'] = {
