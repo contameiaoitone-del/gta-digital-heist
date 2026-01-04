@@ -289,17 +289,17 @@ const RPZap = () => {
           </div>
 
           {/* Module Covers Carousel */}
-          <div className="mb-10 md:mb-14 px-8 md:px-12">
+          <div className="mb-10 md:mb-14 px-4 md:px-12">
             <Carousel
-              opts={{ align: "start", loop: true }}
+              opts={{ align: "center", loop: true }}
               plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}
               className="w-full"
             >
-              <CarouselContent className="-ml-2 md:-ml-4">
+              <CarouselContent className="-ml-3 md:-ml-4">
                 {moduleCovers.map((module, index) => (
-                  <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4">
+                  <CarouselItem key={index} className="pl-3 md:pl-4 basis-[70%] sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                     <div className="relative group cursor-pointer">
-                      <div className="aspect-[2/3] overflow-hidden rounded-lg border border-zinc-800 group-hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300">
+                      <div className="aspect-[2/3] overflow-hidden rounded-xl border-2 border-zinc-800 group-hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300 shadow-lg">
                         <img 
                           src={module.image} 
                           alt={module.title}
