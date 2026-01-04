@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { CheckCircle2, Instagram, Send, Clock, UserPlus } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -45,18 +46,38 @@ const RPCloseSuccess = () => {
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    console.log("Form submitted:", data);
-    
-    toast({
-      title: "Dados enviados com sucesso!",
-      description: "Seu acesso será liberado em breve.",
-    });
-    
-    setIsSubmitted(true);
-    setIsLoading(false);
+    try {
+      // Normalize instagram handle (remove @ if present)
+      const instagram = data.instagram.startsWith("@") 
+        ? data.instagram.slice(1) 
+        : data.instagram;
+
+      const { error } = await supabase
+        .from("rp_close_submissions")
+        .insert({
+          name: data.name.trim(),
+          email: data.email.trim().toLowerCase(),
+          instagram: instagram.trim(),
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Dados enviados com sucesso!",
+        description: "Seu acesso será liberado em breve.",
+      });
+      
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Erro ao enviar dados",
+        description: "Tente novamente ou entre em contato pelo Instagram.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleInstagramDM = () => {
