@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
-import { getFbp, getFbc, generateEventId, firePixelEvent } from '@/lib/metaPixel';
+import { generateEventId, firePixelEvent } from '@/lib/metaPixel';
+import { getOrCreateSCK, getFbp, getFbc } from '@/lib/sessionTracking';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
@@ -27,6 +28,7 @@ async function sendServerEvent(payload: Record<string, any>): Promise<void> {
 export function useMetaTracking() {
   const trackPageView = useCallback((contentName?: string) => {
     const eventId = generateEventId();
+    const sck = getOrCreateSCK();
     const fbp = getFbp();
     const fbc = getFbc();
     
@@ -38,6 +40,7 @@ export function useMetaTracking() {
       event_name: 'PageView',
       event_id: eventId,
       event_source_url: window.location.href,
+      sck,
       fbp,
       fbc,
       content_name: contentName,
@@ -52,6 +55,7 @@ export function useMetaTracking() {
     currency?: string;
   }) => {
     const eventId = generateEventId();
+    const sck = getOrCreateSCK();
     const fbp = getFbp();
     const fbc = getFbc();
     
@@ -71,6 +75,7 @@ export function useMetaTracking() {
       event_name: 'ViewContent',
       event_id: eventId,
       event_source_url: window.location.href,
+      sck,
       fbp,
       fbc,
       ...params,
@@ -82,8 +87,9 @@ export function useMetaTracking() {
     contentIds?: string[];
     value?: number;
     currency?: string;
-  }) => {
+  }): string => {
     const eventId = generateEventId();
+    const sck = getOrCreateSCK();
     const fbp = getFbp();
     const fbc = getFbc();
     
@@ -97,15 +103,19 @@ export function useMetaTracking() {
     // Fire browser event
     firePixelEvent('InitiateCheckout', eventId, pixelParams);
     
-    // Send server event
+    // Send server event - this also saves the session for webhook lookup
     sendServerEvent({
       event_name: 'InitiateCheckout',
       event_id: eventId,
       event_source_url: window.location.href,
+      sck,
       fbp,
       fbc,
       ...params,
     });
+    
+    // Return sck so it can be appended to checkout URL
+    return sck;
   }, []);
 
   const trackLead = useCallback((params: {
@@ -117,6 +127,7 @@ export function useMetaTracking() {
     value?: number;
   }) => {
     const eventId = generateEventId();
+    const sck = getOrCreateSCK();
     const fbp = getFbp();
     const fbc = getFbc();
     
@@ -132,6 +143,7 @@ export function useMetaTracking() {
       event_name: 'Lead',
       event_id: eventId,
       event_source_url: window.location.href,
+      sck,
       fbp,
       fbc,
       email: params.email,

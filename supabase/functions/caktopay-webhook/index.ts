@@ -1,9 +1,40 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-webhook-secret',
 };
+
+// SHA-256 hash for PII data
+async function sha256(message: string): Promise<string> {
+  const msgBuffer = new TextEncoder().encode(message.toLowerCase().trim());
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Lookup session data by SCK
+async function lookupSession(supabase: any, sck: string) {
+  try {
+    const { data, error } = await supabase
+      .from('visitor_sessions')
+      .select('fbp, fbc, ip_address, user_agent')
+      .eq('sck', sck)
+      .single();
+    
+    if (error) {
+      console.error('[SCK] Error looking up session:', error);
+      return null;
+    }
+    
+    console.log('[SCK] Session found for:', sck, data);
+    return data;
+  } catch (error) {
+    console.error('[SCK] Exception looking up session:', error);
+    return null;
+  }
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -14,6 +45,8 @@ serve(async (req) => {
     const WEBHOOK_SECRET = Deno.env.get('CAKTOPAY_WEBHOOK_SECRET');
     const META_PIXEL_ID = Deno.env.get('META_PIXEL_ID');
     const META_ACCESS_TOKEN = Deno.env.get('META_ACCESS_TOKEN');
+    const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
     if (!WEBHOOK_SECRET) {
       console.error('CAKTOPAY_WEBHOOK_SECRET not configured');
@@ -32,6 +65,9 @@ serve(async (req) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
+
+    // Initialize Supabase client for session lookup
+    const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
 
     const payload = await req.json();
     console.log('CaktoPay webhook received:', JSON.stringify(payload, null, 2));
@@ -66,9 +102,31 @@ serve(async (req) => {
     const firstName = nameParts[0] || '';
     const lastName = nameParts.slice(1).join(' ') || '';
     
-    // CaktoPay may provide fbp/fbc from their tracking
-    const fbp = data?.fbp || customer.fbp || transaction.fbp;
-    const fbc = data?.fbc || customer.fbc || transaction.fbc;
+    // Try to get SCK from various possible locations in the payload
+    const sck = payload.sck || data?.sck || data?.custom_data?.sck || 
+                data?.metadata?.sck || data?.tracking?.sck || '';
+
+    // Lookup session data using SCK
+    let sessionData = null;
+    if (sck) {
+      sessionData = await lookupSession(supabase, sck);
+    }
+
+    // Get fbp and fbc - prefer session data (original visitor cookies)
+    const fbp = sessionData?.fbp || data?.fbp || customer.fbp || transaction.fbp || '';
+    const fbc = sessionData?.fbc || data?.fbc || customer.fbc || transaction.fbc || '';
+    
+    // Get client IP - prefer session data
+    const clientIp = sessionData?.ip_address || data?.client_ip || '';
+    const userAgent = sessionData?.user_agent || data?.user_agent || '';
+
+    console.log('[SCK] Using session data:', { 
+      sck, 
+      hasSession: !!sessionData,
+      hasFbp: !!fbp, 
+      hasFbc: !!fbc, 
+      hasIp: !!clientIp 
+    });
     
     // Transaction value
     const value = transaction.amount || transaction.value || data?.amount || data?.value || 0;
@@ -87,14 +145,6 @@ serve(async (req) => {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
-    }
-
-    // Hash PII for Meta
-    async function sha256(message: string): Promise<string> {
-      const msgBuffer = new TextEncoder().encode(message.toLowerCase().trim());
-      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
     const userData: Record<string, any> = {};
@@ -117,6 +167,12 @@ serve(async (req) => {
     }
     if (fbc) {
       userData.fbc = fbc;
+    }
+    if (clientIp) {
+      userData.client_ip_address = clientIp;
+    }
+    if (userAgent) {
+      userData.client_user_agent = userAgent;
     }
 
     const eventData = {

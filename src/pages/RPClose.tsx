@@ -57,13 +57,15 @@ const RPClose = () => {
 
   const handleCTAClick = () => {
     pauseVideo(); // Pausa o vídeo antes de abrir o checkout
-    trackInitiateCheckout({
+    const sck = trackInitiateCheckout({
       contentName: 'RP Close',
       contentIds: ['rp-close'],
       value: 29.90,
       currency: 'BRL',
     });
-    window.open("https://pay.cakto.com.br/pcg9vjz_641934", "_blank");
+    // Append SCK to checkout URL for session tracking through CaktoPay
+    const checkoutUrl = `https://pay.cakto.com.br/pcg9vjz_641934?sck=${sck}`;
+    window.open(checkoutUrl, "_blank");
   };
 
   const modules = [
