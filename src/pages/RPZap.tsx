@@ -12,10 +12,7 @@ const RPZap = () => {
   // Função para pausar o vídeo do PandaVideo
   const pauseVideo = () => {
     if (iframeRef.current) {
-      iframeRef.current.contentWindow?.postMessage(
-        JSON.stringify({ type: "pause" }),
-        "*"
-      );
+      iframeRef.current.contentWindow?.postMessage({ type: 'pause' }, '*');
     }
   };
 
