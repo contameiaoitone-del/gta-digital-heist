@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import gtaHero from "@/assets/gta-collage-background.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
 import rpZapBanner from "@/assets/rp-zap-banner.png";
+import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 import caioDalcinLogo from "@/assets/caio-dalcin-logo.png";
 import GameLoader from "@/components/GameLoader";
@@ -13,6 +14,13 @@ const Links = () => {
   useBackgroundMusic(gtaTheme, 0.4);
   
   const links = [
+    {
+      name: "Real Life Academy",
+      url: "/",
+      icon: GraduationCap,
+      description: "Curso completo de marketing digital",
+      image: realLifeAcademyBanner,
+    },
     {
       name: "RP Close",
       url: "/rp-close",
