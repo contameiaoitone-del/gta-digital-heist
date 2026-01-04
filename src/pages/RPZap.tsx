@@ -3,9 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import { CheckCircle2, XCircle, PlayCircle, Bot, MessageSquare, Rocket, Repeat, Shield, Clock, Award, Zap, Target, TrendingUp, Sparkles, Package, DollarSign, Megaphone, BarChart3, HandCoins } from "lucide-react";
 import { Footer } from "@/components/Footer";
+import module1Cover from "@/assets/rp-zap-module-1.png";
+import module2Cover from "@/assets/rp-zap-module-2.png";
+import module3Cover from "@/assets/rp-zap-module-3.png";
+import module4Cover from "@/assets/rp-zap-module-4.png";
 
+const moduleCovers = [
+  { image: module1Cover, title: "Seja Bem Vindo" },
+  { image: module2Cover, title: "Estruturando Tudo" },
+  { image: module3Cover, title: "Criando seu Produto" },
+  { image: module4Cover, title: "Meta Ads Parte 1" },
+];
 const RPZap = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -274,6 +286,33 @@ const RPZap = () => {
             <p className="text-base md:text-xl text-gray-400">
               5 módulos direto ao ponto para você começar a vender
             </p>
+          </div>
+
+          {/* Module Covers Carousel */}
+          <div className="mb-10 md:mb-14 px-8 md:px-12">
+            <Carousel
+              opts={{ align: "start", loop: true }}
+              plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {moduleCovers.map((module, index) => (
+                  <CarouselItem key={index} className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4">
+                    <div className="relative group cursor-pointer">
+                      <div className="aspect-[2/3] overflow-hidden rounded-lg border border-zinc-800 group-hover:border-[hsl(var(--gta-magenta))]/50 transition-all duration-300">
+                        <img 
+                          src={module.image} 
+                          alt={module.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:flex -left-10 bg-zinc-900/80 border-zinc-700 hover:bg-zinc-800 text-white" />
+              <CarouselNext className="hidden md:flex -right-10 bg-zinc-900/80 border-zinc-700 hover:bg-zinc-800 text-white" />
+            </Carousel>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
