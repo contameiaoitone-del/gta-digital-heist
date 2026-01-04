@@ -105,15 +105,16 @@ const RPClose = () => {
               Acesso aos meus testes em tempo real - o que funciona, o que falha, e a verdade sobre o digital sem filtro
             </p>
 
-            {/* VSL Video Placeholder */}
-            <div className="relative max-w-2xl mx-auto aspect-video rounded-lg overflow-hidden border border-white/20 bg-gradient-to-br from-zinc-900 to-black shadow-[0_0_50px_rgba(212,0,166,0.2)] animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-zinc-900/50 to-black/50 backdrop-blur-sm">
-                <div className="text-center space-y-3 md:space-y-4">
-                  <PlayCircle className="w-16 h-16 md:w-24 md:h-24 mx-auto text-[hsl(var(--gta-magenta))] animate-pulse drop-shadow-[0_0_20px_rgba(212,0,166,0.6)] cursor-pointer hover:scale-110 transition-transform duration-300" />
-                  <p className="text-gray-400 font-semibold text-sm md:text-base">Assista ao Vídeo de Apresentação</p>
-                  <p className="text-xs md:text-sm text-gray-500">(Vídeo será adicionado em breve)</p>
-                </div>
-              </div>
+            {/* VSL Video */}
+            <div className="relative max-w-sm mx-auto aspect-[9/16] rounded-lg overflow-hidden border border-white/20 shadow-[0_0_50px_rgba(212,0,166,0.2)] animate-fade-in" style={{ animationDelay: '0.3s' }}>
+              <iframe 
+                id="panda-1094d3a9-cf13-4844-87a0-d3e29fa73e01" 
+                src="https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=1094d3a9-cf13-4844-87a0-d3e29fa73e01" 
+                className="absolute inset-0 w-full h-full"
+                style={{ border: 'none' }}
+                allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" 
+                allowFullScreen
+              />
             </div>
 
             {/* CTA Button */}
