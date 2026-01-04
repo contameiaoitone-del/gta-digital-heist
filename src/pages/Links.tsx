@@ -15,7 +15,7 @@ const Links = () => {
   const links = [
     {
       name: "RP Close",
-      url: "https://pay.cakto.com.br/pcg9vjz_641934",
+      url: "/rp-close",
       icon: ExternalLink,
       description: "Sistema de vendas completo",
       image: rpCloseBanner,
