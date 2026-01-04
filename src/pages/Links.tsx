@@ -22,7 +22,7 @@ const Links = () => {
     },
     {
       name: "RP Zap",
-      url: "https://pay.cakto.com.br/3dsuw79_671863",
+      url: "/rp-zap",
       icon: ExternalLink,
       description: "RP Zap",
       image: rpZapBanner,
