@@ -18,6 +18,7 @@ import module16Cover from "@/assets/rla-module-16.png";
 import module17Cover from "@/assets/rla-module-17.png";
 import module18Cover from "@/assets/rla-module-18.png";
 import module19Cover from "@/assets/rla-module-19.png";
+import module20Cover from "@/assets/rla-module-20.png";
 import {
   Carousel,
   CarouselContent,
@@ -47,6 +48,7 @@ const moduleCovers = [
   { image: module17Cover, title: "Calls ao Vivo" },
   { image: module18Cover, title: "Criando Sites com I.A" },
   { image: module19Cover, title: "Meta Ads Parte 3" },
+  { image: module20Cover, title: "Agência Milionária" },
 ];
 
 const modules = [
