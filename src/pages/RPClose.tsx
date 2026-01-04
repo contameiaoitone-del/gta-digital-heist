@@ -7,6 +7,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { CheckCircle2, XCircle, PlayCircle, Target, TrendingUp, Users, Zap, Shield, Clock, Award } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { useRef, useEffect } from "react";
+import { useMetaTracking } from "@/hooks/useMetaTracking";
 import rpCloseResult1 from "@/assets/rp-close-result-1.png";
 import rpCloseResult2 from "@/assets/rp-close-result-2.png";
 import rpCloseResult3 from "@/assets/rp-close-result-3.png";
@@ -18,6 +19,7 @@ import rpCloseResult8 from "@/assets/rp-close-result-8.png";
 
 const RPClose = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const { trackPageView, trackViewContent, trackInitiateCheckout } = useMetaTracking();
 
   // Função para pausar o vídeo do PandaVideo
   const pauseVideo = () => {
@@ -25,6 +27,18 @@ const RPClose = () => {
       iframeRef.current.contentWindow?.postMessage({ type: 'pause' }, '*');
     }
   };
+
+  // Track page view and view content on mount
+  useEffect(() => {
+    trackPageView('RP Close');
+    trackViewContent({
+      contentName: 'RP Close',
+      contentCategory: 'Close Friends',
+      contentIds: ['rp-close'],
+      value: 29.90,
+      currency: 'BRL',
+    });
+  }, [trackPageView, trackViewContent]);
 
   // Pausar quando a página perde visibilidade (troca de aba)
   useEffect(() => {
@@ -43,6 +57,12 @@ const RPClose = () => {
 
   const handleCTAClick = () => {
     pauseVideo(); // Pausa o vídeo antes de abrir o checkout
+    trackInitiateCheckout({
+      contentName: 'RP Close',
+      contentIds: ['rp-close'],
+      value: 29.90,
+      currency: 'BRL',
+    });
     window.open("https://pay.cakto.com.br/pcg9vjz_641934", "_blank");
   };
 
