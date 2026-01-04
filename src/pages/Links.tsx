@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Youtube, ExternalLink, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import gtaHero from "@/assets/gta-collage-background.png";
@@ -9,9 +10,20 @@ import caioDalcinLogo from "@/assets/caio-dalcin-logo.png";
 import GameLoader from "@/components/GameLoader";
 import gtaTheme from "@/assets/gta-theme.mp3";
 import { useBackgroundMusic } from "@/hooks/useBackgroundMusic";
+import { useMetaTracking } from "@/hooks/useMetaTracking";
 
 const Links = () => {
   useBackgroundMusic(gtaTheme, 0.4);
+  const { trackPageView, trackViewContent } = useMetaTracking();
+
+  useEffect(() => {
+    trackPageView('Links');
+    trackViewContent({
+      contentName: 'Links',
+      contentCategory: 'Bio Page',
+      contentIds: ['links'],
+    });
+  }, []);
   
   const links = [
     {
