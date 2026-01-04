@@ -8,6 +8,16 @@ import module6Cover from "@/assets/rla-module-6.png";
 import module7Cover from "@/assets/rla-module-7.png";
 import module8Cover from "@/assets/rla-module-8.png";
 import module9Cover from "@/assets/rla-module-9.png";
+import module10Cover from "@/assets/rla-module-10.png";
+import module11Cover from "@/assets/rla-module-11.png";
+import module12Cover from "@/assets/rla-module-12.png";
+import module13Cover from "@/assets/rla-module-13.png";
+import module14Cover from "@/assets/rla-module-14.png";
+import module15Cover from "@/assets/rla-module-15.png";
+import module16Cover from "@/assets/rla-module-16.png";
+import module17Cover from "@/assets/rla-module-17.png";
+import module18Cover from "@/assets/rla-module-18.png";
+import module19Cover from "@/assets/rla-module-19.png";
 import {
   Carousel,
   CarouselContent,
@@ -27,6 +37,16 @@ const moduleCovers = [
   { image: module7Cover, title: "Meta Ads Parte 2" },
   { image: module8Cover, title: "Códigos de Trapaça" },
   { image: module9Cover, title: "Dúvidas" },
+  { image: module10Cover, title: "Tudo sobre Criativos" },
+  { image: module11Cover, title: "Análise e Otimização de Métricas" },
+  { image: module12Cover, title: "Tudo sobre TikTok Ads" },
+  { image: module13Cover, title: "Tudo sobre Google Ads" },
+  { image: module14Cover, title: "Tráfego para Negócios Locais" },
+  { image: module15Cover, title: "Tráfego para E-commerce" },
+  { image: module16Cover, title: "Tráfego para Infoprodutos" },
+  { image: module17Cover, title: "Calls ao Vivo" },
+  { image: module18Cover, title: "Criando Sites com I.A" },
+  { image: module19Cover, title: "Meta Ads Parte 3" },
 ];
 
 const modules = [
