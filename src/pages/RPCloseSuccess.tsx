@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { useMetaTracking } from "@/hooks/useMetaTracking";
 
 const formSchema = z.object({
   name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres").max(100),
@@ -33,6 +34,7 @@ const RPCloseSuccess = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const { trackLead } = useMetaTracking();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -61,6 +63,16 @@ const RPCloseSuccess = () => {
         });
 
       if (error) throw error;
+
+      // Track Lead event with user data
+      const nameParts = data.name.trim().split(' ');
+      trackLead({
+        email: data.email.trim().toLowerCase(),
+        firstName: nameParts[0],
+        lastName: nameParts.slice(1).join(' '),
+        contentName: 'RP Close',
+        value: 29.90,
+      });
 
       toast({
         title: "Dados enviados com sucesso!",
