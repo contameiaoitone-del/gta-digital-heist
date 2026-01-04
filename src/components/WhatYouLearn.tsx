@@ -1,4 +1,33 @@
 import { DollarSign, Megaphone, Sparkles, Users, Video, Package } from "lucide-react";
+import module1Cover from "@/assets/rla-module-1.png";
+import module2Cover from "@/assets/rla-module-2.png";
+import module3Cover from "@/assets/rla-module-3.png";
+import module4Cover from "@/assets/rla-module-4.png";
+import module5Cover from "@/assets/rla-module-5.png";
+import module6Cover from "@/assets/rla-module-6.png";
+import module7Cover from "@/assets/rla-module-7.png";
+import module8Cover from "@/assets/rla-module-8.png";
+import module9Cover from "@/assets/rla-module-9.png";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+
+const moduleCovers = [
+  { image: module1Cover, title: "Tudo sobre Whatsapp" },
+  { image: module2Cover, title: "Conceitos do Digital" },
+  { image: module3Cover, title: "Produtos e Nichos" },
+  { image: module4Cover, title: "Estruturando Tudo" },
+  { image: module5Cover, title: "Criando seu Produto" },
+  { image: module6Cover, title: "Meta Ads Parte 1" },
+  { image: module7Cover, title: "Meta Ads Parte 2" },
+  { image: module8Cover, title: "Códigos de Trapaça" },
+  { image: module9Cover, title: "Dúvidas" },
+];
 
 const modules = [
   {
@@ -50,6 +79,33 @@ export const WhatYouLearn = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Um sistema completo com tudo que você precisa para transformar sua vida digital
           </p>
+        </div>
+
+        {/* Module Covers Carousel */}
+        <div className="mb-12 md:mb-16 px-4 md:px-12">
+          <Carousel
+            opts={{ align: "center", loop: true }}
+            plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-3 md:-ml-4">
+              {moduleCovers.map((module, index) => (
+                <CarouselItem key={index} className="pl-3 md:pl-4 basis-[70%] sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+                  <div className="relative group cursor-pointer">
+                    <div className="aspect-[2/3] overflow-hidden rounded-xl border-2 border-border/50 group-hover:border-primary/70 transition-all duration-300 shadow-lg group-hover:shadow-[0_0_30px_hsl(330_85%_65%_/_0.4)]">
+                      <img 
+                        src={module.image} 
+                        alt={module.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex -left-12 bg-card/80 border-border hover:bg-primary/20 hover:border-primary" />
+            <CarouselNext className="hidden md:flex -right-12 bg-card/80 border-border hover:bg-primary/20 hover:border-primary" />
+          </Carousel>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
