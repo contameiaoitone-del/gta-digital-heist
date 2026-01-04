@@ -361,8 +361,8 @@ const RPZap = () => {
               </CardTitle>
               <div className="space-y-2">
                 <p className="text-sm text-gray-500 line-through">De R$ 497,00</p>
-                <p className="text-4xl md:text-5xl font-gta text-[hsl(var(--gta-magenta))] drop-shadow-[0_0_15px_hsl(var(--gta-magenta)/0.4)]">R$ 147,00</p>
-                <p className="text-gray-400 text-sm md:text-base">ou 12x de R$ 12,25</p>
+                <p className="text-4xl md:text-5xl font-gta text-[hsl(var(--gta-magenta))] drop-shadow-[0_0_15px_hsl(var(--gta-magenta)/0.4)]">R$ 97,00</p>
+                <p className="text-gray-400 text-sm md:text-base">ou 12x de R$ 11,36</p>
               </div>
             </CardHeader>
             <CardContent className="space-y-6 relative z-10">
