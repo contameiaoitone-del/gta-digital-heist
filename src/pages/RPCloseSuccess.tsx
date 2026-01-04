@@ -60,7 +60,7 @@ const RPCloseSuccess = () => {
   };
 
   const handleInstagramDM = () => {
-    window.open("https://ig.me/m/caiodalcin", "_blank");
+    window.open("https://www.instagram.com/caio.dalcin/", "_blank");
   };
 
   const steps = [
@@ -71,7 +71,7 @@ const RPCloseSuccess = () => {
     },
     {
       icon: UserPlus,
-      title: "Siga @caiodalcin",
+      title: "Siga @caio.dalcin",
       description: "Siga o perfil para receber o convite do Close Friends",
     },
     {
@@ -277,12 +277,12 @@ const RPCloseSuccess = () => {
           <p className="text-sm text-gray-500">
             Dúvidas? Entre em contato pelo Instagram{" "}
             <a
-              href="https://instagram.com/caiodalcin"
+              href="https://www.instagram.com/caio.dalcin/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#D400A6] hover:underline"
             >
-              @caiodalcin
+              @caio.dalcin
             </a>
           </p>
         </div>
