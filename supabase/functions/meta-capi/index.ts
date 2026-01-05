@@ -123,8 +123,8 @@ serve(async (req) => {
                      '';
     const userAgent = req.headers.get('user-agent') || '';
 
-    // Save session data for InitiateCheckout events (for webhook lookup)
-    if (event_name === 'InitiateCheckout' && sck) {
+    // Save session data for ALL events with SCK (for webhook lookup)
+    if (sck) {
       await saveSessionData(supabase, sck, fbp, fbc, clientIp, userAgent, event_source_url);
     }
 

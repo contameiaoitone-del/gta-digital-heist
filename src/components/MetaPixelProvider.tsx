@@ -55,6 +55,25 @@ export const MetaPixelProvider = ({ children }: { children: React.ReactNode }) =
   useEffect(() => {
     // Initialize session tracking (SCK) - Pixel is already initialized in index.html
     initSCK();
+    
+    // Wait for Meta Pixel to create _fbp cookie, then log it
+    setTimeout(() => {
+      const getCookieValue = (name: string): string | null => {
+        const nameEQ = `${name}=`;
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+          cookie = cookie.trim();
+          if (cookie.indexOf(nameEQ) === 0) {
+            return cookie.substring(nameEQ.length);
+          }
+        }
+        return null;
+      };
+      
+      const fbp = getCookieValue('_fbp');
+      const fbc = getCookieValue('_fbc');
+      console.log('[Session Tracking] Captured cookies - fbp:', fbp, 'fbc:', fbc);
+    }, 2000);
   }, []);
 
   const isExcluded = EXCLUDED_PATHS.includes(location.pathname);
