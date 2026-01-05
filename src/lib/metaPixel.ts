@@ -65,16 +65,25 @@ export function generateEventId(): string {
   return `${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
 }
 
-// Fire browser pixel event
+// Fire browser pixel event with retry logic
 export function firePixelEvent(
   eventName: string, 
   eventId: string, 
   params?: Record<string, any>
 ): void {
-  if (typeof window !== 'undefined' && window.fbq) {
-    window.fbq('track', eventName, params || {}, { eventID: eventId });
-    console.log(`[Meta Pixel] Browser event fired: ${eventName}`, { eventId, params });
-  } else {
-    console.warn('[Meta Pixel] fbq not available');
-  }
+  if (typeof window === 'undefined') return;
+
+  const tryFire = (attempts = 0): void => {
+    if (window.fbq) {
+      window.fbq('track', eventName, params || {}, { eventID: eventId });
+      console.log(`[Meta Pixel] Browser event fired: ${eventName}`, { eventId, params });
+    } else if (attempts < 20) {
+      // Retry every 100ms for up to 2 seconds
+      setTimeout(() => tryFire(attempts + 1), 100);
+    } else {
+      console.warn('[Meta Pixel] fbq not available after waiting');
+    }
+  };
+
+  tryFire();
 }
