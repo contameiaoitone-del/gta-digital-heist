@@ -7,6 +7,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { CheckCircle2, XCircle, PlayCircle, Target, TrendingUp, Users, Zap, Shield, Clock, Award } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { useRef, useEffect } from "react";
+import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 import rpCloseResult1 from "@/assets/rp-close-result-1.png";
 import rpCloseResult2 from "@/assets/rp-close-result-2.png";
 import rpCloseResult3 from "@/assets/rp-close-result-3.png";
@@ -41,7 +42,8 @@ const RPClose = () => {
     };
   }, []);
 
-  const checkoutUrl = "https://pay.cakto.com.br/pcg9vjz_641934";
+  const { getCheckoutUrl } = useCheckoutUrl();
+  const checkoutUrl = getCheckoutUrl("https://pay.cakto.com.br/pcg9vjz_641934");
 
   const modules = [
     {

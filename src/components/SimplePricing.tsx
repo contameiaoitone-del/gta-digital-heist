@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Check, Shield, Headphones } from "lucide-react";
+import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 
 export const SimplePricing = () => {
-  const checkoutUrl = "https://pay.cakto.com.br/35g8dhq_697665";
-
+  const { getCheckoutUrl } = useCheckoutUrl();
+  const checkoutUrl = getCheckoutUrl("https://pay.cakto.com.br/35g8dhq_697665");
   return (
     <section className="relative py-20 md:py-32 overflow-hidden">
       {/* Neon background effect */}
