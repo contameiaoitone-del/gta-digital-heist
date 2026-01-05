@@ -97,9 +97,20 @@ export function appendSCKToUrl(url: string): string {
 
 /**
  * Get Meta Pixel fbp cookie value
+ * Checks cookie first, then localStorage as fallback
  */
 export function getFbp(): string | null {
-  return getCookie('_fbp');
+  // Try cookie first
+  let fbp = getCookie('_fbp');
+  
+  // Try localStorage as fallback
+  if (!fbp) {
+    try {
+      fbp = localStorage.getItem('_fbp');
+    } catch (e) {}
+  }
+  
+  return fbp;
 }
 
 /**

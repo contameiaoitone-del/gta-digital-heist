@@ -93,6 +93,9 @@ export function useMetaTracking() {
     const fbp = getFbp();
     const fbc = getFbc();
     
+    // Debug log for tracking
+    console.log('[Meta Tracking] InitiateCheckout - SCK:', sck, 'fbp:', fbp, 'fbc:', fbc);
+    
     const pixelParams = {
       content_name: params.contentName,
       content_ids: params.contentIds,
