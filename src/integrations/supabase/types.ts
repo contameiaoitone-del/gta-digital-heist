@@ -38,6 +38,51 @@ export type Database = {
         }
         Relationships: []
       }
+      visitor_sessions: {
+        Row: {
+          city: string | null
+          country: string | null
+          created_at: string | null
+          fbc: string | null
+          fbp: string | null
+          id: string
+          ip_address: string | null
+          page_location: string | null
+          sck: string
+          state: string | null
+          updated_at: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          fbc?: string | null
+          fbp?: string | null
+          id?: string
+          ip_address?: string | null
+          page_location?: string | null
+          sck: string
+          state?: string | null
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          fbc?: string | null
+          fbp?: string | null
+          id?: string
+          ip_address?: string | null
+          page_location?: string | null
+          sck?: string
+          state?: string | null
+          updated_at?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
