@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import heroImage from "@/assets/real-life-academy-collage.png";
 import { GTALogo } from "@/components/GTALogo";
-
+import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 export const Hero = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -23,7 +23,8 @@ export const Hero = () => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
-  const checkoutUrl = "https://pay.cakto.com.br/35g8dhq_697665";
+  const { getCheckoutUrl } = useCheckoutUrl();
+  const checkoutUrl = getCheckoutUrl("https://pay.cakto.com.br/35g8dhq_697665");
 
   return (
     <section className="relative flex overflow-hidden items-start justify-start pt-20 pb-12 md:min-h-screen md:items-center md:justify-center md:pt-8 md:pb-12">

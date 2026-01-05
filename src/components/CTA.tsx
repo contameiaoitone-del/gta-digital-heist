@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, Users, Zap } from "lucide-react";
 import cityscapeImage from "@/assets/gta-cityscape-night.png";
+import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 
 export const CTA = () => {
+  const { getCheckoutUrl } = useCheckoutUrl();
+  const checkoutUrl = getCheckoutUrl("https://pay.cakto.com.br/35g8dhq_697665");
+
   return (
     <section className="py-20 md:py-32 relative overflow-hidden">
       {/* Background Image */}
@@ -66,7 +70,7 @@ export const CTA = () => {
           <div className="pt-4 animate-slide-up" style={{ animationDelay: "0.3s" }}>
             <Button variant="hero" size="xl" className="group text-xl relative overflow-hidden" asChild>
               <a 
-                href="https://pay.cakto.com.br/35g8dhq_697665"
+                href={checkoutUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-gtm-category="checkout"

@@ -1,11 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Shield } from "lucide-react";
+import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 
 export const GuaranteeSection = () => {
-  const handleCTAClick = () => {
-    window.open("https://pay.cakto.com.br/35g8dhq_697665", "_blank");
-  };
-
+  const { getCheckoutUrl } = useCheckoutUrl();
+  const checkoutUrl = getCheckoutUrl("https://pay.cakto.com.br/35g8dhq_697665");
   return (
     <section className="relative py-20 md:py-32 overflow-hidden bg-gradient-to-b from-background to-background/95">
       {/* Dark background with subtle pattern */}
@@ -95,12 +94,21 @@ export const GuaranteeSection = () => {
 
               <div className="flex justify-center md:justify-start">
                 <Button
-                  onClick={handleCTAClick}
                   variant="hero"
                   size="lg"
                   className="text-lg mt-6"
+                  asChild
                 >
-                  Entrar na Real Life Academy
+                  <a
+                    href={checkoutUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-gtm-category="checkout"
+                    data-gtm-action="click"
+                    data-gtm-label="guarantee-cta"
+                  >
+                    Entrar na Real Life Academy
+                  </a>
                 </Button>
               </div>
             </div>

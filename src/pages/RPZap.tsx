@@ -7,6 +7,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Autoplay from "embla-carousel-autoplay";
 import { CheckCircle2, XCircle, PlayCircle, Bot, MessageSquare, Rocket, Repeat, Shield, Clock, Award, Zap, Target, TrendingUp, Sparkles, Package, DollarSign, Megaphone, BarChart3, HandCoins } from "lucide-react";
 import { Footer } from "@/components/Footer";
+import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 import module1Cover from "@/assets/rp-zap-module-1.png";
 import module2Cover from "@/assets/rp-zap-module-2.png";
 import module3Cover from "@/assets/rp-zap-module-3.png";
@@ -43,7 +44,8 @@ const RPZap = () => {
     };
   }, []);
 
-  const checkoutUrl = "https://pay.cakto.com.br/3dsuw79_671863";
+  const { getCheckoutUrl } = useCheckoutUrl();
+  const checkoutUrl = getCheckoutUrl("https://pay.cakto.com.br/3dsuw79_671863");
   const modules = [{
     icon: Sparkles,
     title: "Seja Bem Vindo",
