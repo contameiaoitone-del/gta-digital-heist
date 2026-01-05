@@ -43,10 +43,7 @@ const RPZap = () => {
     };
   }, []);
 
-  const handleCTAClick = () => {
-    pauseVideo(); // Pausa o vídeo antes de abrir o checkout
-    window.open("https://pay.cakto.com.br/3dsuw79_671863", "_blank");
-  };
+  const checkoutUrl = "https://pay.cakto.com.br/3dsuw79_671863";
   const modules = [{
     icon: Sparkles,
     title: "Seja Bem Vindo",
@@ -153,9 +150,19 @@ const RPZap = () => {
             {/* CTA Button */}
             <div className="relative inline-block">
               <div className="absolute inset-0 bg-[hsl(var(--gta-magenta))]/50 blur-xl rounded-lg animate-pulse" />
-              <Button onClick={handleCTAClick} size="lg" className="relative text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 mt-4 md:mt-8 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-105 transition-all duration-300 shadow-[0_0_30px_hsl(var(--gta-magenta)/0.4)]">
-                <Zap className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                Entrar no RP Zap agora!
+              <Button size="lg" className="relative text-sm md:text-lg px-6 md:px-8 py-5 md:py-6 mt-4 md:mt-8 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-105 transition-all duration-300 shadow-[0_0_30px_hsl(var(--gta-magenta)/0.4)]" asChild>
+                <a
+                  href={checkoutUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={pauseVideo}
+                  data-gtm-category="checkout"
+                  data-gtm-action="click"
+                  data-gtm-label="rp-zap-hero"
+                >
+                  <Zap className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                  Entrar no RP Zap agora!
+                </a>
               </Button>
             </div>
           </div>
@@ -413,9 +420,19 @@ const RPZap = () => {
 
               <div className="relative">
                 <div className="absolute inset-0 bg-[hsl(var(--gta-magenta))]/40 blur-xl rounded-lg animate-pulse" />
-                <Button onClick={handleCTAClick} size="lg" className="relative w-full text-sm md:text-lg py-5 md:py-6 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-[1.02] transition-all duration-300">
-                  <Target className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                  Entrar no RP Zap agora!
+                <Button size="lg" className="relative w-full text-sm md:text-lg py-5 md:py-6 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-[1.02] transition-all duration-300" asChild>
+                  <a
+                    href={checkoutUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={pauseVideo}
+                    data-gtm-category="checkout"
+                    data-gtm-action="click"
+                    data-gtm-label="rp-zap-pricing"
+                  >
+                    <Target className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                    Entrar no RP Zap agora!
+                  </a>
                 </Button>
               </div>
 
@@ -499,9 +516,19 @@ const RPZap = () => {
           
           <div className="relative inline-block">
             <div className="absolute inset-0 bg-[hsl(var(--gta-magenta))]/50 blur-2xl rounded-lg animate-pulse" />
-            <Button onClick={handleCTAClick} size="lg" className="relative text-sm md:text-lg px-8 md:px-12 py-5 md:py-6 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-105 transition-all duration-300 shadow-[0_0_40px_hsl(var(--gta-magenta)/0.5)]">
-              <TrendingUp className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-              Entrar no RP Zap agora!
+            <Button size="lg" className="relative text-sm md:text-lg px-8 md:px-12 py-5 md:py-6 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold hover:scale-105 transition-all duration-300 shadow-[0_0_40px_hsl(var(--gta-magenta)/0.5)]" asChild>
+              <a
+                href={checkoutUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={pauseVideo}
+                data-gtm-category="checkout"
+                data-gtm-action="click"
+                data-gtm-label="rp-zap-final-cta"
+              >
+                <TrendingUp className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                Entrar no RP Zap agora!
+              </a>
             </Button>
           </div>
         </div>

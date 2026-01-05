@@ -64,11 +64,20 @@ export const CTA = () => {
 
           {/* CTA Button */}
           <div className="pt-4 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <Button variant="hero" size="xl" className="group text-xl relative overflow-hidden">
-              <span className="relative z-10">QUERO GARANTIR MINHA VAGA AGORA</span>
-              <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform relative z-10" />
-              {/* Shine Effect */}
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <Button variant="hero" size="xl" className="group text-xl relative overflow-hidden" asChild>
+              <a 
+                href="https://pay.cakto.com.br/35g8dhq_697665"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-gtm-category="checkout"
+                data-gtm-action="click"
+                data-gtm-label="cta-section"
+              >
+                <span className="relative z-10">QUERO GARANTIR MINHA VAGA AGORA</span>
+                <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform relative z-10" />
+                {/* Shine Effect */}
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+              </a>
             </Button>
             <p className="text-sm text-muted-foreground mt-4">
               ✓ Acesso IMEDIATO em 2 minutos • ✓ Garantia incondicional de 30 dias • ✓ Comece a faturar esta semana
