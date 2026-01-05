@@ -7,7 +7,6 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Autoplay from "embla-carousel-autoplay";
 import { CheckCircle2, XCircle, PlayCircle, Bot, MessageSquare, Rocket, Repeat, Shield, Clock, Award, Zap, Target, TrendingUp, Sparkles, Package, DollarSign, Megaphone, BarChart3, HandCoins } from "lucide-react";
 import { Footer } from "@/components/Footer";
-import { useMetaTracking } from "@/hooks/useMetaTracking";
 import module1Cover from "@/assets/rp-zap-module-1.png";
 import module2Cover from "@/assets/rp-zap-module-2.png";
 import module3Cover from "@/assets/rp-zap-module-3.png";
@@ -21,7 +20,6 @@ const moduleCovers = [
 ];
 const RPZap = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const { trackPageView, trackViewContent, trackInitiateCheckout } = useMetaTracking();
 
   // Função para pausar o vídeo do PandaVideo
   const pauseVideo = () => {
@@ -29,18 +27,6 @@ const RPZap = () => {
       iframeRef.current.contentWindow?.postMessage({ type: 'pause' }, '*');
     }
   };
-
-  // Track page view and view content on mount
-  useEffect(() => {
-    trackPageView('RP Zap');
-    trackViewContent({
-      contentName: 'RP Zap',
-      contentCategory: 'Curso',
-      contentIds: ['rp-zap'],
-      value: 197.00,
-      currency: 'BRL',
-    });
-  }, [trackPageView, trackViewContent]);
 
   // Pausar quando a página perde visibilidade (troca de aba)
   useEffect(() => {
@@ -59,15 +45,7 @@ const RPZap = () => {
 
   const handleCTAClick = () => {
     pauseVideo(); // Pausa o vídeo antes de abrir o checkout
-    const sck = trackInitiateCheckout({
-      contentName: 'RP Zap',
-      contentIds: ['rp-zap'],
-      value: 197.00,
-      currency: 'BRL',
-    });
-    // Append SCK to checkout URL for session tracking through CaktoPay
-    const checkoutUrl = `https://pay.cakto.com.br/3dsuw79_671863?sck=${sck}`;
-    window.open(checkoutUrl, "_blank");
+    window.open("https://pay.cakto.com.br/3dsuw79_671863", "_blank");
   };
   const modules = [{
     icon: Sparkles,

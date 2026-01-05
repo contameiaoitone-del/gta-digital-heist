@@ -1,7 +1,1 @@
 project_id = "ppfhafqgdkzfintbdmtg"
-
-[functions.meta-capi]
-verify_jwt = false
-
-[functions.caktopay-webhook]
-verify_jwt = false
