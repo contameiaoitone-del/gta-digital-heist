@@ -23,10 +23,7 @@ export const Hero = () => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
-  const handleCTAClick = () => {
-    pauseVideo();
-    window.open("https://pay.cakto.com.br/35g8dhq_697665", "_blank");
-  };
+  const checkoutUrl = "https://pay.cakto.com.br/35g8dhq_697665";
 
   return (
     <section className="relative flex overflow-hidden items-start justify-start pt-20 pb-12 md:min-h-screen md:items-center md:justify-center md:pt-8 md:pb-12">
@@ -113,9 +110,19 @@ export const Hero = () => {
               className="flex justify-center items-center w-full sm:w-auto animate-slide-up" 
               style={{ animationDelay: "0.4s" }}
             >
-              <Button variant="hero" size="lg" className="group w-full sm:w-auto" onClick={handleCTAClick}>
-                COMEÇAR AGORA
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <Button variant="hero" size="lg" className="group w-full sm:w-auto" asChild>
+                <a 
+                  href={checkoutUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onClick={pauseVideo}
+                  data-gtm-category="checkout"
+                  data-gtm-action="click"
+                  data-gtm-label="hero-cta"
+                >
+                  COMEÇAR AGORA
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </a>
               </Button>
             </div>
           </div>

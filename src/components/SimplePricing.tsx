@@ -2,9 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Shield, Headphones } from "lucide-react";
 
 export const SimplePricing = () => {
-  const handleCTAClick = () => {
-    window.open("https://pay.cakto.com.br/35g8dhq_697665", "_blank");
-  };
+  const checkoutUrl = "https://pay.cakto.com.br/35g8dhq_697665";
 
   return (
     <section className="relative py-20 md:py-32 overflow-hidden">
@@ -75,12 +73,21 @@ export const SimplePricing = () => {
 
               {/* CTA Button */}
               <Button
-                onClick={handleCTAClick}
                 variant="hero"
                 size="lg"
                 className="w-full text-lg py-6 mb-6"
+                asChild
               >
-                Garantir Minha Vaga Agora
+                <a
+                  href={checkoutUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-gtm-category="checkout"
+                  data-gtm-action="click"
+                  data-gtm-label="pricing-cta"
+                >
+                  Garantir Minha Vaga Agora
+                </a>
               </Button>
 
               {/* Trust Badges */}

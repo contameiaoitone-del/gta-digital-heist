@@ -41,10 +41,7 @@ const RPClose = () => {
     };
   }, []);
 
-  const handleCTAClick = () => {
-    pauseVideo(); // Pausa o vídeo antes de abrir o checkout
-    window.open("https://pay.cakto.com.br/pcg9vjz_641934", "_blank");
-  };
+  const checkoutUrl = "https://pay.cakto.com.br/pcg9vjz_641934";
 
   const modules = [
     {
@@ -147,12 +144,22 @@ const RPClose = () => {
             {/* CTA Button */}
             <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
               <Button 
-                onClick={handleCTAClick}
                 size="lg" 
                 className="text-base md:text-lg px-6 md:px-8 py-5 md:py-6 mt-4 md:mt-8 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold shadow-[0_0_40px_rgba(212,0,166,0.4)] hover:shadow-[0_0_60px_rgba(212,0,166,0.6)] transition-all duration-300 hover:scale-105 relative overflow-hidden group"
+                asChild
               >
-                <span className="relative z-10">Quero Acesso aos Bastidores Agora</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                <a
+                  href={checkoutUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={pauseVideo}
+                  data-gtm-category="checkout"
+                  data-gtm-action="click"
+                  data-gtm-label="rp-close-hero"
+                >
+                  <span className="relative z-10">Quero Acesso aos Bastidores Agora</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                </a>
               </Button>
             </div>
 
@@ -429,12 +436,22 @@ const RPClose = () => {
               </div>
 
               <Button 
-                onClick={handleCTAClick}
                 size="lg" 
                 className="w-full text-base md:text-lg py-5 md:py-6 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold shadow-[0_0_50px_rgba(212,0,166,0.5)] hover:shadow-[0_0_70px_rgba(212,0,166,0.7)] transition-all duration-300 hover:scale-105 relative overflow-hidden group"
+                asChild
               >
-                <span className="relative z-10">Garantir Minha Vaga Agora</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                <a
+                  href={checkoutUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={pauseVideo}
+                  data-gtm-category="checkout"
+                  data-gtm-action="click"
+                  data-gtm-label="rp-close-pricing"
+                >
+                  <span className="relative z-10">Garantir Minha Vaga Agora</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                </a>
               </Button>
 
               <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 pt-4 text-xs text-gray-400">
@@ -523,12 +540,22 @@ const RPClose = () => {
               </p>
               
               <Button 
-                onClick={handleCTAClick}
                 size="lg" 
                 className="text-base md:text-lg px-6 md:px-8 py-5 md:py-6 mt-4 bg-[hsl(var(--gta-magenta))] hover:bg-[hsl(var(--gta-magenta))]/90 text-white font-semibold shadow-[0_0_50px_rgba(212,0,166,0.5)] hover:shadow-[0_0_70px_rgba(212,0,166,0.7)] transition-all duration-300 hover:scale-105 relative overflow-hidden group"
+                asChild
               >
-                <span className="relative z-10">Garantir Meu Acesso Agora</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                <a
+                  href={checkoutUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={pauseVideo}
+                  data-gtm-category="checkout"
+                  data-gtm-action="click"
+                  data-gtm-label="rp-close-final-cta"
+                >
+                  <span className="relative z-10">Garantir Meu Acesso Agora</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                </a>
               </Button>
 
               <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 pt-4 text-xs md:text-sm text-gray-400">
