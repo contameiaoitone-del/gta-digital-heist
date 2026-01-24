@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import gtaHero from "@/assets/gta-collage-background.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
 import rpZapBanner from "@/assets/rp-zap-banner.png";
+import realbotBanner from "@/assets/realbot-banner.png";
 import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 import caioDalcinLogo from "@/assets/caio-dalcin-logo.png";
@@ -34,6 +35,13 @@ const Links = () => {
       icon: ExternalLink,
       description: "RP Zap",
       image: rpZapBanner,
+    },
+    {
+      name: "Real Bot",
+      url: "https://realbot.com.br/",
+      icon: ExternalLink,
+      description: "Automação inteligente",
+      image: realbotBanner,
     },
   ];
 
