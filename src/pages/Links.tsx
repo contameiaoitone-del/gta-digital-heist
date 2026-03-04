@@ -1,6 +1,6 @@
 import { Youtube, ExternalLink, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import gtaHero from "@/assets/gta-collage-background.png";
+import gtaLinksBackground from "@/assets/gta-links-background.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
 import rpZapBanner from "@/assets/rp-zap-banner.png";
 import zapdataBanner from "@/assets/zapdata-banner.png";
@@ -52,7 +52,7 @@ const Links = () => {
       {/* Background Image with Overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-10 noise-texture"
-        style={{ backgroundImage: `url(${gtaHero})` }}
+        style={{ backgroundImage: `url(${gtaLinksBackground})` }}
       />
       <div className="absolute inset-0 bg-gradient-radial from-background/90 via-background/97 to-background" />
 
