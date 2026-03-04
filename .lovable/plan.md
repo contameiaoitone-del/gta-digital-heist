@@ -1,43 +1,21 @@
 
-## Plano: Adicionar Card do Realbot na Página de Links
 
-### Alterações Necessárias
+## Plano: Trocar card Realbot por ZapData
 
-#### 1. Copiar a Imagem do Logo Realbot
-- Copiar a imagem do logo do Realbot para `src/assets/realbot-banner.png`
-- A imagem será usada como banner do card, similar aos outros produtos
+### Alterações
 
-#### 2. Atualizar `src/pages/Links.tsx`
+1. **Copiar imagem** do upload para `src/assets/zapdata-banner.png`
 
-**Adicionar import:**
-```typescript
-import realbotBanner from "@/assets/realbot-banner.png";
-```
+2. **Atualizar `src/pages/Links.tsx`**:
+   - Trocar import de `realbotBanner` para `zapdataBanner` apontando para o novo arquivo
+   - Atualizar o item no array `links`:
+     - name: "ZapData"
+     - url: `https://zapdata.co/#/auth?ref=ED8R7J27`
+     - description: "Automação de WhatsApp"
+     - image: zapdataBanner
 
-**Adicionar novo item no array `links`:**
-```typescript
-{
-  name: "Real Bot",
-  url: "https://realbot.com.br/",
-  icon: ExternalLink,
-  description: "Automação inteligente",
-  image: realbotBanner,
-}
-```
+3. **Remover** `src/assets/realbot-banner.png` (não mais usado)
 
-### Ordem dos Cards (Atualizada)
+### Resultado
+O card 4 na página `/links` passará a ser ZapData com a nova imagem e link externo.
 
-| Posição | Produto | Link |
-|---------|---------|------|
-| 1 | Real Life Academy | `/` (interno) |
-| 2 | RP Close | `/rp-close` (interno) |
-| 3 | RP Zap | `/rp-zap` (interno) |
-| 4 | **Real Bot** | `https://realbot.com.br/` (externo) |
-
-### Resultado Visual
-
-O novo card do Realbot aparecerá na página `/links` com:
-- Banner usando a imagem do logo fornecida
-- Ícone de link externo no canto
-- Link abrindo em nova aba (`target="_blank"`)
-- Estilo consistente com os outros cards (borda GTA, efeitos hover)
