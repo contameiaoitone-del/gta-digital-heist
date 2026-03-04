@@ -1,12 +1,15 @@
 
 
-## Plano: Trocar wallpaper de fundo da página de Links
+## Plano: Mostrar mais as palmeiras no fundo
 
-### Alterações
+O problema é o `bg-cover` que expande a imagem para cobrir toda a tela, cortando as palmeiras nas laterais.
 
-1. **Copiar imagem** do upload para `src/assets/gta-links-background.png`
+### Alteração em `src/pages/Links.tsx` (linha 53)
 
-2. **Atualizar `src/pages/Links.tsx`**:
-   - Trocar import de `gtaHero` (gta-collage-background.png) para a nova imagem
-   - O background já é aplicado na div com `backgroundImage`, então basta trocar a referência
+Trocar `bg-cover` por `bg-contain` para que a imagem inteira apareça (incluindo as palmeiras), mantendo a proporção original.
+
+```
+- className="absolute inset-0 bg-cover bg-center opacity-10 noise-texture"
++ className="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-10 noise-texture"
+```
 
