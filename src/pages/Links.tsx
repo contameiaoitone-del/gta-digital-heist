@@ -51,7 +51,7 @@ const Links = () => {
       
       {/* Background Image with Overlay */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-10 noise-texture"
+        className="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-10 noise-texture"
         style={{ backgroundImage: `url(${gtaLinksBackground})` }}
       />
       <div className="absolute inset-0 bg-gradient-radial from-background/90 via-background/97 to-background" />
