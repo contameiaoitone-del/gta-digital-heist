@@ -4,15 +4,18 @@ import gtaLinksBackground from "@/assets/gta-links-background.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
 import rpZapBanner from "@/assets/rp-zap-banner.png";
 import zapdataBanner from "@/assets/zapdata-banner.png";
+import zapdataBannerMobile from "@/assets/zapdata-banner-mobile.png";
 import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 import caioDalcinLogo from "@/assets/caio-dalcin-logo.png";
 import GameLoader from "@/components/GameLoader";
 import gtaTheme from "@/assets/gta-theme.mp3";
 import { useBackgroundMusic } from "@/hooks/useBackgroundMusic";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Links = () => {
   useBackgroundMusic(gtaTheme, 0.4);
+  const isMobile = useIsMobile();
   
   const links = [
     {
@@ -21,6 +24,7 @@ const Links = () => {
       icon: ExternalLink,
       description: "Automação de WhatsApp",
       image: zapdataBanner,
+      mobileImage: zapdataBannerMobile,
     },
     {
       name: "Real Life Academy",
@@ -91,7 +95,7 @@ const Links = () => {
                 <div 
                   className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] bg-background/10 gta-card-border"
                   style={{
-                    backgroundImage: `url(${link.image})`,
+                    backgroundImage: `url(${isMobile && link.mobileImage ? link.mobileImage : link.image})`,
                     backgroundSize: 'contain',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
