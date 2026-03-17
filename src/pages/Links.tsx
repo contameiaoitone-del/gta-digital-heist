@@ -24,6 +24,7 @@ const Links = () => {
       icon: ExternalLink,
       description: "Automação de WhatsApp",
       image: zapdataBanner,
+      mobileImage: zapdataBannerMobile,
     },
     {
       name: "Real Life Academy",
