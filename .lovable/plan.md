@@ -1,12 +1,17 @@
 
 
-## Plano: Trocar wallpaper de fundo da página de Links
+## Plano: Imagem mobile diferente para o card ZapData
 
 ### Alterações
 
-1. **Copiar imagem** do upload para `src/assets/gta-links-background.png`
+1. **Copiar a imagem** do upload para `src/assets/zapdata-banner-mobile.png`
 
-2. **Atualizar `src/pages/Links.tsx`**:
-   - Trocar import de `gtaHero` (gta-collage-background.png) para a nova imagem
-   - O background já é aplicado na div com `backgroundImage`, então basta trocar a referência
+2. **`src/pages/Links.tsx`**:
+   - Importar a nova imagem: `import zapdataBannerMobile from "@/assets/zapdata-banner-mobile.png"`
+   - Adicionar campo `mobileImage` ao objeto ZapData no array `links`: `mobileImage: zapdataBannerMobile`
+   - Importar e usar o hook `useIsMobile` de `@/hooks/use-mobile`
+   - No render do card com imagem, verificar se existe `mobileImage` e se `isMobile` é true para trocar a source:
+     ```
+     backgroundImage: `url(${isMobile && link.mobileImage ? link.mobileImage : link.image})`
+     ```
 
