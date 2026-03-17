@@ -95,7 +95,7 @@ const Links = () => {
                 <div 
                   className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] bg-background/10 gta-card-border"
                   style={{
-                    backgroundImage: `url(${link.image})`,
+                    backgroundImage: `url(${isMobile && link.mobileImage ? link.mobileImage : link.image})`,
                     backgroundSize: 'contain',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
