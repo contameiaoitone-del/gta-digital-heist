@@ -6,6 +6,7 @@ import rpZapBanner from "@/assets/rp-zap-banner.png";
 import zapdataBanner from "@/assets/zapdata-banner.png";
 import zapdataBannerMobile from "@/assets/zapdata-banner-mobile.png";
 import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
+import realLifeAcademyBannerMobile from "@/assets/real-life-academy-banner-mobile.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 import caioDalcinLogo from "@/assets/caio-dalcin-logo.png";
 import GameLoader from "@/components/GameLoader";
@@ -32,6 +33,7 @@ const Links = () => {
       icon: GraduationCap,
       description: "Curso completo de marketing digital",
       image: realLifeAcademyBanner,
+      mobileImage: realLifeAcademyBannerMobile,
     },
     {
       name: "RP Close",
