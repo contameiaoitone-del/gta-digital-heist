@@ -16,6 +16,13 @@ const Links = () => {
   
   const links = [
     {
+      name: "ZapData",
+      url: "https://zapdata.co/#/auth?ref=ED8R7J27",
+      icon: ExternalLink,
+      description: "Automação de WhatsApp",
+      image: zapdataBanner,
+    },
+    {
       name: "Real Life Academy",
       url: "/",
       icon: GraduationCap,
@@ -35,13 +42,6 @@ const Links = () => {
       icon: ExternalLink,
       description: "RP Zap",
       image: rpZapBanner,
-    },
-    {
-      name: "ZapData",
-      url: "https://zapdata.co/#/auth?ref=ED8R7J27",
-      icon: ExternalLink,
-      description: "Automação de WhatsApp",
-      image: zapdataBanner,
     },
   ];
 

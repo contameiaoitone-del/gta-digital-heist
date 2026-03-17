@@ -1,13 +1,12 @@
 
 
-## Plano: Reordenar cards -- ZapData primeiro
+## Plano: Trocar wallpaper de fundo da página de Links
 
-### Alteração
+### Alterações
 
-**`src/pages/Links.tsx`**: Mover o objeto ZapData para a primeira posição no array `links`, resultando na ordem:
+1. **Copiar imagem** do upload para `src/assets/gta-links-background.png`
 
-1. ZapData
-2. Real Life Academy
-3. RP Close
-4. RP Zap
+2. **Atualizar `src/pages/Links.tsx`**:
+   - Trocar import de `gtaHero` (gta-collage-background.png) para a nova imagem
+   - O background já é aplicado na div com `backgroundImage`, então basta trocar a referência
 
