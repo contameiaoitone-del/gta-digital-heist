@@ -4,15 +4,18 @@ import gtaLinksBackground from "@/assets/gta-links-background.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
 import rpZapBanner from "@/assets/rp-zap-banner.png";
 import zapdataBanner from "@/assets/zapdata-banner.png";
+import zapdataBannerMobile from "@/assets/zapdata-banner-mobile.png";
 import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 import caioDalcinLogo from "@/assets/caio-dalcin-logo.png";
 import GameLoader from "@/components/GameLoader";
 import gtaTheme from "@/assets/gta-theme.mp3";
 import { useBackgroundMusic } from "@/hooks/useBackgroundMusic";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Links = () => {
   useBackgroundMusic(gtaTheme, 0.4);
+  const isMobile = useIsMobile();
   
   const links = [
     {
