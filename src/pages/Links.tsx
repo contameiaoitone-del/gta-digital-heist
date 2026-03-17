@@ -32,7 +32,7 @@ const Links = () => {
       url: "/",
       icon: GraduationCap,
       description: "Curso completo de marketing digital",
-      image: realLifeAcademyBanner,
+      image: realLifeAcademyBannerMobile,
       mobileImage: realLifeAcademyBannerMobile,
     },
     {
