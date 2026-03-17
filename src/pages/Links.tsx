@@ -92,15 +92,12 @@ const Links = () => {
             >
               {link.image ? (
                 // Link com imagem
-                <div 
-                  className="relative rounded-lg overflow-hidden min-h-[200px] md:min-h-[240px] bg-background/10 gta-card-border"
-                  style={{
-                    backgroundImage: `url(${isMobile && link.mobileImage ? link.mobileImage : link.image})`,
-                    backgroundSize: 'contain',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}
-                >
+                <div className="relative rounded-lg overflow-hidden gta-card-border">
+                  <img 
+                    src={isMobile && link.mobileImage ? link.mobileImage : link.image}
+                    alt={link.name}
+                    className="w-full h-auto block"
+                  />
                   <div className="external-link-icon">
                     <ExternalLink className="w-4 h-4 text-white" />
                   </div>
