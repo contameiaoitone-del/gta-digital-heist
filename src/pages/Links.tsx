@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import gtaLinksBackground from "@/assets/gta-links-background.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
 import rpZapBanner from "@/assets/rp-zap-banner.png";
+import mentoriaBanner from "@/assets/mentoria-banner.png";
 import zapdataBanner from "@/assets/zapdata-banner.png";
 import zapdataBannerMobile from "@/assets/zapdata-banner-mobile.png";
 import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
