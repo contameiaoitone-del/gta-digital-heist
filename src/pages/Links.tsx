@@ -50,6 +50,13 @@ const Links = () => {
       description: "RP Zap",
       image: rpZapBanner,
     },
+    {
+      name: "Mentoria Caio Dalcin",
+      url: "https://chat.whatsapp.com/EvdHIJTNh9UCTUoFkQrA1y",
+      icon: ExternalLink,
+      description: "Mentoria exclusiva",
+      image: mentoriaBanner,
+    },
   ];
 
   return (
