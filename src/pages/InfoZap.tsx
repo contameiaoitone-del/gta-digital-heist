@@ -106,25 +106,7 @@ const InfoZap = () => {
 
   return (
     <div className="min-h-screen scroll-smooth" style={{ backgroundColor: "#080808", color: "#fff", fontFamily: "'Barlow', sans-serif" }}>
-      {/* 1. TOPBAR */}
-      <div className="fixed top-0 left-0 right-0 z-50 text-center py-2 px-4 text-sm font-semibold" style={{ backgroundColor: GREEN, color: "#000" }}>
-        ⚡ Acesso imediato após confirmação · Garantia de 7 dias · Sem assinatura
-      </div>
-
-      {/* 2. MARQUEE */}
-      <div className="mt-10 border-y" style={{ backgroundColor: "#141414", borderColor: "#222" }}>
-        <div className="infozap-marquee py-3 overflow-hidden whitespace-nowrap">
-          <div className="infozap-marquee-track inline-flex gap-12">
-            {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, i) => (
-              <span key={i} className="text-sm font-medium" style={{ color: i % marqueeItems.length === 0 ? GREEN : "#999" }}>
-                {item} <span className="mx-4" style={{ color: GREEN }}>•</span>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 3. HERO */}
+      {/* HERO */}
       <section ref={heroRef} className="relative py-20 md:py-32 px-4">
         <div className="max-w-3xl mx-auto text-center">
           {/* Pill */}
