@@ -10,11 +10,11 @@ const GREEN = "#00ff88";
 const PINK = "#ff2d78";
 
 const painItems = [
-  { title: '"Já comprei curso, não saiu nada do papel"', desc: "Você assistiu tudo, anotou tudo, mas na hora de executar travou." },
-  { title: '"Tentei drop mas o lucro nunca aparecia"', desc: "Produto físico, frete, devolução, reclamação, margem zero." },
-  { title: '"Virei afiliado mas não consegui vender nada"', desc: "Dependendo de produto de terceiro, comissão baixa, concorrência absurda." },
-  { title: '"Não sei por onde começar de verdade"', desc: "Tanta coisa na internet que paralisa em vez de ajudar." },
-  { title: '"Não tenho dinheiro pra arriscar mais"', desc: "Já gastou e não viu retorno, não quer repetir o erro." },
+  { title: '"Já comprei curso e perdi dinheiro"', desc: "Você assistiu tudo, anotou tudo, seguiu o passo a passo — e no final das contas ficou na mesma ou pior. O guru ficou rico. Você ficou com a conta no vermelho e a autoconfiança destruída." },
+  { title: '"Tentei drop, tráfego direto, gestão de tráfego, encapsulado... e só sangrei dinheiro"', desc: "Cada modelo novo que aparecia parecia ser \"o certo\". Você entrava cheio de esperança, gastava em ferramenta, em anúncio, em produto, em curso de gestor — e no fim do mês o resultado era prejuízo. De novo." },
+  { title: '"Virei afiliado mas nunca vi um Pix cair"', desc: "Ficou meses criando conteúdo, mandando link, pedindo pra galera comprar — e quando a venda aparecia, a comissão era uma miséria. Trabalho de escravo pra enriquecer o produtor." },
+  { title: '"Não sei por onde começar de verdade"', desc: "Tem tanta coisa na internet que no final você não faz nada. Um fala que é tráfego, outro fala que é orgânico, outro fala que é drop. Você consome informação e fica paralisado enquanto o tempo passa." },
+  { title: '"Não tenho dinheiro pra arriscar mais"', desc: "Já investiu em curso que não entregou. Já perdeu dinheiro em anúncio sem retorno. Agora cada real que você tem é sagrado — e você não pode errar de novo." },
 ];
 
 const mechanisms = [
