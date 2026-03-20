@@ -142,6 +142,7 @@ const InfoZap = () => {
             <p>⚡ Funil 100% automático com IA — sem atender nenhum cliente</p>
             <p>💸 Vendas direto no Pix</p>
             <p>📦 Produtos prontos pra copiar e colar</p>
+            <p>📱 Sem bloqueio de WhatsApp</p>
           </div>
 
           <CTAButton />
