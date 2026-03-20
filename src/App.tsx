@@ -8,6 +8,7 @@ import Links from "./pages/Links";
 import RPClose from "./pages/RPClose";
 import RPCloseSuccess from "./pages/RPCloseSuccess";
 import RPZap from "./pages/RPZap";
+import InfoZap from "./pages/InfoZap";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/rp-close" element={<RPClose />} />
           <Route path="/rp-close-sucesso" element={<RPCloseSuccess />} />
           <Route path="/rp-zap" element={<RPZap />} />
+          <Route path="/infozap" element={<InfoZap />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

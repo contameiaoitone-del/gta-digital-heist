@@ -531,4 +531,14 @@ All colors MUST be HSL.
 .shadow-volumetric-cyan {
   box-shadow: var(--shadow-volumetric-cyan);
 }
+
+/* InfoZap Marquee */
+.infozap-marquee-track {
+  animation: infozap-scroll 25s linear infinite;
+}
+
+@keyframes infozap-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.33%); }
+}
 }
