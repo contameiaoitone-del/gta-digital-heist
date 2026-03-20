@@ -25,6 +25,7 @@ const App = () => (
           <Route path="/rp-close" element={<RPClose />} />
           <Route path="/rp-close-sucesso" element={<RPCloseSuccess />} />
           <Route path="/rp-zap" element={<RPZap />} />
+          <Route path="/infozap" element={<InfoZap />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
