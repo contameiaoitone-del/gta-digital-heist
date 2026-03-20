@@ -154,12 +154,30 @@ const InfoZap = () => {
               </div>
             ))}
           </div>
-          <div className="mt-10 space-y-4">
-            <p className="text-gray-400 text-sm leading-relaxed">
-              A verdade que ninguém te conta: <strong className="text-white">a maioria dos modelos de ganhar dinheiro online foi feita pra quem já tem capital, já tem audiência ou já tem experiência.</strong> Pra quem está começando do zero, é armadilha.
+          <div className="mt-10 space-y-4 text-gray-400 text-sm leading-relaxed">
+            <p>
+              <strong className="text-white">A culpa não foi sua.</strong> Você foi vendido modelos que nunca foram feitos pra quem está começando.
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              O InfoZap foi construído do zero pensando em quem está exatamente onde você está agora.
+            <p>
+              <strong className="text-white">Drop</strong> exige capital alto pra comprar estoque, lidar com produto físico, frete, devolução, reclamação — e no final a margem é uma miséria pra tanto trabalho.
+            </p>
+            <p>
+              <strong className="text-white">Afiliado</strong> é uma armadilha dos dois lados. Se tentar no orgânico, você trabalha feito escravo criando conteúdo todo dia, mandando link pra todo mundo, implorando por atenção — pra no final receber uma comissão que mal paga o seu tempo. E se for com tráfego pago, você tem o mesmo trabalho, gasta dinheiro em anúncio e ainda toma prejuízo por cima. Nos dois casos o resultado é o mesmo: você se mata trabalhando. O produtor enriquece.
+            </p>
+            <p>
+              <strong className="text-white">Tráfego direto</strong> exige uma fortuna pra testar — e quando finalmente funciona, você descobre que o dinheiro fica preso no checkout por 15, 30 dias. Você vende, vende, vende e não consegue escalar porque o caixa não gira.
+            </p>
+            <p>
+              <strong className="text-white">Gestão de tráfego</strong> exige portfólio pra conseguir cliente, e prospecção orgânica não funciona mais. O mercado está abarrotado de agência grande com estrutura, time e preço que você nunca vai conseguir competir. O oceano azul secou.
+            </p>
+            <p>
+              Nenhum desses modelos foi feito pra quem está começando do zero com pouco dinheiro no bolso.
+            </p>
+            <p className="font-bold text-lg" style={{ color: GREEN }}>
+              O InfoZap foi.
+            </p>
+            <p>
+              Sem estoque. Sem produto físico. Sem checkout cheio de taxa te engolindo a margem. Sem dinheiro preso esperando liberação. Sem prospectar cliente nenhum. Sem atender ninguém — a IA faz isso por você. E o melhor: <strong className="text-white">o Pix cai direto na sua conta. Na hora. Todo dia.</strong>
             </p>
           </div>
         </div>
