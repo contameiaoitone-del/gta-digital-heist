@@ -1,20 +1,26 @@
 
 
-## Atualizar bullets da seção de Problema
+## Atualizar texto de fechamento da seção de Problema
 
 ### Alteração
-Atualizar o array `painItems` em `src/pages/InfoZap.tsx` com os novos textos expandidos para cada um dos 5 itens de dor.
+Substituir os dois parágrafos de fechamento da seção PAIN (linhas 157-163) pelo novo copy expandido com 8 parágrafos detalhando por que cada modelo falha e como o InfoZap resolve.
 
 ### Arquivo
-- `src/pages/InfoZap.tsx` — substituir o array `painItems` (linhas 12-18) com os novos títulos e descrições fornecidos.
+- `src/pages/InfoZap.tsx` — linhas 157-163: substituir o `div.mt-10` atual pelo novo texto completo.
 
-### Novos dados
+### Novo conteúdo
+Os parágrafos seguem esta estrutura:
+1. "A culpa não foi sua..." (abertura)
+2. Drop exige capital alto... (crítica ao drop)
+3. Afiliado é uma armadilha... (crítica ao afiliado)
+4. Tráfego direto exige uma fortuna... (crítica ao tráfego direto)
+5. Gestão de tráfego exige portfólio... (crítica à gestão)
+6. "Nenhum desses modelos foi feito pra quem está começando do zero..."
+7. **"O InfoZap foi."** (destaque em verde/bold)
+8. "Sem estoque. Sem produto físico..." (benefícios do InfoZap)
 
-| Título | Descrição |
-|--------|-----------|
-| "Já comprei curso e perdi dinheiro" | Você assistiu tudo, anotou tudo, seguiu o passo a passo — e no final das contas ficou na mesma ou pior. O guru ficou rico. Você ficou com a conta no vermelho e a autoconfiança destruída. |
-| "Tentei drop, tráfego direto, gestão de tráfego, encapsulado... e só sangrei dinheiro" | Cada modelo novo que aparecia parecia ser "o certo". Você entrava cheio de esperança, gastava em ferramenta, em anúncio, em produto, em curso de gestor — e no fim do mês o resultado era prejuízo. De novo. |
-| "Virei afiliado mas nunca vi um Pix cair" | Ficou meses criando conteúdo, mandando link, pedindo pra galera comprar — e quando a venda aparecia, a comissão era uma miséria. Trabalho de escravo pra enriquecer o produtor. |
-| "Não sei por onde começar de verdade" | Tem tanta coisa na internet que no final você não faz nada. Um fala que é tráfego, outro fala que é orgânico, outro fala que é drop. Você consome informação e fica paralisado enquanto o tempo passa. |
-| "Não tenho dinheiro pra arriscar mais" | Já investiu em curso que não entregou. Já perdeu dinheiro em anúncio sem retorno. Agora cada real que você tem é sagrado — e você não pode errar de novo. |
+### Estilo
+- Parágrafos em `text-gray-400 text-sm leading-relaxed`
+- "O InfoZap foi." em destaque (bold, cor verde)
+- Palavras-chave em bold branco onde relevante
 
