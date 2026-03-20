@@ -133,14 +133,16 @@ const InfoZap = () => {
           </span>
 
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[0.95] mb-6" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.02em" }}>
-            Já tentou drop, afiliado e{" "}
-            <span style={{ color: PINK }}>não funcionou?</span>{" "}
-            Esse modelo é diferente.
+            Do zero ao primeiro Pix{" "}
+            <span style={{ color: PINK }}>em até 7 dias</span>{" "}
+            vendendo infoproduto de Lowticket direto no WhatsApp
           </h1>
 
-          <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Aprenda a vender infoproduto de lowticket direto no WhatsApp e receber Pix todo dia — com o único método que entrega primeiro e cobra depois.
-          </p>
+          <div className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed space-y-1">
+            <p>⚡ Funil 100% automático com IA — sem atender nenhum cliente</p>
+            <p>💸 Vendas direto no Pix</p>
+            <p>📦 Produtos prontos pra copiar e colar</p>
+          </div>
 
           <CTAButton />
 
