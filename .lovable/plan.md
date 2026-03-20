@@ -1,29 +1,20 @@
 
 
-## Redesign da Seção de Dor (Pain) da InfoZap
+## Atualizar bullets da seção de Problema
 
-### O que muda
-
-A seção atual tem items simples com apenas o texto da dor. A nova versão (conforme screenshot) inclui:
-
-1. **Subtítulo** após o H2: "Se qualquer uma dessas frases já passou pela sua cabeça, você está exatamente no lugar certo."
-
-2. **Pain items expandidos** — cada item agora tem o texto principal em **bold** entre aspas + uma explicação complementar em cinza:
-   - "Já comprei curso, não saiu nada do papel" — você assistiu tudo, anotou tudo, mas na hora de executar travou
-   - "Tentei drop mas o lucro nunca aparecia" — produto físico, frete, devolução, reclamação, margem zero
-   - "Virei afiliado mas não consegui vender nada" — dependendo de produto de terceiro, comissão baixa, concorrência absurda
-   - "Não sei por onde começar de verdade" — tanta coisa na internet que paralisa em vez de ajudar
-   - "Não tenho dinheiro pra arriscar mais" — já gastou e não viu retorno, não quer repetir o erro
-
-3. **Cards com ícone ✗ rosa** (não mais border-left, mas cards com borda completa e X icon)
-
-4. **Parágrafo de fechamento** atualizado com duas partes:
-   - "A verdade que ninguém te conta: **a maioria dos modelos de ganhar dinheiro online foi feita pra quem já tem capital, já tem audiência ou já tem experiência.** Pra quem está começando do zero, é armadilha."
-   - "O InfoZap foi construído do zero pensando em quem está exatamente onde você está agora."
+### Alteração
+Atualizar o array `painItems` em `src/pages/InfoZap.tsx` com os novos textos expandidos para cada um dos 5 itens de dor.
 
 ### Arquivo
-- `src/pages/InfoZap.tsx`:
-  - Atualizar o array `painItems` para incluir `title` e `desc` em cada item
-  - Redesenhar os cards da seção PAIN com ícone X, título bold entre aspas e descrição
-  - Atualizar os parágrafos de fechamento
+- `src/pages/InfoZap.tsx` — substituir o array `painItems` (linhas 12-18) com os novos títulos e descrições fornecidos.
+
+### Novos dados
+
+| Título | Descrição |
+|--------|-----------|
+| "Já comprei curso e perdi dinheiro" | Você assistiu tudo, anotou tudo, seguiu o passo a passo — e no final das contas ficou na mesma ou pior. O guru ficou rico. Você ficou com a conta no vermelho e a autoconfiança destruída. |
+| "Tentei drop, tráfego direto, gestão de tráfego, encapsulado... e só sangrei dinheiro" | Cada modelo novo que aparecia parecia ser "o certo". Você entrava cheio de esperança, gastava em ferramenta, em anúncio, em produto, em curso de gestor — e no fim do mês o resultado era prejuízo. De novo. |
+| "Virei afiliado mas nunca vi um Pix cair" | Ficou meses criando conteúdo, mandando link, pedindo pra galera comprar — e quando a venda aparecia, a comissão era uma miséria. Trabalho de escravo pra enriquecer o produtor. |
+| "Não sei por onde começar de verdade" | Tem tanta coisa na internet que no final você não faz nada. Um fala que é tráfego, outro fala que é orgânico, outro fala que é drop. Você consome informação e fica paralisado enquanto o tempo passa. |
+| "Não tenho dinheiro pra arriscar mais" | Já investiu em curso que não entregou. Já perdeu dinheiro em anúncio sem retorno. Agora cada real que você tem é sagrado — e você não pode errar de novo. |
 
