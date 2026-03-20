@@ -10,11 +10,11 @@ const GREEN = "#00ff88";
 const PINK = "#ff2d78";
 
 const painItems = [
-  "Já comprei curso, não saiu nada do papel",
-  "Tentei drop mas o lucro nunca aparecia",
-  "Virei afiliado mas não consegui vender nada",
-  "Não sei por onde começar de verdade",
-  "Não tenho dinheiro pra arriscar mais",
+  { title: '"Já comprei curso, não saiu nada do papel"', desc: "Você assistiu tudo, anotou tudo, mas na hora de executar travou." },
+  { title: '"Tentei drop mas o lucro nunca aparecia"', desc: "Produto físico, frete, devolução, reclamação, margem zero." },
+  { title: '"Virei afiliado mas não consegui vender nada"', desc: "Dependendo de produto de terceiro, comissão baixa, concorrência absurda." },
+  { title: '"Não sei por onde começar de verdade"', desc: "Tanta coisa na internet que paralisa em vez de ajudar." },
+  { title: '"Não tenho dinheiro pra arriscar mais"', desc: "Já gastou e não viu retorno, não quer repetir o erro." },
 ];
 
 const mechanisms = [
