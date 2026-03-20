@@ -10,11 +10,11 @@ const GREEN = "#00ff88";
 const PINK = "#ff2d78";
 
 const painItems = [
-  "Já comprei curso, não saiu nada do papel",
-  "Tentei drop mas o lucro nunca aparecia",
-  "Virei afiliado mas não consegui vender nada",
-  "Não sei por onde começar de verdade",
-  "Não tenho dinheiro pra arriscar mais",
+  { title: '"Já comprei curso, não saiu nada do papel"', desc: "Você assistiu tudo, anotou tudo, mas na hora de executar travou." },
+  { title: '"Tentei drop mas o lucro nunca aparecia"', desc: "Produto físico, frete, devolução, reclamação, margem zero." },
+  { title: '"Virei afiliado mas não consegui vender nada"', desc: "Dependendo de produto de terceiro, comissão baixa, concorrência absurda." },
+  { title: '"Não sei por onde começar de verdade"', desc: "Tanta coisa na internet que paralisa em vez de ajudar." },
+  { title: '"Não tenho dinheiro pra arriscar mais"', desc: "Já gastou e não viu retorno, não quer repetir o erro." },
 ];
 
 const mechanisms = [
@@ -106,25 +106,7 @@ const InfoZap = () => {
 
   return (
     <div className="min-h-screen scroll-smooth" style={{ backgroundColor: "#080808", color: "#fff", fontFamily: "'Barlow', sans-serif" }}>
-      {/* 1. TOPBAR */}
-      <div className="fixed top-0 left-0 right-0 z-50 text-center py-2 px-4 text-sm font-semibold" style={{ backgroundColor: GREEN, color: "#000" }}>
-        ⚡ Acesso imediato após confirmação · Garantia de 7 dias · Sem assinatura
-      </div>
-
-      {/* 2. MARQUEE */}
-      <div className="mt-10 border-y" style={{ backgroundColor: "#141414", borderColor: "#222" }}>
-        <div className="infozap-marquee py-3 overflow-hidden whitespace-nowrap">
-          <div className="infozap-marquee-track inline-flex gap-12">
-            {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, i) => (
-              <span key={i} className="text-sm font-medium" style={{ color: i % marqueeItems.length === 0 ? GREEN : "#999" }}>
-                {item} <span className="mx-4" style={{ color: GREEN }}>•</span>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* 3. HERO */}
+      {/* HERO */}
       <section ref={heroRef} className="relative py-20 md:py-32 px-4">
         <div className="max-w-3xl mx-auto text-center">
           {/* Pill */}
@@ -155,23 +137,31 @@ const InfoZap = () => {
         <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${GREEN}, transparent)` }} />
       </section>
 
-      {/* 4. PAIN */}
+      {/* PAIN */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-3xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: PINK }}>O Problema</span>
-          <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             Você reconhece <span style={{ color: PINK }}>alguma dessas?</span>
           </h2>
-          <div className="space-y-3">
+          <p className="text-gray-400 text-sm mb-10">Se qualquer uma dessas frases já passou pela sua cabeça, você está exatamente no lugar certo.</p>
+          <div className="space-y-4">
             {painItems.map((item, i) => (
-              <div key={i} className="p-4 rounded-lg border-l-4" style={{ borderColor: PINK, backgroundColor: "rgba(255,45,120,0.06)" }}>
-                <p className="text-gray-300">{item}</p>
+              <div key={i} className="rounded-xl p-5 border relative" style={{ borderColor: "rgba(255,45,120,0.2)", backgroundColor: "rgba(255,45,120,0.04)" }}>
+                <X className="h-5 w-5 absolute top-4 right-4" style={{ color: PINK }} />
+                <p className="font-bold text-white mb-1">{item.title}</p>
+                <p className="text-gray-400 text-sm">{item.desc}</p>
               </div>
             ))}
           </div>
-          <p className="mt-8 text-gray-500 text-sm leading-relaxed">
-            A verdade é que a maioria dos modelos de negócio digital foram feitos pra quem já tem capital, audiência ou experiência. O InfoZap foi criado pra quem não tem nada disso — e precisa começar com o mínimo possível.
-          </p>
+          <div className="mt-10 space-y-4">
+            <p className="text-gray-400 text-sm leading-relaxed">
+              A verdade que ninguém te conta: <strong className="text-white">a maioria dos modelos de ganhar dinheiro online foi feita pra quem já tem capital, já tem audiência ou já tem experiência.</strong> Pra quem está começando do zero, é armadilha.
+            </p>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              O InfoZap foi construído do zero pensando em quem está exatamente onde você está agora.
+            </p>
+          </div>
         </div>
       </section>
 
