@@ -154,7 +154,7 @@ const InfoZap = () => {
   const CTAButton = ({ small = false }: { small?: boolean }) => (
     <a href={checkoutUrl} target="_blank" rel="noopener noreferrer">
       <Button
-        className={`bg-[${GREEN}] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] ${small ? "h-10 px-6 text-sm" : "h-14 px-10 text-lg"} rounded-lg`}
+        className={`bg-[${GREEN}] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] ${small ? "w-full sm:w-auto h-10 px-4 sm:px-6 text-sm" : "w-full md:w-auto h-12 md:h-14 px-4 md:px-10 text-base md:text-lg"} rounded-lg`}
         style={{ backgroundColor: GREEN }}
       >
         {small ? "Quero acessar — R$97" : "🔥 QUERO MEU ACESSO AGORA — R$97"}
