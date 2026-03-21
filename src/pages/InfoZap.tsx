@@ -486,9 +486,13 @@ const InfoZap = () => {
           <h3 className="text-xl md:text-2xl font-bold mb-4" style={{ color: "#ffc800", fontFamily: "'Bebas Neue', cursive" }}>
             ⚠️ O custo de não fazer nada
           </h3>
-          <p className="text-gray-400 text-sm leading-relaxed">
-            Daqui a 6 meses, você vai estar exatamente no mesmo lugar — sem renda extra, dependendo do mesmo salário, vendo outras pessoas faturando com digital. O InfoZap custa menos que um jantar fora. Mas o custo de continuar parado é muito maior do que R$97.
-          </p>
+          <div className="text-gray-400 text-sm leading-relaxed space-y-4">
+            <p>Cada mês que passa sem uma renda digital funcionando é mais um mês dependendo de emprego, de chefe, de horário fixo.</p>
+            <p>Daqui a 6 meses você vai estar exatamente no mesmo lugar — sem renda extra, dependendo do mesmo salário, vendo outras pessoas faturando enquanto você continua adiando.</p>
+            <p>Não é questão de tempo. É questão de modelo. Você já tem o celular. Você já tem o WhatsApp. O único ingrediente que falta é esse aqui.</p>
+            <p>Por R$97 — menos que um jantar fora — você tem acesso à operação completa.</p>
+            <p className="font-bold text-white">O custo de continuar parado é muito maior do que R$97.</p>
+          </div>
         </div>
       </section>
 
