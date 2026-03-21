@@ -90,6 +90,23 @@ const faqs = [
   { q: "Quando recebo o acesso?", a: "Imediatamente após confirmação do pagamento." },
 ];
 
+const videoTestimonials = [
+  { name: "Saulo", result: "Só com o limite do cartão. Em 7 dias fez R$1.000", videoId: "bf2cbaf3-11c9-4f66-a9b7-0b8db5a7ccbf" },
+  { name: "Gilson", result: "Primeiro mês fez R$10.000. Sem experiência, sem aparecer", videoId: "a963887a-0124-4bb2-989c-ffaf393baf3a" },
+  { name: "Eric", result: "20 dias de treinamento fez R$8.000 no Pix", videoId: "bf8fb158-3a94-4da0-81c5-9fdaf2f8ba3c" },
+  { name: "Alunos comemorando 😂", result: "Pix caindo em tempo real — notificação após notificação", videoId: "7a1f82b2-8752-443d-ac10-0246361aca6b" },
+];
+
+const resultPrints = [
+  { src: result1, caption: "Primeiro Pix no mesmo dia" },
+  { src: result2, caption: "Vendas todos os dias" },
+  { src: result3, caption: "Resultado em menos de 1 semana" },
+  { src: result4, caption: "Funil rodando no automático" },
+  { src: result5, caption: "Pix caindo todo dia" },
+  { src: result6, caption: "De zero a R$1k/dia" },
+  { src: result7, caption: "Resultado consistente" },
+];
+
 const CloseFriends = () => {
   const { getCheckoutUrl } = useCheckoutUrl();
   const checkoutUrl = getCheckoutUrl(CHECKOUT_BASE_URL);
