@@ -356,7 +356,7 @@ const InfoZap = () => {
                   <div key={i} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_33.333%] min-w-0 px-3">
                     <div className="rounded-2xl border overflow-hidden shadow-lg hover:scale-[1.02] transition-transform duration-300" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
                       <div className="p-2">
-                        <img src={p.src} alt={p.caption} className="w-full h-auto object-contain rounded-xl" />
+                        <img src={p.src} alt={p.caption} className="w-full h-auto object-contain rounded-xl" loading="lazy" />
                       </div>
                       <p className="text-sm font-bold px-4 pb-3" style={{ color: "#9ca3af" }}>{p.caption}</p>
                     </div>
