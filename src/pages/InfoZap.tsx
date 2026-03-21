@@ -543,7 +543,7 @@ const InfoZap = () => {
             A única pergunta que importa agora:
           </h2>
           <p className="text-gray-400 mb-8 text-base leading-relaxed">
-            Daqui a 30 dias você vai estar no mesmo lugar ou vai estar com uma operação rodando?
+            Daqui a 30 dias você vai estar exatamente onde está agora — ou vai estar com Pix caindo todo dia, com uma operação rodando e com o controle da sua própria renda. A diferença é essa decisão aqui.
           </p>
           <CTAButton />
         </div>
