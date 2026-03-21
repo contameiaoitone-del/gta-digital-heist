@@ -389,7 +389,7 @@ const CloseFriends = () => {
       {/* ═══════════ SEÇÃO 6 — QUEM VOCÊ VAI ACOMPANHAR ═══════════ */}
       <section className="relative py-16 md:py-20 z-10 overflow-hidden">
         <div className="absolute inset-0 bg-[#050505]" />
-        <img src={cityBackgroundCf} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.12]" />
+        <img src={cityBackgroundCf} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.18]" />
 
         <div className="relative z-10 max-w-[780px] mx-auto px-6">
           <SectionLabel>QUEM VOCÊ VAI ACOMPANHAR</SectionLabel>
