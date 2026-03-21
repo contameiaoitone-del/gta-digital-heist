@@ -266,7 +266,7 @@ const InfoZap = () => {
 
       {/* RESULTADOS REAIS */}
       <section className="py-16 md:py-24 px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Resultados Reais</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             Não é promessa. É o que já está acontecendo.
@@ -274,7 +274,7 @@ const InfoZap = () => {
           <p className="text-gray-400 text-base mb-10">Alunos reais. Resultados reais. Sem edição, sem seleção, sem mentira.</p>
 
           {/* Bloco 1 — Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-14">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-16">
             {statsCards.map((s, i) => (
               <div key={i} className="rounded-xl p-5 border flex items-start gap-3" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
                 <span className="text-2xl">{s.emoji}</span>
@@ -284,39 +284,39 @@ const InfoZap = () => {
           </div>
 
           {/* Bloco 2 — Depoimentos em vídeo */}
-          <h3 className="text-xl font-bold text-white mb-6">Depoimentos em vídeo</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
+          <h3 className="text-2xl font-bold text-white mb-8">Depoimentos em vídeo</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
             {videoTestimonials.map((v, i) => (
-              <div key={i} className="rounded-xl border overflow-hidden" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+              <div key={i} className="rounded-2xl border overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
                 {v.videoId ? (
-                  <div className="aspect-video">
+                  <div className="relative w-full" style={{ paddingBottom: '177.78%' }}>
                     <iframe
                       src={`https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=${v.videoId}`}
-                      className="w-full h-full"
+                      className="absolute inset-0 w-full h-full"
                       style={{ border: 'none' }}
                       allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture"
                       allowFullScreen
                     />
                   </div>
                 ) : (
-                  <div className="aspect-video flex items-center justify-center" style={{ backgroundColor: "#1a1a1a" }}>
-                    <Play className="w-10 h-10 text-gray-500" />
+                  <div className="aspect-[9/16] flex items-center justify-center" style={{ backgroundColor: "#1a1a1a" }}>
+                    <Play className="w-12 h-12 text-gray-500" />
                   </div>
                 )}
-                <div className="p-4">
-                  <p className="text-white text-sm font-bold">{v.name}</p>
-                  <p className="text-sm" style={{ color: GREEN }}>{v.result}</p>
+                <div className="p-5">
+                  <p className="text-white text-base font-bold">{v.name}</p>
+                  <p className="text-sm font-semibold" style={{ color: GREEN }}>{v.result}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Bloco 3 — Prints de resultado */}
-          <h3 className="text-xl font-bold text-white mb-6">Prints de resultado</h3>
-          <div className="relative mb-14">
+          <h3 className="text-2xl font-bold text-white mb-8">Prints de resultado</h3>
+          <div className="relative mb-16">
             <button
               onClick={scrollPrintsPrev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 rounded-full p-2 transition-all duration-300 hover:scale-110 shadow-lg"
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 rounded-full p-3 transition-all duration-300 hover:scale-110 shadow-lg"
               style={{ backgroundColor: GREEN, color: "#000" }}
               aria-label="Anterior"
             >
@@ -324,20 +324,22 @@ const InfoZap = () => {
             </button>
             <button
               onClick={scrollPrintsNext}
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 rounded-full p-2 transition-all duration-300 hover:scale-110 shadow-lg"
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 rounded-full p-3 transition-all duration-300 hover:scale-110 shadow-lg"
               style={{ backgroundColor: GREEN, color: "#000" }}
               aria-label="Próximo"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
 
-            <div className="overflow-hidden px-10" ref={printsRef}>
+            <div className="overflow-hidden px-12" ref={printsRef}>
               <div className="flex">
                 {resultPrints.map((p, i) => (
-                  <div key={i} className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 px-2">
-                    <div className="rounded-xl border overflow-hidden" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
-                      <img src={p.src} alt={p.caption} className="w-full aspect-square object-cover" />
-                      <p className="text-xs p-3" style={{ color: "#9ca3af" }}>{p.caption}</p>
+                  <div key={i} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_33.333%] min-w-0 px-3">
+                    <div className="rounded-2xl border overflow-hidden shadow-lg hover:scale-[1.02] transition-transform duration-300" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                      <div className="p-2">
+                        <img src={p.src} alt={p.caption} className="w-full h-auto object-contain rounded-xl" />
+                      </div>
+                      <p className="text-xs px-4 pb-3" style={{ color: "#9ca3af" }}>{p.caption}</p>
                     </div>
                   </div>
                 ))}
