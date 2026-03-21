@@ -44,7 +44,7 @@ const Links = () => {
     },
     {
       name: "Real Life Academy",
-      url: "/",
+      url: "/real-zap-academy",
       icon: GraduationCap,
       description: "Curso completo de marketing digital",
       image: realLifeAcademyBannerMobile,
