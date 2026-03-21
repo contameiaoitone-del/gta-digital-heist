@@ -55,7 +55,7 @@ const statsCards = [
   { number: "+140", desc: "Alunos já aplicando o método" },
   { number: "20-30%", desc: "Taxa de conversão nos funis" },
   { number: "R$0", desc: "Reembolso com o modelo Pay After" },
-  { number: "R$Xk", desc: "Faturamento gerado pelos alunos" },
+  { number: "R$500.000", desc: "Faturamento gerado pelos alunos" },
 ];
 
 const videoTestimonials = [
