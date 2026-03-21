@@ -35,8 +35,10 @@ const insideCards = [
   { icon: "📱", title: "Escala de WhatsApp", desc: "Como estou escalando chips, rodízio de número, múltiplos WhatsApps. O que está funcionando essa semana — não o que funcionava mês passado." },
   { icon: "🎯", title: "Testes de criativos", desc: "Cada criativo novo que subo aparece aqui antes de qualquer lugar. O raciocínio por trás, o ângulo escolhido, o resultado depois." },
   { icon: "📈", title: "Otimização de métricas", desc: "Quando uma campanha trava, quando um número fica feio — você vê a decisão sendo tomada com os dados na tela. Análise real, não teoria de análise." },
-  { icon: "🚀", title: "Lançamentos e estratégias", desc: "Cada novo produto, nova oferta, novo funil que rodo — você acompanha do zero. A ideia, a execução, o resultado." },
   { icon: "🔒", title: "O que falhou — sem filtro", desc: "Todo teste que não funcionou vira aula. Cada erro que cometo aparece aqui — porque aprender com erro alheio é mais barato do que aprender com o próprio." },
+  { icon: "🚀", title: "Lançamentos e estratégias", desc: "Cada novo produto, nova oferta, novo funil que rodo — você acompanha do zero. A ideia, a execução, o resultado." },
+  { icon: "📖", title: "Stories Exclusivos dos Melhores Amigos", desc: "Tudo que posto nos stories vai primeiro pro Close Friends — antes de qualquer outra pessoa ver. Bastidores, testes, resultados e erros em tempo real direto no seu feed do Instagram." },
+  { icon: "🎬", title: "Publicações e Reels Exclusivos", desc: "Conteúdo que não vai pro feed público. Posts e Reels produzidos só pra quem está dentro — análises mais profundas, estratégias completas e conteúdo que nunca vira público." },
 ];
 
 const stats = [
@@ -224,6 +226,17 @@ const CloseFriends = () => {
       {/* ═══════════ SEÇÃO 4 — O QUE TEM DENTRO ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
+          <SectionLabel>O QUE É</SectionLabel>
+          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-6">
+            CLOSE FRIENDS É O ACESSO AOS <span className="text-[#ff2d78]">MELHORES AMIGOS</span> DO MEU INSTAGRAM.
+          </h2>
+
+          <div className="space-y-4 text-lg text-[#ccc] leading-relaxed mb-14">
+            <p>No Instagram existe um recurso chamado Close Friends — uma lista restrita onde só quem está dentro consegue ver o conteúdo. Não é público, não aparece pra qualquer um, não vira Reels, não vira feed.</p>
+            <p>É o lugar onde eu posto tudo que realmente importa da minha operação — sem filtro, sem roteiro, sem preocupação com algoritmo.</p>
+            <p className="font-bold text-[#f5f5f5]">Quem entra no Close Friends do Caio Dalcin tem acesso a:</p>
+          </div>
+
           <SectionLabel>O QUE TEM DENTRO</SectionLabel>
           <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
             OS BASTIDORES QUE <span className="text-[#ff2d78]">NINGUÉM VÊ.</span>{" "}
