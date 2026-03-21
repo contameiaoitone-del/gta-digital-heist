@@ -54,9 +54,8 @@ const insideCards = [
 
 const stats = [
   { value: "+140", label: "Membros ativos" },
-  { value: "Todo dia", label: "Conteúdo novo nos stories" },
+  { value: "Toda semana", label: "Conteúdo novo exclusivo" },
   { value: "R$37", label: "Por mês — menos que um almoço" },
-  { value: "R$0", label: "Reembolso — quem entra fica" },
 ];
 
 const forYou = [
