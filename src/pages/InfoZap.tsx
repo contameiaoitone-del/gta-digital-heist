@@ -67,7 +67,7 @@ const videoTestimonials = [
 
 const resultPrints = [
   { src: result1, caption: "Primeiro Pix no mesmo dia" },
-  { src: result2, caption: "Escalando com R$15/dia" },
+  { src: result2, caption: "A" },
   { src: result3, caption: "Resultado em menos de 1 semana" },
   { src: result4, caption: "Funil rodando no automático" },
   { src: result5, caption: "Pix caindo todo dia" },
@@ -187,7 +187,7 @@ const InfoZap = () => {
           <CTAButton />
 
           <p className="mt-4 text-xs text-gray-500">
-            🔒 Acesso imediato · Garantia 7 dias · Sem assinatura
+            ⚡ Últimas vagas nesse preço · Acesso imediato
           </p>
         </div>
         {/* Decorative line */}
