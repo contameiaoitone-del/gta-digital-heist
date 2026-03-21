@@ -383,7 +383,11 @@ const InfoZap = () => {
       </section>
 
       {/* QUEM VAI TE ENSINAR */}
-      <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
+      <section className="relative py-16 md:py-24 px-4 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img src={cityBackground} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.65)" }} />
+        </div>
         <div className="max-w-4xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Quem Vai Te Ensinar</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
