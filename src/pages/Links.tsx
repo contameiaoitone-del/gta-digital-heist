@@ -37,7 +37,7 @@ const Links = () => {
     },
     {
       name: "InfoZap",
-      url: "/rp-zap",
+      url: "/infozap",
       icon: ExternalLink,
       description: "RP Zap",
       image: rpZapBanner,
