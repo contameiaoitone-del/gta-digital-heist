@@ -4,7 +4,22 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ArrowRight, ChevronRight, ChevronLeft, X, Shield, Play } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
+
+import infozapMod1 from "@/assets/infozap-mod-1.png";
+import infozapMod2 from "@/assets/infozap-mod-2.png";
+import infozapMod3 from "@/assets/infozap-mod-3.png";
+import infozapMod4 from "@/assets/infozap-mod-4.png";
+import infozapMod5 from "@/assets/infozap-mod-5.png";
+
+const moduleCovers = [
+  { image: infozapMod1, title: "Seja Bem Vindo" },
+  { image: infozapMod2, title: "Estruturando Tudo" },
+  { image: infozapMod3, title: "Criando seu Produto" },
+  { image: infozapMod4, title: "ZapData" },
+  { image: infozapMod5, title: "Produtos e Nichos" },
+];
 
 const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
 
