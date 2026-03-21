@@ -376,6 +376,42 @@ const InfoZap = () => {
         </div>
       </section>
 
+      {/* QUEM VAI TE ENSINAR */}
+      <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
+        <div className="max-w-4xl mx-auto">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Quem Vai Te Ensinar</span>
+          <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+            O método que você vai aprender é o mesmo que eu rodo todo dia
+          </h2>
+          <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+            {/* Photo */}
+            <div className="flex-shrink-0">
+              <div className="w-40 h-40 md:w-48 md:h-48 rounded-full border-2 flex items-center justify-center" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
+                <span className="text-gray-500 text-xs text-center px-4">[FOTO DO CAIO AQUI]</span>
+              </div>
+            </div>
+            {/* Text */}
+            <div className="text-gray-400 text-base leading-relaxed">
+              <p>Sou o Caio Dalcin, Media Buyer com 5 anos vivendo do digital. Nos últimos meses desenvolvi e validei o método que ensino no InfoZap — a mesma operação que rodo todo dia, com os resultados que você acabou de ver.</p>
+              <p className="mt-4">Não ensino teoria. Ensino o que funciona na prática, testado com dinheiro real, todos os dias.</p>
+            </div>
+          </div>
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-4 mt-10 max-w-lg mx-auto md:mx-0">
+            {[
+              { number: "5 anos", desc: "Vivendo do digital" },
+              { number: "+140", desc: "Alunos formados" },
+              { number: "R$500k", desc: "Gerado pelos alunos" },
+            ].map((s, i) => (
+              <div key={i} className="text-center">
+                <p className="text-2xl md:text-3xl font-bold" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive" }}>{s.number}</p>
+                <p className="text-gray-500 text-xs mt-1">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* 6. MODULES */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-5xl mx-auto">
