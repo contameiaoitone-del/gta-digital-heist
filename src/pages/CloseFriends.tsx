@@ -301,7 +301,7 @@ const CloseFriends = () => {
           <p className="text-[#999] text-base mb-10">Alunos reais. Resultados reais. Sem edição, sem seleção, sem mentira.</p>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16">
             {stats.map((s, i) => (
               <div key={i} className="bg-[#141414] border border-white/[0.07] rounded-xl p-6 text-center">
                 <p className="font-gta text-3xl md:text-4xl text-[#ff2d78] mb-1">{s.value}</p>
