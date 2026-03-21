@@ -7,92 +7,74 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import gtaCityNight from "@/assets/gta-cityscape-night.png";
+import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 
 const CHECKOUT_BASE_URL = "https://pay.cakto.com.br/2DD1AH4";
 
-const socialItems = [
-  { emoji: "🎬", text: "Bastidores reais todo dia" },
-  { emoji: "✅", text: "O que funciona agora, não há 6 meses" },
-  { emoji: "❌", text: "O que falhou e por quê" },
-  { emoji: "📊", text: "Métricas reais da operação" },
-  { emoji: "🔒", text: "Só pra quem está dentro" },
+const enemyBlocks = [
+  {
+    icon: "📱",
+    title: "Reels e conteúdo de feed",
+    text: "São feitos pra viralizar, não pra ensinar. O criador escolhe o que parece impressionante, corta o que é chato, edita o que é difícil. Você vê o resultado, nunca o processo. Conteúdo público é vitrine — não bastidor.",
+  },
+  {
+    icon: "🎥",
+    title: "YouTube e lives genéricas",
+    text: "Longa demais, rasa demais, atrasada demais. O que está sendo ensinado hoje no YouTube funcionava há 6 meses. O mercado de tráfego e WhatsApp muda toda semana. Quem depende de conteúdo público está sempre um passo atrás.",
+  },
+  {
+    icon: "👨‍🏫",
+    title: "Cursos gravados",
+    text: "Você assiste, anota, termina — e na hora de executar percebe que o mercado mudou, o algoritmo mudou, o que estava no curso não funciona mais igual. Conteúdo gravado envelhece. Operação em tempo real não.",
+  },
 ];
 
-const stories = [
-  { label: "Hoje", title: "Métricas do dia — o que otimizei e por quê", icon: "📊" },
-  { label: "Criativo", title: "Novo criativo antes de subir — o raciocínio por trás", icon: "🎬" },
-  { label: "Falhou", title: "O que testei essa semana que não funcionou", icon: "❌" },
+const insideCards = [
+  { icon: "📊", title: "Campanhas ao vivo", desc: "Você vê as campanhas sendo criadas, otimizadas e escaladas em tempo real. CPM, CTR, custo por conversa — os números reais da operação, não os números bonitos de print de guru." },
+  { icon: "📱", title: "Escala de WhatsApp", desc: "Como estou escalando chips, rodízio de número, múltiplos WhatsApps. O que está funcionando essa semana — não o que funcionava mês passado." },
+  { icon: "🎯", title: "Testes de criativos", desc: "Cada criativo novo que subo aparece aqui antes de qualquer lugar. O raciocínio por trás, o ângulo escolhido, o resultado depois." },
+  { icon: "📈", title: "Otimização de métricas", desc: "Quando uma campanha trava, quando um número fica feio — você vê a decisão sendo tomada com os dados na tela. Análise real, não teoria de análise." },
+  { icon: "🚀", title: "Lançamentos e estratégias", desc: "Cada novo produto, nova oferta, novo funil que rodo — você acompanha do zero. A ideia, a execução, o resultado." },
+  { icon: "🔒", title: "O que falhou — sem filtro", desc: "Todo teste que não funcionou vira aula. Cada erro que cometo aparece aqui — porque aprender com erro alheio é mais barato do que aprender com o próprio." },
 ];
 
-const features = [
-  {
-    icon: "🎬",
-    title: "Bastidores em tempo real",
-    desc: "Tudo que rolo na minha operação aparece aqui primeiro — criativos, funis, campanhas, métricas. Antes de virar conteúdo público.",
-  },
-  {
-    icon: "✅",
-    title: "O que está funcionando agora",
-    desc: "Sem esperar virar tendência. Você vê antes de todo mundo o que está convertendo nessa semana, não o que funcionou há 6 meses.",
-  },
-  {
-    icon: "❌",
-    title: "O que falhou — e por quê",
-    desc: "Os erros custam dinheiro. Aqui você aprende com os meus sem precisar pagar por eles. Todo teste que não funcionou vira aula.",
-  },
-  {
-    icon: "📊",
-    title: "Análise de métricas reais",
-    desc: "Você vê os números da operação — CPM, CTR, custo por conversa, ROAS. Aprende a ler métricas vendo uma operação real acontecer.",
-  },
-  {
-    icon: "🔒",
-    title: "Conteúdo que não vai a lugar nenhum",
-    desc: "Sem feed, sem Reels, sem YouTube. O que está aqui fica aqui. Exclusivo pra quem está dentro do Close Friends.",
-  },
+const stats = [
+  { value: "+140", label: "Membros ativos" },
+  { value: "Todo dia", label: "Conteúdo novo nos stories" },
+  { value: "R$37", label: "Por mês — menos que um almoço" },
+  { value: "R$0", label: "Reembolso — quem entra fica" },
 ];
 
 const forYou = [
-  "Você já tem o InfoZap ou Real Zap Academy e quer ver a teoria sendo aplicada na prática todo dia",
-  "Você já roda uma operação digital e quer se atualizar com o que está funcionando agora",
+  "Você já comprou o InfoZap ou Real Zap Academy e quer ver a teoria sendo aplicada na prática todo dia",
+  "Você já vende no digital e quer saber o que está funcionando agora — não há 6 meses",
   "Você está começando e quer aprender observando uma operação real — sem teoria vazia",
-  "Você consome muito conteúdo mas sente que falta o bastidor de verdade — os números, os erros, o processo",
-  "Você quer ficar por dentro do que está funcionando no mercado de lowticket no WhatsApp antes de todo mundo",
+  "Você consome muito conteúdo mas sente que falta o bastidor de verdade — os números, os erros, o processo real",
+  "Você quer estar um passo à frente do mercado antes que vire conteúdo público",
 ];
 
 const notForYou = [
-  "Você quer um curso com módulos estruturados — pra isso é o InfoZap ou Real Zap Academy",
+  "Você quer um curso estruturado com módulos — pra isso é o InfoZap ou Real Zap Academy",
   "Você não tem interesse em acompanhar bastidores de operação real no dia a dia",
-  "Você busca entretenimento — aqui é conteúdo técnico e prático",
+  "Você quer entretenimento — aqui é conteúdo técnico e prático",
+  "Você acha que vai aprender só assistindo sem aplicar nada",
 ];
 
 const valueStack = [
   { name: "Bastidores diários da operação", value: "R$197/mês" },
-  { name: "Análise de métricas em tempo real", value: "R$97/mês" },
-  { name: "Testes e experimentos exclusivos", value: "R$97/mês" },
+  { name: "Campanhas e métricas em tempo real", value: "R$97/mês" },
+  { name: "Testes de criativos ao vivo", value: "R$97/mês" },
+  { name: "Estratégias antes de virar público", value: "R$97/mês" },
 ];
 
 const faqs = [
-  {
-    q: "Como funciona o acesso?",
-    a: "Após confirmar o pagamento, você recebe o link para seguir o perfil do Caio no Instagram e é adicionado automaticamente ao Close Friends. Acesso imediato.",
-  },
-  {
-    q: "Posso cancelar quando quiser?",
-    a: "Sim. É mensal sem fidelidade. Cancela quando quiser, sem multa e sem burocracia.",
-  },
-  {
-    q: "É diferente do que o Caio posta no feed?",
-    a: "Completamente diferente. O feed é conteúdo público editado. O Close Friends é bastidor real — o que está acontecendo na operação agora, com números, erros e testes.",
-  },
-  {
-    q: "Já tenho o InfoZap. Preciso do Close Friends também?",
-    a: "São complementares. O InfoZap te ensina o modelo. O Close Friends te mantém atualizado com o que está funcionando hoje na prática. Juntos são muito mais poderosos.",
-  },
-  {
-    q: "Precisa ter experiência no digital?",
-    a: "Não. Iniciantes aprendem observando. Quem já vende aprende otimizando. O bastidor é valioso em qualquer nível.",
-  },
+  { q: "Como funciona o acesso?", a: "Após confirmar o pagamento, você recebe o link pra seguir meu perfil no Instagram e é adicionado automaticamente ao Close Friends. Acesso imediato." },
+  { q: "Posso cancelar quando quiser?", a: "Sim. Mensal sem fidelidade. Cancela quando quiser, sem multa e sem burocracia." },
+  { q: "É diferente do que você posta no feed?", a: "Completamente diferente. O feed é conteúdo público editado. O Close Friends é bastidor real — campanhas, métricas, testes e estratégias acontecendo agora, sem filtro." },
+  { q: "Já tenho o InfoZap. Preciso do Close Friends também?", a: "São complementares. O InfoZap te ensina o método. O Close Friends te mantém atualizado com o que está funcionando hoje na operação real. Juntos são muito mais poderosos." },
+  { q: "Quanto conteúdo é postado por semana?", a: "Todo dia tem algo novo nos stories — pode ser uma campanha, uma métrica, um teste, um bastidor. A frequência depende do que está acontecendo na operação, mas é conteúdo constante." },
+  { q: "Quando recebo o acesso?", a: "Imediatamente após confirmação do pagamento." },
 ];
 
 const CloseFriends = () => {
@@ -103,208 +85,285 @@ const CloseFriends = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setStickyVisible(window.scrollY > 600);
+      const heroBottom = heroRef.current?.getBoundingClientRect().bottom ?? 0;
+      setStickyVisible(heroBottom < 0);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const CTAButton = ({ small = false }: { small?: boolean }) => (
-    <Button variant="hero" size={small ? "default" : "xl"} asChild className={
-      small
-        ? "w-full sm:w-auto bg-[#ff2d78] hover:bg-[#cc1f5a] from-[#ff2d78] to-[#cc1f5a] rounded-[3px]"
-        : "w-full md:w-auto bg-[#ff2d78] hover:bg-[#cc1f5a] from-[#ff2d78] to-[#cc1f5a] rounded-[3px] px-4 md:px-12 text-base md:text-lg"
-    }>
-      <a href={checkoutUrl} target="_blank" rel="noopener noreferrer">
+    <Button
+      asChild
+      className={
+        small
+          ? "w-full sm:w-auto h-10 px-6 text-sm font-black uppercase tracking-wider bg-[#ff2d78] hover:bg-[#cc1f5a] hover:shadow-[0_0_30px_rgba(255,45,120,0.4)] transition-all rounded-[3px] text-white border-none"
+          : "w-full md:w-auto h-12 md:h-14 px-4 md:px-12 text-base md:text-lg font-black uppercase tracking-wider bg-[#ff2d78] hover:bg-[#cc1f5a] hover:shadow-[0_0_40px_rgba(255,45,120,0.4)] hover:-translate-y-0.5 transition-all rounded-[3px] text-white border-none"
+      }
+    >
+      <a
+        href={checkoutUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-gtm-category="close-friends"
+        data-gtm-action="click"
+        data-gtm-label="cta-close-friends"
+      >
         🔥 {small ? "Entrar agora →" : "Quero entrar no Close Friends — R$37/mês"}
       </a>
     </Button>
   );
 
+  const Microcopy = () => (
+    <span className="block mt-3 text-[13px] text-[#888] tracking-wide">
+      🔒 Acesso via Instagram · Cancela quando quiser · Sem fidelidade
+    </span>
+  );
+
+  const SectionDivider = () => (
+    <div className="h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+  );
+
+  const SectionLabel = ({ children, green = false }: { children: React.ReactNode; green?: boolean }) => (
+    <p className={`text-xs font-bold tracking-[0.2em] uppercase mb-4 ${green ? "text-[#00ff88]" : "text-[#ff2d78]"}`}>
+      {children}
+    </p>
+  );
+
   return (
     <div className="min-h-screen bg-[#080808] text-[#f5f5f5] font-body overflow-x-hidden relative">
-      {/* Noise texture overlay */}
+      {/* Noise texture */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.15]" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`
       }} />
 
-      {/* Top Bar */}
-      <div className="bg-[#ff2d78] text-white text-center py-2.5 px-5 font-black text-[13px] tracking-wider uppercase z-10 relative">
-        🔥 Close Friends — Bastidores exclusivos · Cancela quando quiser
-      </div>
+      {/* ═══════════ SEÇÃO 1 — HERO ═══════════ */}
+      <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center text-center z-10">
+        {/* GTA Background */}
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${gtaCityNight})` }} />
+        <div className="absolute inset-0 bg-black/50" />
 
-      {/* Social Marquee Bar */}
-      <div className="bg-[#141414] border-y border-white/[0.07] py-5 overflow-hidden relative z-10">
-        <div className="flex gap-12 whitespace-nowrap animate-[marquee_22s_linear_infinite]">
-          {[...socialItems, ...socialItems].map((item, i) => (
-            <span key={i} className="flex items-center gap-2.5 text-sm text-[#888] flex-shrink-0">
-              <span>{item.emoji}</span>
-              <span>{item.text}</span>
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Hero */}
-      <section ref={heroRef} className="py-16 md:py-20 text-center relative z-10">
-        <div className="max-w-[780px] mx-auto px-6">
-          <span className="inline-block bg-[#ff2d78]/10 border border-[#ff2d78]/30 text-[#ff2d78] text-xs font-bold tracking-[0.15em] uppercase px-4 py-1.5 rounded-sm mb-8">
-            🔥 Acesso exclusivo
+        <div className="relative z-10 max-w-[820px] mx-auto px-6 py-16 md:py-20">
+          <span className="inline-block bg-[#ff2d78]/15 border border-[#ff2d78]/40 text-[#ff2d78] text-xs font-bold tracking-[0.15em] uppercase px-4 py-1.5 rounded-sm mb-8">
+            🔥 Close Friends Exclusivo
           </span>
 
-          <h1 className="font-heading text-[clamp(46px,8vw,82px)] leading-[0.95] tracking-tight mb-3">
-            Chega de conteúdo{" "}
-            <span className="text-[#ff2d78]">que não te leva</span>{" "}
-            <span className="text-[#ff2d78]">a lugar nenhum.</span>
+          <h1 className="font-heading text-[clamp(36px,7vw,72px)] leading-[0.95] tracking-tight mb-8">
+            ENQUANTO TODO MUNDO CONSOME CONTEÚDO PÚBLICO,{" "}
+            <span className="text-[#ff2d78]">QUEM ESTÁ NO CLOSE FRIENDS VÊ A OPERAÇÃO ACONTECENDO EM TEMPO REAL.</span>
           </h1>
 
-          <p className="text-[clamp(17px,2.5vw,21px)] text-[#bbb] max-w-[580px] mx-auto mt-6 mb-10 leading-relaxed">
-            Entra no Close Friends e acompanha em tempo real os bastidores da minha operação —{" "}
-            <strong className="text-[#f5f5f5]">o que estou testando, o que está convertendo e o que falhou</strong>.
-            Sem filtro, sem roteiro, sem teoria.
-          </p>
+          <div className="space-y-3 mb-10 max-w-[600px] mx-auto">
+            {[
+              "📱 Bastidores reais — não roteiro, não edição, não teoria",
+              "📊 Campanhas, escala, métricas e testes — tudo ao vivo",
+              "🔒 Só pra quem está dentro — nunca vai pro feed",
+              "⚡ Atualizado todo dia direto nos stories",
+            ].map((line, i) => (
+              <p key={i} className="text-base md:text-lg text-[#ddd] bg-black/50 px-4 py-2 rounded-sm inline-block w-full">
+                {line}
+              </p>
+            ))}
+          </div>
 
           <CTAButton />
-          <span className="block mt-3 text-[13px] text-[#888] tracking-wide">
-            🔒 Acesso via Instagram · Cancela quando quiser · Sem fidelidade
-          </span>
+          <Microcopy />
         </div>
-
-        {/* Bottom gradient line */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-px bg-gradient-to-r from-transparent via-[#ff2d78] to-transparent" />
       </section>
 
-      {/* O Problema */}
+      {/* ═══════════ SEÇÃO 2 — O PROBLEMA ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#ff2d78] mb-4">O problema</p>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-6">
-            Você consome conteúdo{" "}
-            <span className="text-[#ff2d78]">todo dia</span> mas ainda{" "}
-            <span className="text-[#ff2d78]">não saiu do lugar?</span>
+          <SectionLabel>O PROBLEMA</SectionLabel>
+          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-8">
+            VOCÊ CONSOME CONTEÚDO <span className="text-[#ff2d78]">TODO DIA.</span>{" "}
+            E CONTINUA <span className="text-[#ff2d78]">NO MESMO LUGAR.</span>
           </h2>
 
           <p className="text-lg text-[#bbb] leading-relaxed mb-6">
-            O problema não é falta de informação. É <strong className="text-[#f5f5f5]">excesso de teoria sem prática real</strong>.
+            Não é falta de esforço. Não é falta de vontade. É que o conteúdo que você consome foi feito pra parecer útil — não pra te fazer ganhar dinheiro de verdade.
           </p>
           <p className="text-lg text-[#bbb] leading-relaxed mb-6">
-            Você vê Reels de estratégia, assiste vídeo no YouTube, lê thread no Twitter — mas na hora de executar, algo falta. Porque conteúdo público é sempre genérico, sempre sem contexto, sempre sem os números reais por trás.
-          </p>
-          <p className="text-lg text-[#bbb] leading-relaxed mb-6">
-            O que realmente muda o jogo é <strong className="text-[#f5f5f5]">ver uma operação funcionando de dentro</strong>. Ver o criativo antes de subir, ver a métrica em tempo real, ver o erro antes de ele acontecer com você.
+            Reels de 60 segundos que explicam estratégia sem mostrar número nenhum. Vídeos no YouTube com título de "como faturar R$10k" que terminam sem te dar nada concreto. Threads de guru contando história de sucesso sem mostrar uma campanha, uma métrica, um erro real.
           </p>
           <p className="text-lg text-[#bbb] leading-relaxed">
+            <strong className="text-[#f5f5f5]">Você aprende sobre digital. Mas não aprende a operar.</strong> A diferença entre quem fatura e quem apenas consome é simples: quem fatura viu uma operação real funcionando de dentro. Não em teoria. Na prática, com dinheiro real, erro real e resultado real.
+          </p>
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* ═══════════ SEÇÃO 3 — O INIMIGO ═══════════ */}
+      <section className="py-16 md:py-20 relative z-10">
+        <div className="max-w-[780px] mx-auto px-6">
+          <h2 className="font-heading text-[clamp(32px,5.5vw,56px)] leading-none tracking-tight mb-10">
+            POR QUE O CONTEÚDO PÚBLICO <span className="text-[#ff2d78]">NUNCA VAI TE DAR RESULTADO</span> DE VERDADE
+          </h2>
+
+          <div className="space-y-4">
+            {enemyBlocks.map((block, i) => (
+              <div key={i} className="bg-[#ff2d78]/5 border-l-[3px] border-l-[#ff2d78] p-6 rounded-r">
+                <h4 className="font-bold text-[17px] mb-2">{block.icon} {block.title}</h4>
+                <p className="text-[15px] text-[#999] leading-relaxed">{block.text}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-8 text-lg font-bold text-[#00ff88]">
             É exatamente isso que o Close Friends entrega.
           </p>
         </div>
       </section>
 
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+      <SectionDivider />
 
-      {/* O que você vai ver — Story Cards */}
+      {/* ═══════════ SEÇÃO 4 — O QUE TEM DENTRO ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#ff2d78] mb-4">O que você vai ver</p>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-3">
-            Bastidores que{" "}
-            <span className="text-[#ff2d78]">não vão pro feed</span>
-          </h2>
-          <p className="text-lg text-[#bbb] leading-relaxed mb-10">
-            Tudo que aparece aqui é o que está acontecendo agora na operação — não o que funcionou no passado.
-          </p>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {stories.map((s, i) => (
-              <div key={i} className="relative rounded-xl overflow-hidden aspect-[9/16] flex flex-col justify-end p-4 bg-[#141414]">
-                <div className="absolute inset-[-2px] rounded-[13px] bg-gradient-to-br from-[#ff2d78] to-[#ffe600] -z-10" />
-                <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-15">{s.icon}</div>
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/85 z-[1]" />
-                <div className="relative z-[2]">
-                  <p className="text-xs font-bold text-[#ff2d78] uppercase tracking-wider mb-1">{s.label}</p>
-                  <p className="text-sm font-bold text-white leading-snug">{s.title}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-lg text-[#bbb] leading-relaxed mt-10">
-            Você aprende mais em uma semana de bastidores do que em meses consumindo conteúdo público. Porque aqui você vê <strong className="text-[#f5f5f5]">o processo, não o resultado editado</strong>.
-          </p>
-        </div>
-      </section>
-
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
-
-      {/* O que você recebe */}
-      <section className="py-16 md:py-20 relative z-10">
-        <div className="max-w-[780px] mx-auto px-6">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#ff2d78] mb-4">O que você recebe</p>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-8">
-            Tudo que tem{" "}
-            <span className="text-[#ff2d78]">dentro do Close Friends</span>
+          <SectionLabel>O QUE TEM DENTRO</SectionLabel>
+          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
+            OS BASTIDORES QUE <span className="text-[#ff2d78]">NINGUÉM VÊ.</span>{" "}
+            SÓ QUEM ESTÁ DENTRO.
           </h2>
 
-          <div className="space-y-3">
-            {features.map((f, i) => (
-              <div key={i} className="flex flex-col sm:flex-row gap-3 sm:gap-5 p-6 bg-[#141414] rounded border-l-[3px] border-l-[#ff2d78]">
-                <span className="text-3xl flex-shrink-0">{f.icon}</span>
-                <div>
-                  <h4 className="font-bold text-[17px] mb-1.5">{f.title}</h4>
-                  <p className="text-[15px] text-[#888] leading-relaxed">{f.desc}</p>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {insideCards.map((card, i) => (
+              <div key={i} className="bg-[#141414] border-l-[3px] border-l-[#ff2d78] p-6 rounded-r">
+                <h4 className="font-bold text-[17px] mb-2">{card.icon} {card.title}</h4>
+                <p className="text-[15px] text-[#888] leading-relaxed">{card.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+      <SectionDivider />
 
-      {/* Para quem é */}
+      {/* ═══════════ SEÇÃO 5 — PROVA SOCIAL ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#ff2d78] mb-4">Para quem é</p>
+          <SectionLabel green>RESULTADOS REAIS</SectionLabel>
+          <h2 className="font-heading text-[clamp(32px,5.5vw,56px)] leading-none tracking-tight mb-10">
+            NÃO É CONTEÚDO. É <span className="text-[#00ff88]">OPERAÇÃO REAL.</span>{" "}
+            VEJA O QUE OS MEMBROS FALAM.
+          </h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            {stats.map((s, i) => (
+              <div key={i} className="bg-[#141414] border border-white/[0.07] rounded-md p-6 text-center">
+                <p className="font-heading text-3xl md:text-4xl text-[#ff2d78] mb-1">{s.value}</p>
+                <p className="text-[13px] text-[#888]">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Placeholder for member prints */}
+          <div className="bg-[#0d0d0d] border border-dashed border-white/10 rounded-md p-10 text-center mb-10">
+            <p className="text-[#555] text-sm uppercase tracking-wider">[PRINTS DOS MEMBROS AQUI]</p>
+          </div>
+
+          <p className="text-lg text-[#bbb] leading-relaxed text-center">
+            Essas pessoas pararam de consumir conteúdo público e começaram a ver uma operação real acontecer. <strong className="text-[#f5f5f5]">A diferença aparece rápido.</strong>
+          </p>
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* ═══════════ SEÇÃO 6 — QUEM VOCÊ VAI ACOMPANHAR ═══════════ */}
+      <section className="relative py-16 md:py-20 z-10">
+        {/* GTA Background */}
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${gtaCityNight})` }} />
+        <div className="absolute inset-0 bg-black/50" />
+
+        <div className="relative z-10 max-w-[780px] mx-auto px-6">
+          <SectionLabel>QUEM VOCÊ VAI ACOMPANHAR</SectionLabel>
+          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
+            NÃO SOU <span className="text-[#ff2d78]">GURU DE PALCO.</span>{" "}
+            SOU <span className="text-[#ff2d78]">OPERADOR.</span>
+          </h2>
+
+          <div className="flex flex-col md:flex-row gap-8 items-center md:items-start mb-10">
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden flex-shrink-0 border-[3px] border-[#ff2d78] shadow-[0_0_30px_rgba(255,45,120,0.3)]">
+              <img src={caioDalcinProfile} alt="Caio Dalcin" className="w-full h-full object-cover" />
+            </div>
+            <p className="text-lg text-[#ccc] leading-relaxed">
+              5 anos no digital. Comecei do zero como gestor de tráfego, passei por infoproduto, agência, encapsulado, drop — fiz tudo. Errei muito. Aprendi mais ainda. Hoje tenho uma empresa de infoprodutos e coproduções rodando. E o que você vai ver no Close Friends é exatamente o que está acontecendo na minha operação agora — não o que aconteceu no passado, não o que eu acho que vai funcionar.{" "}
+              <strong className="text-[#f5f5f5]">O que está rodando hoje, com dinheiro real, resultado real.</strong>{" "}
+              Cada story que posto no Close Friends é um pedaço da operação real. Sem roteiro, sem edição, sem filtro.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { value: "5 ANOS", label: "No digital" },
+              { value: "+140", label: "Membros no Close Friends" },
+              { value: "TODO DIA", label: "Conteúdo novo nos stories" },
+            ].map((s, i) => (
+              <div key={i} className="text-center">
+                <p className="font-heading text-2xl md:text-3xl text-[#00ff88]">{s.value}</p>
+                <p className="text-[13px] text-[#bbb] mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <SectionDivider />
+
+      {/* ═══════════ SEÇÃO 7 — PARA QUEM É ═══════════ */}
+      <section className="py-16 md:py-20 relative z-10">
+        <div className="max-w-[780px] mx-auto px-6">
+          <SectionLabel>PARA QUEM É</SectionLabel>
           <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-8">
-            O Close Friends é{" "}
-            <span className="text-[#ff2d78]">pra você se:</span>
+            O CLOSE FRIENDS É <span className="text-[#ff2d78]">PRA VOCÊ SE:</span>
           </h2>
 
           <div className="space-y-0">
             {forYou.map((item, i) => (
               <div key={i} className="flex items-start gap-3.5 py-4 border-b border-white/[0.07] text-[17px] text-[#ccc]">
-                <span className="text-[#ff2d78] text-xl flex-shrink-0 mt-0.5">✓</span>
+                <span className="text-[#ff2d78] text-xl flex-shrink-0 mt-0.5">✅</span>
                 <span>{item}</span>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* Not for you */}
-          <div className="mt-10 bg-[#ff2d78]/5 border border-[#ff2d78]/20 rounded p-8">
-            <h3 className="font-heading text-[32px] text-[#ff2d78] mb-4">Não é pra você se:</h3>
-            <ul className="space-y-2">
+      <SectionDivider />
+
+      {/* ═══════════ SEÇÃO 8 — NÃO É PRA VOCÊ ═══════════ */}
+      <section className="py-16 md:py-20 relative z-10">
+        <div className="max-w-[780px] mx-auto px-6">
+          <div className="bg-[#ff2d78]/5 border border-[#ff2d78]/20 rounded p-8">
+            <h3 className="font-heading text-[32px] text-[#ff2d78] mb-6">ISSO NÃO É PRA VOCÊ SE:</h3>
+            <ul className="space-y-3">
               {notForYou.map((item, i) => (
-                <li key={i} className="text-[#999] text-base pl-6 relative">
-                  <span className="absolute left-0 text-[#ff2d78]">✗</span>
+                <li key={i} className="text-[#999] text-base pl-7 relative">
+                  <span className="absolute left-0 text-[#ff2d78]">❌</span>
                   {item}
                 </li>
               ))}
             </ul>
+            <p className="mt-8 text-[#ccc] text-base leading-relaxed">
+              Se você está disposto a observar, absorver e aplicar o que vê — <strong className="text-[#f5f5f5]">o Close Friends vai acelerar sua operação mais do que qualquer curso gravado.</strong>
+            </p>
           </div>
         </div>
       </section>
 
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+      <SectionDivider />
 
-      {/* Value Stack */}
+      {/* ═══════════ SEÇÃO 9 — STACK DE VALOR ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
-        <div className="max-w-[780px] mx-auto px-6">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#ff2d78] mb-4">O valor real</p>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-8">
-            Por R$37 por mês{" "}
-            <span className="text-[#ff2d78]">você tem acesso a:</span>
+        <div className="max-w-[780px] mx-auto px-6 text-center">
+          <SectionLabel green>O VALOR REAL</SectionLabel>
+          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
+            POR R$37 POR MÊS <span className="text-[#00ff88]">VOCÊ TEM ACESSO A:</span>
           </h2>
 
-          <table className="w-full border-collapse my-8">
+          <table className="w-full border-collapse my-8 text-left">
             <tbody>
               {valueStack.map((row, i) => (
                 <tr key={i} className="border-b border-white/[0.07]">
@@ -314,7 +373,7 @@ const CloseFriends = () => {
               ))}
               <tr className="border-t-2 border-white/[0.07]">
                 <td className="py-3.5 text-lg font-bold">Valor Real</td>
-                <td className="py-3.5 text-lg text-right text-[#888] line-through font-bold">R$391/mês</td>
+                <td className="py-3.5 text-lg text-right text-[#888] line-through font-bold">R$488/mês</td>
               </tr>
               <tr>
                 <td className="py-3.5 font-heading text-[28px] text-[#ff2d78]">Você paga</td>
@@ -323,84 +382,78 @@ const CloseFriends = () => {
             </tbody>
           </table>
 
-          {/* Price block */}
-          <div className="bg-[#141414] border border-white/[0.07] rounded-md p-10 text-center">
-            <p className="text-sm text-[#888] uppercase tracking-widest mb-2">Acesso mensal</p>
-            <p className="font-heading text-[72px] text-[#ff2d78] leading-none mb-1">R$37</p>
-            <p className="text-base text-[#888] mb-8">por mês · cancela quando quiser</p>
-            <CTAButton />
-            <span className="block mt-3 text-[13px] text-[#888]">
-              🔒 Acesso via Instagram · Sem fidelidade · Cancela quando quiser
-            </span>
-          </div>
+          <CTAButton />
+          <Microcopy />
         </div>
       </section>
 
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+      <SectionDivider />
 
-      {/* Custo da inação */}
+      {/* ═══════════ SEÇÃO 10 — CUSTO DA INAÇÃO ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
-          <div className="bg-gradient-to-br from-[#ffe600]/5 to-[#ff2d78]/5 border border-[#ffe600]/15 rounded p-10 text-center">
-            <h3 className="font-heading text-[38px] text-[#ffe600] mb-4">
-              ⚠️ O custo de continuar de fora
+          <div className="bg-gradient-to-br from-[#ffe600]/5 to-[#ff2d78]/5 border border-[#ffe600]/15 rounded p-8 md:p-10 text-center">
+            <h3 className="font-heading text-[clamp(28px,5vw,38px)] text-[#ffe600] mb-6">
+              ⚠️ O CUSTO DE CONTINUAR DE FORA
             </h3>
-            <p className="text-lg text-[#bbb] leading-relaxed">
-              Cada semana que passa sem saber o que está funcionando agora no mercado é uma semana testando às cegas. Enquanto você gasta dinheiro em teste, quem está no Close Friends já sabe o resultado. Por R$37 — <strong className="text-[#f5f5f5]">menos que um delivery</strong> — você acessa o que está funcionando hoje, antes de todo mundo.
+            <p className="text-lg text-[#bbb] leading-relaxed mb-4">
+              Cada semana que passa sem ver o que está funcionando agora é uma semana testando às cegas. Você gasta dinheiro em anúncio tentando descobrir o que já está descoberto. Você perde tempo em estratégia que já foi testada e descartada.
+            </p>
+            <p className="text-lg text-[#bbb] leading-relaxed mb-4">
+              Enquanto você consome conteúdo público que está sempre atrasado, quem está no Close Friends vê em tempo real o que está convertendo essa semana — antes de virar trend, antes de virar curso, antes de todo mundo saber.
+            </p>
+            <p className="text-lg leading-relaxed">
+              <strong className="text-[#f5f5f5]">Por R$37 — menos que um almoço fora — você para de adivinhar e começa a ver.</strong>
             </p>
           </div>
         </div>
       </section>
 
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+      <SectionDivider />
 
-      {/* Garantia */}
+      {/* ═══════════ SEÇÃO 11 — GARANTIA ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
-          <div className="bg-[#141414] border-2 border-[#ff2d78] rounded-md p-10 text-center relative overflow-hidden">
-            <span className="absolute right-[-10px] top-[-30px] text-[180px] text-[#ff2d78]/[0.04] leading-none pointer-events-none">∞</span>
-            <h3 className="font-heading text-[42px] text-[#ff2d78] mb-3">
-              🛡️ Sem risco. Cancela quando quiser.
+          <div className="bg-[#141414] border-2 border-[#ff2d78] rounded-md p-8 md:p-10 text-center relative overflow-hidden">
+            <span className="absolute right-[-10px] top-[-30px] text-[180px] text-[#ff2d78]/[0.04] leading-none pointer-events-none select-none">∞</span>
+            <h3 className="font-heading text-[clamp(28px,5vw,42px)] text-[#ff2d78] mb-4">
+              🛡️ SEM RISCO. SEM FIDELIDADE. CANCELA QUANDO QUISER.
             </h3>
-            <p className="text-[17px] text-[#bbb] max-w-[500px] mx-auto leading-relaxed">
-              É uma assinatura mensal sem fidelidade. Se em qualquer momento achar que não está valendo — cancela com um clique. Sem multa, sem burocracia, sem pergunta. Mas quem entra raramente sai. Porque o conteúdo não para.
+            <p className="text-[17px] text-[#bbb] max-w-[560px] mx-auto leading-relaxed">
+              É uma assinatura mensal sem compromisso. Se em qualquer momento achar que não está valendo — cancela com um clique. Sem multa, sem burocracia, sem pergunta. Mas quem entra raramente sai. Porque toda semana tem coisa nova acontecendo na operação.
             </p>
           </div>
         </div>
       </section>
 
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+      <SectionDivider />
 
-      {/* CTA Final */}
-      <section className="py-16 md:py-20 text-center relative z-10">
+      {/* ═══════════ SEÇÃO 12 — CTA FINAL ═══════════ */}
+      <section className="py-16 md:py-24 text-center relative z-10 bg-[#0d0d0d]">
         <div className="max-w-[780px] mx-auto px-6">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#ff2d78] mb-4">Decisão</p>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-6">
-            Continua consumindo{" "}
-            <span className="text-[#ff2d78]">conteúdo público</span>{" "}
-            ou entra de verdade?
+          <h2 className="font-heading text-[clamp(32px,6vw,56px)] leading-none tracking-tight mb-6">
+            VOCÊ VAI CONTINUAR CONSUMINDO <span className="text-[#ff2d78]">CONTEÚDO PÚBLICO</span>{" "}
+            OU VAI <span className="text-[#ff2d78]">ENTRAR DE VERDADE?</span>
           </h2>
-          <p className="text-lg text-[#bbb] leading-relaxed mb-10">
-            Por R$37 por mês você para de adivinhar o que funciona e começa a ver em tempo real. A decisão é simples.
+          <p className="text-lg text-[#bbb] leading-relaxed mb-10 max-w-[620px] mx-auto">
+            Daqui a 30 dias você vai estar no mesmo lugar consumindo Reels de guru — ou vai ter acompanhado uma operação real rodando por dentro, com números reais, erros reais e resultados reais. A diferença é essa decisão aqui.
           </p>
           <CTAButton />
-          <span className="block mt-3 text-[13px] text-[#888]">
-            🔒 R$37/mês · Acesso via Instagram · Cancela quando quiser
-          </span>
+          <Microcopy />
         </div>
       </section>
 
-      <div className="h-px bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
+      <SectionDivider />
 
-      {/* FAQ */}
+      {/* ═══════════ SEÇÃO 13 — FAQ ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-[#ff2d78] mb-4">Dúvidas</p>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-8">
-            Perguntas frequentes
+          <SectionLabel green>DÚVIDAS</SectionLabel>
+          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
+            PERGUNTAS FREQUENTES
           </h2>
 
-          <Accordion type="single" collapsible className="space-y-0">
+          <Accordion type="single" collapsible>
             {faqs.map((faq, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="border-b border-white/[0.07]">
                 <AccordionTrigger className="py-6 text-[17px] font-bold hover:no-underline text-left">
@@ -415,7 +468,7 @@ const CloseFriends = () => {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* FOOTER */}
       <footer className="py-10 text-center text-[#888] text-[13px] border-t border-white/[0.07] relative z-10">
         <p>© 2025 Close Friends · Caio Dalcin · Todos os direitos reservados</p>
         <p className="mt-2">
@@ -427,19 +480,12 @@ const CloseFriends = () => {
         </p>
       </footer>
 
-      {/* Sticky CTA */}
+      {/* STICKY BAR */}
       <div className={`fixed bottom-0 left-0 right-0 bg-[#080808]/95 border-t border-white/[0.07] py-4 px-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 z-50 backdrop-blur-lg transition-transform duration-300 ${stickyVisible ? "translate-y-0" : "translate-y-full"}`}>
         <span className="text-[15px] text-[#bbb]">Close Friends — Acesso mensal</span>
         <span className="font-heading text-2xl text-[#ff2d78]">R$37/mês</span>
         <CTAButton small />
       </div>
-
-      <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
     </div>
   );
 };
