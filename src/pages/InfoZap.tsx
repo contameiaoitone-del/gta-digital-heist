@@ -1,7 +1,9 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowRight, ChevronRight, X, Shield, Play } from "lucide-react";
+import { ArrowRight, ChevronRight, ChevronLeft, X, Shield, Play } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 
 const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
@@ -110,6 +112,14 @@ const InfoZap = () => {
   const [showSticky, setShowSticky] = useState(false);
   const { getCheckoutUrl } = useCheckoutUrl();
   const checkoutUrl = getCheckoutUrl(CHECKOUT_BASE);
+
+  const [printsRef, printsApi] = useEmblaCarousel(
+    { loop: true, align: "start", slidesToScroll: 1 },
+    [Autoplay({ delay: 3000, stopOnInteraction: false })]
+  );
+
+  const scrollPrintsPrev = useCallback(() => printsApi?.scrollPrev(), [printsApi]);
+  const scrollPrintsNext = useCallback(() => printsApi?.scrollNext(), [printsApi]);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -290,13 +300,36 @@ const InfoZap = () => {
 
           {/* Bloco 3 — Prints de resultado */}
           <h3 className="text-xl font-bold text-white mb-6">Prints de resultado</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-14">
-            {resultPrints.map((p, i) => (
-              <div key={i} className="rounded-xl border overflow-hidden" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
-                <img src={p.src} alt={p.caption} className="w-full aspect-square object-cover" />
-                <p className="text-gray-400 text-xs p-3">{p.caption}</p>
+          <div className="relative mb-14">
+            <button
+              onClick={scrollPrintsPrev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 rounded-full p-2 transition-all duration-300 hover:scale-110 shadow-lg"
+              style={{ backgroundColor: GREEN, color: "#000" }}
+              aria-label="Anterior"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={scrollPrintsNext}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 rounded-full p-2 transition-all duration-300 hover:scale-110 shadow-lg"
+              style={{ backgroundColor: GREEN, color: "#000" }}
+              aria-label="Próximo"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            <div className="overflow-hidden px-10" ref={printsRef}>
+              <div className="flex">
+                {resultPrints.map((p, i) => (
+                  <div key={i} className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 px-2">
+                    <div className="rounded-xl border overflow-hidden" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                      <img src={p.src} alt={p.caption} className="w-full aspect-square object-cover" />
+                      <p className="text-xs p-3" style={{ color: "#9ca3af" }}>{p.caption}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
 
           {/* Fechamento */}
