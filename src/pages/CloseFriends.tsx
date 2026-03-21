@@ -591,7 +591,7 @@ const CloseFriends = () => {
       </footer>
 
       {/* STICKY BAR */}
-      <div className={`fixed bottom-0 left-0 right-0 bg-[#080808]/95 border-t border-white/[0.07] py-4 px-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 z-50 backdrop-blur-lg transition-transform duration-300 ${stickyVisible ? "translate-y-0" : "translate-y-full"}`}>
+      <div className={`fixed bottom-0 left-0 right-0 bg-[#080808]/95 border-t border-white/[0.07] py-3 px-4 sm:py-4 sm:px-6 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-5 z-50 backdrop-blur-lg transition-transform duration-300 ${stickyVisible ? "translate-y-0" : "translate-y-full"}`}>
         <span className="text-[15px] text-[#bbb]">Close Friends — Acesso mensal</span>
         <span className="font-gta text-2xl text-[#ff2d78]">R$37/mês</span>
         <CTAButton small />
