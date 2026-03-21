@@ -238,7 +238,7 @@ const CloseFriends = () => {
       {/* ═══════════ SEÇÃO 3 — O INIMIGO ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
-          <h2 className="font-gta text-[clamp(32px,5.5vw,56px)] leading-none tracking-tight mb-10">
+          <h2 className="font-gta text-[clamp(26px,5.5vw,56px)] leading-none tracking-tight mb-10">
             POR QUE O CONTEÚDO PÚBLICO <span className="text-[#ff2d78]">NUNCA VAI TE DAR RESULTADO</span> DE VERDADE
           </h2>
 
