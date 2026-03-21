@@ -191,11 +191,6 @@ const InfoZap = () => {
           </div>
 
           {/* Foto do Caio - Hero */}
-          <div className="flex justify-center mb-8">
-            <div className="w-28 h-28 md:w-36 md:h-36 rounded-full border-2 flex items-center justify-center" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
-              <img src={caioDalcinPhoto} alt="Caio Dalcin" className="w-full h-full rounded-full object-cover" />
-            </div>
-          </div>
 
           <CTAButton />
 
