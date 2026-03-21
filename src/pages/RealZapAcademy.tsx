@@ -216,7 +216,7 @@ const RealZapAcademy = () => {
             <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>⚡ Do primeiro Pix à escala completa — tudo numa operação só</p>
             <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>📊 Métricas, otimização e decisão com dados — sem mais chute</p>
             <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>📱 Escala de WhatsApp sem bloqueio — chips, rodízio e múltiplos números</p>
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>🎯 Estrutura de tráfego infalível para escalar</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>🎯 Estrutura de Tráfego completa e infálivel</p>
             <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>🏆 Comunidade VIP + Grupo de networking exclusivo</p>
           </div>
 
