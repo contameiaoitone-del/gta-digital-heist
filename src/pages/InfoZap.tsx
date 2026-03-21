@@ -184,6 +184,13 @@ const InfoZap = () => {
             <p>📱 Sem bloqueio de WhatsApp</p>
           </div>
 
+          {/* Foto do Caio - Hero */}
+          <div className="flex justify-center mb-8">
+            <div className="w-28 h-28 md:w-36 md:h-36 rounded-full border-2 flex items-center justify-center" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
+              <span className="text-gray-500 text-xs text-center px-2">[FOTO DO CAIO AQUI]</span>
+            </div>
+          </div>
+
           <CTAButton />
 
           <p className="mt-4 text-xs text-gray-500">
@@ -351,7 +358,7 @@ const InfoZap = () => {
                       <div className="p-2">
                         <img src={p.src} alt={p.caption} className="w-full h-auto object-contain rounded-xl" />
                       </div>
-                      <p className="text-xs px-4 pb-3" style={{ color: "#9ca3af" }}>{p.caption}</p>
+                      <p className="text-sm font-bold px-4 pb-3" style={{ color: "#9ca3af" }}>{p.caption}</p>
                     </div>
                   </div>
                 ))}
@@ -365,6 +372,42 @@ const InfoZap = () => {
               Essas pessoas estavam exatamente onde você está agora. Sem experiência, sem audiência, sem capital alto.{" "}
               <span className="text-white font-bold not-italic">A diferença entre eles e você é uma decisão.</span>
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* QUEM VAI TE ENSINAR */}
+      <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
+        <div className="max-w-4xl mx-auto">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Quem Vai Te Ensinar</span>
+          <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+            O método que você vai aprender é o mesmo que eu rodo todo dia
+          </h2>
+          <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+            {/* Photo */}
+            <div className="flex-shrink-0">
+              <div className="w-40 h-40 md:w-48 md:h-48 rounded-full border-2 flex items-center justify-center" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
+                <span className="text-gray-500 text-xs text-center px-4">[FOTO DO CAIO AQUI]</span>
+              </div>
+            </div>
+            {/* Text */}
+            <div className="text-gray-400 text-base leading-relaxed">
+              <p>Sou o Caio Dalcin, Media Buyer com 5 anos vivendo do digital. Nos últimos meses desenvolvi e validei o método que ensino no InfoZap — a mesma operação que rodo todo dia, com os resultados que você acabou de ver.</p>
+              <p className="mt-4">Não ensino teoria. Ensino o que funciona na prática, testado com dinheiro real, todos os dias.</p>
+            </div>
+          </div>
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-4 mt-10 max-w-lg mx-auto md:mx-0">
+            {[
+              { number: "5 anos", desc: "Vivendo do digital" },
+              { number: "+140", desc: "Alunos formados" },
+              { number: "R$500k", desc: "Gerado pelos alunos" },
+            ].map((s, i) => (
+              <div key={i} className="text-center">
+                <p className="text-2xl md:text-3xl font-bold" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive" }}>{s.number}</p>
+                <p className="text-gray-500 text-xs mt-1">{s.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -429,6 +472,22 @@ const InfoZap = () => {
         </div>
       </section>
 
+      {/* CTA INTERMEDIÁRIO */}
+      <section className="py-12 md:py-16 px-4" style={{ backgroundColor: "#111" }}>
+        <div className="max-w-2xl mx-auto text-center">
+          <a href={checkoutUrl} target="_blank" rel="noopener noreferrer">
+            <Button
+              className="h-14 px-10 text-lg bg-[#00ff88] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] rounded-lg"
+              style={{ backgroundColor: GREEN }}
+            >
+              🔥 Quero meu acesso agora — R$97
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </a>
+          <p className="mt-3 text-xs text-gray-500">Pagamento único · Acesso imediato · Garantia 7 dias</p>
+        </div>
+      </section>
+
       {/* 7. BONUS */}
       <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-4xl mx-auto">
@@ -438,11 +497,17 @@ const InfoZap = () => {
           </h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {bonuses.map((b, i) => (
-              <div key={i} className="rounded-xl p-6 border" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
-                <div className="text-3xl mb-3">{b.emoji}</div>
-                <h3 className="text-lg font-bold mb-2">{b.title}</h3>
-                <p className="text-gray-400 text-sm mb-3">{b.desc}</p>
-                <p className="font-bold text-sm" style={{ color: GREEN }}>Valor: {b.value}</p>
+              <div key={i} className="rounded-xl p-8 border relative" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                {/* Badge */}
+                <span className="absolute -top-3 left-6 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider" style={{ backgroundColor: GREEN, color: "#000" }}>
+                  BÔNUS
+                </span>
+                <div className="text-3xl mb-4 mt-2">{b.emoji}</div>
+                <h3 className="text-xl font-bold mb-3">{b.title}</h3>
+                <p className="text-gray-400 text-sm mb-4 leading-relaxed">{b.desc}</p>
+                {/* Separator */}
+                <div className="h-px w-full mb-4" style={{ backgroundColor: "#2a2a2a" }} />
+                <p className="font-bold text-xl" style={{ color: GREEN }}>Valor: {b.value}</p>
                 <p className="text-xs text-gray-500 italic mt-2">Resolve: {b.resolves}</p>
               </div>
             ))}
