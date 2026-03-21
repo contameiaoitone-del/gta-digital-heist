@@ -97,10 +97,10 @@ const valueStack = [
 ];
 
 const notForYouItems = [
-  "Quer ficar rico sem fazer nada",
-  "Não está disposto a dedicar pelo menos 1h por dia",
-  "Acha que resultado vem sem investir em anúncio",
-  "Não aceita seguir um método comprovado",
+  "Acha que vai ter resultado sem investir pelo menos R$15/dia em anúncio",
+  "Quer resultado em 24h sem configurar funil, produto e campanha",
+  "Já desistiu de tudo que começou antes de ver resultado",
+  "Não está disposto a seguir um método do zero ao fim sem pular etapa",
 ];
 
 const faqs = [
