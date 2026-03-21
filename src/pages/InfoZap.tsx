@@ -50,13 +50,6 @@ import result4 from "@/assets/result-4.jpeg";
 import result5 from "@/assets/result-5.jpeg";
 import result6 from "@/assets/result-6.jpeg";
 import result7 from "@/assets/result-7.jpeg";
-import result8 from "@/assets/result-8.jpeg";
-import result9 from "@/assets/result-9.jpeg";
-import result10 from "@/assets/result-10.jpeg";
-import result11 from "@/assets/result-11.jpeg";
-import result12 from "@/assets/result-12.png";
-import result13 from "@/assets/result-13.png";
-import result14 from "@/assets/result-14.png";
 
 const statsCards = [
   { emoji: "🔥", text: "Mais de 140 alunos já aplicando o método" },
@@ -80,13 +73,6 @@ const resultPrints = [
   { src: result5, caption: "Pix caindo todo dia" },
   { src: result6, caption: "De zero a R$1k/dia" },
   { src: result7, caption: "Resultado consistente" },
-  { src: result8, caption: "Transferência caindo na hora" },
-  { src: result9, caption: "Múltiplas vendas no mesmo dia" },
-  { src: result10, caption: "Pix sem parar" },
-  { src: result11, caption: "Segundo dia já vendendo" },
-  { src: result12, caption: "Vários Pix seguidos" },
-  { src: result13, caption: "Nubank lotando de Pix" },
-  { src: result14, caption: "Primeira venda em 5 horas" },
 ];
 
 const modules = [
