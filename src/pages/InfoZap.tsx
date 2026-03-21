@@ -253,6 +253,62 @@ const InfoZap = () => {
         </div>
       </section>
 
+      {/* RESULTADOS REAIS */}
+      <section className="py-16 md:py-24 px-4">
+        <div className="max-w-4xl mx-auto">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Resultados Reais</span>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+            Não é promessa. É o que já está acontecendo.
+          </h2>
+          <p className="text-gray-400 text-base mb-10">Alunos reais. Resultados reais. Sem edição, sem seleção, sem mentira.</p>
+
+          {/* Bloco 1 — Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-14">
+            {statsCards.map((s, i) => (
+              <div key={i} className="rounded-xl p-5 border flex items-start gap-3" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                <span className="text-2xl">{s.emoji}</span>
+                <p className="text-white text-sm font-medium">{s.text}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Bloco 2 — Depoimentos em vídeo */}
+          <h3 className="text-xl font-bold text-white mb-6">Depoimentos em vídeo</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
+            {videoTestimonials.map((v, i) => (
+              <div key={i} className="rounded-xl border overflow-hidden" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                <div className="aspect-video flex items-center justify-center" style={{ backgroundColor: "#1a1a1a" }}>
+                  <Play className="w-10 h-10 text-gray-500" />
+                </div>
+                <div className="p-4">
+                  <p className="text-white text-sm font-bold">{v.name}</p>
+                  <p className="text-sm" style={{ color: GREEN }}>{v.result}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bloco 3 — Prints de resultado */}
+          <h3 className="text-xl font-bold text-white mb-6">Prints de resultado</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-14">
+            {resultPrints.map((p, i) => (
+              <div key={i} className="rounded-xl border overflow-hidden" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                <img src={p.src} alt={p.caption} className="w-full aspect-square object-cover" />
+                <p className="text-gray-400 text-xs p-3">{p.caption}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Fechamento */}
+          <div className="text-center max-w-2xl mx-auto">
+            <p className="text-gray-400 text-sm leading-relaxed italic">
+              Essas pessoas estavam exatamente onde você está agora. Sem experiência, sem audiência, sem capital alto.{" "}
+              <span className="text-white font-bold not-italic">A diferença entre eles e você é uma decisão.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* 6. MODULES */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-3xl mx-auto">
