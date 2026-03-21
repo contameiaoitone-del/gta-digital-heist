@@ -567,18 +567,14 @@ const CloseFriends = () => {
             PERGUNTAS FREQUENTES
           </h2>
 
-          <Accordion type="single" collapsible>
+          <div className="space-y-0">
             {faqs.map((faq, i) => (
-              <AccordionItem key={i} value={`faq-${i}`} className="border-b border-white/[0.07]">
-                <AccordionTrigger className="py-6 text-[17px] font-bold hover:no-underline text-left">
-                  {faq.q}
-                </AccordionTrigger>
-                <AccordionContent className="text-[#999] text-base leading-relaxed pb-6">
-                  {faq.a}
-                </AccordionContent>
-              </AccordionItem>
+              <div key={i} className="border-b border-white/[0.07] py-6">
+                <h3 className="text-[17px] font-bold text-left mb-3">{faq.q}</h3>
+                <p className="text-[#999] text-base leading-relaxed">{faq.a}</p>
+              </div>
             ))}
-          </Accordion>
+          </div>
         </div>
       </section>
 
