@@ -4,7 +4,22 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { ArrowRight, ChevronRight, ChevronLeft, X, Shield, Play } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
+
+import infozapMod1 from "@/assets/infozap-mod-1.png";
+import infozapMod2 from "@/assets/infozap-mod-2.png";
+import infozapMod3 from "@/assets/infozap-mod-3.png";
+import infozapMod4 from "@/assets/infozap-mod-4.png";
+import infozapMod5 from "@/assets/infozap-mod-5.png";
+
+const moduleCovers = [
+  { image: infozapMod1, title: "Seja Bem Vindo" },
+  { image: infozapMod2, title: "Estruturando Tudo" },
+  { image: infozapMod3, title: "Criando seu Produto" },
+  { image: infozapMod4, title: "ZapData" },
+  { image: infozapMod5, title: "Produtos e Nichos" },
+];
 
 const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
 
@@ -373,35 +388,65 @@ const InfoZap = () => {
 
       {/* 6. MODULES */}
       <section className="py-16 md:py-24 px-4">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>O Que Você Aprende</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             Tudo que você precisa pra sair do zero e receber Pix hoje
           </h2>
-          <Accordion type="multiple" className="space-y-3">
-            {modules.map((mod, i) => (
-              <AccordionItem key={i} value={`mod-${i}`} className="border rounded-xl px-5" style={{ borderColor: "#222", backgroundColor: "#111" }}>
-                <AccordionTrigger className="hover:no-underline py-4">
-                  <div className="flex items-center gap-4 text-left">
-                    <span className="text-sm font-bold" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive", fontSize: "1.1rem" }}>
-                      {mod.num}
-                    </span>
-                    <span className="text-white font-semibold text-base">{mod.title}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-2 pb-2">
-                    {mod.subs.map((sub, j) => (
-                      <div key={j} className="flex items-center gap-2 text-gray-400 text-sm">
-                        <ChevronRight className="h-3.5 w-3.5 flex-shrink-0" style={{ color: GREEN }} />
-                        {sub}
+
+          {/* Module Covers Carousel */}
+          <div className="mb-12 px-4 md:px-12">
+            <Carousel
+              opts={{ align: "center", loop: true }}
+              plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-3 md:-ml-4">
+                {moduleCovers.map((mod, index) => (
+                  <CarouselItem key={index} className="pl-3 md:pl-4 basis-[70%] sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+                    <div className="relative group cursor-pointer">
+                      <div className="aspect-[2/3] overflow-hidden rounded-xl border-2 border-border/50 group-hover:border-primary/70 transition-all duration-300 shadow-lg group-hover:shadow-[0_0_30px_hsl(330_85%_65%_/_0.4)]">
+                        <img
+                          src={mod.image}
+                          alt={mod.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
                       </div>
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:flex -left-12 bg-card/80 border-border hover:bg-primary/20 hover:border-primary" />
+              <CarouselNext className="hidden md:flex -right-12 bg-card/80 border-border hover:bg-primary/20 hover:border-primary" />
+            </Carousel>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <Accordion type="multiple" className="space-y-3">
+              {modules.map((mod, i) => (
+                <AccordionItem key={i} value={`mod-${i}`} className="border rounded-xl px-5" style={{ borderColor: "#222", backgroundColor: "#111" }}>
+                  <AccordionTrigger className="hover:no-underline py-4">
+                    <div className="flex items-center gap-4 text-left">
+                      <span className="text-sm font-bold" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive", fontSize: "1.1rem" }}>
+                        {mod.num}
+                      </span>
+                      <span className="text-white font-semibold text-base">{mod.title}</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-2 pb-2">
+                      {mod.subs.map((sub, j) => (
+                        <div key={j} className="flex items-center gap-2 text-gray-400 text-sm">
+                          <ChevronRight className="h-3.5 w-3.5 flex-shrink-0" style={{ color: GREEN }} />
+                          {sub}
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </div>
       </section>
 
