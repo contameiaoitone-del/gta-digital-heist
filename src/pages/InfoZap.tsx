@@ -26,6 +26,37 @@ const mechanismBenefits = [
   { emoji: "📈", title: "De zero a R$1.000 por dia em menos de 1 mês", desc: "A operação é rápida e altamente escalável. Com o funil rodando e a campanha otimizando, você reinveste o Pix que caiu e cresce. Tenho alunos que saíram do zero e chegaram a 1k por dia em menos de 30 dias. Não porque são especiais. Porque o modelo foi construído pra isso." },
 ];
 
+import result1 from "@/assets/result-1.jpeg";
+import result2 from "@/assets/result-2.jpeg";
+import result3 from "@/assets/result-3.jpeg";
+import result4 from "@/assets/result-4.jpeg";
+import result5 from "@/assets/result-5.jpeg";
+import result6 from "@/assets/result-6.jpeg";
+import result7 from "@/assets/result-7.jpeg";
+
+const statsCards = [
+  { emoji: "🔥", text: "Mais de 140 alunos já aplicando o método" },
+  { emoji: "💸", text: "Faturamento crescendo todo mês" },
+  { emoji: "📈", text: "Taxa de conversão de 20-30% nos funis" },
+  { emoji: "🔒", text: "Zero reembolso com o modelo Pay After Delivery" },
+];
+
+const videoTestimonials = [
+  { name: "Aluno 1", result: "R$0 → R$3k/mês" },
+  { name: "Aluno 2", result: "R$0 → R$5k/mês" },
+  { name: "Aluno 3", result: "R$0 → R$8k/mês" },
+];
+
+const resultPrints = [
+  { src: result1, caption: "Primeiro Pix no mesmo dia" },
+  { src: result2, caption: "Escalando com R$15/dia" },
+  { src: result3, caption: "Resultado em menos de 1 semana" },
+  { src: result4, caption: "Funil rodando no automático" },
+  { src: result5, caption: "Pix caindo todo dia" },
+  { src: result6, caption: "De zero a R$1k/dia" },
+  { src: result7, caption: "Resultado consistente" },
+];
+
 const modules = [
   { num: "01", title: "Bem-vindo ao InfoZap", subs: ["Visão geral do método", "Como usar a plataforma", "Mentalidade certa"] },
   { num: "02", title: "O que você vai precisar", subs: ["Ferramentas gratuitas", "Configurações iniciais", "Conta de anúncios"] },
