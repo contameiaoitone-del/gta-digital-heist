@@ -387,7 +387,7 @@ const InfoZap = () => {
             {/* Photo */}
             <div className="flex-shrink-0">
               <div className="w-40 h-40 md:w-48 md:h-48 rounded-full border-2 flex items-center justify-center" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
-                <span className="text-gray-500 text-xs text-center px-4">[FOTO DO CAIO AQUI]</span>
+                <img src={caioDalcinPhoto} alt="Caio Dalcin" className="w-full h-full rounded-full object-cover" />
               </div>
             </div>
             {/* Text */}
