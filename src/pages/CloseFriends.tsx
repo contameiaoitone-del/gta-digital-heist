@@ -179,7 +179,7 @@ const CloseFriends = () => {
         <div className="absolute inset-0 bg-[#080808]" />
         <img src={cityBackgroundCf} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.18]" />
 
-        <div className="relative z-10 max-w-[820px] mx-auto px-6 py-16 md:py-20">
+        <div className="relative z-10 max-w-[820px] mx-auto px-4 md:px-6 py-16 md:py-20">
           <span className="inline-block bg-[#ff2d78]/15 border border-[#ff2d78]/40 text-[#ff2d78] text-xs font-bold tracking-[0.15em] uppercase px-4 py-1.5 rounded-sm mb-8">
             🔥 Close Friends Exclusivo
           </span>
