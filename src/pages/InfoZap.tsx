@@ -513,7 +513,7 @@ const InfoZap = () => {
                 <p className="text-gray-400 text-sm mb-4 leading-relaxed">{b.desc}</p>
                 {/* Separator */}
                 <div className="h-px w-full mb-4" style={{ backgroundColor: "#2a2a2a" }} />
-                <p className="font-bold text-xl" style={{ color: GREEN }}>Valor: {b.value}</p>
+                <p className="font-bold text-xl" style={{ color: GREEN }}>Valor: <span className="line-through">{b.value}</span></p>
                 <p className="text-xs text-gray-500 italic mt-2">Resolve: {b.resolves}</p>
               </div>
             ))}
