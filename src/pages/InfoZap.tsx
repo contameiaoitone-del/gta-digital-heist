@@ -81,7 +81,7 @@ const modules = [
   { num: "03", title: "Criando seu Produto — Do Zero ao Funil", subs: ["Criar infoproduto sem experiência", "Mineração de oferta que vende", "Configurando funil completo no ZapData"] },
   { num: "04", title: "IA de WhatsApp com ZapData — Automação Completa", subs: ["IA pra responder, entregar e cobrar", "Funil 24h automático no WhatsApp", "ZapData do zero ao avançado"] },
   { num: "05", title: "Primeiros Anúncios no Meta — Tráfego Pago", subs: ["Criando campanha do zero com R$15/dia", "Segmentação para lowticket", "Otimização e escala de resultados"] },
-  { num: "06", title: "Funis Prontos pra Copiar e Colar", subs: ["Templates de mensagens validados", "Sequências de follow-up automáticas", "Scripts de venda com alta conversão"] },
+  { num: "06", title: "Funis Prontos pra Copiar e Colar", subs: ["3 produtos digitais já validados no mercado", "3 funis completos prontos pra importar no ZapData", "Criativos dos funis inclusos"] },
 ];
 
 const bonuses = [
