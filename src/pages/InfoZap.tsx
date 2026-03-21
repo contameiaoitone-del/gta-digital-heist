@@ -52,10 +52,10 @@ import result6 from "@/assets/result-6.jpeg";
 import result7 from "@/assets/result-7.jpeg";
 
 const statsCards = [
-  { emoji: "🔥", text: "Mais de 140 alunos já aplicando o método" },
-  { emoji: "💸", text: "Faturamento crescendo todo mês" },
-  { emoji: "📈", text: "Taxa de conversão de 20-30% nos funis" },
-  { emoji: "🔒", text: "Zero reembolso com o modelo Pay After Delivery" },
+  { number: "+140", desc: "Alunos já aplicando o método" },
+  { number: "20-30%", desc: "Taxa de conversão nos funis" },
+  { number: "R$0", desc: "Reembolso com o modelo Pay After" },
+  { number: "R$Xk", desc: "Faturamento gerado pelos alunos" },
 ];
 
 const videoTestimonials = [
