@@ -30,7 +30,7 @@ const Links = () => {
     },
     {
       name: "Close Friends",
-      url: "/rp-close",
+      url: "/closefriends",
       icon: ExternalLink,
       description: "Sistema de vendas completo",
       image: rpCloseBanner,
