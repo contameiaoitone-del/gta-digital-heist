@@ -490,8 +490,8 @@ const CloseFriends = () => {
                 <td className="py-3.5 text-lg text-right text-[#888] line-through font-bold">R$488/mês</td>
               </tr>
               <tr>
-                <td className="py-3.5 font-gta text-[28px] text-[#ff2d78]">Você paga</td>
-                <td className="py-3.5 font-gta text-[28px] text-right text-[#ff2d78]">R$37/mês</td>
+                <td className="py-3.5 font-gta text-[clamp(22px,5vw,28px)] text-[#ff2d78]">Você paga</td>
+                <td className="py-3.5 font-gta text-[clamp(22px,5vw,28px)] text-right text-[#ff2d78]">R$37/mês</td>
               </tr>
             </tbody>
           </table>
