@@ -1,53 +1,21 @@
 
 
-## Criar Landing Page "Close Friends" (`/closefriends`)
+## Fix Close Friends fonts — use Bebas Neue instead of Teko
 
-### O que será criado
+### Problem
+The page uses `font-heading` class throughout, which maps to **Teko** in the Tailwind config. The original design requires **Bebas Neue** for all display/heading text. In the Tailwind config, Bebas Neue is mapped to `font-gta`.
 
-Uma nova landing page em `/closefriends` baseada no HTML fornecido, convertida para React/TypeScript seguindo os padrões do projeto. A página é uma LP de assinatura mensal (R$37/mês) para acesso ao Close Friends do Instagram do Caio Dalcin.
+### Solution
 
-### Arquivos a criar/modificar
+**`src/pages/CloseFriends.tsx`** — Replace all instances of `font-heading` with `font-gta` (which maps to Bebas Neue).
 
-**1. Criar `src/pages/CloseFriends.tsx`** (~500 linhas)
+This affects approximately 15 occurrences:
+- Hero h1 (line 151)
+- Section h2s (lines 178, 200, 225, 247, 282, 319, 340, 362, 396, 419, 434, 452)
+- Value table price row (lines 379-380)
+- Sticky bar price (line 486)
 
-Converter o HTML fornecido em um componente React com as seguintes seções:
-- **Top bar** rosa com mensagem de urgência
-- **Social bar** (marquee animado) com stats
-- **Hero** com tag, headline, subtítulo e CTA
-- **Seção "O Problema"** com texto persuasivo
-- **Seção "O que você vai ver"** com 3 story-cards mockup (grid 3 colunas, 2 no mobile)
-- **Seção "O que você recebe"** com feature-list (5 itens com ícone, título e descrição)
-- **Seção "Para quem é"** com checklist + bloco "Não é pra você"
-- **Seção "Value Stack"** com tabela de valores (line-through nos preços individuais)
-- **Bloco de preço** com CTA principal (R$37/mês)
-- **Seção "Custo da inação"** com destaque amarelo
-- **Garantia** com box estilizado
-- **CTA Final** com headline de decisão
-- **FAQ** com accordion
-- **Footer** simples
-- **Sticky CTA bar** fixo no bottom (aparece no scroll)
+Single find-and-replace: `font-heading` → `font-gta` across the file.
 
-Estilo: usar variáveis CSS inline ou classes Tailwind mapeando as cores do HTML (`--pink: #ff2d78`, `--green: #00ff88`, `--yellow: #ffe600`, backgrounds escuros). Fontes Bebas Neue e Barlow já estão carregadas no projeto.
-
-O checkout URL será: usar `useCheckoutUrl` hook com a URL base do Cakto que está no HTML (precisa ser definida pelo usuário ou usar placeholder).
-
-**2. Modificar `src/App.tsx`**
-
-Adicionar rota:
-```tsx
-import CloseFriends from "./pages/CloseFriends";
-// ...
-<Route path="/closefriends" element={<CloseFriends />} />
-```
-
-**3. Modificar `src/pages/Links.tsx`**
-
-Atualizar o card "Close Friends" no array `links` para apontar para `/closefriends` em vez de `/rp-close`.
-
-### Detalhes técnicos
-- Sticky CTA: `useState` + `useEffect` com `IntersectionObserver` ou scroll listener para mostrar/esconder
-- Marquee: CSS animation `@keyframes marquee` (duplicar itens para loop contínuo)
-- Story cards: CSS grid responsivo (3 cols desktop, 2 cols mobile)
-- FAQ: Reutilizar componente `Accordion` existente do projeto
-- Todas as âncoras CTA apontam para o mesmo checkout URL via `useCheckoutUrl`
+`font-body` (Barlow) is already correct and stays as-is.
 
