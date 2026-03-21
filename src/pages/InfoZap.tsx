@@ -287,9 +287,21 @@ const InfoZap = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
             {videoTestimonials.map((v, i) => (
               <div key={i} className="rounded-xl border overflow-hidden" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
-                <div className="aspect-video flex items-center justify-center" style={{ backgroundColor: "#1a1a1a" }}>
-                  <Play className="w-10 h-10 text-gray-500" />
-                </div>
+                {v.videoId ? (
+                  <div className="aspect-video">
+                    <iframe
+                      src={`https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=${v.videoId}`}
+                      className="w-full h-full"
+                      style={{ border: 'none' }}
+                      allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-video flex items-center justify-center" style={{ backgroundColor: "#1a1a1a" }}>
+                    <Play className="w-10 h-10 text-gray-500" />
+                  </div>
+                )}
                 <div className="p-4">
                   <p className="text-white text-sm font-bold">{v.name}</p>
                   <p className="text-sm" style={{ color: GREEN }}>{v.result}</p>
