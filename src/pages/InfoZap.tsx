@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
 import { ArrowRight, ChevronRight, ChevronLeft, X, Shield, Play } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
@@ -405,30 +405,26 @@ const InfoZap = () => {
           </div>
 
           <div className="max-w-3xl mx-auto">
-            <Accordion type="multiple" defaultValue={["mod-0", "mod-1", "mod-2", "mod-3", "mod-4", "mod-5"]} className="space-y-3">
+            <div className="space-y-3">
               {modules.map((mod, i) => (
-                <AccordionItem key={i} value={`mod-${i}`} className="border rounded-xl px-5" style={{ borderColor: "#222", backgroundColor: "#111" }}>
-                  <AccordionTrigger className="hover:no-underline py-4">
-                    <div className="flex items-center gap-4 text-left">
-                      <span className="text-sm font-bold" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive", fontSize: "1.1rem" }}>
-                        {mod.num}
-                      </span>
-                      <span className="text-white font-semibold text-base">{mod.title}</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-2 pb-2">
-                      {mod.subs.map((sub, j) => (
-                        <div key={j} className="flex items-center gap-2 text-gray-400 text-sm">
-                          <ChevronRight className="h-3.5 w-3.5 flex-shrink-0" style={{ color: GREEN }} />
-                          {sub}
-                        </div>
-                      ))}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+                <div key={i} className="border rounded-xl px-5 py-4" style={{ borderColor: "#222", backgroundColor: "#111" }}>
+                  <div className="flex items-center gap-4 text-left mb-3">
+                    <span className="text-sm font-bold" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive", fontSize: "1.1rem" }}>
+                      {mod.num}
+                    </span>
+                    <span className="text-white font-semibold text-base">{mod.title}</span>
+                  </div>
+                  <div className="space-y-2 pb-2">
+                    {mod.subs.map((sub, j) => (
+                      <div key={j} className="flex items-center gap-2 text-gray-400 text-sm">
+                        <ChevronRight className="h-3.5 w-3.5 flex-shrink-0" style={{ color: GREEN }} />
+                        {sub}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               ))}
-            </Accordion>
+            </div>
           </div>
         </div>
       </section>
