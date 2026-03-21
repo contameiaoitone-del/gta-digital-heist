@@ -29,6 +29,7 @@ const App = () => (
           <Route path="/rp-zap" element={<RPZap />} />
           <Route path="/infozap" element={<InfoZap />} />
           <Route path="/closefriends" element={<CloseFriends />} />
+          <Route path="/real-zap-academy" element={<RealZapAcademy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
