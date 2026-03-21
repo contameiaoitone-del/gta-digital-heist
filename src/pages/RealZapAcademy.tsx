@@ -651,8 +651,7 @@ const RealZapAcademy = () => {
       >
         <div className="max-w-3xl mx-auto flex items-center justify-between px-4 py-3">
           <div className="hidden sm:block">
-            <span className="text-sm text-gray-400">Real Zap Academy por apenas </span>
-            <span className="font-bold text-lg" style={{ color: GREEN }}>R$397</span>
+            <span className="text-sm text-gray-400">Real Zap Academy</span>
           </div>
           <CTAButton small />
         </div>
