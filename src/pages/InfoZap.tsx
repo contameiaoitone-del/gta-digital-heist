@@ -7,6 +7,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 import caioDalcinPhoto from "@/assets/caio-dalcin.jpeg";
+import cityBackground from "@/assets/city-background.png";
 
 import infozapMod1 from "@/assets/infozap-mod-1.png";
 import infozapMod2 from "@/assets/infozap-mod-2.png";
@@ -165,8 +166,12 @@ const InfoZap = () => {
   return (
     <div className="min-h-screen scroll-smooth" style={{ backgroundColor: "#080808", color: "#fff", fontFamily: "'Barlow', sans-serif" }}>
       {/* HERO */}
-      <section ref={heroRef} className="relative py-20 md:py-32 px-4">
-        <div className="max-w-3xl mx-auto text-center">
+      <section ref={heroRef} className="relative py-20 md:py-32 px-4 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img src={cityBackground} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.65)" }} />
+        </div>
+        <div className="relative z-10 max-w-3xl mx-auto text-center">
           {/* Pill */}
           <span className="inline-block mb-6 px-4 py-1.5 rounded-full text-sm font-semibold border" style={{ color: GREEN, borderColor: GREEN, backgroundColor: "rgba(0,255,136,0.08)" }}>
             ⚡ Método InfoZap
@@ -378,8 +383,12 @@ const InfoZap = () => {
       </section>
 
       {/* QUEM VAI TE ENSINAR */}
-      <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
-        <div className="max-w-4xl mx-auto">
+      <section className="relative py-16 md:py-24 px-4 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img src={cityBackground} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.65)" }} />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Quem Vai Te Ensinar</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             O método que você vai aprender é o mesmo que eu rodo todo dia
