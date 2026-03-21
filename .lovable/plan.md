@@ -1,31 +1,33 @@
 
 
-## Fix Close Friends Mobile Responsiveness
+## Criar página Real Zap Academy
 
-The page content is being clipped/cut off on mobile (390px viewport). The root cause is large heading font sizes, text overflow, and some layout elements not properly constraining to the viewport width.
+Clonar a estrutura do InfoZap e criar uma nova página com toda a copy fornecida.
 
-### Changes to `src/pages/CloseFriends.tsx`
+### Arquivo: `src/pages/RealZapAcademy.tsx`
 
-1. **Hero heading font size** (line 187): Reduce the minimum clamp value from `36px` to `28px` for mobile — `text-[clamp(28px,7vw,72px)]`
+Novo arquivo clonando a estrutura do InfoZap com as seguintes mudanças:
 
-2. **Hero bullet points** (line 204): Change from `inline-block w-full` to just `block` to prevent horizontal overflow. Reduce horizontal padding on mobile.
+- **CHECKOUT_BASE**: `https://pay.cakto.com.br/35g8dhq_697665` (Real Life Academy link, R$397)
+- **Toda a copy** substituída conforme fornecido (Hero, Pain/Identificação, Inimigo, Mecanismo, Prova Social, Módulos, Bônus, Stack de Valor, Quem Sou Eu, Custo da Inação, Não é pra você, Garantia, CTA Final, FAQ)
+- **Módulos**: 11 módulos (6 base + 5 avançados) com separação visual "MÓDULOS BASE" e "MÓDULOS AVANÇADOS"
+- **Bônus**: 5 bônus (vs 2 no InfoZap)
+- **Value Stack**: 7 itens, total R$1.379, preço R$397
+- **Preço**: R$397 em todos os CTAs e sticky bar
+- **Seção Pain**: Reformulada com dois blocos "Se você está começando" e "Se você já vende" em vez dos 5 bullets
+- **Seção Inimigo**: Nova seção com 5 blocos ❌ (modelo errado, curso ruim, métricas, WhatsApp, criativos)
+- **Footer**: "© 2025 Real Zap Academy"
+- Mesmos assets reutilizados (cityBackground, caioDalcinPhoto, module covers, result prints, video testimonials)
 
-3. **All section headings with large clamp values**: Reduce minimum clamp sizes throughout:
-   - Section 2 heading (line 219): `clamp(28px,6vw,60px)`
-   - Section 3 heading (line 241): `clamp(26px,5.5vw,56px)`
-   - Section 4 headings (lines 266, 277): `clamp(28px,6vw,60px)`
-   - Section 5 heading (line 299): `clamp(26px,5.5vw,56px)`
-   - Section 6 heading (line 396): `clamp(28px,6vw,60px)`
-   - Section 7 heading (line 433): `clamp(28px,6vw,60px)`
-   - Section 9 heading (line 476): `clamp(28px,6vw,60px)`
-   - Section 12 heading (line 548): `clamp(26px,6vw,56px)`
-   - Section 13 heading (line 566): `clamp(28px,6vw,60px)`
+### Arquivo: `src/App.tsx`
 
-4. **"Não é pra você" box** (line 454): Reduce the fixed `text-[32px]` to use clamp — `text-[clamp(24px,5vw,32px)]`
+Adicionar rota `/real-zap-academy` apontando para o novo componente.
 
-5. **Value stack table** (lines 493-494): Reduce `text-[28px]` to `text-[clamp(22px,5vw,28px)]` for the "Você paga" row
+### Detalhes técnicos
 
-6. **Sticky bar** (line 594): Ensure proper padding on small screens — reduce `px-6` to `px-4` and ensure CTAButton text doesn't overflow
-
-These are all CSS-level tweaks in a single file to ensure text wraps properly and doesn't exceed the 390px mobile viewport.
+- Mesma estrutura de componentes (CTAButton, sticky bar, embla carousel)
+- Mesmas cores (GREEN `#00ff88`, PINK `#ff2d78`)
+- Mesma tipografia (Bebas Neue, Barlow)
+- Mesmos hooks (useCheckoutUrl, useEmblaCarousel)
+- Reutiliza todos os assets existentes do InfoZap
 
