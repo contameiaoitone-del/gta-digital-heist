@@ -1,5 +1,16 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+
+import result1 from "@/assets/result-1.jpeg";
+import result2 from "@/assets/result-2.jpeg";
+import result3 from "@/assets/result-3.jpeg";
+import result4 from "@/assets/result-4.jpeg";
+import result5 from "@/assets/result-5.jpeg";
+import result6 from "@/assets/result-6.jpeg";
+import result7 from "@/assets/result-7.jpeg";
 import {
   Accordion,
   AccordionContent,
