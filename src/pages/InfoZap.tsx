@@ -396,7 +396,7 @@ const InfoZap = () => {
               </div>
             </div>
             {/* Text */}
-            <div className="text-gray-400 text-base leading-relaxed space-y-4">
+            <div className="text-gray-200 text-base leading-relaxed space-y-4 p-6 rounded-lg" style={{ background: "rgba(0,0,0,0.4)", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>
               <p>5 anos no digital. Comecei do zero como gestor de tráfego, passei por infoproduto, agência, encapsulado, drop — fiz tudo. Errei muito. Aprendi mais ainda.</p>
               <p>Hoje tenho uma empresa de infoprodutos e coproduções rodando, e o modelo que uso no dia a dia é exatamente o que ensino no InfoZap.</p>
               <p>Não sou guru de palco. Sou operador. Cada aula que você vai assistir é algo que já testei com dinheiro real, que já funcionou na prática e que continua rodando hoje.</p>
