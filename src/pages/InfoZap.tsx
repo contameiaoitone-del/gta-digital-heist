@@ -6,6 +6,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
+import caioDalcinPhoto from "@/assets/caio-dalcin.jpeg";
 
 import infozapMod1 from "@/assets/infozap-mod-1.png";
 import infozapMod2 from "@/assets/infozap-mod-2.png";
@@ -187,7 +188,7 @@ const InfoZap = () => {
           {/* Foto do Caio - Hero */}
           <div className="flex justify-center mb-8">
             <div className="w-28 h-28 md:w-36 md:h-36 rounded-full border-2 flex items-center justify-center" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
-              <span className="text-gray-500 text-xs text-center px-2">[FOTO DO CAIO AQUI]</span>
+              <img src={caioDalcinPhoto} alt="Caio Dalcin" className="w-full h-full rounded-full object-cover" />
             </div>
           </div>
 
@@ -387,7 +388,7 @@ const InfoZap = () => {
             {/* Photo */}
             <div className="flex-shrink-0">
               <div className="w-40 h-40 md:w-48 md:h-48 rounded-full border-2 flex items-center justify-center" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
-                <span className="text-gray-500 text-xs text-center px-4">[FOTO DO CAIO AQUI]</span>
+                <img src={caioDalcinPhoto} alt="Caio Dalcin" className="w-full h-full rounded-full object-cover" />
               </div>
             </div>
             {/* Text */}
