@@ -184,6 +184,13 @@ const InfoZap = () => {
             <p>📱 Sem bloqueio de WhatsApp</p>
           </div>
 
+          {/* Foto do Caio - Hero */}
+          <div className="flex justify-center mb-8">
+            <div className="w-28 h-28 md:w-36 md:h-36 rounded-full border-2 flex items-center justify-center" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
+              <span className="text-gray-500 text-xs text-center px-2">[FOTO DO CAIO AQUI]</span>
+            </div>
+          </div>
+
           <CTAButton />
 
           <p className="mt-4 text-xs text-gray-500">
