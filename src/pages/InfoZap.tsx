@@ -391,9 +391,10 @@ const InfoZap = () => {
               </div>
             </div>
             {/* Text */}
-            <div className="text-gray-400 text-base leading-relaxed">
-              <p>Sou o Caio Dalcin, Media Buyer com 5 anos vivendo do digital. Nos últimos meses desenvolvi e validei o método que ensino no InfoZap — a mesma operação que rodo todo dia, com os resultados que você acabou de ver.</p>
-              <p className="mt-4">Não ensino teoria. Ensino o que funciona na prática, testado com dinheiro real, todos os dias.</p>
+            <div className="text-gray-400 text-base leading-relaxed space-y-4">
+              <p>5 anos no digital. Comecei do zero como gestor de tráfego, passei por infoproduto, agência, encapsulado, drop — fiz tudo. Errei muito. Aprendi mais ainda.</p>
+              <p>Hoje tenho uma empresa de infoprodutos e coproduções rodando, e o modelo que uso no dia a dia é exatamente o que ensino no InfoZap.</p>
+              <p>Não sou guru de palco. Sou operador. Cada aula que você vai assistir é algo que já testei com dinheiro real, que já funcionou na prática e que continua rodando hoje.</p>
             </div>
           </div>
           {/* Stats */}
