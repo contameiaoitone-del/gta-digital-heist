@@ -134,8 +134,8 @@ const CloseFriends = () => {
       asChild
       className={
         small
-          ? "w-full sm:w-auto h-10 px-6 text-sm font-black uppercase tracking-wider bg-[#ff2d78] hover:bg-[#cc1f5a] hover:shadow-[0_0_30px_rgba(255,45,120,0.4)] transition-all rounded-[3px] text-white border-none"
-          : "w-full md:w-auto h-12 md:h-14 px-4 md:px-12 text-base md:text-lg font-black uppercase tracking-wider bg-[#ff2d78] hover:bg-[#cc1f5a] hover:shadow-[0_0_40px_rgba(255,45,120,0.4)] hover:-translate-y-0.5 transition-all rounded-[3px] text-white border-none"
+          ? "w-full sm:w-auto h-10 px-4 text-sm font-black uppercase tracking-wider bg-[#ff2d78] hover:bg-[#cc1f5a] hover:shadow-[0_0_30px_rgba(255,45,120,0.4)] transition-all rounded-[3px] text-white border-none"
+          : "w-full md:w-auto h-12 md:h-14 px-4 md:px-12 text-[13px] md:text-lg font-black uppercase tracking-wider bg-[#ff2d78] hover:bg-[#cc1f5a] hover:shadow-[0_0_40px_rgba(255,45,120,0.4)] hover:-translate-y-0.5 transition-all rounded-[3px] text-white border-none whitespace-normal text-center"
       }
     >
       <a
@@ -179,12 +179,12 @@ const CloseFriends = () => {
         <div className="absolute inset-0 bg-[#080808]" />
         <img src={cityBackgroundCf} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.18]" />
 
-        <div className="relative z-10 max-w-[820px] mx-auto px-6 py-16 md:py-20">
+        <div className="relative z-10 max-w-[820px] mx-auto px-4 md:px-6 py-16 md:py-20">
           <span className="inline-block bg-[#ff2d78]/15 border border-[#ff2d78]/40 text-[#ff2d78] text-xs font-bold tracking-[0.15em] uppercase px-4 py-1.5 rounded-sm mb-8">
             🔥 Close Friends Exclusivo
           </span>
 
-          <h1 className="font-gta text-[clamp(28px,7vw,72px)] leading-[0.95] tracking-tight mb-4">
+          <h1 className="font-gta text-[clamp(24px,7vw,72px)] leading-[0.95] tracking-tight mb-4">
             O que eu faço pra ter{" "}
             <span className="text-[#ff2d78]">Pix caindo todo dia</span>{" "}
             com Lowticket no WhatsApp.
