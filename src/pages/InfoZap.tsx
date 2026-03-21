@@ -104,12 +104,12 @@ const notForYouItems = [
 ];
 
 const faqs = [
-  { q: "Preciso ter experiência?", a: "Não. O método foi feito do zero, passo a passo. Mesmo que você nunca tenha vendido nada online." },
-  { q: "Quanto preciso investir em anúncio?", a: "Recomendamos começar com R$10 a R$20 por dia. Conforme os resultados aparecem, você escala." },
-  { q: "Precisa de site ou plataforma cara?", a: "Não. Tudo funciona com WhatsApp + ferramentas gratuitas ou de baixo custo." },
-  { q: "Por quanto tempo tenho acesso?", a: "Acesso vitalício. Comprou uma vez, é seu pra sempre, incluindo atualizações futuras." },
-  { q: "E se eu não gostar?", a: "Você tem 7 dias de garantia incondicional. Pediu reembolso, devolvemos 100% sem perguntas." },
-  { q: "Quando recebo o acesso?", a: "Imediatamente após a confirmação do pagamento. Pix é instantâneo." },
+  { q: "Preciso ter experiência?", a: "Não. O InfoZap foi feito exatamente pra quem tentou outros modelos e não teve resultado, ou pra quem nunca vendeu nada online. O método é passo a passo, do absoluto zero." },
+  { q: "Quanto preciso investir em anúncio?", a: "Dá pra começar com R$15/dia. Com a taxa de conversão do Pay After Delivery você não precisa de orçamento absurdo pra ter retorno. Tenho alunos que começaram com R$15/dia e chegaram a R$500/dia em menos de 30 dias." },
+  { q: "Precisa de site ou plataforma cara?", a: "Não. A operação inteira roda com WhatsApp + ZapData. Sem site, sem plataforma de curso, sem estoque, sem nada além disso." },
+  { q: "Por quanto tempo tenho acesso?", a: "Acesso vitalício. Comprou uma vez, é seu para sempre — incluindo todas as atualizações futuras sem custo adicional." },
+  { q: "E se eu não gostar?", a: "Garantia incondicional de 7 dias. Entrou, assistiu, não gostou — manda mensagem e devolvemos 100% do seu dinheiro. Sem perguntas, sem burocracia, sem enrolação. O risco é 100% nosso." },
+  { q: "Quando recebo o acesso?", a: "Imediatamente após confirmação do pagamento. Pix é instantâneo — seu acesso também." },
 ];
 
 const marqueeItems = [
