@@ -296,7 +296,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-6xl mx-auto px-6">
           <SectionLabel green>RESULTADOS REAIS</SectionLabel>
-          <h2 className="font-gta text-[clamp(32px,5.5vw,56px)] leading-none tracking-tight mb-4">
+          <h2 className="font-gta text-[clamp(26px,5.5vw,56px)] leading-none tracking-tight mb-4">
             NÃO É CONTEÚDO. É <span className="text-[#00ff88]">OPERAÇÃO REAL.</span>{" "}
             VEJA O QUE OS MEMBROS FALAM.
           </h2>
