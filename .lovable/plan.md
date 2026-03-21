@@ -1,24 +1,26 @@
 
 
-## Melhorar legibilidade do texto pequeno no Hero e "Quem Vai Te Ensinar"
+## Corrigir botões CTA cortados no mobile
 
 ### Problema
-Os textos menores (subheadlines do hero, garantia, bio do instrutor, descrições das stats) estão com cores muito apagadas (`text-gray-400`, `text-gray-500`, `text-xs`) sobre o background da cidade, dificultando a leitura.
+Os botões "QUERO MEU ACESSO AGORA — R$97" têm largura fixa (`px-10`) e texto grande (`text-lg`) que ultrapassa a tela de 390px, cortando o conteúdo.
 
 ### Solução
 
-**`src/pages/InfoZap.tsx`** — Aplicar as seguintes melhorias:
+**`src/pages/InfoZap.tsx`** — 4 alterações:
 
-1. **Subheadlines do Hero (linhas 186-191)**: Mudar de `text-gray-400` para `text-gray-200` e adicionar `text-shadow` sutil para contraste extra
+1. **CTAButton component (linha 157)**: Tornar responsivo — no mobile usar `w-full px-4 text-base`, no desktop manter `px-10 text-lg`. Mudar de tamanho fixo para `w-full md:w-auto`
 
-2. **Garantia abaixo do CTA (linha 197-198)**: Mudar de `text-gray-500 text-xs` para `text-gray-300 text-sm` com text-shadow
+2. **CTA Intermediário (linha 486)**: Mesmo tratamento — adicionar `w-full` e reduzir padding/texto no mobile
 
-3. **Bio do instrutor (linhas 399-403)**: Mudar de `text-gray-400` para `text-gray-200` e adicionar background semi-transparente (`rgba(0,0,0,0.4)`) com padding e border-radius no bloco de texto, similar ao que já funciona nas subheadlines do hero
+3. **Value Stack CTA (linha 548)**: Já usa `<CTAButton />`, será corrigido automaticamente
 
-4. **Descrições das stats (linha 414)**: Mudar de `text-gray-500 text-xs` para `text-gray-300 text-sm`
+4. **Final CTA (linha 619)**: Já usa `<CTAButton />`, será corrigido automaticamente
 
-### Resumo técnico
-- Clarear cores: `gray-400/500` → `gray-200/300`
-- Adicionar `textShadow: "0 1px 4px rgba(0,0,0,0.8)"` nos textos sobre background de imagem
-- Fundo semi-transparente no bloco de bio para garantir leitura
+5. **Sticky bar button (linha 666)**: Usa `<CTAButton small />` — verificar que `small` variant também tenha `w-full` no mobile
+
+### Detalhes técnicos
+- `CTAButton` large: `w-full md:w-auto h-12 md:h-14 px-4 md:px-10 text-base md:text-lg`
+- `CTAButton` small: `w-full sm:w-auto h-10 px-4 sm:px-6 text-sm`
+- CTA Intermediário standalone: mesmas classes responsivas
 
