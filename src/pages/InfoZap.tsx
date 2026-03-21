@@ -289,7 +289,7 @@ const InfoZap = () => {
             {videoTestimonials.map((v, i) => (
               <div key={i} className="rounded-2xl border overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
                 {v.videoId ? (
-                  <div className="relative w-full" style={{ paddingBottom: '177.78%' }}>
+                  <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                     <iframe
                       src={`https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=${v.videoId}`}
                       className="absolute inset-0 w-full h-full"
@@ -299,7 +299,7 @@ const InfoZap = () => {
                     />
                   </div>
                 ) : (
-                  <div className="aspect-[9/16] flex items-center justify-center" style={{ backgroundColor: "#1a1a1a" }}>
+                  <div className="aspect-video flex items-center justify-center" style={{ backgroundColor: "#1a1a1a" }}>
                     <Play className="w-12 h-12 text-gray-500" />
                   </div>
                 )}
