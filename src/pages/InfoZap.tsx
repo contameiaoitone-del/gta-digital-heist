@@ -470,7 +470,7 @@ const InfoZap = () => {
             ))}
             <div className="flex justify-between items-center px-6 py-4 border-b" style={{ borderColor: "#1a1a1a" }}>
               <span className="text-gray-400 font-semibold">Valor Total</span>
-              <span className="text-gray-500 line-through font-bold text-lg">R$712</span>
+              <span className="text-gray-500 line-through font-bold text-lg">R$638</span>
             </div>
             <div className="flex justify-between items-center px-6 py-5">
               <span className="font-bold text-lg">Você paga hoje</span>
