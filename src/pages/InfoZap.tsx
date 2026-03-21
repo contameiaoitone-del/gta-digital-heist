@@ -6,6 +6,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
+import caioDalcinPhoto from "@/assets/caio-dalcin.jpeg";
 
 import infozapMod1 from "@/assets/infozap-mod-1.png";
 import infozapMod2 from "@/assets/infozap-mod-2.png";
