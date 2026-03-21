@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowRight, ChevronRight, X, Shield } from "lucide-react";
+import { ArrowRight, ChevronRight, X, Shield, Play } from "lucide-react";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 
 const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
@@ -24,6 +24,37 @@ const mechanismBenefits = [
   { emoji: "🤖", title: "Funil 100% automático com IA", desc: "A IA atende o cliente, entrega o produto e cobra — tudo sozinha. Você não precisa estar presente, não precisa responder mensagem, não precisa fazer nada. O funil roda enquanto você dorme." },
   { emoji: "🎯", title: "Campanha que vira máquina de vendas", desc: "Com o pixel do Facebook configurado no WhatsApp, o Meta Ads otimiza automaticamente pro público que tem perfil de comprador. Com o tempo a campanha para de ser anúncio e vira uma máquina — encontra quem compra, entrega o anúncio, fecha a venda sozinha." },
   { emoji: "📈", title: "De zero a R$1.000 por dia em menos de 1 mês", desc: "A operação é rápida e altamente escalável. Com o funil rodando e a campanha otimizando, você reinveste o Pix que caiu e cresce. Tenho alunos que saíram do zero e chegaram a 1k por dia em menos de 30 dias. Não porque são especiais. Porque o modelo foi construído pra isso." },
+];
+
+import result1 from "@/assets/result-1.jpeg";
+import result2 from "@/assets/result-2.jpeg";
+import result3 from "@/assets/result-3.jpeg";
+import result4 from "@/assets/result-4.jpeg";
+import result5 from "@/assets/result-5.jpeg";
+import result6 from "@/assets/result-6.jpeg";
+import result7 from "@/assets/result-7.jpeg";
+
+const statsCards = [
+  { emoji: "🔥", text: "Mais de 140 alunos já aplicando o método" },
+  { emoji: "💸", text: "Faturamento crescendo todo mês" },
+  { emoji: "📈", text: "Taxa de conversão de 20-30% nos funis" },
+  { emoji: "🔒", text: "Zero reembolso com o modelo Pay After Delivery" },
+];
+
+const videoTestimonials = [
+  { name: "Aluno 1", result: "R$0 → R$3k/mês" },
+  { name: "Aluno 2", result: "R$0 → R$5k/mês" },
+  { name: "Aluno 3", result: "R$0 → R$8k/mês" },
+];
+
+const resultPrints = [
+  { src: result1, caption: "Primeiro Pix no mesmo dia" },
+  { src: result2, caption: "Escalando com R$15/dia" },
+  { src: result3, caption: "Resultado em menos de 1 semana" },
+  { src: result4, caption: "Funil rodando no automático" },
+  { src: result5, caption: "Pix caindo todo dia" },
+  { src: result6, caption: "De zero a R$1k/dia" },
+  { src: result7, caption: "Resultado consistente" },
 ];
 
 const modules = [
@@ -218,6 +249,62 @@ const InfoZap = () => {
                 <p className="text-gray-400 text-sm">{b.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* RESULTADOS REAIS */}
+      <section className="py-16 md:py-24 px-4">
+        <div className="max-w-4xl mx-auto">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Resultados Reais</span>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+            Não é promessa. É o que já está acontecendo.
+          </h2>
+          <p className="text-gray-400 text-base mb-10">Alunos reais. Resultados reais. Sem edição, sem seleção, sem mentira.</p>
+
+          {/* Bloco 1 — Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-14">
+            {statsCards.map((s, i) => (
+              <div key={i} className="rounded-xl p-5 border flex items-start gap-3" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                <span className="text-2xl">{s.emoji}</span>
+                <p className="text-white text-sm font-medium">{s.text}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Bloco 2 — Depoimentos em vídeo */}
+          <h3 className="text-xl font-bold text-white mb-6">Depoimentos em vídeo</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-14">
+            {videoTestimonials.map((v, i) => (
+              <div key={i} className="rounded-xl border overflow-hidden" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                <div className="aspect-video flex items-center justify-center" style={{ backgroundColor: "#1a1a1a" }}>
+                  <Play className="w-10 h-10 text-gray-500" />
+                </div>
+                <div className="p-4">
+                  <p className="text-white text-sm font-bold">{v.name}</p>
+                  <p className="text-sm" style={{ color: GREEN }}>{v.result}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bloco 3 — Prints de resultado */}
+          <h3 className="text-xl font-bold text-white mb-6">Prints de resultado</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-14">
+            {resultPrints.map((p, i) => (
+              <div key={i} className="rounded-xl border overflow-hidden" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                <img src={p.src} alt={p.caption} className="w-full aspect-square object-cover" />
+                <p className="text-gray-400 text-xs p-3">{p.caption}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Fechamento */}
+          <div className="text-center max-w-2xl mx-auto">
+            <p className="text-gray-400 text-sm leading-relaxed italic">
+              Essas pessoas estavam exatamente onde você está agora. Sem experiência, sem audiência, sem capital alto.{" "}
+              <span className="text-white font-bold not-italic">A diferença entre eles e você é uma decisão.</span>
+            </p>
           </div>
         </div>
       </section>
