@@ -372,7 +372,7 @@ const RealZapAcademy = () => {
                   <div key={i} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_33.333%] min-w-0 px-3">
                     <div className="rounded-2xl border overflow-hidden shadow-lg hover:scale-[1.02] transition-transform duration-300" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
                       <div className="p-2">
-                        <img src={p.src} alt={p.caption} className="w-full h-auto object-contain rounded-xl" />
+                        <img src={p.src} alt={p.caption} className="w-full h-auto object-contain rounded-xl" loading="lazy" />
                       </div>
                       <p className="text-sm font-bold px-4 pb-3" style={{ color: "#9ca3af" }}>{p.caption}</p>
                     </div>
@@ -415,7 +415,7 @@ const RealZapAcademy = () => {
                   <CarouselItem key={index} className="pl-3 md:pl-4 basis-[70%] sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                     <div className="relative group cursor-pointer">
                       <div className="aspect-[2/3] overflow-hidden rounded-xl border-2 border-border/50 group-hover:border-primary/70 transition-all duration-300 shadow-lg group-hover:shadow-[0_0_30px_hsl(330_85%_65%_/_0.4)]">
-                        <img src={mod.image} alt={mod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <img src={mod.image} alt={mod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                       </div>
                     </div>
                   </CarouselItem>
@@ -519,7 +519,7 @@ const RealZapAcademy = () => {
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
             <div className="flex-shrink-0">
               <div className="w-40 h-40 md:w-48 md:h-48 rounded-full border-2 flex items-center justify-center" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
-                <img src={caioDalcinPhoto} alt="Caio Dalcin" className="w-full h-full rounded-full object-cover" />
+                <img src={caioDalcinPhoto} alt="Caio Dalcin" className="w-full h-full rounded-full object-cover" loading="lazy" />
               </div>
             </div>
             <div className="text-gray-200 text-base leading-relaxed space-y-4 p-6 rounded-lg" style={{ background: "rgba(0,0,0,0.4)", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>

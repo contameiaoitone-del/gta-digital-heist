@@ -3,15 +3,17 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import Index from "./pages/Index";
-import Links from "./pages/Links";
-import RPClose from "./pages/RPClose";
-import RPCloseSuccess from "./pages/RPCloseSuccess";
-import RPZap from "./pages/RPZap";
-import InfoZap from "./pages/InfoZap";
-import CloseFriends from "./pages/CloseFriends";
-import RealZapAcademy from "./pages/RealZapAcademy";
 import NotFound from "./pages/NotFound";
+
+const Links = lazy(() => import("./pages/Links"));
+const RPClose = lazy(() => import("./pages/RPClose"));
+const RPCloseSuccess = lazy(() => import("./pages/RPCloseSuccess"));
+const RPZap = lazy(() => import("./pages/RPZap"));
+const InfoZap = lazy(() => import("./pages/InfoZap"));
+const CloseFriends = lazy(() => import("./pages/CloseFriends"));
+const RealZapAcademy = lazy(() => import("./pages/RealZapAcademy"));
 
 const queryClient = new QueryClient();
 
@@ -21,18 +23,20 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/links" element={<Links />} />
-          <Route path="/rp-close" element={<RPClose />} />
-          <Route path="/rp-close-sucesso" element={<RPCloseSuccess />} />
-          <Route path="/rp-zap" element={<RPZap />} />
-          <Route path="/infozap" element={<InfoZap />} />
-          <Route path="/closefriends" element={<CloseFriends />} />
-          <Route path="/real-zap-academy" element={<RealZapAcademy />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<div className="min-h-screen bg-background" />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/links" element={<Links />} />
+            <Route path="/rp-close" element={<RPClose />} />
+            <Route path="/rp-close-sucesso" element={<RPCloseSuccess />} />
+            <Route path="/rp-zap" element={<RPZap />} />
+            <Route path="/infozap" element={<InfoZap />} />
+            <Route path="/closefriends" element={<CloseFriends />} />
+            <Route path="/real-zap-academy" element={<RealZapAcademy />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

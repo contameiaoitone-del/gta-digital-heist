@@ -107,6 +107,7 @@ const Links = () => {
                     src={isMobile && link.mobileImage ? link.mobileImage : link.image}
                     alt={link.name}
                     className="w-full h-auto block"
+                    loading="lazy"
                   />
                   <div className="external-link-icon">
                     <ExternalLink className="w-4 h-4 text-white" />
