@@ -451,7 +451,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
           <div className="bg-[#ff2d78]/5 border border-[#ff2d78]/20 rounded p-8">
-            <h3 className="font-gta text-[32px] text-[#ff2d78] mb-6">ISSO NÃO É PRA VOCÊ SE:</h3>
+            <h3 className="font-gta text-[clamp(24px,5vw,32px)] text-[#ff2d78] mb-6">ISSO NÃO É PRA VOCÊ SE:</h3>
             <ul className="space-y-3">
               {notForYou.map((item, i) => (
                 <li key={i} className="text-[#999] text-base pl-7 relative">
