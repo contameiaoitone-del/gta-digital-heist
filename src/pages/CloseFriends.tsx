@@ -291,32 +291,95 @@ const CloseFriends = () => {
 
       <SectionDivider />
 
-      {/* ═══════════ SEÇÃO 5 — PROVA SOCIAL ═══════════ */}
+      {/* ═══════════ SEÇÃO 5 — RESULTADOS REAIS ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
-        <div className="max-w-[780px] mx-auto px-6">
+        <div className="max-w-6xl mx-auto px-6">
           <SectionLabel green>RESULTADOS REAIS</SectionLabel>
-          <h2 className="font-gta text-[clamp(32px,5.5vw,56px)] leading-none tracking-tight mb-10">
+          <h2 className="font-gta text-[clamp(32px,5.5vw,56px)] leading-none tracking-tight mb-4">
             NÃO É CONTEÚDO. É <span className="text-[#00ff88]">OPERAÇÃO REAL.</span>{" "}
             VEJA O QUE OS MEMBROS FALAM.
           </h2>
+          <p className="text-[#999] text-base mb-10">Alunos reais. Resultados reais. Sem edição, sem seleção, sem mentira.</p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
             {stats.map((s, i) => (
-              <div key={i} className="bg-[#141414] border border-white/[0.07] rounded-md p-6 text-center">
+              <div key={i} className="bg-[#141414] border border-white/[0.07] rounded-xl p-6 text-center">
                 <p className="font-gta text-3xl md:text-4xl text-[#ff2d78] mb-1">{s.value}</p>
                 <p className="text-[13px] text-[#888]">{s.label}</p>
               </div>
             ))}
           </div>
 
-          {/* Placeholder for member prints */}
-          <div className="bg-[#0d0d0d] border border-dashed border-white/10 rounded-md p-10 text-center mb-10">
-            <p className="text-[#555] text-sm uppercase tracking-wider">[PRINTS DOS MEMBROS AQUI]</p>
+          {/* Depoimentos em vídeo */}
+          <h3 className="text-2xl font-bold text-white mb-8">Depoimentos em vídeo</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
+            {videoTestimonials.map((v, i) => (
+              <div key={i} className="rounded-2xl border overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                {v.videoId ? (
+                  <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                    <iframe
+                      src={`https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=${v.videoId}`}
+                      className="absolute inset-0 w-full h-full"
+                      style={{ border: 'none' }}
+                      allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-video flex items-center justify-center bg-[#1a1a1a]">
+                    <Play className="w-12 h-12 text-[#555]" />
+                  </div>
+                )}
+                <div className="p-5">
+                  <p className="text-white text-base font-bold">{v.name}</p>
+                  <p className="text-sm font-semibold text-[#00ff88]">{v.result}</p>
+                </div>
+              </div>
+            ))}
           </div>
 
-          <p className="text-lg text-[#bbb] leading-relaxed text-center">
-            Essas pessoas pararam de consumir conteúdo público e começaram a ver uma operação real acontecer. <strong className="text-[#f5f5f5]">A diferença aparece rápido.</strong>
-          </p>
+          {/* Prints de resultado */}
+          <h3 className="text-2xl font-bold text-white mb-8">Prints de resultado</h3>
+          <div className="relative mb-16">
+            <button
+              onClick={scrollPrintsPrev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 rounded-full p-3 transition-all duration-300 hover:scale-110 shadow-lg bg-[#ff2d78] text-white"
+              aria-label="Anterior"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={scrollPrintsNext}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 rounded-full p-3 transition-all duration-300 hover:scale-110 shadow-lg bg-[#ff2d78] text-white"
+              aria-label="Próximo"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            <div className="overflow-hidden px-12" ref={printsRef}>
+              <div className="flex">
+                {resultPrints.map((p, i) => (
+                  <div key={i} className="flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_33.333%] min-w-0 px-3">
+                    <div className="rounded-2xl border overflow-hidden shadow-lg hover:scale-[1.02] transition-transform duration-300" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                      <div className="p-2">
+                        <img src={p.src} alt={p.caption} className="w-full h-auto object-contain rounded-xl" />
+                      </div>
+                      <p className="text-sm font-bold px-4 pb-3 text-[#9ca3af]">{p.caption}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Fechamento */}
+          <div className="text-center max-w-2xl mx-auto">
+            <p className="text-[#bbb] text-lg leading-relaxed">
+              Essas pessoas pararam de consumir conteúdo público e começaram a ver uma operação real acontecer.{" "}
+              <strong className="text-[#f5f5f5]">A diferença aparece rápido.</strong>
+            </p>
+          </div>
         </div>
       </section>
 
