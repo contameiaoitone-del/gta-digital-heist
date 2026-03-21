@@ -44,7 +44,7 @@ const statsCards = [
 ];
 
 const videoTestimonials = [
-  { name: "Aluno 1", result: "R$0 → R$3k/mês" },
+  { name: "Aluno 1", result: "R$0 → R$3k/mês", videoId: "bf2cbaf3-11c9-4f66-a9b7-0b8db5a7ccbf" },
   { name: "Aluno 2", result: "R$0 → R$5k/mês" },
   { name: "Aluno 3", result: "R$0 → R$8k/mês" },
 ];
