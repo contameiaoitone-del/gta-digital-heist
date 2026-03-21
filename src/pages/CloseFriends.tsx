@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
+import cityBackgroundCf from "@/assets/city-background-cf.png";
 
 const CHECKOUT_BASE_URL = "https://pay.cakto.com.br/2DD1AH4";
 
