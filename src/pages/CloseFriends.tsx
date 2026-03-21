@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
+import cityBackgroundCf from "@/assets/city-background-cf.png";
 
 const CHECKOUT_BASE_URL = "https://pay.cakto.com.br/2DD1AH4";
 
@@ -176,6 +177,7 @@ const CloseFriends = () => {
       {/* ═══════════ SEÇÃO 1 — HERO ═══════════ */}
       <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center text-center z-10">
         <div className="absolute inset-0 bg-[#080808]" />
+        <img src={cityBackgroundCf} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.12]" />
 
         <div className="relative z-10 max-w-[820px] mx-auto px-6 py-16 md:py-20">
           <span className="inline-block bg-[#ff2d78]/15 border border-[#ff2d78]/40 text-[#ff2d78] text-xs font-bold tracking-[0.15em] uppercase px-4 py-1.5 rounded-sm mb-8">
@@ -385,8 +387,9 @@ const CloseFriends = () => {
       <SectionDivider />
 
       {/* ═══════════ SEÇÃO 6 — QUEM VOCÊ VAI ACOMPANHAR ═══════════ */}
-      <section className="relative py-16 md:py-20 z-10">
+      <section className="relative py-16 md:py-20 z-10 overflow-hidden">
         <div className="absolute inset-0 bg-[#0d0d0d]" />
+        <img src={cityBackgroundCf} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.08]" />
 
         <div className="relative z-10 max-w-[780px] mx-auto px-6">
           <SectionLabel>QUEM VOCÊ VAI ACOMPANHAR</SectionLabel>
