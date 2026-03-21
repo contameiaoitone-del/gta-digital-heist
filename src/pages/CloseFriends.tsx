@@ -134,8 +134,8 @@ const CloseFriends = () => {
       asChild
       className={
         small
-          ? "w-full sm:w-auto h-10 px-6 text-sm font-black uppercase tracking-wider bg-[#ff2d78] hover:bg-[#cc1f5a] hover:shadow-[0_0_30px_rgba(255,45,120,0.4)] transition-all rounded-[3px] text-white border-none"
-          : "w-full md:w-auto h-12 md:h-14 px-4 md:px-12 text-base md:text-lg font-black uppercase tracking-wider bg-[#ff2d78] hover:bg-[#cc1f5a] hover:shadow-[0_0_40px_rgba(255,45,120,0.4)] hover:-translate-y-0.5 transition-all rounded-[3px] text-white border-none"
+          ? "w-full sm:w-auto h-10 px-4 text-sm font-black uppercase tracking-wider bg-[#ff2d78] hover:bg-[#cc1f5a] hover:shadow-[0_0_30px_rgba(255,45,120,0.4)] transition-all rounded-[3px] text-white border-none"
+          : "w-full md:w-auto h-12 md:h-14 px-4 md:px-12 text-[13px] md:text-lg font-black uppercase tracking-wider bg-[#ff2d78] hover:bg-[#cc1f5a] hover:shadow-[0_0_40px_rgba(255,45,120,0.4)] hover:-translate-y-0.5 transition-all rounded-[3px] text-white border-none whitespace-normal text-center"
       }
     >
       <a
