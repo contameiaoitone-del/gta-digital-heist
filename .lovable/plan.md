@@ -1,30 +1,20 @@
 
 
-## Adicionar carrossel de capas dos módulos na seção "O que você aprende"
+## Atualizar Bônus e Stack de Valor do InfoZap
 
-### Contexto
-A seção de módulos (linha 374-406 do InfoZap.tsx) atualmente só tem o accordion com os módulos. O usuário quer adicionar um carrossel de capas estilo GTA (como na imagem de referência image-93.png) acima do accordion.
+### Alterações em `src/pages/InfoZap.tsx`
 
-### Alterações
+**1. Atualizar array `bonuses` (linhas 87-91)**
+- Remover "Planilha de Lucro" e "Guia de Bancos pra Receber Pix"
+- Manter "Free Trial 3 Dias ZapData" como Bônus 1
+- Adicionar "3 Produtos Validados + Funis Prontos" como Bônus 2 (valor R$197, resolve "Não saber o que vender nem como montar o funil")
 
-**1. Copiar as 5 imagens de capa para src/assets/**
-- `image-87.png` → `src/assets/infozap-mod-1.png` (Seja Bem Vindo)
-- `image-88.png` → `src/assets/infozap-mod-2.png` (Estruturando Tudo)
-- `image-89.png` → `src/assets/infozap-mod-3.png` (Criando seu Produto)
-- `image-90.png` → `src/assets/infozap-mod-4.png` (ZapData)
-- `image-91.png` → `src/assets/infozap-mod-5.png` (Produtos e Nichos)
+**2. Atualizar array `valueStack` (linhas 93-100)**
+- Remover "Planilha de Lucro" (R$47) e "Guia de Bancos" (R$27)
+- Atualizar "3 Funis Prontos + Produtos" para "3 Funis Prontos + Produtos Validados"
+- Adicionar "Free Trial ZapData 3 dias" (R$47)
+- Valor total passa de R$712 para R$638
 
-**2. Adicionar carrossel na seção de módulos (src/pages/InfoZap.tsx)**
-- Importar as 5 capas e o componente Carousel
-- Inserir um carrossel autoplay com loop entre o título e o accordion
-- Cards com aspect ratio 2:3 (vertical), bordas arredondadas, sombra e hover glow (como na referência)
-- Layout: 4 visíveis no desktop, 2 no tablet, 1.5 no mobile
-- Expandir container de `max-w-3xl` para `max-w-5xl` para acomodar o carrossel
-
-**3. Corrigir build error dos result images**
-- Os arquivos result-8 a result-14 não existem no diretório de assets (foram copiados via exec mas não persistiram)
-- Remover os imports e entradas do array `resultPrints` para result-8 a result-14, ou re-copiar os arquivos
-
-### Resultado esperado
-Seção com título → carrossel de capas GTA com autoplay → accordion de módulos, similar à imagem de referência.
+**3. Atualizar total exibido na seção de value stack**
+- Verificar se o total é calculado dinamicamente ou hardcoded e ajustar para R$638
 
