@@ -1,21 +1,35 @@
 
 
-## Fix Close Friends fonts — use Bebas Neue instead of Teko
+## Copiar seção de resultados do InfoZap para o Close Friends
 
-### Problem
-The page uses `font-heading` class throughout, which maps to **Teko** in the Tailwind config. The original design requires **Bebas Neue** for all display/heading text. In the Tailwind config, Bebas Neue is mapped to `font-gta`.
+### O que muda
 
-### Solution
+Substituir a seção 5 (Prova Social) do Close Friends pelo conteúdo completo da seção "Resultados Reais" do InfoZap, incluindo vídeos e carrossel de prints.
 
-**`src/pages/CloseFriends.tsx`** — Replace all instances of `font-heading` with `font-gta` (which maps to Bebas Neue).
+### Mudanças em `src/pages/CloseFriends.tsx`
 
-This affects approximately 15 occurrences:
-- Hero h1 (line 151)
-- Section h2s (lines 178, 200, 225, 247, 282, 319, 340, 362, 396, 419, 434, 452)
-- Value table price row (lines 379-380)
-- Sticky bar price (line 486)
+**1. Adicionar imports** (topo do arquivo):
+- `useCallback` do React
+- `useEmblaCarousel` e `Autoplay`
+- `ChevronLeft`, `ChevronRight`, `Play` do lucide-react
+- Assets de resultado: `result1` a `result7` de `@/assets/result-*.jpeg`
 
-Single find-and-replace: `font-heading` → `font-gta` across the file.
+**2. Adicionar dados** (junto com as outras constantes):
+- Array `videoTestimonials` (4 vídeos: Saulo, Gilson, Eric, Alunos comemorando — mesmos videoIds do InfoZap)
+- Array `resultPrints` (7 prints com captions — mesmo do InfoZap)
 
-`font-body` (Barlow) is already correct and stays as-is.
+**3. Adicionar lógica no componente**:
+- Inicializar `useEmblaCarousel` com loop + autoplay para o carrossel de prints
+- Funções `scrollPrintsPrev` / `scrollPrintsNext`
+
+**4. Substituir seção 5** (linhas ~259-285):
+
+Manter o header (label "RESULTADOS REAIS" + headline + stats grid), mas **expandir o container para `max-w-6xl`** e substituir o placeholder `[PRINTS DOS MEMBROS AQUI]` por:
+
+- **Stats cards** — manter os 4 existentes (adaptando cores para rosa `#ff2d78` como já está)
+- **"Depoimentos em vídeo"** — grid 2x2 com 4 iframes PandaVideo 16:9, nome e resultado verde abaixo de cada
+- **"Prints de resultado"** — carrossel Embla com 7 prints, botões prev/next em rosa, legendas bold
+- **Texto de fechamento** — manter o existente
+
+O layout e estilo seguem exatamente o padrão do InfoZap mas com as cores do Close Friends (rosa `#ff2d78` nos botões de navegação em vez de verde).
 
