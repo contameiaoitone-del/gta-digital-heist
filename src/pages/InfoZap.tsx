@@ -299,7 +299,7 @@ const InfoZap = () => {
                     />
                   </div>
                 ) : (
-                  <div className="aspect-[9/16] flex items-center justify-center" style={{ backgroundColor: "#1a1a1a" }}>
+                  <div className="aspect-video flex items-center justify-center" style={{ backgroundColor: "#1a1a1a" }}>
                     <Play className="w-12 h-12 text-gray-500" />
                   </div>
                 )}
