@@ -388,7 +388,7 @@ const InfoZap = () => {
           <img src={cityBackground} alt="" className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.65)" }} />
         </div>
-        <div className="max-w-4xl mx-auto">
+        <div className="relative z-10 max-w-4xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Quem Vai Te Ensinar</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             O método que você vai aprender é o mesmo que eu rodo todo dia
