@@ -76,12 +76,12 @@ const resultPrints = [
 ];
 
 const modules = [
-  { num: "01", title: "Bem-vindo ao InfoZap", subs: ["Visão geral do método", "Como usar a plataforma", "Mentalidade certa"] },
-  { num: "02", title: "O que você vai precisar", subs: ["Ferramentas gratuitas", "Configurações iniciais", "Conta de anúncios"] },
-  { num: "03", title: "Criando seu produto", subs: ["Escolhendo o nicho", "Criando com IA", "Página de entrega"] },
-  { num: "04", title: "IA de WhatsApp com ZapData", subs: ["Configurando o bot", "Fluxos de conversa", "Automação de cobranças"] },
-  { num: "05", title: "Primeiros anúncios no Meta", subs: ["Criando a campanha", "Segmentação", "Otimização de resultados"] },
-  { num: "06", title: "Funis prontos pra copiar e colar", subs: ["Templates de mensagens", "Sequências de follow-up", "Scripts de venda"] },
+  { num: "01", title: "Bem-vindo ao InfoZap — Entendendo o Modelo", subs: ["Como funciona a operação lowticket", "Exemplo real do funil rodando", "Mapa da jornada do zero ao primeiro Pix"] },
+  { num: "02", title: "O que você vai precisar — Setup Completo", subs: ["3 ferramentas: WhatsApp + ZapData + Meta Ads", "Configurando WhatsApp do zero", "Free trial ZapData — como ativar"] },
+  { num: "03", title: "Criando seu Produto — Do Zero ao Funil", subs: ["Criar infoproduto sem experiência", "Mineração de oferta que vende", "Configurando funil completo no ZapData"] },
+  { num: "04", title: "IA de WhatsApp com ZapData — Automação Completa", subs: ["IA pra responder, entregar e cobrar", "Funil 24h automático no WhatsApp", "ZapData do zero ao avançado"] },
+  { num: "05", title: "Primeiros Anúncios no Meta — Tráfego Pago", subs: ["Criando campanha do zero com R$15/dia", "Segmentação para lowticket", "Otimização e escala de resultados"] },
+  { num: "06", title: "Funis Prontos pra Copiar e Colar", subs: ["Templates de mensagens validados", "Sequências de follow-up automáticas", "Scripts de venda com alta conversão"] },
 ];
 
 const bonuses = [
@@ -405,7 +405,7 @@ const InfoZap = () => {
           </div>
 
           <div className="max-w-3xl mx-auto">
-            <Accordion type="multiple" className="space-y-3">
+            <Accordion type="multiple" defaultValue={["mod-0", "mod-1", "mod-2", "mod-3", "mod-4", "mod-5"]} className="space-y-3">
               {modules.map((mod, i) => (
                 <AccordionItem key={i} value={`mod-${i}`} className="border rounded-xl px-5" style={{ borderColor: "#222", backgroundColor: "#111" }}>
                   <AccordionTrigger className="hover:no-underline py-4">
