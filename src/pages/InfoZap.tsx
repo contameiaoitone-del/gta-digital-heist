@@ -113,6 +113,14 @@ const InfoZap = () => {
   const { getCheckoutUrl } = useCheckoutUrl();
   const checkoutUrl = getCheckoutUrl(CHECKOUT_BASE);
 
+  const [printsRef, printsApi] = useEmblaCarousel(
+    { loop: true, align: "start", slidesToScroll: 1 },
+    [Autoplay({ delay: 3000, stopOnInteraction: false })]
+  );
+
+  const scrollPrintsPrev = useCallback(() => printsApi?.scrollPrev(), [printsApi]);
+  const scrollPrintsNext = useCallback(() => printsApi?.scrollNext(), [printsApi]);
+
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
