@@ -492,9 +492,11 @@ const RealZapAcademy = () => {
               <span className="text-gray-400 font-semibold">Valor Total</span>
               <span className="text-gray-500 line-through font-bold text-lg">R$1.379</span>
             </div>
-            <div className="flex justify-between items-center px-6 py-5">
+            <div className="flex flex-col items-center px-6 py-5 gap-1">
               <span className="font-bold text-lg">Você paga hoje</span>
-              <span className="font-bold text-3xl" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive" }}>R$397</span>
+              <span className="text-gray-400 text-base">12x de</span>
+              <span className="font-bold text-4xl" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive" }}>R$ 40,34</span>
+              <span className="text-gray-500 text-sm mt-1">ou R$397 à vista</span>
             </div>
           </div>
           <div className="mt-8 text-center">
