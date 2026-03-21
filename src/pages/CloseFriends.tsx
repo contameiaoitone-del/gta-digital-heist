@@ -393,7 +393,7 @@ const CloseFriends = () => {
 
         <div className="relative z-10 max-w-[780px] mx-auto px-6">
           <SectionLabel>QUEM VOCÊ VAI ACOMPANHAR</SectionLabel>
-          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
+          <h2 className="font-gta text-[clamp(28px,6vw,60px)] leading-none tracking-tight mb-10">
             NÃO SOU <span className="text-[#ff2d78]">GURU DE PALCO.</span>{" "}
             SOU <span className="text-[#ff2d78]">OPERADOR.</span>
           </h2>
