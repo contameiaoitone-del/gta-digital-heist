@@ -226,6 +226,17 @@ const CloseFriends = () => {
       {/* ═══════════ SEÇÃO 4 — O QUE TEM DENTRO ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
+          <SectionLabel>O QUE É</SectionLabel>
+          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-6">
+            CLOSE FRIENDS É O ACESSO AOS <span className="text-[#ff2d78]">MELHORES AMIGOS</span> DO MEU INSTAGRAM.
+          </h2>
+
+          <div className="space-y-4 text-lg text-[#ccc] leading-relaxed mb-14">
+            <p>No Instagram existe um recurso chamado Close Friends — uma lista restrita onde só quem está dentro consegue ver o conteúdo. Não é público, não aparece pra qualquer um, não vira Reels, não vira feed.</p>
+            <p>É o lugar onde eu posto tudo que realmente importa da minha operação — sem filtro, sem roteiro, sem preocupação com algoritmo.</p>
+            <p className="font-bold text-[#f5f5f5]">Quem entra no Close Friends do Caio Dalcin tem acesso a:</p>
+          </div>
+
           <SectionLabel>O QUE TEM DENTRO</SectionLabel>
           <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
             OS BASTIDORES QUE <span className="text-[#ff2d78]">NINGUÉM VÊ.</span>{" "}
