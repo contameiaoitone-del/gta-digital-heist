@@ -194,7 +194,7 @@ const InfoZap = () => {
 
           <CTAButton />
 
-          <p className="mt-4 text-xs text-gray-500">
+          <p className="mt-4 text-sm text-gray-300" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>
             🔒 Garantia de 7 dias · Acesso imediato · Sem mensalidade
           </p>
         </div>
