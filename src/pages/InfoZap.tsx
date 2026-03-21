@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowRight, ChevronRight, X, Shield } from "lucide-react";
+import { ArrowRight, ChevronRight, X, Shield, Play } from "lucide-react";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 
 const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
