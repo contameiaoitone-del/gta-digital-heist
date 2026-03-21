@@ -169,7 +169,7 @@ const InfoZap = () => {
       <section ref={heroRef} className="relative py-20 md:py-32 px-4 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img src={cityBackground} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.65)" }} />
+          <div className="absolute inset-0" style={{ backgroundColor: "rgba(0,0,0,0.50)" }} />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           {/* Pill */}
