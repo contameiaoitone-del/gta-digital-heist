@@ -411,7 +411,7 @@ const InfoZap = () => {
             ].map((s, i) => (
               <div key={i} className="text-center">
                 <p className="text-2xl md:text-3xl font-bold" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive" }}>{s.number}</p>
-                <p className="text-gray-500 text-xs mt-1">{s.desc}</p>
+                <p className="text-gray-300 text-sm mt-1" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>{s.desc}</p>
               </div>
             ))}
           </div>
