@@ -10,6 +10,7 @@ import RPCloseSuccess from "./pages/RPCloseSuccess";
 import RPZap from "./pages/RPZap";
 import InfoZap from "./pages/InfoZap";
 import CloseFriends from "./pages/CloseFriends";
+import RealZapAcademy from "./pages/RealZapAcademy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/rp-zap" element={<RPZap />} />
           <Route path="/infozap" element={<InfoZap />} />
           <Route path="/closefriends" element={<CloseFriends />} />
+          <Route path="/real-zap-academy" element={<RealZapAcademy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
