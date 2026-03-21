@@ -113,6 +113,13 @@ const CloseFriends = () => {
   const [stickyVisible, setStickyVisible] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
+  const [printsRef, printsApi] = useEmblaCarousel(
+    { loop: true, align: "start", slidesToScroll: 1 },
+    [Autoplay({ delay: 3000, stopOnInteraction: false })]
+  );
+  const scrollPrintsPrev = useCallback(() => printsApi?.scrollPrev(), [printsApi]);
+  const scrollPrintsNext = useCallback(() => printsApi?.scrollNext(), [printsApi]);
+
   useEffect(() => {
     const handleScroll = () => {
       const heroBottom = heroRef.current?.getBoundingClientRect().bottom ?? 0;
