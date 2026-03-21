@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import caioDalcinWorkspace from "@/assets/caio-dalcin-workspace.jpeg";
 import cityBackgroundCf from "@/assets/city-background-cf.png";
 
-const CHECKOUT_BASE_URL = "https://pay.cakto.com.br/2DD1AH4";
+const CHECKOUT_BASE_URL = "https://pay.cakto.com.br/pcg9vjz_641934";
 
 const enemyBlocks = [
   {
