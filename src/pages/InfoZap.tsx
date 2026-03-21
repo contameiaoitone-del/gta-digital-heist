@@ -358,7 +358,7 @@ const InfoZap = () => {
                       <div className="p-2">
                         <img src={p.src} alt={p.caption} className="w-full h-auto object-contain rounded-xl" />
                       </div>
-                      <p className="text-xs px-4 pb-3" style={{ color: "#9ca3af" }}>{p.caption}</p>
+                      <p className="text-sm font-bold px-4 pb-3" style={{ color: "#9ca3af" }}>{p.caption}</p>
                     </div>
                   </div>
                 ))}
