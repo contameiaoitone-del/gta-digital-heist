@@ -274,7 +274,7 @@ const CloseFriends = () => {
           </div>
 
           <SectionLabel>O QUE TEM DENTRO</SectionLabel>
-          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
+          <h2 className="font-gta text-[clamp(28px,6vw,60px)] leading-none tracking-tight mb-10">
             OS BASTIDORES QUE <span className="text-[#ff2d78]">NINGUÉM VÊ.</span>{" "}
             SÓ QUEM ESTÁ DENTRO.
           </h2>
