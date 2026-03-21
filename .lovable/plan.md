@@ -1,26 +1,16 @@
 
 
-## Corrigir botões CTA cortados no mobile
+## Adicionar risco (line-through) nos valores dos bônus e do value stack
 
-### Problema
-Os botões "QUERO MEU ACESSO AGORA — R$97" têm largura fixa (`px-10`) e texto grande (`text-lg`) que ultrapassa a tela de 390px, cortando o conteúdo.
+### Mudanças em `src/pages/InfoZap.tsx`
 
-### Solução
+1. **Valores dos bônus (linha 516)**: Adicionar `line-through` no valor (`R$47`, `R$197`) para indicar que está incluso sem custo extra
 
-**`src/pages/InfoZap.tsx`** — 4 alterações:
+2. **Valores do value stack (linha 535)**: Adicionar `line-through` nos valores individuais (`R$297`, `R$97`, `R$197`, `R$47`) de cada item da tabela
 
-1. **CTAButton component (linha 157)**: Tornar responsivo — no mobile usar `w-full px-4 text-base`, no desktop manter `px-10 text-lg`. Mudar de tamanho fixo para `w-full md:w-auto`
-
-2. **CTA Intermediário (linha 486)**: Mesmo tratamento — adicionar `w-full` e reduzir padding/texto no mobile
-
-3. **Value Stack CTA (linha 548)**: Já usa `<CTAButton />`, será corrigido automaticamente
-
-4. **Final CTA (linha 619)**: Já usa `<CTAButton />`, será corrigido automaticamente
-
-5. **Sticky bar button (linha 666)**: Usa `<CTAButton small />` — verificar que `small` variant também tenha `w-full` no mobile
+O `R$638` do Valor Total já possui `line-through`. O preço final `R$97` permanece sem risco.
 
 ### Detalhes técnicos
-- `CTAButton` large: `w-full md:w-auto h-12 md:h-14 px-4 md:px-10 text-base md:text-lg`
-- `CTAButton` small: `w-full sm:w-auto h-10 px-4 sm:px-6 text-sm`
-- CTA Intermediário standalone: mesmas classes responsivas
+- Bônus: mudar `<span>Valor: {b.value}</span>` para incluir `line-through` no valor
+- Value stack rows: adicionar `line-through` na classe do `{row.value}`
 
