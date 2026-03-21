@@ -400,7 +400,7 @@ const CloseFriends = () => {
 
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start mb-10">
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden flex-shrink-0 border-[3px] border-[#ff2d78] shadow-[0_0_30px_rgba(255,45,120,0.3)]">
-              <img src={caioDalcinProfile} alt="Caio Dalcin" className="w-full h-full object-cover" />
+              <img src={caioDalcinWorkspace} alt="Caio Dalcin" className="w-full h-full object-cover" />
             </div>
             <p className="text-lg text-[#ccc] leading-relaxed">
               5 anos no digital. Comecei do zero como gestor de tráfego, passei por infoproduto, agência, encapsulado, drop — fiz tudo. Errei muito. Aprendi mais ainda. Hoje tenho uma empresa de infoprodutos e coproduções rodando. E o que você vai ver no Close Friends é exatamente o que está acontecendo na minha operação agora — não o que aconteceu no passado, não o que eu acho que vai funcionar.{" "}
