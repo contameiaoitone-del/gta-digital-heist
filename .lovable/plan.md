@@ -1,20 +1,21 @@
 
 
-## Atualizar Bônus e Stack de Valor do InfoZap
+## Atualizar Módulos do InfoZap — Conteúdo Expandido
 
-### Alterações em `src/pages/InfoZap.tsx`
+### Problema
+Os módulos estão em accordion fechado, escondendo o conteúdo. O usuário quer que pareça como a imagem 2 (todos abertos, mostrando subtópicos).
 
-**1. Atualizar array `bonuses` (linhas 87-91)**
-- Remover "Planilha de Lucro" e "Guia de Bancos pra Receber Pix"
-- Manter "Free Trial 3 Dias ZapData" como Bônus 1
-- Adicionar "3 Produtos Validados + Funis Prontos" como Bônus 2 (valor R$197, resolve "Não saber o que vender nem como montar o funil")
+### Mudanças em `src/pages/InfoZap.tsx`
 
-**2. Atualizar array `valueStack` (linhas 93-100)**
-- Remover "Planilha de Lucro" (R$47) e "Guia de Bancos" (R$27)
-- Atualizar "3 Funis Prontos + Produtos" para "3 Funis Prontos + Produtos Validados"
-- Adicionar "Free Trial ZapData 3 dias" (R$47)
-- Valor total passa de R$712 para R$638
+**1. Atualizar dados dos módulos** (linhas 78-85)
+Substituir títulos e subtópicos para corresponder à imagem de referência:
+- 01: "Bem-vindo ao InfoZap — Entendendo o Modelo" → subs: operação lowticket, exemplo real do funil, mapa da jornada
+- 02: "O que você vai precisar — Setup Completo" → subs: 3 ferramentas (WhatsApp + ZapData + Meta Ads), configurando WhatsApp do zero, free trial ZapData
+- 03: "Criando seu Produto — Do Zero ao Funil" → subs: criar infoproduto sem experiência, mineração de oferta, configurando funil no ZapData
+- 04: "IA de WhatsApp com ZapData — Automação Completa" → subs: IA pra responder/entregar/cobrar, funil 24h automático, ZapData zero ao avançado
+- 05: "Primeiros Anúncios no Meta — Tráfego Pago" → subs atualizados
+- 06: "Funis Prontos pra Copiar e Colar" → subs atualizados
 
-**3. Atualizar total exibido na seção de value stack**
-- Verificar se o total é calculado dinamicamente ou hardcoded e ajustar para R$638
+**2. Abrir todos os módulos por padrão** (linha 408)
+Adicionar `defaultValue` ao `Accordion` com todos os valores: `["mod-0", "mod-1", "mod-2", "mod-3", "mod-4", "mod-5"]` — isso mostra todo o conteúdo imediatamente, maximizando valor percebido.
 
