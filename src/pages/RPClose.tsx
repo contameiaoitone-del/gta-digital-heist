@@ -383,6 +383,7 @@ const RPClose = () => {
                             src={image} 
                             alt={`Resultado de aluno ${index + 1}`}
                             className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
                           />
                         </CardContent>
                       </Card>
