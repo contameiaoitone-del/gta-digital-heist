@@ -17,10 +17,13 @@ const painItems = [
   { title: '"Não tenho dinheiro pra arriscar mais"', desc: "Já investiu em curso que não entregou. Já perdeu dinheiro em anúncio sem retorno. Agora cada real que você tem é sagrado — e você não pode errar de novo." },
 ];
 
-const mechanisms = [
-  { icon: Smartphone, emoji: "📱", title: "WhatsApp", desc: "98% de taxa de abertura" },
-  { icon: DollarSign, emoji: "💸", title: "Lowticket", desc: "Produto entre R$17 e R$97. Decisão em segundos." },
-  { icon: Zap, emoji: "⚡", title: "Pay After", desc: "Entrega primeiro, cobra depois direto no Pix." },
+const mechanismBenefits = [
+  { emoji: "💸", title: "Começa com R$15 por dia", desc: "Esqueça investir rios de dinheiro antes de ver resultado. Com conversão dessa taxa você não precisa de orçamento absurdo. R$15 já gera tráfego, ativa o funil e traz Pix na conta." },
+  { emoji: "🔒", title: "Zero reembolso", desc: "O cliente já recebeu o produto antes de pagar. Não tem o que devolver, não tem o que contestar. O Pix veio, ficou. Na sua conta." },
+  { emoji: "💰", title: "Liquidez imediata", desc: "Cada venda cai direto no Pix na hora. Sem checkout segurando seu dinheiro por 15 ou 30 dias. Você vende, recebe, reinveste no mesmo dia e escala mais rápido do que qualquer outro modelo." },
+  { emoji: "🤖", title: "Funil 100% automático com IA", desc: "A IA atende o cliente, entrega o produto e cobra — tudo sozinha. Você não precisa estar presente, não precisa responder mensagem, não precisa fazer nada. O funil roda enquanto você dorme." },
+  { emoji: "🎯", title: "Campanha que vira máquina de vendas", desc: "Com o pixel do Facebook configurado no WhatsApp, o Meta Ads otimiza automaticamente pro público que tem perfil de comprador. Com o tempo a campanha para de ser anúncio e vira uma máquina — encontra quem compra, entrega o anúncio, fecha a venda sozinha." },
+  { emoji: "📈", title: "De zero a R$1.000 por dia em menos de 1 mês", desc: "A operação é rápida e altamente escalável. Com o funil rodando e a campanha otimizando, você reinveste o Pix que caiu e cresce. Tenho alunos que saíram do zero e chegaram a 1k por dia em menos de 30 dias. Não porque são especiais. Porque o modelo foi construído pra isso." },
 ];
 
 const modules = [
