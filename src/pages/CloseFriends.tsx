@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import gtaCityNight from "@/assets/gta-cityscape-night.png";
+
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
 
 const CHECKOUT_BASE_URL = "https://pay.cakto.com.br/2DD1AH4";
