@@ -85,18 +85,15 @@ const modules = [
 ];
 
 const bonuses = [
-  { emoji: "📊", title: "Planilha de Lucro", desc: "Controle seus gastos, receitas e lucro real em tempo real.", value: "R$47", resolves: "Não saber se está lucrando ou perdendo dinheiro" },
   { emoji: "⚡", title: "Free Trial 3 Dias ZapData", desc: "Teste a IA de WhatsApp sem pagar nada por 3 dias.", value: "R$47", resolves: "Medo de investir em ferramenta sem testar" },
-  { emoji: "🏦", title: "Guia de Bancos pra Receber Pix", desc: "Quais bancos usar pra receber Pix sem problema.", value: "R$27", resolves: "Não saber qual banco usar pra receber" },
+  { emoji: "📦", title: "3 Produtos Validados + Funis Prontos", desc: "3 infoprodutos já validados no mercado com funil completo pronto pra importar direto no ZapData. Copia, cola e anuncia.", value: "R$197", resolves: "Não saber o que vender nem como montar o funil" },
 ];
 
 const valueStack = [
-  { item: "InfoZap Treinamento Completo", value: "R$297" },
+  { item: "InfoZap — Treinamento Completo", value: "R$297" },
   { item: "Módulo ZapData Completo", value: "R$97" },
-  { item: "3 Funis Prontos + Produtos", value: "R$197" },
-  { item: "Planilha de Lucro", value: "R$47" },
-  { item: "Free Trial ZapData", value: "R$47" },
-  { item: "Guia de Bancos", value: "R$27" },
+  { item: "3 Funis Prontos + Produtos Validados", value: "R$197" },
+  { item: "Free Trial ZapData 3 dias", value: "R$47" },
 ];
 
 const notForYouItems = [
@@ -443,7 +440,7 @@ const InfoZap = () => {
           <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             E ainda leva isso sem custo adicional
           </h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {bonuses.map((b, i) => (
               <div key={i} className="rounded-xl p-6 border" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
                 <div className="text-3xl mb-3">{b.emoji}</div>
@@ -473,7 +470,7 @@ const InfoZap = () => {
             ))}
             <div className="flex justify-between items-center px-6 py-4 border-b" style={{ borderColor: "#1a1a1a" }}>
               <span className="text-gray-400 font-semibold">Valor Total</span>
-              <span className="text-gray-500 line-through font-bold text-lg">R$712</span>
+              <span className="text-gray-500 line-through font-bold text-lg">R$638</span>
             </div>
             <div className="flex justify-between items-center px-6 py-5">
               <span className="font-bold text-lg">Você paga hoje</span>
