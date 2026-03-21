@@ -52,10 +52,10 @@ import result6 from "@/assets/result-6.jpeg";
 import result7 from "@/assets/result-7.jpeg";
 
 const statsCards = [
-  { emoji: "🔥", text: "Mais de 140 alunos já aplicando o método" },
-  { emoji: "💸", text: "Faturamento crescendo todo mês" },
-  { emoji: "📈", text: "Taxa de conversão de 20-30% nos funis" },
-  { emoji: "🔒", text: "Zero reembolso com o modelo Pay After Delivery" },
+  { number: "+140", desc: "Alunos já aplicando o método" },
+  { number: "20-30%", desc: "Taxa de conversão nos funis" },
+  { number: "R$0", desc: "Reembolso com o modelo Pay After" },
+  { number: "R$Xk", desc: "Faturamento gerado pelos alunos" },
 ];
 
 const videoTestimonials = [
@@ -81,7 +81,7 @@ const modules = [
   { num: "03", title: "Criando seu Produto — Do Zero ao Funil", subs: ["Criar infoproduto sem experiência", "Mineração de oferta que vende", "Configurando funil completo no ZapData"] },
   { num: "04", title: "IA de WhatsApp com ZapData — Automação Completa", subs: ["IA pra responder, entregar e cobrar", "Funil 24h automático no WhatsApp", "ZapData do zero ao avançado"] },
   { num: "05", title: "Primeiros Anúncios no Meta — Tráfego Pago", subs: ["Criando campanha do zero com R$15/dia", "Segmentação para lowticket", "Otimização e escala de resultados"] },
-  { num: "06", title: "Funis Prontos pra Copiar e Colar", subs: ["Templates de mensagens validados", "Sequências de follow-up automáticas", "Scripts de venda com alta conversão"] },
+  { num: "06", title: "Funis Prontos pra Copiar e Colar", subs: ["3 produtos digitais já validados no mercado", "3 funis completos prontos pra importar no ZapData", "Criativos dos funis inclusos"] },
 ];
 
 const bonuses = [
@@ -97,19 +97,19 @@ const valueStack = [
 ];
 
 const notForYouItems = [
-  "Quer ficar rico sem fazer nada",
-  "Não está disposto a dedicar pelo menos 1h por dia",
-  "Acha que resultado vem sem investir em anúncio",
-  "Não aceita seguir um método comprovado",
+  "Acha que vai ter resultado sem investir pelo menos R$15/dia em anúncio",
+  "Quer resultado em 24h sem configurar funil, produto e campanha",
+  "Já desistiu de tudo que começou antes de ver resultado",
+  "Não está disposto a seguir um método do zero ao fim sem pular etapa",
 ];
 
 const faqs = [
-  { q: "Preciso ter experiência?", a: "Não. O método foi feito do zero, passo a passo. Mesmo que você nunca tenha vendido nada online." },
-  { q: "Quanto preciso investir em anúncio?", a: "Recomendamos começar com R$10 a R$20 por dia. Conforme os resultados aparecem, você escala." },
-  { q: "Precisa de site ou plataforma cara?", a: "Não. Tudo funciona com WhatsApp + ferramentas gratuitas ou de baixo custo." },
-  { q: "Por quanto tempo tenho acesso?", a: "Acesso vitalício. Comprou uma vez, é seu pra sempre, incluindo atualizações futuras." },
-  { q: "E se eu não gostar?", a: "Você tem 7 dias de garantia incondicional. Pediu reembolso, devolvemos 100% sem perguntas." },
-  { q: "Quando recebo o acesso?", a: "Imediatamente após a confirmação do pagamento. Pix é instantâneo." },
+  { q: "Preciso ter experiência?", a: "Não. O InfoZap foi feito exatamente pra quem tentou outros modelos e não teve resultado, ou pra quem nunca vendeu nada online. O método é passo a passo, do absoluto zero." },
+  { q: "Quanto preciso investir em anúncio?", a: "Dá pra começar com R$15/dia. Com a taxa de conversão do Pay After Delivery você não precisa de orçamento absurdo pra ter retorno. Tenho alunos que começaram com R$15/dia e chegaram a R$500/dia em menos de 30 dias." },
+  { q: "Precisa de site ou plataforma cara?", a: "Não. A operação inteira roda com WhatsApp + ZapData. Sem site, sem plataforma de curso, sem estoque, sem nada além disso." },
+  { q: "Por quanto tempo tenho acesso?", a: "Acesso vitalício. Comprou uma vez, é seu para sempre — incluindo todas as atualizações futuras sem custo adicional." },
+  { q: "E se eu não gostar?", a: "Garantia incondicional de 7 dias. Entrou, assistiu, não gostou — manda mensagem e devolvemos 100% do seu dinheiro. Sem perguntas, sem burocracia, sem enrolação. O risco é 100% nosso." },
+  { q: "Quando recebo o acesso?", a: "Imediatamente após confirmação do pagamento. Pix é instantâneo — seu acesso também." },
 ];
 
 const marqueeItems = [
@@ -187,7 +187,7 @@ const InfoZap = () => {
           <CTAButton />
 
           <p className="mt-4 text-xs text-gray-500">
-            ⚡ Últimas vagas nesse preço · Acesso imediato
+            🔒 Garantia de 7 dias · Acesso imediato · Sem mensalidade
           </p>
         </div>
         {/* Decorative line */}
@@ -211,21 +211,21 @@ const InfoZap = () => {
               </div>
             ))}
           </div>
-          <div className="mt-10 space-y-4 text-gray-400 text-sm leading-relaxed">
+          <div className="mt-10 space-y-6 text-gray-400 text-[17px] leading-relaxed">
             <p>
               <strong className="text-white">A culpa não foi sua.</strong> Você foi vendido modelos que nunca foram feitos pra quem está começando.
             </p>
             <p>
-              <strong className="text-white">Drop</strong> exige capital alto pra comprar estoque, lidar com produto físico, frete, devolução, reclamação — e no final a margem é uma miséria pra tanto trabalho.
+              <strong style={{ color: GREEN }}>Drop</strong> exige capital alto pra comprar estoque, lidar com produto físico, frete, devolução, reclamação — e no final a margem é uma miséria pra tanto trabalho.
             </p>
             <p>
-              <strong className="text-white">Afiliado</strong> é uma armadilha dos dois lados. Se tentar no orgânico, você trabalha feito escravo criando conteúdo todo dia, mandando link pra todo mundo, implorando por atenção — pra no final receber uma comissão que mal paga o seu tempo. E se for com tráfego pago, você tem o mesmo trabalho, gasta dinheiro em anúncio e ainda toma prejuízo por cima. Nos dois casos o resultado é o mesmo: você se mata trabalhando. O produtor enriquece.
+              <strong style={{ color: GREEN }}>Afiliado</strong> é uma armadilha dos dois lados. Se tentar no orgânico, você trabalha feito escravo criando conteúdo todo dia, mandando link pra todo mundo, implorando por atenção — pra no final receber uma comissão que mal paga o seu tempo. E se for com tráfego pago, você tem o mesmo trabalho, gasta dinheiro em anúncio e ainda toma prejuízo por cima. Nos dois casos o resultado é o mesmo: você se mata trabalhando. O produtor enriquece.
             </p>
             <p>
-              <strong className="text-white">Tráfego direto</strong> exige uma fortuna pra testar — e quando finalmente funciona, você descobre que o dinheiro fica preso no checkout por 15, 30 dias. Você vende, vende, vende e não consegue escalar porque o caixa não gira.
+              <strong style={{ color: GREEN }}>Tráfego direto</strong> exige uma fortuna pra testar — e quando finalmente funciona, você descobre que o dinheiro fica preso no checkout por 15, 30 dias. Você vende, vende, vende e não consegue escalar porque o caixa não gira.
             </p>
             <p>
-              <strong className="text-white">Gestão de tráfego</strong> exige portfólio pra conseguir cliente, e prospecção orgânica não funciona mais. O mercado está abarrotado de agência grande com estrutura, time e preço que você nunca vai conseguir competir. O oceano azul secou.
+              <strong style={{ color: GREEN }}>Gestão de tráfego</strong> exige portfólio pra conseguir cliente, e prospecção orgânica não funciona mais. O mercado está abarrotado de agência grande com estrutura, time e preço que você nunca vai conseguir competir. O oceano azul secou.
             </p>
             <p>
               Nenhum desses modelos foi feito pra quem está começando do zero com pouco dinheiro no bolso.
@@ -286,11 +286,11 @@ const InfoZap = () => {
           <p className="text-gray-400 text-base mb-10">Alunos reais. Resultados reais. Sem edição, sem seleção, sem mentira.</p>
 
           {/* Bloco 1 — Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
             {statsCards.map((s, i) => (
-              <div key={i} className="rounded-xl p-5 border flex items-start gap-3" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
-                <span className="text-2xl">{s.emoji}</span>
-                <p className="text-white text-sm font-medium">{s.text}</p>
+              <div key={i} className="rounded-xl p-6 border text-center" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                <p className="text-3xl md:text-4xl font-bold mb-2" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive" }}>{s.number}</p>
+                <p className="text-gray-400 text-xs">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -486,9 +486,13 @@ const InfoZap = () => {
           <h3 className="text-xl md:text-2xl font-bold mb-4" style={{ color: "#ffc800", fontFamily: "'Bebas Neue', cursive" }}>
             ⚠️ O custo de não fazer nada
           </h3>
-          <p className="text-gray-400 text-sm leading-relaxed">
-            Daqui a 6 meses, você vai estar exatamente no mesmo lugar — sem renda extra, dependendo do mesmo salário, vendo outras pessoas faturando com digital. O InfoZap custa menos que um jantar fora. Mas o custo de continuar parado é muito maior do que R$97.
-          </p>
+          <div className="text-gray-400 text-sm leading-relaxed space-y-4">
+            <p>Cada mês que passa sem uma renda digital funcionando é mais um mês dependendo de emprego, de chefe, de horário fixo.</p>
+            <p>Daqui a 6 meses você vai estar exatamente no mesmo lugar — sem renda extra, dependendo do mesmo salário, vendo outras pessoas faturando enquanto você continua adiando.</p>
+            <p>Não é questão de tempo. É questão de modelo. Você já tem o celular. Você já tem o WhatsApp. O único ingrediente que falta é esse aqui.</p>
+            <p>Por R$97 — menos que um jantar fora — você tem acesso à operação completa.</p>
+            <p className="font-bold text-white">O custo de continuar parado é muito maior do que R$97.</p>
+          </div>
         </div>
       </section>
 
@@ -507,7 +511,7 @@ const InfoZap = () => {
             ))}
           </div>
           <p className="text-gray-500 text-sm">
-            Agora, se você é uma pessoa que tá disposta a dedicar tempo, seguir o passo a passo e colocar em prática — o InfoZap foi feito pra você.
+            Agora, se você está disposto a dedicar tempo, seguir o passo a passo e colocar em prática — o InfoZap foi feito pra você.
           </p>
         </div>
       </section>
@@ -539,7 +543,7 @@ const InfoZap = () => {
             A única pergunta que importa agora:
           </h2>
           <p className="text-gray-400 mb-8 text-base leading-relaxed">
-            Daqui a 30 dias você vai estar no mesmo lugar ou vai estar com uma operação rodando?
+            Daqui a 30 dias você vai estar exatamente onde está agora — ou vai estar com Pix caindo todo dia, com uma operação rodando e com o controle da sua própria renda. A diferença é essa decisão aqui.
           </p>
           <CTAButton />
         </div>
