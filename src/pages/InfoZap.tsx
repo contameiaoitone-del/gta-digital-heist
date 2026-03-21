@@ -155,7 +155,7 @@ const InfoZap = () => {
         className={`bg-[${GREEN}] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] ${small ? "h-10 px-6 text-sm" : "h-14 px-10 text-lg"} rounded-lg`}
         style={{ backgroundColor: GREEN }}
       >
-        {small ? "Quero acessar — R$97" : "🔥 Quero acessar o InfoZap — R$97"}
+        {small ? "Quero acessar — R$97" : "🔥 QUERO MEU ACESSO AGORA — R$97"}
         <ArrowRight className="ml-2 h-5 w-5" />
       </Button>
     </a>
