@@ -183,18 +183,18 @@ const InfoZap = () => {
             vendendo infoproduto de Lowticket direto no WhatsApp
           </h1>
 
-          <div className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed space-y-2 flex flex-col items-center">
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px" }}>⚡ Funil 100% automático com IA — sem atender nenhum cliente</p>
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px" }}>💸 Vendas direto no Pix</p>
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px" }}>📦 Produtos prontos pra copiar e colar</p>
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px" }}>📱 Sem bloqueio de WhatsApp</p>
+          <div className="text-base md:text-lg text-gray-200 max-w-2xl mx-auto mb-8 leading-relaxed space-y-2 flex flex-col items-center">
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>⚡ Funil 100% automático com IA — sem atender nenhum cliente</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>💸 Vendas direto no Pix</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>📦 Produtos prontos pra copiar e colar</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>📱 Sem bloqueio de WhatsApp</p>
           </div>
 
           {/* Foto do Caio - Hero */}
 
           <CTAButton />
 
-          <p className="mt-4 text-xs text-gray-500">
+          <p className="mt-4 text-sm text-gray-300" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>
             🔒 Garantia de 7 dias · Acesso imediato · Sem mensalidade
           </p>
         </div>
@@ -396,7 +396,7 @@ const InfoZap = () => {
               </div>
             </div>
             {/* Text */}
-            <div className="text-gray-400 text-base leading-relaxed space-y-4">
+            <div className="text-gray-200 text-base leading-relaxed space-y-4 p-6 rounded-lg" style={{ background: "rgba(0,0,0,0.4)", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>
               <p>5 anos no digital. Comecei do zero como gestor de tráfego, passei por infoproduto, agência, encapsulado, drop — fiz tudo. Errei muito. Aprendi mais ainda.</p>
               <p>Hoje tenho uma empresa de infoprodutos e coproduções rodando, e o modelo que uso no dia a dia é exatamente o que ensino no InfoZap.</p>
               <p>Não sou guru de palco. Sou operador. Cada aula que você vai assistir é algo que já testei com dinheiro real, que já funcionou na prática e que continua rodando hoje.</p>
@@ -411,7 +411,7 @@ const InfoZap = () => {
             ].map((s, i) => (
               <div key={i} className="text-center">
                 <p className="text-2xl md:text-3xl font-bold" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive" }}>{s.number}</p>
-                <p className="text-gray-500 text-xs mt-1">{s.desc}</p>
+                <p className="text-gray-300 text-sm mt-1" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>{s.desc}</p>
               </div>
             ))}
           </div>
