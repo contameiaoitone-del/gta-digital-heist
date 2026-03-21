@@ -1,7 +1,9 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowRight, ChevronRight, X, Shield, Play } from "lucide-react";
+import { ArrowRight, ChevronRight, ChevronLeft, X, Shield, Play } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 
 const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
