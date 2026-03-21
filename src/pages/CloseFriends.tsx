@@ -201,7 +201,7 @@ const CloseFriends = () => {
               "🔒 O que funciona agora — antes de virar conteúdo público",
               "⚡ Quem está fora consome Reels de guru. Quem está dentro já sabe o que converte essa semana.",
             ].map((line, i) => (
-              <p key={i} className="text-base md:text-lg text-[#ddd] bg-black/50 px-4 py-2 rounded-sm inline-block w-full">
+              <p key={i} className="text-sm md:text-lg text-[#ddd] bg-black/50 px-3 md:px-4 py-2 rounded-sm block">
                 {line}
               </p>
             ))}
