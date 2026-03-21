@@ -10,6 +10,7 @@ import RPCloseSuccess from "./pages/RPCloseSuccess";
 import RPZap from "./pages/RPZap";
 import InfoZap from "./pages/InfoZap";
 import CloseFriends from "./pages/CloseFriends";
+import RealZapAcademy from "./pages/RealZapAcademy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
