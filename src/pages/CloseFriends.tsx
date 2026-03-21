@@ -184,7 +184,7 @@ const CloseFriends = () => {
             🔥 Close Friends Exclusivo
           </span>
 
-          <h1 className="font-gta text-[clamp(28px,7vw,72px)] leading-[0.95] tracking-tight mb-4">
+          <h1 className="font-gta text-[clamp(24px,7vw,72px)] leading-[0.95] tracking-tight mb-4">
             O que eu faço pra ter{" "}
             <span className="text-[#ff2d78]">Pix caindo todo dia</span>{" "}
             com Lowticket no WhatsApp.
