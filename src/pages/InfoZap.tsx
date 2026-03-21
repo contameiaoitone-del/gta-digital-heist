@@ -286,11 +286,11 @@ const InfoZap = () => {
           <p className="text-gray-400 text-base mb-10">Alunos reais. Resultados reais. Sem edição, sem seleção, sem mentira.</p>
 
           {/* Bloco 1 — Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
             {statsCards.map((s, i) => (
-              <div key={i} className="rounded-xl p-5 border flex items-start gap-3" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
-                <span className="text-2xl">{s.emoji}</span>
-                <p className="text-white text-sm font-medium">{s.text}</p>
+              <div key={i} className="rounded-xl p-6 border text-center" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                <p className="text-3xl md:text-4xl font-bold mb-2" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive" }}>{s.number}</p>
+                <p className="text-gray-400 text-xs">{s.desc}</p>
               </div>
             ))}
           </div>
