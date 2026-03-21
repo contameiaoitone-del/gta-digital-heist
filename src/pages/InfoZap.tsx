@@ -440,7 +440,7 @@ const InfoZap = () => {
           <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             E ainda leva isso sem custo adicional
           </h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {bonuses.map((b, i) => (
               <div key={i} className="rounded-xl p-6 border" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
                 <div className="text-3xl mb-3">{b.emoji}</div>
