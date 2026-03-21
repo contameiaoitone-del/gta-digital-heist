@@ -161,7 +161,7 @@ const RealZapAcademy = () => {
         className={`bg-[${GREEN}] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] ${small ? "w-full sm:w-auto h-10 px-4 sm:px-6 text-sm" : "w-full md:w-auto h-12 md:h-14 px-4 md:px-10 text-base md:text-lg"} rounded-lg`}
         style={{ backgroundColor: GREEN }}
       >
-        {small ? "Quero acessar — R$397" : "🔥 Quero acessar o Real Zap Academy — R$397"}
+        {small ? "Quero acessar agora" : "🔥 Quero acessar o Real Zap Academy"}
         <ArrowRight className="ml-2 h-5 w-5" />
       </Button>
     </a>
