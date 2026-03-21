@@ -9,6 +9,7 @@ import RPClose from "./pages/RPClose";
 import RPCloseSuccess from "./pages/RPCloseSuccess";
 import RPZap from "./pages/RPZap";
 import InfoZap from "./pages/InfoZap";
+import CloseFriends from "./pages/CloseFriends";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
