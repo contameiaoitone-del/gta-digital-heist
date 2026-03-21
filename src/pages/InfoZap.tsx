@@ -513,7 +513,7 @@ const InfoZap = () => {
                 <p className="text-gray-400 text-sm mb-4 leading-relaxed">{b.desc}</p>
                 {/* Separator */}
                 <div className="h-px w-full mb-4" style={{ backgroundColor: "#2a2a2a" }} />
-                <p className="font-bold text-xl" style={{ color: GREEN }}>Valor: {b.value}</p>
+                <p className="font-bold text-xl" style={{ color: GREEN }}>Valor: <span className="line-through">{b.value}</span></p>
                 <p className="text-xs text-gray-500 italic mt-2">Resolve: {b.resolves}</p>
               </div>
             ))}
@@ -532,7 +532,7 @@ const InfoZap = () => {
             {valueStack.map((row, i) => (
               <div key={i} className="flex justify-between items-center px-6 py-4 border-b" style={{ borderColor: "#1a1a1a" }}>
                 <span className="text-gray-300 text-sm">{row.item}</span>
-                <span className="text-gray-500 text-sm font-medium">{row.value}</span>
+                <span className="text-gray-500 text-sm font-medium line-through">{row.value}</span>
               </div>
             ))}
             <div className="flex justify-between items-center px-6 py-4 border-b" style={{ borderColor: "#1a1a1a" }}>
