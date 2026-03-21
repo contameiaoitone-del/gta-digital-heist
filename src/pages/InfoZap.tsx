@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowRight, Smartphone, DollarSign, Zap, ChevronRight, X, Shield } from "lucide-react";
+import { ArrowRight, ChevronRight, X, Shield } from "lucide-react";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 
 const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
@@ -17,10 +17,13 @@ const painItems = [
   { title: '"Não tenho dinheiro pra arriscar mais"', desc: "Já investiu em curso que não entregou. Já perdeu dinheiro em anúncio sem retorno. Agora cada real que você tem é sagrado — e você não pode errar de novo." },
 ];
 
-const mechanisms = [
-  { icon: Smartphone, emoji: "📱", title: "WhatsApp", desc: "98% de taxa de abertura" },
-  { icon: DollarSign, emoji: "💸", title: "Lowticket", desc: "Produto entre R$17 e R$97. Decisão em segundos." },
-  { icon: Zap, emoji: "⚡", title: "Pay After", desc: "Entrega primeiro, cobra depois direto no Pix." },
+const mechanismBenefits = [
+  { emoji: "💸", title: "Começa com R$15 por dia", desc: "Esqueça investir rios de dinheiro antes de ver resultado. Com conversão dessa taxa você não precisa de orçamento absurdo. R$15 já gera tráfego, ativa o funil e traz Pix na conta." },
+  { emoji: "🔒", title: "Zero reembolso", desc: "O cliente já recebeu o produto antes de pagar. Não tem o que devolver, não tem o que contestar. O Pix veio, ficou. Na sua conta." },
+  { emoji: "💰", title: "Liquidez imediata", desc: "Cada venda cai direto no Pix na hora. Sem checkout segurando seu dinheiro por 15 ou 30 dias. Você vende, recebe, reinveste no mesmo dia e escala mais rápido do que qualquer outro modelo." },
+  { emoji: "🤖", title: "Funil 100% automático com IA", desc: "A IA atende o cliente, entrega o produto e cobra — tudo sozinha. Você não precisa estar presente, não precisa responder mensagem, não precisa fazer nada. O funil roda enquanto você dorme." },
+  { emoji: "🎯", title: "Campanha que vira máquina de vendas", desc: "Com o pixel do Facebook configurado no WhatsApp, o Meta Ads otimiza automaticamente pro público que tem perfil de comprador. Com o tempo a campanha para de ser anúncio e vira uma máquina — encontra quem compra, entrega o anúncio, fecha a venda sozinha." },
+  { emoji: "📈", title: "De zero a R$1.000 por dia em menos de 1 mês", desc: "A operação é rápida e altamente escalável. Com o funil rodando e a campanha otimizando, você reinveste o Pix que caiu e cresce. Tenho alunos que saíram do zero e chegaram a 1k por dia em menos de 30 dias. Não porque são especiais. Porque o modelo foi construído pra isso." },
 ];
 
 const modules = [
@@ -187,15 +190,32 @@ const InfoZap = () => {
       <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-4xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>O Mecanismo</span>
-          <h2 className="text-3xl md:text-5xl font-bold mb-12" style={{ fontFamily: "'Bebas Neue', cursive" }}>
-            Por que o lowticket no WhatsApp funciona quando tudo mais falhou
+          <h2 className="text-3xl md:text-5xl font-bold mb-8" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+            Por que o InfoZap funciona quando tudo mais falhou?
           </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {mechanisms.map((m, i) => (
-              <div key={i} className="rounded-xl p-6 border-t-2" style={{ backgroundColor: "#141414", borderColor: GREEN }}>
-                <div className="text-3xl mb-4">{m.emoji}</div>
-                <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>{m.title}</h3>
-                <p className="text-gray-400 text-sm">{m.desc}</p>
+          <div className="space-y-4 text-gray-400 text-sm leading-relaxed mb-10">
+            <p>
+              A maioria dos modelos de venda online tem um problema que nunca te contam: <strong className="text-white">o cliente tem medo de pagar antes de receber.</strong> É por isso que a conversão é baixa, o reembolso é alto e você fica queimando dinheiro em anúncio sem resultado.
+            </p>
+            <p className="font-bold text-white text-base">
+              O InfoZap inverte essa lógica completamente.
+            </p>
+            <p>
+              Você entrega o infoproduto primeiro. O cliente recebe, consome, e só depois paga direto no Pix. Sem medo. Sem objeção. Sem hesitação. É o único modelo onde o cliente paga depois de já ter recebido o que comprou.
+            </p>
+            <p>
+              O resultado disso é absurdo: <strong style={{ color: GREEN }}>taxa de conversão de 20 a 30%</strong>. Enquanto modelos convencionais convertem 1 a 3%, o Pay After Delivery converte até 10 vezes mais — porque você removeu o único motivo que fazia o cliente não comprar.
+            </p>
+          </div>
+          <h3 className="text-xl md:text-2xl font-bold mb-6" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+            E as consequências disso mudam tudo:
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {mechanismBenefits.map((b, i) => (
+              <div key={i} className="rounded-xl p-6 border" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                <div className="text-2xl mb-3">{b.emoji}</div>
+                <h4 className="font-bold text-white mb-2">{b.title}</h4>
+                <p className="text-gray-400 text-sm">{b.desc}</p>
               </div>
             ))}
           </div>
