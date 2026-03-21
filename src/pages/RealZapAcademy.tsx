@@ -41,7 +41,7 @@ const enemyBlocks = [
   { title: "Comprou curso que não entregou", desc: "Você assistiu tudo, anotou tudo, seguiu o passo a passo — e na hora de executar travou. O guru ficou rico. Você ficou com a conta no vermelho e a autoconfiança destruída. Metodologia falha, conteúdo raso, suporte zero." },
   { title: "Não sabe ler métricas e toma decisão no chute", desc: "CPM alto, CTR baixo, custo por conversa subindo — os números estão gritando o que fazer mas você não sabe interpretar. Pausa o que não devia, sobe o que não devia e joga dinheiro fora toda semana sem entender por quê a campanha não evolui." },
   { title: "Tenta escalar e o WhatsApp trava tudo", desc: "Aumenta o volume, o WhatsApp bloqueia o número, o chip queima, a operação para. Sem saber a estrutura certa de chips, rodízio e múltiplos números, a escala vira pesadelo — e você volta pro mesmo volume de antes com dinheiro a menos." },
-  { title: "O criativo esgota e a campanha morre", desc: "O criativo que funcionou semana passada já não converte mais. Você não sabe criar ângulos novos, não sabe testar variações, não sabe identificar quando está esgotando. A campanha morre, você começa do zero, perde tempo e dinheiro — e o ciclo se repete." },
+  { title: "Sem estrutura certa de tráfego, a campanha morre", desc: "O criativo que funcionou semana passada já não converte mais. Você não sabe a metodologia certa de tráfego, não sabe testar, não sabe identificar métricas. A campanha morre, você começa do zero, perde tempo e dinheiro — e o ciclo se repete." },
 ];
 
 const mechanismBenefits = [
