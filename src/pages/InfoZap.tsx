@@ -190,15 +190,32 @@ const InfoZap = () => {
       <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-4xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>O Mecanismo</span>
-          <h2 className="text-3xl md:text-5xl font-bold mb-12" style={{ fontFamily: "'Bebas Neue', cursive" }}>
-            Por que o lowticket no WhatsApp funciona quando tudo mais falhou
+          <h2 className="text-3xl md:text-5xl font-bold mb-8" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+            Por que o InfoZap funciona quando tudo mais falhou?
           </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {mechanisms.map((m, i) => (
-              <div key={i} className="rounded-xl p-6 border-t-2" style={{ backgroundColor: "#141414", borderColor: GREEN }}>
-                <div className="text-3xl mb-4">{m.emoji}</div>
-                <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>{m.title}</h3>
-                <p className="text-gray-400 text-sm">{m.desc}</p>
+          <div className="space-y-4 text-gray-400 text-sm leading-relaxed mb-10">
+            <p>
+              A maioria dos modelos de venda online tem um problema que nunca te contam: <strong className="text-white">o cliente tem medo de pagar antes de receber.</strong> É por isso que a conversão é baixa, o reembolso é alto e você fica queimando dinheiro em anúncio sem resultado.
+            </p>
+            <p className="font-bold text-white text-base">
+              O InfoZap inverte essa lógica completamente.
+            </p>
+            <p>
+              Você entrega o infoproduto primeiro. O cliente recebe, consome, e só depois paga direto no Pix. Sem medo. Sem objeção. Sem hesitação. É o único modelo onde o cliente paga depois de já ter recebido o que comprou.
+            </p>
+            <p>
+              O resultado disso é absurdo: <strong style={{ color: GREEN }}>taxa de conversão de 20 a 30%</strong>. Enquanto modelos convencionais convertem 1 a 3%, o Pay After Delivery converte até 10 vezes mais — porque você removeu o único motivo que fazia o cliente não comprar.
+            </p>
+          </div>
+          <h3 className="text-xl md:text-2xl font-bold mb-6" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+            E as consequências disso mudam tudo:
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {mechanismBenefits.map((b, i) => (
+              <div key={i} className="rounded-xl p-6 border" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
+                <div className="text-2xl mb-3">{b.emoji}</div>
+                <h4 className="font-bold text-white mb-2">{b.title}</h4>
+                <p className="text-gray-400 text-sm">{b.desc}</p>
               </div>
             ))}
           </div>
