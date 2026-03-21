@@ -146,17 +146,22 @@ const CloseFriends = () => {
             🔥 Close Friends Exclusivo
           </span>
 
-          <h1 className="font-gta text-[clamp(36px,7vw,72px)] leading-[0.95] tracking-tight mb-8">
-            ENQUANTO TODO MUNDO CONSOME CONTEÚDO PÚBLICO,{" "}
-            <span className="text-[#ff2d78]">QUEM ESTÁ NO CLOSE FRIENDS VÊ A OPERAÇÃO ACONTECENDO EM TEMPO REAL.</span>
+          <h1 className="font-gta text-[clamp(36px,7vw,72px)] leading-[0.95] tracking-tight mb-4">
+            O que eu faço pra ter{" "}
+            <span className="text-[#ff2d78]">Pix caindo todo dia</span>{" "}
+            com Lowticket no WhatsApp.
           </h1>
 
-          <div className="space-y-3 mb-10 max-w-[600px] mx-auto">
+          <p className="text-lg md:text-xl text-[#bbb] mb-10 max-w-[600px] mx-auto">
+            Os bastidores reais da operação — sem edição, sem roteiro, sem mentira.
+          </p>
+
+          <div className="space-y-3 mb-10 max-w-[640px] mx-auto">
             {[
-              "📱 Bastidores reais — não roteiro, não edição, não teoria",
-              "📊 Campanhas, escala, métricas e testes — tudo ao vivo",
-              "🔒 Só pra quem está dentro — nunca vai pro feed",
-              "⚡ Atualizado todo dia direto nos stories",
+              "📱 Campanhas de lowticket ao vivo — do criativo ao Pix caindo",
+              "📊 Escala de WhatsApp, métricas e otimização em tempo real",
+              "🔒 O que funciona agora — antes de virar conteúdo público",
+              "⚡ Quem está fora consome Reels de guru. Quem está dentro já sabe o que converte essa semana.",
             ].map((line, i) => (
               <p key={i} className="text-base md:text-lg text-[#ddd] bg-black/50 px-4 py-2 rounded-sm inline-block w-full">
                 {line}
