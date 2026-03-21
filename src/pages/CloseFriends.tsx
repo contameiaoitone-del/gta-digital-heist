@@ -430,7 +430,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
           <SectionLabel>PARA QUEM É</SectionLabel>
-          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-8">
+          <h2 className="font-gta text-[clamp(28px,6vw,60px)] leading-none tracking-tight mb-8">
             O CLOSE FRIENDS É <span className="text-[#ff2d78]">PRA VOCÊ SE:</span>
           </h2>
 
