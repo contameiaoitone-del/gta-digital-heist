@@ -405,7 +405,7 @@ const InfoZap = () => {
           </div>
 
           <div className="max-w-3xl mx-auto">
-            <Accordion type="multiple" className="space-y-3">
+            <Accordion type="multiple" defaultValue={["mod-0", "mod-1", "mod-2", "mod-3", "mod-4", "mod-5"]} className="space-y-3">
               {modules.map((mod, i) => (
                 <AccordionItem key={i} value={`mod-${i}`} className="border rounded-xl px-5" style={{ borderColor: "#222", backgroundColor: "#111" }}>
                   <AccordionTrigger className="hover:no-underline py-4">
