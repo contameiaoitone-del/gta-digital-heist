@@ -148,7 +148,7 @@ const CloseFriends = () => {
             🔥 Close Friends Exclusivo
           </span>
 
-          <h1 className="font-heading text-[clamp(36px,7vw,72px)] leading-[0.95] tracking-tight mb-8">
+          <h1 className="font-gta text-[clamp(36px,7vw,72px)] leading-[0.95] tracking-tight mb-8">
             ENQUANTO TODO MUNDO CONSOME CONTEÚDO PÚBLICO,{" "}
             <span className="text-[#ff2d78]">QUEM ESTÁ NO CLOSE FRIENDS VÊ A OPERAÇÃO ACONTECENDO EM TEMPO REAL.</span>
           </h1>
@@ -175,7 +175,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
           <SectionLabel>O PROBLEMA</SectionLabel>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-8">
+          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-8">
             VOCÊ CONSOME CONTEÚDO <span className="text-[#ff2d78]">TODO DIA.</span>{" "}
             E CONTINUA <span className="text-[#ff2d78]">NO MESMO LUGAR.</span>
           </h2>
@@ -197,7 +197,7 @@ const CloseFriends = () => {
       {/* ═══════════ SEÇÃO 3 — O INIMIGO ═══════════ */}
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
-          <h2 className="font-heading text-[clamp(32px,5.5vw,56px)] leading-none tracking-tight mb-10">
+          <h2 className="font-gta text-[clamp(32px,5.5vw,56px)] leading-none tracking-tight mb-10">
             POR QUE O CONTEÚDO PÚBLICO <span className="text-[#ff2d78]">NUNCA VAI TE DAR RESULTADO</span> DE VERDADE
           </h2>
 
@@ -222,7 +222,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
           <SectionLabel>O QUE TEM DENTRO</SectionLabel>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
+          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
             OS BASTIDORES QUE <span className="text-[#ff2d78]">NINGUÉM VÊ.</span>{" "}
             SÓ QUEM ESTÁ DENTRO.
           </h2>
@@ -244,7 +244,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
           <SectionLabel green>RESULTADOS REAIS</SectionLabel>
-          <h2 className="font-heading text-[clamp(32px,5.5vw,56px)] leading-none tracking-tight mb-10">
+          <h2 className="font-gta text-[clamp(32px,5.5vw,56px)] leading-none tracking-tight mb-10">
             NÃO É CONTEÚDO. É <span className="text-[#00ff88]">OPERAÇÃO REAL.</span>{" "}
             VEJA O QUE OS MEMBROS FALAM.
           </h2>
@@ -252,7 +252,7 @@ const CloseFriends = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
             {stats.map((s, i) => (
               <div key={i} className="bg-[#141414] border border-white/[0.07] rounded-md p-6 text-center">
-                <p className="font-heading text-3xl md:text-4xl text-[#ff2d78] mb-1">{s.value}</p>
+                <p className="font-gta text-3xl md:text-4xl text-[#ff2d78] mb-1">{s.value}</p>
                 <p className="text-[13px] text-[#888]">{s.label}</p>
               </div>
             ))}
@@ -279,7 +279,7 @@ const CloseFriends = () => {
 
         <div className="relative z-10 max-w-[780px] mx-auto px-6">
           <SectionLabel>QUEM VOCÊ VAI ACOMPANHAR</SectionLabel>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
+          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
             NÃO SOU <span className="text-[#ff2d78]">GURU DE PALCO.</span>{" "}
             SOU <span className="text-[#ff2d78]">OPERADOR.</span>
           </h2>
@@ -302,7 +302,7 @@ const CloseFriends = () => {
               { value: "TODO DIA", label: "Conteúdo novo nos stories" },
             ].map((s, i) => (
               <div key={i} className="text-center">
-                <p className="font-heading text-2xl md:text-3xl text-[#00ff88]">{s.value}</p>
+                <p className="font-gta text-2xl md:text-3xl text-[#00ff88]">{s.value}</p>
                 <p className="text-[13px] text-[#bbb] mt-1">{s.label}</p>
               </div>
             ))}
@@ -316,7 +316,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
           <SectionLabel>PARA QUEM É</SectionLabel>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-8">
+          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-8">
             O CLOSE FRIENDS É <span className="text-[#ff2d78]">PRA VOCÊ SE:</span>
           </h2>
 
@@ -337,7 +337,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
           <div className="bg-[#ff2d78]/5 border border-[#ff2d78]/20 rounded p-8">
-            <h3 className="font-heading text-[32px] text-[#ff2d78] mb-6">ISSO NÃO É PRA VOCÊ SE:</h3>
+            <h3 className="font-gta text-[32px] text-[#ff2d78] mb-6">ISSO NÃO É PRA VOCÊ SE:</h3>
             <ul className="space-y-3">
               {notForYou.map((item, i) => (
                 <li key={i} className="text-[#999] text-base pl-7 relative">
@@ -359,7 +359,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6 text-center">
           <SectionLabel green>O VALOR REAL</SectionLabel>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
+          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
             POR R$37 POR MÊS <span className="text-[#00ff88]">VOCÊ TEM ACESSO A:</span>
           </h2>
 
@@ -376,8 +376,8 @@ const CloseFriends = () => {
                 <td className="py-3.5 text-lg text-right text-[#888] line-through font-bold">R$488/mês</td>
               </tr>
               <tr>
-                <td className="py-3.5 font-heading text-[28px] text-[#ff2d78]">Você paga</td>
-                <td className="py-3.5 font-heading text-[28px] text-right text-[#ff2d78]">R$37/mês</td>
+                <td className="py-3.5 font-gta text-[28px] text-[#ff2d78]">Você paga</td>
+                <td className="py-3.5 font-gta text-[28px] text-right text-[#ff2d78]">R$37/mês</td>
               </tr>
             </tbody>
           </table>
@@ -393,7 +393,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
           <div className="bg-gradient-to-br from-[#ffe600]/5 to-[#ff2d78]/5 border border-[#ffe600]/15 rounded p-8 md:p-10 text-center">
-            <h3 className="font-heading text-[clamp(28px,5vw,38px)] text-[#ffe600] mb-6">
+            <h3 className="font-gta text-[clamp(28px,5vw,38px)] text-[#ffe600] mb-6">
               ⚠️ O CUSTO DE CONTINUAR DE FORA
             </h3>
             <p className="text-lg text-[#bbb] leading-relaxed mb-4">
@@ -416,7 +416,7 @@ const CloseFriends = () => {
         <div className="max-w-[780px] mx-auto px-6">
           <div className="bg-[#141414] border-2 border-[#ff2d78] rounded-md p-8 md:p-10 text-center relative overflow-hidden">
             <span className="absolute right-[-10px] top-[-30px] text-[180px] text-[#ff2d78]/[0.04] leading-none pointer-events-none select-none">∞</span>
-            <h3 className="font-heading text-[clamp(28px,5vw,42px)] text-[#ff2d78] mb-4">
+            <h3 className="font-gta text-[clamp(28px,5vw,42px)] text-[#ff2d78] mb-4">
               🛡️ SEM RISCO. SEM FIDELIDADE. CANCELA QUANDO QUISER.
             </h3>
             <p className="text-[17px] text-[#bbb] max-w-[560px] mx-auto leading-relaxed">
@@ -431,7 +431,7 @@ const CloseFriends = () => {
       {/* ═══════════ SEÇÃO 12 — CTA FINAL ═══════════ */}
       <section className="py-16 md:py-24 text-center relative z-10 bg-[#0d0d0d]">
         <div className="max-w-[780px] mx-auto px-6">
-          <h2 className="font-heading text-[clamp(32px,6vw,56px)] leading-none tracking-tight mb-6">
+          <h2 className="font-gta text-[clamp(32px,6vw,56px)] leading-none tracking-tight mb-6">
             VOCÊ VAI CONTINUAR CONSUMINDO <span className="text-[#ff2d78]">CONTEÚDO PÚBLICO</span>{" "}
             OU VAI <span className="text-[#ff2d78]">ENTRAR DE VERDADE?</span>
           </h2>
@@ -449,7 +449,7 @@ const CloseFriends = () => {
       <section className="py-16 md:py-20 relative z-10">
         <div className="max-w-[780px] mx-auto px-6">
           <SectionLabel green>DÚVIDAS</SectionLabel>
-          <h2 className="font-heading text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
+          <h2 className="font-gta text-[clamp(36px,6vw,60px)] leading-none tracking-tight mb-10">
             PERGUNTAS FREQUENTES
           </h2>
 
@@ -483,7 +483,7 @@ const CloseFriends = () => {
       {/* STICKY BAR */}
       <div className={`fixed bottom-0 left-0 right-0 bg-[#080808]/95 border-t border-white/[0.07] py-4 px-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 z-50 backdrop-blur-lg transition-transform duration-300 ${stickyVisible ? "translate-y-0" : "translate-y-full"}`}>
         <span className="text-[15px] text-[#bbb]">Close Friends — Acesso mensal</span>
-        <span className="font-heading text-2xl text-[#ff2d78]">R$37/mês</span>
+        <span className="font-gta text-2xl text-[#ff2d78]">R$37/mês</span>
         <CTAButton small />
       </div>
     </div>
