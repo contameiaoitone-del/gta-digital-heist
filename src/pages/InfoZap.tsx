@@ -183,11 +183,11 @@ const InfoZap = () => {
             vendendo infoproduto de Lowticket direto no WhatsApp
           </h1>
 
-          <div className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed space-y-2 flex flex-col items-center">
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px" }}>⚡ Funil 100% automático com IA — sem atender nenhum cliente</p>
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px" }}>💸 Vendas direto no Pix</p>
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px" }}>📦 Produtos prontos pra copiar e colar</p>
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px" }}>📱 Sem bloqueio de WhatsApp</p>
+          <div className="text-base md:text-lg text-gray-200 max-w-2xl mx-auto mb-8 leading-relaxed space-y-2 flex flex-col items-center">
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>⚡ Funil 100% automático com IA — sem atender nenhum cliente</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>💸 Vendas direto no Pix</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>📦 Produtos prontos pra copiar e colar</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>📱 Sem bloqueio de WhatsApp</p>
           </div>
 
           {/* Foto do Caio - Hero */}
