@@ -545,7 +545,7 @@ const CloseFriends = () => {
       {/* ═══════════ SEÇÃO 12 — CTA FINAL ═══════════ */}
       <section className="py-16 md:py-24 text-center relative z-10 bg-[#0d0d0d]">
         <div className="max-w-[780px] mx-auto px-6">
-          <h2 className="font-gta text-[clamp(32px,6vw,56px)] leading-none tracking-tight mb-6">
+          <h2 className="font-gta text-[clamp(26px,6vw,56px)] leading-none tracking-tight mb-6">
             VOCÊ VAI CONTINUAR CONSUMINDO <span className="text-[#ff2d78]">CONTEÚDO PÚBLICO</span>{" "}
             OU VAI <span className="text-[#ff2d78]">ENTRAR DE VERDADE?</span>
           </h2>
