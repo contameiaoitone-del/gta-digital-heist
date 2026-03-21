@@ -271,9 +271,7 @@ const CloseFriends = () => {
 
       {/* ═══════════ SEÇÃO 6 — QUEM VOCÊ VAI ACOMPANHAR ═══════════ */}
       <section className="relative py-16 md:py-20 z-10">
-        {/* GTA Background */}
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${gtaCityNight})` }} />
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-[#0d0d0d]" />
 
         <div className="relative z-10 max-w-[780px] mx-auto px-6">
           <SectionLabel>QUEM VOCÊ VAI ACOMPANHAR</SectionLabel>
