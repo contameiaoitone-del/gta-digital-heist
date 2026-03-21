@@ -187,7 +187,7 @@ const InfoZap = () => {
           <CTAButton />
 
           <p className="mt-4 text-xs text-gray-500">
-            ⚡ Últimas vagas nesse preço · Acesso imediato
+            🔒 Garantia de 7 dias · Acesso imediato · Sem mensalidade
           </p>
         </div>
         {/* Decorative line */}
