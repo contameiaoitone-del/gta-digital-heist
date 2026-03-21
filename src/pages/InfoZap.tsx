@@ -511,7 +511,7 @@ const InfoZap = () => {
             ))}
           </div>
           <p className="text-gray-500 text-sm">
-            Agora, se você é uma pessoa que tá disposta a dedicar tempo, seguir o passo a passo e colocar em prática — o InfoZap foi feito pra você.
+            Agora, se você está disposto a dedicar tempo, seguir o passo a passo e colocar em prática — o InfoZap foi feito pra você.
           </p>
         </div>
       </section>
