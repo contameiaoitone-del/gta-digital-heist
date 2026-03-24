@@ -52,7 +52,7 @@ const Links = () => {
     },
     {
       name: "Mentoria Caio Dalcin",
-      url: "https://chat.whatsapp.com/EvdHIJTNh9UCTUoFkQrA1y",
+      url: "https://chat.whatsapp.com/K9oViBsFYcE0Cv6JqN8FyR",
       icon: ExternalLink,
       description: "Mentoria exclusiva",
       image: mentoriaBanner,
