@@ -21,21 +21,6 @@ const Links = () => {
   
   const links = [
     {
-      name: "ZapData",
-      url: "https://zapdata.co/#/auth?ref=ED8R7J27",
-      icon: ExternalLink,
-      description: "Automação de WhatsApp",
-      image: zapdataBanner,
-      mobileImage: zapdataBannerMobile,
-    },
-    {
-      name: "Close Friends",
-      url: "/closefriends",
-      icon: ExternalLink,
-      description: "Sistema de vendas completo",
-      image: rpCloseBanner,
-    },
-    {
       name: "InfoZap",
       url: "/infozap",
       icon: ExternalLink,
@@ -43,19 +28,19 @@ const Links = () => {
       image: rpZapBanner,
     },
     {
-      name: "Real Life Academy",
-      url: "/real-zap-academy",
-      icon: GraduationCap,
-      description: "Curso completo de marketing digital",
-      image: realLifeAcademyBannerMobile,
-      mobileImage: realLifeAcademyBannerMobile,
-    },
-    {
       name: "Mentoria Caio Dalcin",
       url: "https://chat.whatsapp.com/K9oViBsFYcE0Cv6JqN8FyR",
       icon: ExternalLink,
       description: "Mentoria exclusiva",
       image: mentoriaBanner,
+    },
+    {
+      name: "ZapData",
+      url: "https://zapdata.co/#/auth?ref=ED8R7J27",
+      icon: ExternalLink,
+      description: "Automação de WhatsApp",
+      image: zapdataBanner,
+      mobileImage: zapdataBannerMobile,
     },
   ];
 
