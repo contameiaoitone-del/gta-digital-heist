@@ -157,7 +157,7 @@ const InfoZap = () => {
         className={`bg-[${GREEN}] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] ${small ? "w-full sm:w-auto h-10 px-4 sm:px-6 text-sm" : "w-full md:w-auto h-12 md:h-14 px-4 md:px-10 text-base md:text-lg"} rounded-lg`}
         style={{ backgroundColor: GREEN }}
       >
-        {small ? "Quero acessar — R$97" : "🔥 QUERO MEU ACESSO AGORA — R$97"}
+        {small ? "Quero acessar — R$67" : "🔥 QUERO MEU ACESSO AGORA — R$67"}
         <ArrowRight className="ml-2 h-5 w-5" />
       </Button>
     </a>
@@ -484,7 +484,7 @@ const InfoZap = () => {
               className="w-full md:w-auto h-12 md:h-14 px-4 md:px-10 text-base md:text-lg bg-[#00ff88] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] rounded-lg"
               style={{ backgroundColor: GREEN }}
             >
-              🔥 Quero meu acesso agora — R$97
+              🔥 Quero meu acesso agora — R$67
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </a>
@@ -535,11 +535,11 @@ const InfoZap = () => {
             ))}
             <div className="flex justify-between items-center px-6 py-4 border-b" style={{ borderColor: "#1a1a1a" }}>
               <span className="text-gray-400 font-semibold">Valor Total</span>
-              <span className="text-gray-500 line-through font-bold text-lg">R$638</span>
+              <span className="text-gray-500 line-through font-bold text-lg">R$608</span>
             </div>
             <div className="flex justify-between items-center px-6 py-5">
               <span className="font-bold text-lg">Você paga hoje</span>
-              <span className="font-bold text-3xl" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive" }}>R$97</span>
+              <span className="font-bold text-3xl" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive" }}>R$67</span>
             </div>
           </div>
           <div className="mt-8 text-center">
@@ -559,8 +559,8 @@ const InfoZap = () => {
             <p>Cada mês que passa sem uma renda digital funcionando é mais um mês dependendo de emprego, de chefe, de horário fixo.</p>
             <p>Daqui a 6 meses você vai estar exatamente no mesmo lugar — sem renda extra, dependendo do mesmo salário, vendo outras pessoas faturando enquanto você continua adiando.</p>
             <p>Não é questão de tempo. É questão de modelo. Você já tem o celular. Você já tem o WhatsApp. O único ingrediente que falta é esse aqui.</p>
-            <p>Por R$97 — menos que um jantar fora — você tem acesso à operação completa.</p>
-            <p className="font-bold text-white">O custo de continuar parado é muito maior do que R$97.</p>
+            <p>Por R$67 — menos que um jantar fora — você tem acesso à operação completa.</p>
+            <p className="font-bold text-white">O custo de continuar parado é muito maior do que R$67.</p>
           </div>
         </div>
       </section>
@@ -659,7 +659,7 @@ const InfoZap = () => {
         <div className="max-w-3xl mx-auto flex items-center justify-between px-4 py-3">
           <div className="hidden sm:block">
             <span className="text-sm text-gray-400">InfoZap por apenas </span>
-            <span className="font-bold text-lg" style={{ color: GREEN }}>R$97</span>
+            <span className="font-bold text-lg" style={{ color: GREEN }}>R$67</span>
           </div>
           <CTAButton small />
         </div>
