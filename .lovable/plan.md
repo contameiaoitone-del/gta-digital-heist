@@ -1,12 +1,17 @@
 
 
-## Plano: Atualizar link do card "Mentoria Caio Dalcin"
+## Plano: Reorganizar cards da página /links
 
-**Alteração única** no arquivo `src/pages/Links.tsx`:
+Manter apenas 3 cards na página `/links`, nesta ordem:
 
-Trocar a URL do card "Mentoria Caio Dalcin" de:
-`https://chat.whatsapp.com/EvdHIJTNh9UCTUoFkQrA1y`
+1. **InfoZap** (rota `/infozap`)
+2. **Mentoria Caio Dalcin** (WhatsApp)
+3. **ZapData** (link externo)
 
-Para:
-`https://chat.whatsapp.com/K9oViBsFYcE0Cv6JqN8FyR`
+### Alteração
+
+**Arquivo:** `src/pages/Links.tsx`
+
+- Remover os cards "Close Friends" e "Real Life Academy" do array `links`
+- Reordenar os 3 restantes na ordem: InfoZap → Mentoria → ZapData
 
