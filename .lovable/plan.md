@@ -1,35 +1,33 @@
 
 
-## Plano: Reverter seção de Problemas para o formato original do InfoZap
+## Plano: Adicionar 6 novas capas de módulos ao carrossel do InfoZap
 
 **Arquivo:** `src/pages/InfoZap.tsx`
 
-### O que muda
+### 1. Copiar as 6 imagens para `src/assets/`
+- `ChatGPT_Image_Dec_20_2025_11_11_39_PM-2.png` → `infozap-mod-conceitos.png` (Conceitos do Digital)
+- `ChatGPT_Image_Apr_2_2026_09_59_15_PM.png` → `infozap-mod-comunidade.png` (Comunidade Exclusiva no Whatsapp)
+- `image-130.png` → `infozap-mod-meta1.png` (Meta Ads Parte 1)
+- `image-131.png` → `infozap-mod-meta2.png` (Meta Ads Parte 2)
+- `image-132.png` → `infozap-mod-meta3.png` (Meta Ads Parte 3)
+- `image-133.png` → `infozap-mod-trafego.png` (Tráfego Avançado)
 
-Substituir a seção PAIN atual (linhas ~245-270) — que usa 2 cards do RZA ("Se você está começando" / "Se você já vende") — pelo formato original do InfoZap mostrado na imagem:
+### 2. Atualizar imports e array `moduleCovers`
+Adicionar os 6 novos imports e expandir o array de 5 para 11 itens:
 
-**Heading:**
-- Label: "O PROBLEMA"
-- Título: "VOCÊ RECONHECE **ALGUMA DESSAS?**"
-- Subtexto: "Se qualquer uma dessas frases já passou pela sua cabeça, você está exatamente no lugar certo."
+```
+infozapMod1 — Seja Bem Vindo
+infozapModConceitos — Conceitos do Digital
+infozapMod5 — Produtos e Nichos
+infozapMod2 — Estruturando Tudo
+infozapMod3 — Criando seu Produto
+infozapModMeta1 — Meta Ads Parte 1
+infozapModMeta2 — Meta Ads Parte 2
+infozapModMeta3 — Meta Ads Parte 3
+infozapModTrafego — Tráfego Avançado
+infozapMod4 — ZapData
+infozapModComunidade — Comunidade Exclusiva no Whatsapp
+```
 
-**5 cards com X rosa:**
-1. "Já comprei curso e perdi dinheiro"
-2. "Tentei drop, tráfego direto, gestão de tráfego, encapsulado... e só sangrei dinheiro"
-3. "Virei afiliado mas nunca vi um Pix cair"
-4. "Não sei por onde começar de verdade"
-5. "Não tenho dinheiro pra arriscar mais"
-
-Cada card com sua descrição completa conforme a imagem.
-
-**Parágrafos de fechamento (após os cards):**
-- "A culpa não foi sua..." + explicação detalhada
-- 4 blocos em negrito (Drop, Afiliado, Tráfego direto, Gestão de tráfego) explicando por que cada modelo falha
-- "Nenhum desses modelos foi feito pra quem está começando do zero..."
-- "O InfoZap foi." (em verde)
-- Parágrafo final: "Sem estoque. Sem produto físico..." + frase em negrito sobre o Pix
-
-### O que permanece igual
-- Seção do Inimigo (linhas 308-336) continua existindo separadamente
-- Todas as outras seções inalteradas
+Nenhuma outra seção é alterada.
 
