@@ -242,29 +242,43 @@ const InfoZap = () => {
         <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${GREEN}, transparent)` }} />
       </section>
 
-      {/* PAIN — 2 cards mesclados do RZA */}
+      {/* PAIN — formato original InfoZap */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-3xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: PINK }}>O Problema</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
-            Seja você iniciante ou já vende —{" "}
-            <span style={{ color: PINK }}>algo está travando você de chegar em R$1.000/dia.</span>
+            VOCÊ RECONHECE{" "}
+            <span style={{ color: PINK }}>ALGUMA DESSAS?</span>
           </h2>
+          <p className="text-gray-400 mb-10">Se qualquer uma dessas frases já passou pela sua cabeça, você está exatamente no lugar certo.</p>
 
-          <div className="space-y-8 mt-10 text-gray-400 text-[17px] leading-relaxed">
-            <div className="rounded-xl p-6 border" style={{ borderColor: "rgba(255,45,120,0.2)", backgroundColor: "rgba(255,45,120,0.04)" }}>
-              <h3 className="font-bold text-white text-lg mb-3">Se você está começando:</h3>
-              <p>Já tentou entender o digital mas tem tanta coisa que não sabe por onde começar. Afiliado, drop, encapsulado, gestão de tráfego — cada um fala de um modelo diferente e nenhum parece simples o suficiente pra funcionar de verdade. Você quer um caminho claro, do zero ao resultado, sem precisar comprar 10 cursos diferentes.</p>
-            </div>
+          <div className="space-y-4">
+            {[
+              { q: '"Já comprei curso e perdi dinheiro"', a: 'Você assistiu tudo, anotou tudo, seguiu o passo a passo — e no final das contas ficou na mesma ou pior. O guru ficou rico. Você ficou com a conta no vermelho e a autoconfiança destruída.' },
+              { q: '"Tentei drop, tráfego direto, gestão de tráfego, encapsulado... e só sangrei dinheiro"', a: 'Cada modelo novo que aparecia parecia ser "o certo". Você entrava cheio de esperança, gastava em ferramenta, em anúncio, em produto, em curso de gestor — e no fim do mês o resultado era prejuízo. De novo.' },
+              { q: '"Virei afiliado mas nunca vi um Pix cair"', a: 'Ficou meses criando conteúdo, mandando link, pedindo pra galera comprar — e quando a venda aparecia, a comissão era uma miséria. Trabalho de escravo pra enriquecer o produtor.' },
+              { q: '"Não sei por onde começar de verdade"', a: 'Tem tanta coisa na internet que no final você não faz nada. Um fala que é tráfego, outro fala que é orgânico, outro fala que é drop. Você consome informação e fica paralisado enquanto o tempo passa.' },
+              { q: '"Não tenho dinheiro pra arriscar mais"', a: 'Já investiu em curso que não entregou. Já perdeu dinheiro em anúncio sem retorno. Agora cada real que você tem é sagrado — e você não pode errar de novo.' },
+            ].map((item, i) => (
+              <div key={i} className="rounded-xl p-6 border flex justify-between items-start gap-4" style={{ borderColor: "rgba(255,45,120,0.15)", backgroundColor: "rgba(255,45,120,0.04)" }}>
+                <div>
+                  <h4 className="font-bold text-white mb-2">{item.q}</h4>
+                  <p className="text-gray-400 text-sm leading-relaxed">{item.a}</p>
+                </div>
+                <span className="text-xl font-bold shrink-0" style={{ color: PINK }}>✕</span>
+              </div>
+            ))}
+          </div>
 
-            <div className="rounded-xl p-6 border" style={{ borderColor: "rgba(255,45,120,0.2)", backgroundColor: "rgba(255,45,120,0.04)" }}>
-              <h3 className="font-bold text-white text-lg mb-3">Se você já vende:</h3>
-              <p>Você aprendeu o modelo. Fez as primeiras vendas. O Pix começou a cair. Mas chegou um ponto onde tudo parou de crescer. A campanha que convertia virou prejuízo. O criativo esgotou. Tentou escalar e o WhatsApp bloqueou. Olha pro gerenciador e os números não dizem nada. E o pior: você já provou que o modelo funciona mas continua preso no mesmo patamar todo mês.</p>
-            </div>
-
-            <p className="font-bold text-white text-center text-lg">
-              Nos dois casos o problema é o mesmo: <span style={{ color: GREEN }}>Falta o método completo. Do básico ao avançado. Numa operação só.</span>
-            </p>
+          <div className="mt-12 space-y-6 text-gray-400 text-[15px] leading-relaxed">
+            <p><strong className="text-white">A culpa não foi sua.</strong> Você foi vendido modelos que nunca foram feitos pra quem está começando.</p>
+            <p><strong className="text-white">Drop</strong> exige capital alto pra comprar estoque, lidar com produto físico, frete, devolução, reclamação — e no final a margem é uma miséria pra tanto trabalho.</p>
+            <p><strong className="text-white">Afiliado</strong> é uma armadilha dos dois lados. Se tentar no orgânico, você trabalha escravo criando conteúdo todo dia, mandando link pra todo mundo, implorando por atenção — pra no final receber uma comissão que mal paga o seu tempo. E se for com tráfego pago, você tem o mesmo trabalho, gasta dinheiro em anúncio e ainda toma prejuízo por cima. Nos dois casos o resultado é o mesmo: você se mata trabalhando. O produtor enriquece.</p>
+            <p><strong className="text-white">Tráfego direto</strong> exige uma fortuna pra testar — e quando finalmente funciona, você descobre que o dinheiro fica preso no checkout por 15, 30 dias. Você vende, vende, vende e não consegue escalar porque o caixa não gira.</p>
+            <p><strong className="text-white">Gestão de tráfego</strong> exige portfólio pra conseguir cliente, e prospecção orgânica não funciona mais. O mercado está abarrotado de agência grande com estrutura, time e preço que você nunca vai conseguir competir. O oceano azul secou.</p>
+            <p className="text-white">Nenhum desses modelos foi feito pra quem está começando do zero com pouco dinheiro no bolso.</p>
+            <p className="text-2xl font-bold" style={{ color: GREEN }}>O InfoZap foi.</p>
+            <p>Sem estoque. Sem produto físico. Sem checkout cheio de taxa te engolindo a margem. Sem dinheiro preso esperando liberação. Sem prospectar cliente nenhum. Sem atender ninguém — a IA faz isso por você. E o melhor: <strong className="text-white">o Pix cai direto na sua conta. Na hora. Todo dia.</strong></p>
           </div>
         </div>
       </section>
