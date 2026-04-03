@@ -30,23 +30,22 @@ import infozapModFreetrial from "@/assets/infozap-mod-freetrial.png";
 
 const moduleCovers = [
   { image: infozapMod1, title: "Seja Bem Vindo" },
+  { image: infozapModComunidade, title: "Comunidade Exclusiva no Whatsapp" },
   { image: infozapModConceitos, title: "Conceitos do Digital" },
   { image: infozapMod5, title: "Produtos e Nichos" },
   { image: infozapMod2, title: "Estruturando Tudo" },
   { image: infozapMod3, title: "Criando seu Produto" },
+  { image: infozapMod4, title: "ZapData" },
+  { image: infozapModFreetrial, title: "Free Trial de 3 Dias ZapData" },
   { image: infozapModWhatsapp, title: "Tudo sobre Whatsapp" },
   { image: infozapModMeta1, title: "Meta Ads Parte 1" },
   { image: infozapModMeta2, title: "Meta Ads Parte 2" },
   { image: infozapModMeta3, title: "Meta Ads Parte 3" },
+  { image: infozapModTrafego, title: "Tráfego Avançado" },
   { image: infozapModCriativos, title: "Tudo sobre Criativos" },
   { image: infozapModMetricas, title: "Análise e Otimização de Métricas" },
-  { image: infozapModTrafego, title: "Tráfego Avançado" },
   { image: infozapModEscala, title: "Tudo sobre Escala" },
-  { image: infozapMod4, title: "ZapData" },
-  { image: infozapModTrapaca, title: "Códigos de Trapaça" },
   { image: infozapModProdutos, title: "Bônus - 3 Produtos Validados" },
-  { image: infozapModFreetrial, title: "Free Trial de 3 Dias ZapData" },
-  { image: infozapModComunidade, title: "Comunidade Exclusiva no Whatsapp" },
 ];
 
 const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
