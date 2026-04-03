@@ -20,6 +20,13 @@ import infozapModMeta1 from "@/assets/infozap-mod-meta1.png";
 import infozapModMeta2 from "@/assets/infozap-mod-meta2.png";
 import infozapModMeta3 from "@/assets/infozap-mod-meta3.png";
 import infozapModTrafego from "@/assets/infozap-mod-trafego.png";
+import infozapModMetricas from "@/assets/infozap-mod-metricas.png";
+import infozapModEscala from "@/assets/infozap-mod-escala.png";
+import infozapModCriativos from "@/assets/infozap-mod-criativos.png";
+import infozapModWhatsapp from "@/assets/infozap-mod-whatsapp.png";
+import infozapModTrapaca from "@/assets/infozap-mod-trapaca.png";
+import infozapModProdutos from "@/assets/infozap-mod-produtos.png";
+import infozapModFreetrial from "@/assets/infozap-mod-freetrial.png";
 
 const moduleCovers = [
   { image: infozapMod1, title: "Seja Bem Vindo" },
@@ -27,11 +34,18 @@ const moduleCovers = [
   { image: infozapMod5, title: "Produtos e Nichos" },
   { image: infozapMod2, title: "Estruturando Tudo" },
   { image: infozapMod3, title: "Criando seu Produto" },
+  { image: infozapModWhatsapp, title: "Tudo sobre Whatsapp" },
   { image: infozapModMeta1, title: "Meta Ads Parte 1" },
   { image: infozapModMeta2, title: "Meta Ads Parte 2" },
   { image: infozapModMeta3, title: "Meta Ads Parte 3" },
+  { image: infozapModCriativos, title: "Tudo sobre Criativos" },
+  { image: infozapModMetricas, title: "Análise e Otimização de Métricas" },
   { image: infozapModTrafego, title: "Tráfego Avançado" },
+  { image: infozapModEscala, title: "Tudo sobre Escala" },
   { image: infozapMod4, title: "ZapData" },
+  { image: infozapModTrapaca, title: "Códigos de Trapaça" },
+  { image: infozapModProdutos, title: "Bônus - 3 Produtos Validados" },
+  { image: infozapModFreetrial, title: "Free Trial de 3 Dias ZapData" },
   { image: infozapModComunidade, title: "Comunidade Exclusiva no Whatsapp" },
 ];
 
