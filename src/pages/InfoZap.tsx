@@ -28,12 +28,12 @@ const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
 const GREEN = "#00ff88";
 const PINK = "#ff2d78";
 
-const painItems = [
-  { title: '"Já comprei curso e perdi dinheiro"', desc: "Você assistiu tudo, anotou tudo, seguiu o passo a passo — e no final das contas ficou na mesma ou pior. O guru ficou rico. Você ficou com a conta no vermelho e a autoconfiança destruída." },
-  { title: '"Tentei drop, tráfego direto, gestão de tráfego, encapsulado... e só sangrei dinheiro"', desc: "Cada modelo novo que aparecia parecia ser \"o certo\". Você entrava cheio de esperança, gastava em ferramenta, em anúncio, em produto, em curso de gestor — e no fim do mês o resultado era prejuízo. De novo." },
-  { title: '"Virei afiliado mas nunca vi um Pix cair"', desc: "Ficou meses criando conteúdo, mandando link, pedindo pra galera comprar — e quando a venda aparecia, a comissão era uma miséria. Trabalho de escravo pra enriquecer o produtor." },
-  { title: '"Não sei por onde começar de verdade"', desc: "Tem tanta coisa na internet que no final você não faz nada. Um fala que é tráfego, outro fala que é orgânico, outro fala que é drop. Você consome informação e fica paralisado enquanto o tempo passa." },
-  { title: '"Não tenho dinheiro pra arriscar mais"', desc: "Já investiu em curso que não entregou. Já perdeu dinheiro em anúncio sem retorno. Agora cada real que você tem é sagrado — e você não pode errar de novo." },
+const enemyBlocks = [
+  { title: "Começou pelo modelo errado", desc: "Drop exige capital e produto físico. Afiliado exige audiência e paga comissão miserável. Gestão de tráfego exige portfólio e o oceano azul secou. Tráfego direto prende seu dinheiro no checkout por 30 dias. Nenhum desses foi feito pra quem está começando do zero com pouco dinheiro no bolso." },
+  { title: "Comprou curso que não entregou", desc: "Você assistiu tudo, anotou tudo, seguiu o passo a passo — e na hora de executar travou. O guru ficou rico. Você ficou com a conta no vermelho e a autoconfiança destruída. Metodologia falha, conteúdo raso, suporte zero." },
+  { title: "Não sabe ler métricas e toma decisão no chute", desc: "CPM alto, CTR baixo, custo por conversa subindo — os números estão gritando o que fazer mas você não sabe interpretar. Pausa o que não devia, sobe o que não devia e joga dinheiro fora toda semana sem entender por quê a campanha não evolui." },
+  { title: "Tenta escalar e o WhatsApp trava tudo", desc: "Aumenta o volume, o WhatsApp bloqueia o número, o chip queima, a operação para. Sem saber a estrutura certa de chips, rodízio e múltiplos números, a escala vira pesadelo — e você volta pro mesmo volume de antes com dinheiro a menos." },
+  { title: "Sem estrutura certa de tráfego, a campanha morre", desc: "O criativo que funcionou semana passada já não converte mais. Você não sabe a metodologia certa de tráfego, não sabe testar, não sabe identificar métricas. A campanha morre, você começa do zero, perde tempo e dinheiro — e o ciclo se repete." },
 ];
 
 const mechanismBenefits = [
@@ -77,25 +77,39 @@ const resultPrints = [
   { src: result7, caption: "Resultado consistente" },
 ];
 
-const modules = [
-  { num: "01", title: "Bem-vindo ao InfoZap — Entendendo o Modelo", subs: ["Como funciona a operação lowticket", "Exemplo real do funil rodando", "Mapa da jornada do zero ao primeiro Pix"] },
-  { num: "02", title: "O que você vai precisar — Setup Completo", subs: ["3 ferramentas: WhatsApp + ZapData + Meta Ads", "Configurando WhatsApp do zero", "Free trial ZapData — como ativar"] },
+const baseModules = [
+  { num: "01", title: "Bem-vindo ao InfoZap — Entendendo o Modelo", subs: ["Como funciona a operação completa de lowticket no WhatsApp", "Exemplo real do funil rodando", "Mapa da jornada do zero ao primeiro Pix"] },
+  { num: "02", title: "O que você vai precisar — Setup Completo", subs: ["As 3 ferramentas: WhatsApp + ZapData + Meta Ads", "Configurando WhatsApp do zero", "Free trial ZapData — como ativar"] },
   { num: "03", title: "Criando seu Produto — Do Zero ao Funil", subs: ["Criar infoproduto sem experiência", "Mineração de oferta que vende", "Configurando funil completo no ZapData"] },
   { num: "04", title: "IA de WhatsApp com ZapData — Automação Completa", subs: ["IA pra responder, entregar e cobrar", "Funil 24h automático no WhatsApp", "ZapData do zero ao avançado"] },
   { num: "05", title: "Primeiros Anúncios no Meta — Tráfego Pago", subs: ["Criando campanha do zero com R$15/dia", "Segmentação para lowticket", "Otimização e escala de resultados"] },
   { num: "06", title: "Funis Prontos pra Copiar e Colar", subs: ["3 produtos digitais já validados no mercado", "3 funis completos prontos pra importar no ZapData", "Criativos dos funis inclusos"] },
 ];
 
+const advancedModules = [
+  { num: "07", title: "Tráfego Avançado", subs: ["Fluxograma da estrutura de tráfego", "Metodologia de campanhas de alta conversão", "Como marcar vendas no gerenciador", "Como pegar o Post ID do anúncio"] },
+  { num: "08", title: "Análise e Otimização de Métricas", subs: ["Organização de colunas de métricas", "Métricas personalizadas", "Análise de métricas na prática", "Fluxograma de tomada de decisões"] },
+  { num: "09", title: "Tudo sobre Escala", subs: ["Como funciona a escala no WhatsApp", "Chips físicos x virtuais", "Onde comprar chips", "Múltiplos WhatsApps no iPhone", "Rodízio de número", "Pré escala e escala", "Escala de tráfego"] },
+  { num: "10", title: "Tudo sobre Criativos", subs: ["Módulo completo de criativos avançados", "Ângulos, variações e testes", "Como criar antes de esgotar"] },
+  { num: "11", title: "Códigos de Trapaças", subs: ["Hacks e atalhos exclusivos pra acelerar a operação", "O que só quem opera em alto nível descobre"] },
+];
+
 const bonuses = [
   { emoji: "⚡", title: "Free Trial 3 Dias ZapData", desc: "Teste a IA de WhatsApp sem pagar nada por 3 dias.", value: "R$47", resolves: "Medo de investir em ferramenta sem testar" },
-  { emoji: "📦", title: "3 Produtos Validados + Funis Prontos", desc: "3 infoprodutos já validados no mercado com funil completo pronto pra importar direto no ZapData. Copia, cola e anuncia.", value: "R$197", resolves: "Não saber o que vender nem como montar o funil" },
+  { emoji: "📦", title: "3 Produtos Validados + Funis Prontos", desc: "3 infoprodutos já validados com funil completo pronto pra importar no ZapData.", value: "R$197", resolves: "Não saber o que vender nem como montar o funil" },
+  { emoji: "📊", title: "Planilha de Lucro", desc: "Acompanhe faturamento, custos e lucro real em tempo real.", value: "R$47", resolves: "Não saber se está lucrando ou perdendo dinheiro" },
+  { emoji: "🤝", title: "Grupo de Networking Exclusivo", desc: "Acesso ao grupo com outros operadores trocando resultado, estratégia e parceria.", value: "R$197", resolves: "Isolamento e falta de networking com quem está no mesmo nível" },
+  { emoji: "👑", title: "Comunidade VIP InfoZap", desc: "Acesso vitalício à comunidade exclusiva do InfoZap.", value: "R$97", resolves: "Falta de suporte e comunidade após o curso" },
 ];
 
 const valueStack = [
-  { item: "InfoZap — Treinamento Completo", value: "R$297" },
+  { item: "InfoZap — 11 módulos completos", value: "R$697" },
   { item: "Módulo ZapData Completo", value: "R$97" },
   { item: "3 Funis Prontos + Produtos Validados", value: "R$197" },
   { item: "Free Trial ZapData 3 dias", value: "R$47" },
+  { item: "Planilha de Lucro", value: "R$47" },
+  { item: "Grupo de Networking Exclusivo", value: "R$197" },
+  { item: "Comunidade VIP InfoZap", value: "R$97" },
 ];
 
 const notForYouItems = [
@@ -163,6 +177,34 @@ const InfoZap = () => {
     </a>
   );
 
+  const ModuleList = ({ modules, label }: { modules: typeof baseModules; label: string }) => (
+    <div className="mb-8">
+      <h3 className="text-lg md:text-xl font-bold mb-4 px-2" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
+        {label}
+      </h3>
+      <div className="space-y-3">
+        {modules.map((mod, i) => (
+          <div key={i} className="border rounded-xl px-5 py-4" style={{ borderColor: "#222", backgroundColor: "#111" }}>
+            <div className="flex items-center gap-4 text-left mb-3">
+              <span className="text-sm font-bold" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive", fontSize: "1.1rem" }}>
+                {mod.num}
+              </span>
+              <span className="text-white font-semibold text-base">{mod.title}</span>
+            </div>
+            <div className="space-y-2 pb-2">
+              {mod.subs.map((sub, j) => (
+                <div key={j} className="flex items-center gap-2 text-gray-400 text-sm">
+                  <ChevronRight className="h-3.5 w-3.5 flex-shrink-0" style={{ color: GREEN }} />
+                  {sub}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen scroll-smooth" style={{ backgroundColor: "#080808", color: "#fff", fontFamily: "'Barlow', sans-serif" }}>
       {/* HERO */}
@@ -183,13 +225,12 @@ const InfoZap = () => {
           </h1>
 
           <div className="text-base md:text-lg text-gray-200 max-w-2xl mx-auto mb-8 leading-relaxed space-y-2 flex flex-col items-center">
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>⚡ Funil 100% automático com IA — sem atender nenhum cliente</p>
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>💸 Vendas direto no Pix</p>
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>📦 Produtos prontos pra copiar e colar</p>
-            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>📱 Sem bloqueio de WhatsApp</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>⚡ Do primeiro Pix à escala completa — tudo numa operação só</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>📊 Métricas, otimização e decisão com dados — sem mais chute</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>📱 Escala de WhatsApp sem bloqueio — chips, rodízio e múltiplos números</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>🎯 Estrutura de Tráfego completa e infálivel</p>
+            <p className="inline-block rounded-md" style={{ background: "rgba(0,0,0,0.5)", padding: "4px 12px", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>🏆 Comunidade VIP + Grupo de networking exclusivo</p>
           </div>
-
-          {/* Foto do Caio - Hero */}
 
           <CTAButton />
 
@@ -201,53 +242,34 @@ const InfoZap = () => {
         <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${GREEN}, transparent)` }} />
       </section>
 
-      {/* PAIN */}
+      {/* PAIN — 2 cards mesclados do RZA */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-3xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: PINK }}>O Problema</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
-            Você reconhece <span style={{ color: PINK }}>alguma dessas?</span>
+            Seja você iniciante ou já vende —{" "}
+            <span style={{ color: PINK }}>algo está travando você de chegar em R$1.000/dia.</span>
           </h2>
-          <p className="text-gray-400 text-sm mb-10">Se qualquer uma dessas frases já passou pela sua cabeça, você está exatamente no lugar certo.</p>
-          <div className="space-y-4">
-            {painItems.map((item, i) => (
-              <div key={i} className="rounded-xl p-5 border relative" style={{ borderColor: "rgba(255,45,120,0.2)", backgroundColor: "rgba(255,45,120,0.04)" }}>
-                <X className="h-5 w-5 absolute top-4 right-4" style={{ color: PINK }} />
-                <p className="font-bold text-white mb-1">{item.title}</p>
-                <p className="text-gray-400 text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-10 space-y-6 text-gray-400 text-[17px] leading-relaxed">
-            <p>
-              <strong className="text-white">A culpa não foi sua.</strong> Você foi vendido modelos que nunca foram feitos pra quem está começando.
-            </p>
-            <p>
-              <strong style={{ color: GREEN }}>Drop</strong> exige capital alto pra comprar estoque, lidar com produto físico, frete, devolução, reclamação — e no final a margem é uma miséria pra tanto trabalho.
-            </p>
-            <p>
-              <strong style={{ color: GREEN }}>Afiliado</strong> é uma armadilha dos dois lados. Se tentar no orgânico, você trabalha feito escravo criando conteúdo todo dia, mandando link pra todo mundo, implorando por atenção — pra no final receber uma comissão que mal paga o seu tempo. E se for com tráfego pago, você tem o mesmo trabalho, gasta dinheiro em anúncio e ainda toma prejuízo por cima. Nos dois casos o resultado é o mesmo: você se mata trabalhando. O produtor enriquece.
-            </p>
-            <p>
-              <strong style={{ color: GREEN }}>Tráfego direto</strong> exige uma fortuna pra testar — e quando finalmente funciona, você descobre que o dinheiro fica preso no checkout por 15, 30 dias. Você vende, vende, vende e não consegue escalar porque o caixa não gira.
-            </p>
-            <p>
-              <strong style={{ color: GREEN }}>Gestão de tráfego</strong> exige portfólio pra conseguir cliente, e prospecção orgânica não funciona mais. O mercado está abarrotado de agência grande com estrutura, time e preço que você nunca vai conseguir competir. O oceano azul secou.
-            </p>
-            <p>
-              Nenhum desses modelos foi feito pra quem está começando do zero com pouco dinheiro no bolso.
-            </p>
-            <p className="font-bold text-lg" style={{ color: GREEN }}>
-              O InfoZap foi.
-            </p>
-            <p>
-              Sem estoque. Sem produto físico. Sem checkout cheio de taxa te engolindo a margem. Sem dinheiro preso esperando liberação. Sem prospectar cliente nenhum. Sem atender ninguém — a IA faz isso por você. E o melhor: <strong className="text-white">o Pix cai direto na sua conta. Na hora. Todo dia.</strong>
+
+          <div className="space-y-8 mt-10 text-gray-400 text-[17px] leading-relaxed">
+            <div className="rounded-xl p-6 border" style={{ borderColor: "rgba(255,45,120,0.2)", backgroundColor: "rgba(255,45,120,0.04)" }}>
+              <h3 className="font-bold text-white text-lg mb-3">Se você está começando:</h3>
+              <p>Já tentou entender o digital mas tem tanta coisa que não sabe por onde começar. Afiliado, drop, encapsulado, gestão de tráfego — cada um fala de um modelo diferente e nenhum parece simples o suficiente pra funcionar de verdade. Você quer um caminho claro, do zero ao resultado, sem precisar comprar 10 cursos diferentes.</p>
+            </div>
+
+            <div className="rounded-xl p-6 border" style={{ borderColor: "rgba(255,45,120,0.2)", backgroundColor: "rgba(255,45,120,0.04)" }}>
+              <h3 className="font-bold text-white text-lg mb-3">Se você já vende:</h3>
+              <p>Você aprendeu o modelo. Fez as primeiras vendas. O Pix começou a cair. Mas chegou um ponto onde tudo parou de crescer. A campanha que convertia virou prejuízo. O criativo esgotou. Tentou escalar e o WhatsApp bloqueou. Olha pro gerenciador e os números não dizem nada. E o pior: você já provou que o modelo funciona mas continua preso no mesmo patamar todo mês.</p>
+            </div>
+
+            <p className="font-bold text-white text-center text-lg">
+              Nos dois casos o problema é o mesmo: <span style={{ color: GREEN }}>Falta o método completo. Do básico ao avançado. Numa operação só.</span>
             </p>
           </div>
         </div>
       </section>
 
-      {/* 5. MECHANISM */}
+      {/* MECHANISM */}
       <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-4xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>O Mecanismo</span>
@@ -283,8 +305,38 @@ const InfoZap = () => {
         </div>
       </section>
 
-      {/* RESULTADOS REAIS */}
+      {/* INIMIGO — seção do RZA */}
       <section className="py-16 md:py-24 px-4">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+            Por que a maioria não sai do zero —{" "}
+            <span style={{ color: PINK }}>ou trava antes de chegar em R$1.000/dia</span>
+          </h2>
+          <div className="space-y-4 mt-10">
+            {enemyBlocks.map((item, i) => (
+              <div key={i} className="rounded-xl p-5 border relative" style={{ borderColor: "rgba(255,45,120,0.2)", backgroundColor: "rgba(255,45,120,0.04)" }}>
+                <X className="h-5 w-5 absolute top-4 right-4" style={{ color: PINK }} />
+                <p className="font-bold text-white mb-1">{item.title}</p>
+                <p className="text-gray-400 text-sm">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 space-y-6 text-gray-400 text-[17px] leading-relaxed">
+            <p>
+              <strong className="text-white">A culpa não foi sua.</strong> Você nunca teve acesso ao método completo — do zero ao avançado — numa operação só.
+            </p>
+            <p className="font-bold text-lg" style={{ color: GREEN }}>
+              O InfoZap foi.
+            </p>
+            <p>
+              Sem modelo complicado. Sem curso raso. Sem métrica que você não entende. Sem escala que quebra o WhatsApp. Sem criativo que esgota sem aviso. <strong className="text-white">Do primeiro Pix a R$1.000/dia — tudo numa operação completa e profissionalizada.</strong>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* RESULTADOS REAIS */}
+      <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-6xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Resultados Reais</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
@@ -292,7 +344,7 @@ const InfoZap = () => {
           </h2>
           <p className="text-gray-400 text-base mb-10">Alunos reais. Resultados reais. Sem edição, sem seleção, sem mentira.</p>
 
-          {/* Bloco 1 — Stats */}
+          {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
             {statsCards.map((s, i) => (
               <div key={i} className="rounded-xl p-6 border text-center" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
@@ -302,7 +354,7 @@ const InfoZap = () => {
             ))}
           </div>
 
-          {/* Bloco 2 — Depoimentos em vídeo */}
+          {/* Video Testimonials */}
           <h3 className="text-2xl font-bold text-white mb-8">Depoimentos em vídeo</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
             {videoTestimonials.map((v, i) => (
@@ -330,7 +382,7 @@ const InfoZap = () => {
             ))}
           </div>
 
-          {/* Bloco 3 — Prints de resultado */}
+          {/* Prints */}
           <h3 className="text-2xl font-bold text-white mb-8">Prints de resultado</h3>
           <div className="relative mb-16">
             <button
@@ -387,13 +439,11 @@ const InfoZap = () => {
             O método que você vai aprender é o mesmo que eu rodo todo dia
           </h2>
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-            {/* Photo */}
             <div className="flex-shrink-0">
               <div className="w-40 h-40 md:w-48 md:h-48 rounded-full border-2 flex items-center justify-center" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
                 <img src={caioDalcinPhoto} alt="Caio Dalcin" className="w-full h-full rounded-full object-cover" loading="lazy" />
               </div>
             </div>
-            {/* Text */}
             <div className="text-gray-200 text-base leading-relaxed space-y-4 p-6 rounded-lg" style={{ background: "rgba(0,0,0,0.4)", textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>
               <p>5 anos no digital. Comecei do zero como gestor de tráfego, passei por infoproduto, agência, encapsulado, drop — fiz tudo. Errei muito. Aprendi mais ainda.</p>
               <p>Hoje tenho uma empresa de infoprodutos e coproduções rodando, e o modelo que uso no dia a dia é exatamente o que ensino no InfoZap.</p>
@@ -416,13 +466,16 @@ const InfoZap = () => {
         </div>
       </section>
 
-      {/* 6. MODULES */}
+      {/* O QUE VOCÊ APRENDE — do RZA */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-5xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>O Que Você Aprende</span>
-          <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
-            Tudo que você precisa pra sair do zero e receber Pix hoje
+          <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+            Do primeiro Pix a R$1.000/dia — tudo numa operação só
           </h2>
+          <p className="text-gray-400 text-sm mb-10 leading-relaxed">
+            O InfoZap é o único treinamento que cobre a operação completa de LowTicket no WhatsApp — do zero absoluto ao avançado. Não vai precisar de mais nada depois. É tudo aqui.
+          </p>
 
           {/* Module Covers Carousel */}
           <div className="mb-12 px-4 md:px-12">
@@ -452,26 +505,8 @@ const InfoZap = () => {
           </div>
 
           <div className="max-w-3xl mx-auto">
-            <div className="space-y-3">
-              {modules.map((mod, i) => (
-                <div key={i} className="border rounded-xl px-5 py-4" style={{ borderColor: "#222", backgroundColor: "#111" }}>
-                  <div className="flex items-center gap-4 text-left mb-3">
-                    <span className="text-sm font-bold" style={{ color: GREEN, fontFamily: "'Bebas Neue', cursive", fontSize: "1.1rem" }}>
-                      {mod.num}
-                    </span>
-                    <span className="text-white font-semibold text-base">{mod.title}</span>
-                  </div>
-                  <div className="space-y-2 pb-2">
-                    {mod.subs.map((sub, j) => (
-                      <div key={j} className="flex items-center gap-2 text-gray-400 text-sm">
-                        <ChevronRight className="h-3.5 w-3.5 flex-shrink-0" style={{ color: GREEN }} />
-                        {sub}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ModuleList modules={baseModules} label="📚 MÓDULOS BASE" />
+            <ModuleList modules={advancedModules} label="🚀 MÓDULOS AVANÇADOS" />
           </div>
         </div>
       </section>
@@ -492,24 +527,22 @@ const InfoZap = () => {
         </div>
       </section>
 
-      {/* 7. BONUS */}
+      {/* BÔNUS — do RZA */}
       <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-4xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Bônus Exclusivos</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             E ainda leva isso sem custo adicional
           </h2>
-          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {bonuses.map((b, i) => (
               <div key={i} className="rounded-xl p-8 border relative" style={{ borderColor: "#222", backgroundColor: "#141414" }}>
-                {/* Badge */}
                 <span className="absolute -top-3 left-6 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider" style={{ backgroundColor: GREEN, color: "#000" }}>
                   BÔNUS
                 </span>
                 <div className="text-3xl mb-4 mt-2">{b.emoji}</div>
                 <h3 className="text-xl font-bold mb-3">{b.title}</h3>
                 <p className="text-gray-400 text-sm mb-4 leading-relaxed">{b.desc}</p>
-                {/* Separator */}
                 <div className="h-px w-full mb-4" style={{ backgroundColor: "#2a2a2a" }} />
                 <p className="font-bold text-xl" style={{ color: GREEN }}>Valor: <span className="line-through">{b.value}</span></p>
                 <p className="text-xs text-gray-500 italic mt-2">Resolve: {b.resolves}</p>
@@ -519,7 +552,7 @@ const InfoZap = () => {
         </div>
       </section>
 
-      {/* 8. VALUE STACK */}
+      {/* VALUE STACK — do RZA com preço R$67 */}
       <section id="comprar" className="py-16 md:py-24 px-4">
         <div className="max-w-2xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block text-center" style={{ color: GREEN }}>O Valor Real</span>
@@ -535,7 +568,7 @@ const InfoZap = () => {
             ))}
             <div className="flex justify-between items-center px-6 py-4 border-b" style={{ borderColor: "#1a1a1a" }}>
               <span className="text-gray-400 font-semibold">Valor Total</span>
-              <span className="text-gray-500 line-through font-bold text-lg">R$608</span>
+              <span className="text-gray-500 line-through font-bold text-lg">R$1.379</span>
             </div>
             <div className="flex justify-between items-center px-6 py-5">
               <span className="font-bold text-lg">Você paga hoje</span>
@@ -549,7 +582,7 @@ const InfoZap = () => {
         </div>
       </section>
 
-      {/* 9. COST OF INACTION */}
+      {/* COST OF INACTION */}
       <section className="py-12 px-4">
         <div className="max-w-3xl mx-auto rounded-xl p-8 border" style={{ backgroundColor: "rgba(255,200,0,0.04)", borderColor: "rgba(255,200,0,0.3)" }}>
           <h3 className="text-xl md:text-2xl font-bold mb-4" style={{ color: "#ffc800", fontFamily: "'Bebas Neue', cursive" }}>
@@ -565,7 +598,7 @@ const InfoZap = () => {
         </div>
       </section>
 
-      {/* 10. NOT FOR YOU */}
+      {/* NOT FOR YOU */}
       <section className="py-12 px-4">
         <div className="max-w-3xl mx-auto rounded-xl p-8 border" style={{ backgroundColor: "rgba(255,45,120,0.04)", borderColor: "rgba(255,45,120,0.3)" }}>
           <h3 className="text-xl md:text-2xl font-bold mb-4" style={{ color: PINK, fontFamily: "'Bebas Neue', cursive" }}>
@@ -585,7 +618,7 @@ const InfoZap = () => {
         </div>
       </section>
 
-      {/* 11. GUARANTEE */}
+      {/* GUARANTEE */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="rounded-xl p-8 md:p-10 border relative overflow-hidden" style={{ borderColor: GREEN, backgroundColor: "#141414" }}>
@@ -605,7 +638,7 @@ const InfoZap = () => {
         </div>
       </section>
 
-      {/* 12. FINAL CTA */}
+      {/* FINAL CTA */}
       <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6" style={{ fontFamily: "'Bebas Neue', cursive" }}>
@@ -618,7 +651,7 @@ const InfoZap = () => {
         </div>
       </section>
 
-      {/* 13. FAQ */}
+      {/* FAQ */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-3xl mx-auto">
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Dúvidas</span>
@@ -636,7 +669,7 @@ const InfoZap = () => {
         </div>
       </section>
 
-      {/* 14. FOOTER */}
+      {/* FOOTER */}
       <footer className="py-10 px-4 border-t" style={{ borderColor: "#1a1a1a" }}>
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-gray-600 text-xs mb-3">© 2025 InfoZap. Todos os direitos reservados.</p>
@@ -651,7 +684,7 @@ const InfoZap = () => {
         </div>
       </footer>
 
-      {/* 15. STICKY CTA BAR */}
+      {/* STICKY CTA BAR */}
       <div
         className={`fixed bottom-0 left-0 right-0 z-50 border-t backdrop-blur-md transition-all duration-300 ${showSticky ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
         style={{ backgroundColor: "rgba(8,8,8,0.92)", borderColor: "#222" }}
