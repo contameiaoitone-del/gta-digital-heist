@@ -14,13 +14,25 @@ import infozapMod2 from "@/assets/infozap-mod-2.png";
 import infozapMod3 from "@/assets/infozap-mod-3.png";
 import infozapMod4 from "@/assets/infozap-mod-4.png";
 import infozapMod5 from "@/assets/infozap-mod-5.png";
+import infozapModConceitos from "@/assets/infozap-mod-conceitos.png";
+import infozapModComunidade from "@/assets/infozap-mod-comunidade.png";
+import infozapModMeta1 from "@/assets/infozap-mod-meta1.png";
+import infozapModMeta2 from "@/assets/infozap-mod-meta2.png";
+import infozapModMeta3 from "@/assets/infozap-mod-meta3.png";
+import infozapModTrafego from "@/assets/infozap-mod-trafego.png";
 
 const moduleCovers = [
   { image: infozapMod1, title: "Seja Bem Vindo" },
+  { image: infozapModConceitos, title: "Conceitos do Digital" },
+  { image: infozapMod5, title: "Produtos e Nichos" },
   { image: infozapMod2, title: "Estruturando Tudo" },
   { image: infozapMod3, title: "Criando seu Produto" },
+  { image: infozapModMeta1, title: "Meta Ads Parte 1" },
+  { image: infozapModMeta2, title: "Meta Ads Parte 2" },
+  { image: infozapModMeta3, title: "Meta Ads Parte 3" },
+  { image: infozapModTrafego, title: "Tráfego Avançado" },
   { image: infozapMod4, title: "ZapData" },
-  { image: infozapMod5, title: "Produtos e Nichos" },
+  { image: infozapModComunidade, title: "Comunidade Exclusiva no Whatsapp" },
 ];
 
 const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
