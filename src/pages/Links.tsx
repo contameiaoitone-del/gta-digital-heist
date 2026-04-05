@@ -4,8 +4,6 @@ import gtaLinksBackground from "@/assets/gta-links-background.png";
 import rpCloseBanner from "@/assets/rp-close-banner.png";
 import rpZapBanner from "@/assets/rp-zap-banner.png";
 import mentoriaBanner from "@/assets/mentoria-banner.png";
-import zapdataBanner from "@/assets/zapdata-banner.png";
-import zapdataBannerMobile from "@/assets/zapdata-banner-mobile.png";
 import realLifeAcademyBanner from "@/assets/real-life-academy-banner.png";
 import realLifeAcademyBannerMobile from "@/assets/real-life-academy-banner-mobile.png";
 import caioDalcinProfile from "@/assets/caio-dalcin-profile.png";
@@ -33,14 +31,6 @@ const Links = () => {
       icon: ExternalLink,
       description: "Mentoria exclusiva",
       image: mentoriaBanner,
-    },
-    {
-      name: "ZapData",
-      url: "https://zapdata.co/#/auth?ref=ED8R7J27",
-      icon: ExternalLink,
-      description: "Automação de WhatsApp",
-      image: zapdataBanner,
-      mobileImage: zapdataBannerMobile,
     },
   ];
 
@@ -89,7 +79,7 @@ const Links = () => {
                 // Link com imagem
                 <div className="relative rounded-lg overflow-hidden gta-card-border">
                   <img 
-                    src={isMobile && link.mobileImage ? link.mobileImage : link.image}
+                    src={link.image}
                     alt={link.name}
                     className="w-full h-auto block"
                     loading="lazy"
