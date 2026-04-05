@@ -79,7 +79,7 @@ const Links = () => {
                 // Link com imagem
                 <div className="relative rounded-lg overflow-hidden gta-card-border">
                   <img 
-                    src={isMobile && link.mobileImage ? link.mobileImage : link.image}
+                    src={link.image}
                     alt={link.name}
                     className="w-full h-auto block"
                     loading="lazy"
