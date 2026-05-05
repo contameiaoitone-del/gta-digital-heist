@@ -14,6 +14,63 @@ export type Database = {
   }
   public: {
     Tables: {
+      orders: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          customer_cpf: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          efi_charge_id: string | null
+          efi_txid: string | null
+          id: string
+          installments: number | null
+          paid_at: string | null
+          payment_method: string
+          product: string
+          raw: Json | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          customer_cpf: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          efi_charge_id?: string | null
+          efi_txid?: string | null
+          id?: string
+          installments?: number | null
+          paid_at?: string | null
+          payment_method: string
+          product: string
+          raw?: Json | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          customer_cpf?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string
+          efi_charge_id?: string | null
+          efi_txid?: string | null
+          id?: string
+          installments?: number | null
+          paid_at?: string | null
+          payment_method?: string
+          product?: string
+          raw?: Json | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       rp_close_submissions: {
         Row: {
           created_at: string
