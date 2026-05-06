@@ -19,7 +19,6 @@ export interface PixResponse {
 export interface CardPayload extends CustomerPayload {
   payment_token: string;
   installments: number;
-  birth: string; // YYYY-MM-DD
 }
 
 export interface CardResponse {

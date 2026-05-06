@@ -19,7 +19,6 @@ const BodySchema = z.object({
   cpf: z.string().trim().min(11).max(20),
   payment_token: z.string().trim().min(10).max(200),
   installments: z.number().int().min(1).max(12),
-  birth: z.string().trim().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
 
 Deno.serve(async (req) => {
@@ -32,7 +31,7 @@ Deno.serve(async (req) => {
 
     const parsed = BodySchema.safeParse(await req.json());
     if (!parsed.success) return jsonResponse({ error: "invalid", issues: parsed.error.flatten() }, 400);
-    const { name, email, phone, cpf, payment_token, installments, birth } = parsed.data;
+    const { name, email, phone, cpf, payment_token, installments } = parsed.data;
     const cleanCpf = cpf.replace(/\D/g, "");
     const cleanPhone = phone.replace(/\D/g, "");
     if (!isValidCpf(cleanCpf)) return jsonResponse({ error: "invalid_cpf" }, 400);
@@ -58,7 +57,6 @@ Deno.serve(async (req) => {
               name,
               email,
               cpf: cleanCpf,
-              birth,
               phone_number: cleanPhone,
             },
           },
