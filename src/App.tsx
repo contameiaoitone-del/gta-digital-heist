@@ -16,6 +16,12 @@ const InfoZap = lazy(() => import("./pages/InfoZap"));
 const CloseFriends = lazy(() => import("./pages/CloseFriends"));
 const RealZapAcademy = lazy(() => import("./pages/RealZapAcademy"));
 const Obrigado = lazy(() => import("./pages/Obrigado"));
+const MembrosLogin = lazy(() => import("./pages/membros/MembrosLogin"));
+const Membros = lazy(() => import("./pages/membros/Membros"));
+const Aula = lazy(() => import("./pages/membros/Aula"));
+const AuthCallback = lazy(() => import("./pages/membros/AuthCallback"));
+const Admin = lazy(() => import("./pages/admin/Admin"));
+import { RequireAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +43,11 @@ const App = () => (
             <Route path="/closefriends" element={<CloseFriends />} />
             <Route path="/real-zap-academy" element={<RealZapAcademy />} />
             <Route path="/obrigado" element={<Obrigado />} />
+            <Route path="/membros/login" element={<MembrosLogin />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/membros" element={<RequireAuth><Membros /></RequireAuth>} />
+            <Route path="/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
+            <Route path="/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
