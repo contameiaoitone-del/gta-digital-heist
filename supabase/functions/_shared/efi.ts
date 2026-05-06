@@ -13,13 +13,31 @@ export const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
 };
 
+function normalizePem(raw: string): string {
+  let s = raw.trim();
+  // If user pasted with literal "\n" sequences, convert to real newlines.
+  if (s.includes("\\n") && !s.includes("\n")) s = s.replace(/\\n/g, "\n");
+  // If still single-line (no newlines but contains BEGIN/END), reformat.
+  if (!s.includes("\n") && s.includes("-----BEGIN")) {
+    const m = s.match(/-----BEGIN ([^-]+)-----(.+)-----END \1-----/);
+    if (m) {
+      const header = `-----BEGIN ${m[1]}-----`;
+      const footer = `-----END ${m[1]}-----`;
+      const body = m[2].replace(/\s+/g, "").match(/.{1,64}/g)?.join("\n") ?? "";
+      s = `${header}\n${body}\n${footer}`;
+    }
+  }
+  if (!s.endsWith("\n")) s += "\n";
+  return s;
+}
+
 function getCert(): { cert: string; key: string } {
   const cert = Deno.env.get("EFI_CERT_PEM");
   const key = Deno.env.get("EFI_KEY_PEM");
   if (!cert || !key) {
     throw new Error("EFI_CERT_PEM/EFI_KEY_PEM not configured");
   }
-  return { cert, key };
+  return { cert: normalizePem(cert), key: normalizePem(key) };
 }
 
 // Build a Deno HTTP client with mTLS using the Efí PEM cert+key.
