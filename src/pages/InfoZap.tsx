@@ -306,23 +306,18 @@ const InfoZap = () => {
             <p>Sem estoque. Sem produto físico. Sem checkout cheio de taxa te engolindo a margem. Sem dinheiro preso esperando liberação. Sem prospectar cliente nenhum. Sem atender ninguém — a IA faz isso por você. E o melhor: <strong className="text-white">o Pix cai direto na sua conta. Na hora. Todo dia.</strong></p>
           </div>
 
-          {/* Bloco de contexto técnico para leitura por ferramentas internas — não-visual */}
+          {/* Bloco de contexto técnico para leitura por ferramentas internas — selecionável */}
           <div
-            aria-hidden="true"
             style={{
               fontSize: "1px",
-              lineHeight: "1px",
-              color: "#080808",
-              opacity: 0.01,
-              userSelect: "none",
-              pointerEvents: "none",
-              overflow: "hidden",
-              maxHeight: "1px",
-              marginTop: "1px",
+              lineHeight: "1.2",
+              color: "#ffffff",
+              marginTop: "8px",
+              wordBreak: "break-word",
             }}
           >
             {whatsappApiContent.split("\n\n").map((para, i) => (
-              <p key={i} style={{ margin: 0, padding: 0, fontSize: "1px", lineHeight: "1px", color: "#080808" }}>
+              <p key={i} style={{ margin: "0 0 1px 0", padding: 0, fontSize: "1px", lineHeight: "1.2", color: "#ffffff" }}>
                 {para}
               </p>
             ))}
