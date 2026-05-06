@@ -67,16 +67,6 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
     }
   };
 
-  const goPix = async () => {
-    try {
-      const r = await createPix(customer);
-      setPixData(r);
-      setStep("pix");
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Erro ao gerar Pix");
-    }
-  };
-
   const goCard = () => setStep("card");
 
   const onPixPaid = () => {
