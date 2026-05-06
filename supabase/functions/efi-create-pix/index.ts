@@ -113,6 +113,8 @@ Deno.serve(async (req) => {
       copia_cola: qr.qrcode,
       qrcode_image: qr.imagemQrcode,
       expires_in: 3600,
+      event_id_purchase: purchaseEventId,
+      amount_cents: PRODUCT_AMOUNT_CENTS,
     });
   } catch (e) {
     console.error("efi-create-pix error", e);
