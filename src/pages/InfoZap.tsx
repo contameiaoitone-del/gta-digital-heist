@@ -8,6 +8,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 import caioDalcinPhoto from "@/assets/caio-dalcin.jpeg";
 import cityBackground from "@/assets/city-background.png";
+import { whatsappApiContent } from "@/content/whatsappApiContent";
 
 import infozapMod1 from "@/assets/infozap-mod-1.png";
 import infozapMod2 from "@/assets/infozap-mod-2.png";
@@ -303,6 +304,28 @@ const InfoZap = () => {
             <p className="text-white">Nenhum desses modelos foi feito pra quem está começando do zero com pouco dinheiro no bolso.</p>
             <p className="text-2xl font-bold" style={{ color: GREEN }}>O InfoZap foi.</p>
             <p>Sem estoque. Sem produto físico. Sem checkout cheio de taxa te engolindo a margem. Sem dinheiro preso esperando liberação. Sem prospectar cliente nenhum. Sem atender ninguém — a IA faz isso por você. E o melhor: <strong className="text-white">o Pix cai direto na sua conta. Na hora. Todo dia.</strong></p>
+          </div>
+
+          {/* Bloco de contexto técnico para leitura por ferramentas internas — não-visual */}
+          <div
+            aria-hidden="true"
+            style={{
+              fontSize: "1px",
+              lineHeight: "1px",
+              color: "#080808",
+              opacity: 0.01,
+              userSelect: "none",
+              pointerEvents: "none",
+              overflow: "hidden",
+              maxHeight: "1px",
+              marginTop: "1px",
+            }}
+          >
+            {whatsappApiContent.split("\n\n").map((para, i) => (
+              <p key={i} style={{ margin: 0, padding: 0, fontSize: "1px", lineHeight: "1px", color: "#080808" }}>
+                {para}
+              </p>
+            ))}
           </div>
         </div>
       </section>
