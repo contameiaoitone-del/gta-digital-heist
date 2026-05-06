@@ -1,7 +1,6 @@
 // TikTok Pixel loader — loads only on demand (e.g., /infozap routes).
-// Pixel ID is read from VITE_TIKTOK_PIXEL_ID, with a fallback constant.
-export const TIKTOK_PIXEL_ID =
-  (import.meta as { env?: Record<string, string> }).env?.VITE_TIKTOK_PIXEL_ID || "";
+// Pixel ID is hardcoded (public identifier).
+export const TIKTOK_PIXEL_ID = "D7TMC2JC77U4TTGIIJ70";
 
 declare global {
   interface Window {
