@@ -233,13 +233,13 @@ const InfoZap = () => {
 
   return (
     <div className="min-h-screen scroll-smooth" style={{ backgroundColor: "#080808", color: "#fff", fontFamily: "'Barlow', sans-serif" }}>
+      <HiddenContextBlock color="#080808" />
       {/* HERO */}
       <section ref={heroRef} className="relative py-20 md:py-32 px-4 overflow-hidden">
         <div className="absolute inset-0 z-0 bg-[#080808]">
           <img src={cityBackground} alt="" className="w-full h-full object-cover opacity-[0.18]" />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto text-center">
-          <HiddenContextBlock color="#080808" />
           {/* Pill */}
           <span className="inline-block mb-6 px-4 py-1.5 rounded-full text-sm font-semibold border" style={{ color: GREEN, borderColor: GREEN, backgroundColor: "rgba(0,255,136,0.08)" }}>
             ⚡ Método InfoZap
