@@ -114,7 +114,8 @@ export function useTracking() {
       ...geo,
     });
 
-    await waitForFbq(2000);
+    const fbqReady = await waitForFbq(2000);
+    console.debug("[track] PageView", { eventId, fbqReady });
     fbq("track", "PageView", {}, { eventID: eventId });
     callCapi({
       event_name: "PageView",
@@ -137,7 +138,8 @@ export function useTracking() {
 
     await callTrack({ session_id: sessionId, event_id_initiate: eventId });
 
-    await waitForFbq(2000);
+    const fbqReady = await waitForFbq(2000);
+    console.debug("[track] InitiateCheckout", { eventId, fbqReady, value: data?.value });
     fbq("track", "InitiateCheckout", { value: data?.value, currency: data?.currency || "BRL" }, { eventID: eventId });
     callCapi({
       event_name: "InitiateCheckout",
@@ -172,7 +174,8 @@ export function useTracking() {
 
   const trackPurchase = useCallback(
     async (data: { value: number; eventId: string; orderId?: string; productName?: string; currency?: string }) => {
-      await waitForFbq(2000);
+      const fbqReady = await waitForFbq(2000);
+      console.debug("[track] Purchase", { eventId: data.eventId, fbqReady, value: data.value });
       fbq(
         "track",
         "Purchase",

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IMaskInput } from "react-imask";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -29,11 +29,13 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   const [cpf, setCpf] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pixData, setPixData] = useState<PixResponse | null>(null);
+  const initiateFiredRef = useRef(false);
 
   const reset = () => {
     setStep("form");
     setPixData(null);
     setErrors({});
+    initiateFiredRef.current = false;
   };
 
   const close = (v: boolean) => {
@@ -42,6 +44,14 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   };
 
   const customer = { name, email, phone, cpf };
+
+  // Fire InitiateCheckout exactly once when the user reaches the payment-method step.
+  useEffect(() => {
+    if (step === "method" && !initiateFiredRef.current) {
+      initiateFiredRef.current = true;
+      trackInitiateCheckout({ value: 67 });
+    }
+  }, [step, trackInitiateCheckout]);
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +63,6 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
     }
     setErrors({});
     saveLead({ name, email, phone, cpf });
-    trackInitiateCheckout({ value: 67 });
     setStep("method");
   };
 

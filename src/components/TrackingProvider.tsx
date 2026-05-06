@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useTracking } from "@/hooks/useTracking";
 import { ensurePixel } from "@/lib/metaPixel";
+import { ensureUtms } from "@/lib/utmAutoFill";
 
 // Tracking (Pixel + CAPI) is only enabled on the InfoZap funnel.
 const TRACKED_ROUTES = ["/infozap"];
@@ -18,6 +19,7 @@ export const TrackingProvider = () => {
   useEffect(() => {
     const isTracked = TRACKED_ROUTES.some((r) => location.pathname.startsWith(r));
     if (!isTracked) return;
+    ensureUtms();
     ensurePixel();
     init();
   }, [location.pathname, init]);

@@ -1,5 +1,4 @@
 // Meta Pixel loader — loads only on demand (e.g., /infozap routes).
-// Pixel ID is public information (visible in any site that uses Meta Pixel).
 export const META_PIXEL_ID = "1533634077714814";
 
 declare global {
@@ -9,51 +8,60 @@ declare global {
   }
 }
 
-let injected = false;
+let snippetInjected = false;
+let noscriptInjected = false;
+const initedPixels = new Set<string>();
 
 /** Idempotently inject the Meta Pixel base snippet and init the given pixel id. */
 export function ensurePixel(pixelId: string = META_PIXEL_ID): void {
   if (typeof window === "undefined") return;
-  if (injected || window.fbq) {
-    if (!injected) injected = true;
-    return;
+
+  if (!snippetInjected && !window.fbq) {
+    /* eslint-disable */
+    (function (f: any, b: Document, e: string, v: string) {
+      const n: any = (f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      });
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = true;
+      n.version = "2.0";
+      n.queue = [];
+      const t = b.createElement(e) as HTMLScriptElement;
+      t.async = true;
+      t.src = v;
+      const s = b.getElementsByTagName(e)[0];
+      s.parentNode?.insertBefore(t, s);
+    })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    /* eslint-enable */
+    snippetInjected = true;
+  } else {
+    snippetInjected = true;
   }
-  injected = true;
 
-  // Official Meta Pixel base code, ported to TS.
-  /* eslint-disable */
-  (function (f: any, b: Document, e: string, v: string) {
-    if (f.fbq) return;
-    const n: any = (f.fbq = function () {
-      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-    });
-    if (!f._fbq) f._fbq = n;
-    n.push = n;
-    n.loaded = true;
-    n.version = "2.0";
-    n.queue = [];
-    const t = b.createElement(e) as HTMLScriptElement;
-    t.async = true;
-    t.src = v;
-    const s = b.getElementsByTagName(e)[0];
-    s.parentNode?.insertBefore(t, s);
-  })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
-  /* eslint-enable */
+  if (!initedPixels.has(pixelId)) {
+    try {
+      window.fbq?.("init", pixelId);
+      initedPixels.add(pixelId);
+    } catch (e) {
+      console.warn("[pixel] init failed", e);
+    }
+  }
 
-  window.fbq?.("init", pixelId);
-
-  // <noscript> fallback (only added once)
-  try {
-    const noscript = document.createElement("noscript");
-    const img = document.createElement("img");
-    img.height = 1;
-    img.width = 1;
-    img.style.display = "none";
-    img.src = `https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`;
-    noscript.appendChild(img);
-    document.body.appendChild(noscript);
-  } catch {
-    /* noop */
+  if (!noscriptInjected) {
+    try {
+      const noscript = document.createElement("noscript");
+      const img = document.createElement("img");
+      img.height = 1;
+      img.width = 1;
+      img.style.display = "none";
+      img.src = `https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`;
+      noscript.appendChild(img);
+      document.body.appendChild(noscript);
+      noscriptInjected = true;
+    } catch {
+      /* noop */
+    }
   }
 }
 
