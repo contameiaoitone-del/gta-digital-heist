@@ -4,12 +4,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getCookie } from "@/lib/cookies";
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
+import { waitForFbq } from "@/lib/metaPixel";
 
 const SCK_KEY = "rla_sck";
 const GEO_KEY = "rla_geo";
