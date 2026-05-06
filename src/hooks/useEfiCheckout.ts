@@ -14,17 +14,23 @@ export interface PixResponse {
   copia_cola: string;
   qrcode_image: string;
   expires_in: number;
+  event_id_purchase: string;
+  amount_cents: number;
 }
 
 export interface CardPayload extends CustomerPayload {
   payment_token: string;
   installments: number;
+  session_id?: string;
+  event_id_purchase?: string;
 }
 
 export interface CardResponse {
   order_id: string;
   charge_id: string;
   status: "paid" | "pending" | "failed" | string;
+  event_id_purchase: string;
+  amount_cents: number;
 }
 
 export function useEfiCheckout() {
