@@ -71,6 +71,17 @@ function fbq(...args: unknown[]) {
   if (typeof window.fbq === "function") window.fbq(...args);
 }
 
+/** Wait for Pixel to write the _fbp cookie, up to `timeoutMs`. */
+async function waitForFbp(timeoutMs = 1500): Promise<string> {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    const v = getCookie("_fbp");
+    if (v) return v;
+    await new Promise((r) => setTimeout(r, 100));
+  }
+  return getCookie("_fbp") || "";
+}
+
 async function callCapi(payload: Record<string, unknown>) {
   try {
     await supabase.functions.invoke("meta-capi", { body: payload });
@@ -97,11 +108,16 @@ export function useTracking() {
 
     const sessionId = getSessionId();
     const fbc = readFbc();
-    const fbp = getCookie("_fbp");
     const fbclid = new URLSearchParams(window.location.search).get("fbclid") || "";
     const userAgent = navigator.userAgent;
     const eventId = uuid();
     const geo = await readGeo();
+
+    const fbqReady = await waitForFbq(2000);
+    fbq("track", "PageView", {}, { eventID: eventId });
+    // Wait for Pixel to write _fbp before firing CAPI so Browser+Server share it.
+    const fbp = await waitForFbp(1500);
+    console.debug("[track] PageView", { eventId, fbqReady, fbp: !!fbp });
 
     await callTrack({
       session_id: sessionId,
@@ -114,9 +130,6 @@ export function useTracking() {
       ...geo,
     });
 
-    const fbqReady = await waitForFbq(2000);
-    console.debug("[track] PageView", { eventId, fbqReady });
-    fbq("track", "PageView", {}, { eventID: eventId });
     callCapi({
       event_name: "PageView",
       event_id: eventId,
@@ -132,14 +145,14 @@ export function useTracking() {
   const trackInitiateCheckout = useCallback(async (data?: { value?: number; currency?: string }) => {
     const sessionId = getSessionId();
     const fbc = readFbc();
-    const fbp = getCookie("_fbp");
     const eventId = uuid();
     const pageUrl = window.location.href;
 
     await callTrack({ session_id: sessionId, event_id_initiate: eventId });
 
     const fbqReady = await waitForFbq(2000);
-    console.debug("[track] InitiateCheckout", { eventId, fbqReady, value: data?.value });
+    const fbp = await waitForFbp(1500);
+    console.debug("[track] InitiateCheckout", { eventId, fbqReady, fbp: !!fbp, value: data?.value });
     fbq(
       "track",
       "InitiateCheckout",
