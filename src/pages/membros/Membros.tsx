@@ -215,27 +215,6 @@ const Membros = () => {
           </Row>
         )}
 
-        {/* Novidades — só se tiver mais de 6 módulos */}
-        {modules.length > 6 && (
-          <Row title="Novidades">
-            {[...modules]
-              .sort((a, b) => (b.created_at || "").localeCompare(a.created_at || ""))
-              .slice(0, 10)
-              .map((m) => {
-                const list = lessonsByModule[m.id] || [];
-                return (
-                  <PosterCard
-                    key={`new-${m.id}`}
-                    to={`/membros/modulo/${m.id}`}
-                    title={m.title}
-                    cover={m.cover_url}
-                    description={m.description}
-                    meta={`${list.length} ${list.length === 1 ? "aula" : "aulas"}`}
-                  />
-                );
-              })}
-          </Row>
-        )}
       </div>
     </div>
   );
