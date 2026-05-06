@@ -140,7 +140,12 @@ export function useTracking() {
 
     const fbqReady = await waitForFbq(2000);
     console.debug("[track] InitiateCheckout", { eventId, fbqReady, value: data?.value });
-    fbq("track", "InitiateCheckout", { value: data?.value, currency: data?.currency || "BRL" }, { eventID: eventId });
+    fbq(
+      "track",
+      "InitiateCheckout",
+      { value: data?.value, currency: data?.currency || "BRL", content_name: "InfoZap" },
+      { eventID: eventId },
+    );
     callCapi({
       event_name: "InitiateCheckout",
       event_id: eventId,
@@ -151,6 +156,7 @@ export function useTracking() {
       user_agent: navigator.userAgent,
       value: data?.value,
       currency: data?.currency || "BRL",
+      content_name: "InfoZap",
     });
   }, []);
 
