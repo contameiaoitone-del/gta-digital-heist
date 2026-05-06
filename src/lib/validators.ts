@@ -43,10 +43,6 @@ export const cardSchema = z.object({
     .string()
     .trim()
     .regex(/^\d{3,4}$/, "CVV inválido"),
-  birth: z
-    .string()
-    .trim()
-    .regex(/^\d{2}\/\d{2}\/\d{4}$/, "Data de nascimento inválida"),
   installments: z.number().int().min(1).max(12),
 });
 
