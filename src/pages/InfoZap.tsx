@@ -5,7 +5,7 @@ import { ArrowRight, ChevronRight, ChevronLeft, X, Shield, Play } from "lucide-r
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
+import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 import caioDalcinPhoto from "@/assets/caio-dalcin.jpeg";
 import cityBackground from "@/assets/city-background.png";
 
@@ -164,8 +164,8 @@ const marqueeItems = [
 const InfoZap = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const [showSticky, setShowSticky] = useState(false);
-  const { getCheckoutUrl } = useCheckoutUrl();
-  const checkoutUrl = getCheckoutUrl(CHECKOUT_BASE);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const openCheckout = () => setCheckoutOpen(true);
 
   const [printsRef, printsApi] = useEmblaCarousel(
     { loop: true, align: "start", slidesToScroll: 1 },
@@ -191,15 +191,14 @@ const InfoZap = () => {
   };
 
   const CTAButton = ({ small = false }: { small?: boolean }) => (
-    <a href={checkoutUrl} target="_blank" rel="noopener noreferrer">
-      <Button
-        className={`bg-[${GREEN}] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] ${small ? "w-full sm:w-auto h-10 px-4 sm:px-6 text-sm" : "w-full md:w-auto h-12 md:h-14 px-4 md:px-10 text-base md:text-lg"} rounded-lg`}
-        style={{ backgroundColor: GREEN }}
-      >
-        {small ? "Quero acessar — R$67" : "🔥 QUERO MEU ACESSO AGORA — R$67"}
-        <ArrowRight className="ml-2 h-5 w-5" />
-      </Button>
-    </a>
+    <Button
+      onClick={openCheckout}
+      className={`bg-[${GREEN}] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] whitespace-normal ${small ? "w-full sm:w-auto h-auto py-2 px-4 sm:px-6 text-sm" : "w-full md:w-auto h-auto py-3 px-4 md:px-10 text-base md:text-lg"} rounded-lg`}
+      style={{ backgroundColor: GREEN }}
+    >
+      {small ? "Quero acessar — R$67" : "🔥 QUERO MEU ACESSO AGORA — R$67"}
+      <ArrowRight className="ml-2 h-5 w-5" />
+    </Button>
   );
 
   const ModuleList = ({ modules, label }: { modules: typeof baseModules; label: string }) => (
@@ -553,15 +552,14 @@ const InfoZap = () => {
       {/* CTA INTERMEDIÁRIO */}
       <section className="py-12 md:py-16 px-4" style={{ backgroundColor: "#111" }}>
         <div className="max-w-2xl mx-auto text-center">
-          <a href={checkoutUrl} target="_blank" rel="noopener noreferrer">
-            <Button
-              className="w-full md:w-auto h-12 md:h-14 px-4 md:px-10 text-base md:text-lg bg-[#00ff88] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] rounded-lg"
-              style={{ backgroundColor: GREEN }}
-            >
-              🔥 Quero meu acesso agora — R$67
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </a>
+          <Button
+            onClick={openCheckout}
+            className="w-full md:w-auto h-auto py-3 px-4 md:px-10 text-base md:text-lg bg-[#00ff88] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,136,0.4)] active:scale-[0.97] rounded-lg whitespace-normal"
+            style={{ backgroundColor: GREEN }}
+          >
+            🔥 Quero meu acesso agora — R$67
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
           <p className="mt-3 text-xs text-gray-500">Pagamento único · Acesso imediato · Garantia 7 dias</p>
         </div>
       </section>
