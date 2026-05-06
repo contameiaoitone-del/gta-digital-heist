@@ -38,6 +38,8 @@ Deno.serve(async (req) => {
     setIf("fbc", body.fbc);
     setIf("fbp", body.fbp);
     setIf("fbclid", body.fbclid);
+    setIf("ttclid", body.ttclid);
+    setIf("ttp", body.ttp);
     setIf("ip_address", ip);
     setIf("user_agent", ua);
     setIf("country", body.country);
@@ -46,6 +48,9 @@ Deno.serve(async (req) => {
     setIf("page_location", body.page_location);
     setIf("event_id_pageview", body.event_id_pageview);
     setIf("event_id_initiate", body.event_id_initiate);
+    setIf("event_id_pageview_tt", body.event_id_pageview_tt);
+    setIf("event_id_initiate_tt", body.event_id_initiate_tt);
+    setIf("event_id_purchase_tt", body.event_id_purchase_tt);
     setIf("first_name", body.first_name);
     setIf("last_name", body.last_name);
     setIf("email", body.email);

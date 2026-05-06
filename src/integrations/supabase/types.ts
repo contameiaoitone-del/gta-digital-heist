@@ -108,7 +108,10 @@ export type Database = {
           created_at: string | null
           email: string | null
           event_id_initiate: string | null
+          event_id_initiate_tt: string | null
           event_id_pageview: string | null
+          event_id_pageview_tt: string | null
+          event_id_purchase_tt: string | null
           external_id: string | null
           fbc: string | null
           fbclid: string | null
@@ -121,6 +124,8 @@ export type Database = {
           phone: string | null
           sck: string
           state: string | null
+          ttclid: string | null
+          ttp: string | null
           updated_at: string | null
           user_agent: string | null
         }
@@ -130,7 +135,10 @@ export type Database = {
           created_at?: string | null
           email?: string | null
           event_id_initiate?: string | null
+          event_id_initiate_tt?: string | null
           event_id_pageview?: string | null
+          event_id_pageview_tt?: string | null
+          event_id_purchase_tt?: string | null
           external_id?: string | null
           fbc?: string | null
           fbclid?: string | null
@@ -143,6 +151,8 @@ export type Database = {
           phone?: string | null
           sck: string
           state?: string | null
+          ttclid?: string | null
+          ttp?: string | null
           updated_at?: string | null
           user_agent?: string | null
         }
@@ -152,7 +162,10 @@ export type Database = {
           created_at?: string | null
           email?: string | null
           event_id_initiate?: string | null
+          event_id_initiate_tt?: string | null
           event_id_pageview?: string | null
+          event_id_pageview_tt?: string | null
+          event_id_purchase_tt?: string | null
           external_id?: string | null
           fbc?: string | null
           fbclid?: string | null
@@ -165,6 +178,8 @@ export type Database = {
           phone?: string | null
           sck?: string
           state?: string | null
+          ttclid?: string | null
+          ttp?: string | null
           updated_at?: string | null
           user_agent?: string | null
         }
