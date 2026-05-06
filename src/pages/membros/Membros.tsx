@@ -111,19 +111,10 @@ const Membros = () => {
         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#080808] via-[#080808]/85 to-transparent" />
 
         <div className="relative z-10 max-w-[1800px] mx-auto px-4 md:px-12 h-full flex flex-col justify-end pb-16 md:pb-20">
-          <div className="flex items-center gap-2 mb-3">
-            <span
-              className="text-2xl font-black px-1.5 leading-none"
-              style={{ fontFamily: "'Bebas Neue', cursive", color: "#00ff88" }}
-            >
-              I
-            </span>
-            <span className="text-[11px] uppercase tracking-[0.3em] text-white/80">Curso oficial</span>
-          </div>
           <img
             src={infozapLogo}
             alt="InfoZap"
-            className="w-[260px] md:w-[400px] lg:w-[480px] h-auto -ml-2 -mt-4 mb-1 drop-shadow-2xl select-none pointer-events-none"
+            className="w-[260px] md:w-[400px] lg:w-[480px] h-auto -ml-2 mb-1 drop-shadow-2xl select-none pointer-events-none"
           />
           <p className="text-sm md:text-base text-gray-200 max-w-xl mb-5 line-clamp-3 drop-shadow-lg">
             O método completo para escalar produtos digitais no WhatsApp. Tráfego pago, criativos, copy, escala e os bastidores reais de quem fatura todo dia.
@@ -136,15 +127,6 @@ const Membros = () => {
                 style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
               >
                 <Play className="h-4 w-4 fill-black" /> {progress[heroLesson.id] ? "Continuar assistindo" : "Começar agora"}
-              </button>
-            )}
-            {heroModule && (
-              <button
-                onClick={() => navigate(`/membros/modulo/${heroModule.id}`)}
-                className="flex items-center gap-2 px-6 py-2.5 rounded font-bold uppercase bg-white/20 hover:bg-white/30 backdrop-blur text-white transition-colors text-sm"
-                style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
-              >
-                <Info className="h-4 w-4" /> Mais informações
               </button>
             )}
           </div>
