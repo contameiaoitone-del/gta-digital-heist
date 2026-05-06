@@ -117,7 +117,6 @@ export function useTracking() {
     fbq("track", "PageView", {}, { eventID: eventId });
     // Wait for Pixel to write _fbp before firing CAPI so Browser+Server share it.
     const fbp = await waitForFbp(1500);
-    console.debug("[track] PageView", { eventId, fbqReady, fbp: !!fbp });
 
     await callTrack({
       session_id: sessionId,
@@ -152,7 +151,6 @@ export function useTracking() {
 
     const fbqReady = await waitForFbq(2000);
     const fbp = await waitForFbp(1500);
-    console.debug("[track] InitiateCheckout", { eventId, fbqReady, fbp: !!fbp, value: data?.value });
     fbq(
       "track",
       "InitiateCheckout",
@@ -194,7 +192,6 @@ export function useTracking() {
   const trackPurchase = useCallback(
     async (data: { value: number; eventId: string; orderId?: string; productName?: string; currency?: string }) => {
       const fbqReady = await waitForFbq(2000);
-      console.debug("[track] Purchase", { eventId: data.eventId, fbqReady, value: data.value });
       fbq(
         "track",
         "Purchase",
