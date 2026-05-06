@@ -1,24 +1,14 @@
-Dois ajustes para deixar a área de membros mais Netflix:
+Dois consertos:
 
-## 1. Banner fixo do InfoZap (não mais o primeiro módulo)
-Hoje o billboard usa o primeiro módulo, então a imagem fica esquisita (capa vertical esticada) e o título é o nome do módulo.
+## 1. Trocar título "INFOZAP" pela logo enviada
+- Copiar `user-uploads://ChatGPT_Image_17_03_2026_22_40_05.png` → `src/assets/infozap-logo.png` (já feito).
+- Em `Membros.tsx`: importar `infozap-logo.png` e substituir o `<h1>INFOZAP</h1>` por `<img src={infozapLogo} className="h-20 md:h-28 lg:h-32 w-auto mb-3" />`.
 
-Mudança em `Membros.tsx`:
-- Importar uma imagem dedicada de background do `src/assets/` (vou usar `real-life-academy-banner.png` que é horizontal e cinematográfica — é a melhor candidata existente).
-- Hero passa a mostrar SEMPRE:
-  - Badge: "I · InfoZap"
-  - Título: **INFOZAP** (grande, Bebas Neue)
-  - Descrição: "O método completo para escalar produtos digitais no WhatsApp. Tráfego pago, criativos, copy, escala e os bastidores reais de quem fatura todos os dias."
-  - Botão "Assistir" → vai para a primeira aula disponível (heroLesson)
-  - Botão "Mais informações" → primeiro módulo (ou rola para a grade)
-- Mantém `object-cover object-top` + gradients fortes para legibilidade.
-- Altura igual a Netflix: `h-[58vh] min-h-[420px] max-h-[640px]`.
+## 2. Consertar sobreposição de "Mais informações" sobre "Módulos"
+O bug: a row de módulos usa `-mt-20 md:-mt-28` (margem negativa) para sobrepor o billboard, então o título "Módulos" cai por cima dos botões "Assistir / Mais informações" do hero.
 
-## 2. Cards de módulo maiores (mais próximos da Netflix)
-Em `PosterCard.tsx`:
-- Largura: de `w-[150px] md:w-[200px]` para `w-[180px] md:w-[240px] lg:w-[260px]`.
-- Aumenta o título do hover overlay de `text-sm` para `text-base`.
+Conserto: trocar `-mt-20 md:-mt-28` por `mt-6 md:mt-8` (espaço positivo abaixo do banner) — fica igual à Netflix, com a row começando logo abaixo do billboard sem sobrepor.
 
-## Arquivos editados
-- `src/pages/membros/Membros.tsx` (banner fixo InfoZap + import da imagem)
-- `src/components/membros/PosterCard.tsx` (cards maiores)
+## Arquivos
+- `src/pages/membros/Membros.tsx`
+- novo: `src/assets/infozap-logo.png`
