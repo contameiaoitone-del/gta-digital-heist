@@ -114,7 +114,7 @@ const Membros = () => {
           <img
             src={infozapLogo}
             alt="InfoZap"
-            className="w-[260px] md:w-[400px] lg:w-[480px] h-auto -ml-2 mb-1 drop-shadow-2xl select-none pointer-events-none"
+            className="w-auto max-w-[260px] md:max-w-[340px] lg:max-w-[400px] h-auto max-h-[110px] md:max-h-[140px] lg:max-h-[160px] object-contain object-left -ml-2 mb-3 drop-shadow-2xl select-none pointer-events-none"
           />
           <p className="text-sm md:text-base text-gray-200 max-w-xl mb-5 line-clamp-3 drop-shadow-lg">
             O método completo para escalar produtos digitais no WhatsApp. Tráfego pago, criativos, copy, escala e os bastidores reais de quem fatura todo dia.
