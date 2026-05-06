@@ -36,25 +36,36 @@ Deno.serve(async (req) => {
       }
       if (!updated) continue;
 
-      // Fire Purchase via CAPI for the now-paid order
+      const purchaseEid = updated.event_id_purchase || crypto.randomUUID();
+      const capiBody = {
+        event_id: purchaseEid,
+        session_id: updated.session_id || undefined,
+        full_name: updated.customer_name,
+        email: updated.customer_email,
+        phone: updated.customer_phone,
+        cpf: updated.customer_cpf,
+        value: (updated.amount_cents || 0) / 100,
+        currency: "BRL",
+        content_name: "InfoZap",
+        order_id: updated.id,
+      };
+
+      // Fire Purchase via Meta CAPI
       try {
         await supabase.functions.invoke("meta-capi", {
-          body: {
-            event_name: "Purchase",
-            event_id: updated.event_id_purchase || crypto.randomUUID(),
-            session_id: updated.session_id || undefined,
-            full_name: updated.customer_name,
-            email: updated.customer_email,
-            phone: updated.customer_phone,
-            cpf: updated.customer_cpf,
-            value: (updated.amount_cents || 0) / 100,
-            currency: "BRL",
-            content_name: "InfoZap",
-            order_id: updated.id,
-          },
+          body: { ...capiBody, event_name: "Purchase" },
         });
       } catch (e) {
         console.error("capi purchase (pix) failed", e);
+      }
+
+      // Fire CompletePayment via TikTok Events API (same event_id for dedup)
+      try {
+        await supabase.functions.invoke("tiktok-events", {
+          body: { ...capiBody, event_name: "CompletePayment" },
+        });
+      } catch (e) {
+        console.error("tiktok purchase (pix) failed", e);
       }
     }
     return jsonResponse({ ok: true });
