@@ -1,22 +1,24 @@
 import { useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { CheckCircle2, Clock } from "lucide-react";
+import { useTracking } from "@/hooks/useTracking";
 
 const Obrigado = () => {
   const [params] = useSearchParams();
   const metodo = params.get("metodo");
   const status = params.get("status");
+  const eventId = params.get("eventId") || "";
+  const value = Number(params.get("value") || "67");
+  const orderId = params.get("orderId") || undefined;
   const isPending = status === "pendente";
+  const { trackPurchase } = useTracking();
 
   useEffect(() => {
     document.title = "Pagamento confirmado — InfoZap";
-    // Conversion event for Meta Pixel if available
-    // @ts-ignore
-    if (typeof window.fbq === "function" && !isPending) {
-      // @ts-ignore
-      window.fbq("track", "Purchase", { value: 67.0, currency: "BRL" });
+    if (!isPending && eventId) {
+      trackPurchase({ value, eventId, orderId, productName: "InfoZap", currency: "BRL" });
     }
-  }, [isPending]);
+  }, [isPending, eventId, value, orderId, trackPurchase]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: "#080808" }}>
