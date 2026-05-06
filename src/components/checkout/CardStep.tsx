@@ -40,7 +40,6 @@ const Field = ({
   </div>
 );
 
-// Run a promise with a timeout to avoid the button hanging forever.
 function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
   return new Promise<T>((resolve, reject) => {
     const t = setTimeout(() => reject(new Error(`timeout:${label}`)), ms);
@@ -54,7 +53,6 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
   const [holder, setHolder] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
-  const [birth, setBirth] = useState("");
   const [installments, setInstallments] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -70,7 +68,7 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const parsed = cardSchema.safeParse({ number, holder, expiry, cvv, birth, installments });
+    const parsed = cardSchema.safeParse({ number, holder, expiry, cvv, installments });
     if (!parsed.success) {
       const f = parsed.error.flatten().fieldErrors;
       setErrors(Object.fromEntries(Object.entries(f).map(([k, v]) => [k, (v as string[])[0]])));
@@ -89,7 +87,6 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
       const cleanNumber = number.replace(/\D/g, "");
       const cleanCpf = customer.cpf.replace(/\D/g, "");
 
-      // 1) Identify the brand (required by Efí to generate a payment_token).
       let brand = "undefined";
       try {
         brand = await withTimeout(
@@ -111,7 +108,6 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
         return;
       }
 
-      // 2) Tokenize the card.
       let tokenResp: { payment_token?: string; card_mask?: string };
       try {
         tokenResp = (await withTimeout(
@@ -151,14 +147,10 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
         return;
       }
 
-      const [bd, bm, by] = birth.split("/");
-      const birthIso = `${by}-${bm}-${bd}`;
-
       const result = await createCard({
         ...customer,
         payment_token: tokenResp.payment_token,
         installments,
-        birth: birthIso,
       });
 
       if (result.status === "paid") onPaid();
@@ -188,9 +180,6 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
           <IMaskInput mask="0000" value={cvv} onAccept={(v) => setCvv(v as string)} placeholder="123" className={inputCls} />
         </Field>
       </div>
-      <Field label="Data de nascimento" error={errors.birth}>
-        <IMaskInput mask="00/00/0000" value={birth} onAccept={(v) => setBirth(v as string)} placeholder="DD/MM/AAAA" className={inputCls} />
-      </Field>
       <Field label="Parcelas">
         <select value={installments} onChange={(e) => setInstallments(Number(e.target.value))} className={inputCls}>
           {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => (
