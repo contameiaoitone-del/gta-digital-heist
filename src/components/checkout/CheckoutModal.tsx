@@ -21,7 +21,7 @@ type Step = "form" | "method" | "pix" | "card";
 export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   const navigate = useNavigate();
   const { createPix, loading } = useEfiCheckout();
-  const { trackInitiateCheckout, saveLead } = useTracking();
+  const { trackInitiateCheckout, saveLead, trackTikTokPurchaseTest } = useTracking();
   const [step, setStep] = useState<Step>("form");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -50,8 +50,10 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
     if (open && !initiateFiredRef.current) {
       initiateFiredRef.current = true;
       trackInitiateCheckout({ value: 67 });
+      // TEMP: TikTok conversion unlock — remove after event is liberated
+      trackTikTokPurchaseTest({ value: 67 });
     }
-  }, [open, trackInitiateCheckout]);
+  }, [open, trackInitiateCheckout, trackTikTokPurchaseTest]);
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();

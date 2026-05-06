@@ -266,7 +266,42 @@ export function useTracking() {
     [],
   );
 
-  return { init, trackInitiateCheckout, saveLead, trackPurchase, getSessionId };
+  // TEMP: TikTok conversion unlock — fires CompletePayment on modal open so
+  // TikTok Ads liberates the conversion event. Remove once event is unlocked.
+  const trackTikTokPurchaseTest = useCallback(async (data?: { value?: number; currency?: string }) => {
+    const sessionId = getSessionId();
+    const ttclid = readTtclid();
+    const eventId = uuid();
+    const pageUrl = window.location.href;
+    const value = data?.value ?? 67;
+    const currency = data?.currency || "BRL";
+
+    await waitForTtq(2000);
+    const ttp = await waitForTtp(1500);
+
+    ttq("CompletePayment",
+      {
+        value, currency,
+        contents: [{ content_id: "infozap", content_name: "InfoZap", content_type: "product", quantity: 1, price: value }],
+        content_type: "product",
+      },
+      { event_id: eventId },
+    );
+
+    callTiktok({
+      event_name: "CompletePayment",
+      event_id: eventId,
+      event_source_url: pageUrl,
+      session_id: sessionId,
+      ttclid, ttp,
+      user_agent: navigator.userAgent,
+      value, currency,
+      content_name: "InfoZap",
+      content_id: "infozap",
+    });
+  }, []);
+
+  return { init, trackInitiateCheckout, saveLead, trackPurchase, trackTikTokPurchaseTest, getSessionId };
 }
 
 // Convenience: auto-init PageView on mount
