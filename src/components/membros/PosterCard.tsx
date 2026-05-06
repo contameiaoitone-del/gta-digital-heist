@@ -15,7 +15,7 @@ const PosterCard = ({ to, title, cover, description, meta, progressPct = 0, comp
   return (
     <Link
       to={to}
-      className="group/card relative flex-shrink-0 w-[150px] md:w-[200px] snap-start hover:z-20"
+      className="group/card relative flex-shrink-0 w-[180px] md:w-[240px] lg:w-[260px] snap-start hover:z-20"
     >
       <div className="relative aspect-[2/3] rounded-md overflow-hidden bg-[#141414] border border-white/5 transition-transform duration-300 group-hover/card:scale-105 group-hover/card:shadow-2xl group-hover/card:border-white/30">
         {cover ? (
@@ -50,7 +50,7 @@ const PosterCard = ({ to, title, cover, description, meta, progressPct = 0, comp
           </div>
           {meta && <p className="text-[10px] text-[#00ff88] uppercase tracking-wider mb-1">{meta}</p>}
           <h3
-            className="text-sm font-bold line-clamp-2 mb-1"
+            className="text-base font-bold line-clamp-2 mb-1"
             style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}
           >
             {title}
