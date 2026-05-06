@@ -3,6 +3,7 @@ import { IMaskInput } from "react-imask";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import EfiPay from "payment-token-efi";
 import { cardSchema } from "@/lib/validators";
 import { useEfiCheckout } from "@/hooks/useEfiCheckout";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,36 +15,6 @@ interface CardStepProps {
 }
 
 const PRICE_CENTS = 6700;
-
-const SDK_URL =
-  "https://cdn.jsdelivr.net/npm/payment-token-efi@latest/dist/payment-token-efi.umd.min.js";
-
-// Loads the official EfiPay payment-token JS SDK (production-safe).
-// Docs: https://github.com/efipay/js-payment-token-efi
-async function loadEfiSdk(): Promise<unknown> {
-  // @ts-ignore
-  if (typeof window.EfiPay !== "undefined") return window.EfiPay;
-
-  await new Promise<void>((resolve, reject) => {
-    const existing = document.querySelector(`script[src="${SDK_URL}"]`) as HTMLScriptElement | null;
-    if (existing) {
-      existing.addEventListener("load", () => resolve());
-      existing.addEventListener("error", () => reject(new Error("efi sdk load failed")));
-      // @ts-ignore — already loaded
-      if (typeof window.EfiPay !== "undefined") resolve();
-      return;
-    }
-    const s = document.createElement("script");
-    s.src = SDK_URL;
-    s.async = true;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error("efi sdk load failed"));
-    document.head.appendChild(s);
-  });
-
-  // @ts-ignore
-  return window.EfiPay;
-}
 
 const installmentLabel = (n: number) => {
   const value = (PRICE_CENTS / 100 / n).toFixed(2).replace(".", ",");
@@ -69,6 +40,14 @@ const Field = ({
   </div>
 );
 
+// Run a promise with a timeout to avoid the button hanging forever.
+function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(`timeout:${label}`)), ms);
+    p.then((v) => { clearTimeout(t); resolve(v); }).catch((e) => { clearTimeout(t); reject(e); });
+  });
+}
+
 export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
   const { createCard } = useEfiCheckout();
   const [number, setNumber] = useState("");
@@ -86,8 +65,7 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
       if (data && typeof (data as { payee_code?: string }).payee_code === "string") {
         setPayeeCode((data as { payee_code: string }).payee_code);
       }
-    });
-    loadEfiSdk().catch(() => {});
+    }).catch(() => {});
   }, []);
 
   const submit = async (e: React.FormEvent) => {
@@ -107,37 +85,62 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
 
     setLoading(true);
     try {
-      // @ts-ignore
-      const EfiPay: any = await loadEfiSdk();
-      if (!EfiPay?.CreditCard) {
-        toast.error("Não foi possível carregar o módulo de cartão. Tente novamente ou pague com Pix.");
-        setLoading(false);
-        return;
-      }
-
       const [mm, yy] = expiry.split("/");
       const cleanNumber = number.replace(/\D/g, "");
       const cleanCpf = customer.cpf.replace(/\D/g, "");
 
+      // 1) Identify the brand (required by Efí to generate a payment_token).
+      let brand = "undefined";
+      try {
+        brand = await withTimeout(
+          // @ts-ignore
+          EfiPay.CreditCard.setCardNumber(cleanNumber).verifyCardBrand(),
+          15000,
+          "verifyCardBrand",
+        );
+      } catch (err) {
+        console.error("efi verifyCardBrand error", err);
+        toast.error("Não foi possível validar a bandeira do cartão. Tente novamente ou use Pix.");
+        setLoading(false);
+        return;
+      }
+
+      if (!brand || brand === "undefined" || brand === "unsupported") {
+        toast.error("Bandeira de cartão não aceita. Tente outro cartão ou pague com Pix.");
+        setLoading(false);
+        return;
+      }
+
+      // 2) Tokenize the card.
       let tokenResp: { payment_token?: string; card_mask?: string };
       try {
-        tokenResp = await EfiPay.CreditCard
-          .setAccount(payeeCode)
-          .setEnvironment("production")
-          .setCreditCardData({
-            number: cleanNumber,
-            cvv,
-            expirationMonth: mm,
-            expirationYear: `20${yy}`,
-            holderName: holder,
-            holderDocument: cleanCpf,
-            reuse: false,
-          })
-          .getPaymentToken();
+        tokenResp = (await withTimeout(
+          // @ts-ignore
+          EfiPay.CreditCard
+            .setAccount(payeeCode)
+            .setEnvironment("production")
+            .setCreditCardData({
+              brand,
+              number: cleanNumber,
+              cvv,
+              expirationMonth: mm,
+              expirationYear: `20${yy}`,
+              holderName: holder,
+              holderDocument: cleanCpf,
+              reuse: false,
+            })
+            .getPaymentToken(),
+          20000,
+          "getPaymentToken",
+        )) as { payment_token?: string; card_mask?: string };
       } catch (err: any) {
         console.error("efi tokenize error", err);
         const msg = err?.error_description || err?.message || "Não foi possível validar o cartão.";
-        toast.error(typeof msg === "string" ? msg : "Verifique os dados do cartão.");
+        if (typeof msg === "string" && msg.startsWith("timeout:")) {
+          toast.error("A validação do cartão demorou demais. Tente novamente ou use Pix.");
+        } else {
+          toast.error(typeof msg === "string" ? msg : "Verifique os dados do cartão.");
+        }
         setLoading(false);
         return;
       }
