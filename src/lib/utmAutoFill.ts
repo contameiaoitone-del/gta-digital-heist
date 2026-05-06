@@ -53,11 +53,17 @@ export function ensureUtms(): void {
     const params = url.searchParams;
     let changed = false;
 
+    const { source, medium, campaign } = classifyReferrer();
     if (!params.get("utm_source")) {
-      const { source, medium, campaign } = classifyReferrer();
       params.set("utm_source", source);
-      if (!params.get("utm_medium")) params.set("utm_medium", medium);
-      if (!params.get("utm_campaign")) params.set("utm_campaign", campaign);
+      changed = true;
+    }
+    if (!params.get("utm_medium")) {
+      params.set("utm_medium", medium);
+      changed = true;
+    }
+    if (!params.get("utm_campaign")) {
+      params.set("utm_campaign", campaign);
       changed = true;
     }
 
