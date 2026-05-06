@@ -19,6 +19,8 @@ const BodySchema = z.object({
   cpf: z.string().trim().min(11).max(20),
   payment_token: z.string().trim().min(10).max(200),
   installments: z.number().int().min(1).max(12),
+  session_id: z.string().trim().min(1).max(80).optional(),
+  event_id_purchase: z.string().trim().min(1).max(80).optional(),
 });
 
 Deno.serve(async (req) => {
