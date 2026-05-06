@@ -4,12 +4,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getCookie } from "@/lib/cookies";
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
+import { waitForFbq } from "@/lib/metaPixel";
 
 const SCK_KEY = "rla_sck";
 const GEO_KEY = "rla_geo";
@@ -119,6 +114,7 @@ export function useTracking() {
       ...geo,
     });
 
+    await waitForFbq(2000);
     fbq("track", "PageView", {}, { eventID: eventId });
     callCapi({
       event_name: "PageView",
@@ -141,6 +137,7 @@ export function useTracking() {
 
     await callTrack({ session_id: sessionId, event_id_initiate: eventId });
 
+    await waitForFbq(2000);
     fbq("track", "InitiateCheckout", { value: data?.value, currency: data?.currency || "BRL" }, { eventID: eventId });
     callCapi({
       event_name: "InitiateCheckout",
@@ -174,7 +171,8 @@ export function useTracking() {
   );
 
   const trackPurchase = useCallback(
-    (data: { value: number; eventId: string; orderId?: string; productName?: string; currency?: string }) => {
+    async (data: { value: number; eventId: string; orderId?: string; productName?: string; currency?: string }) => {
+      await waitForFbq(2000);
       fbq(
         "track",
         "Purchase",

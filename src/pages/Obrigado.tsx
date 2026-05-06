@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { CheckCircle2, Clock } from "lucide-react";
 import { useTracking } from "@/hooks/useTracking";
+import { ensurePixel } from "@/lib/metaPixel";
 
 const Obrigado = () => {
   const [params] = useSearchParams();
@@ -16,6 +17,7 @@ const Obrigado = () => {
   useEffect(() => {
     document.title = "Pagamento confirmado — InfoZap";
     if (!isPending && eventId) {
+      ensurePixel();
       trackPurchase({ value, eventId, orderId, productName: "InfoZap", currency: "BRL" });
     }
   }, [isPending, eventId, value, orderId, trackPurchase]);

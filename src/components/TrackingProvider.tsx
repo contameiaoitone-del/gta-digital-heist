@@ -1,19 +1,24 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useTracking } from "@/hooks/useTracking";
+import { ensurePixel } from "@/lib/metaPixel";
 
-const EXCLUDED_ROUTES = ["/obrigado", "/rp-close-sucesso"];
+// Tracking (Pixel + CAPI) is only enabled on the InfoZap funnel.
+const TRACKED_ROUTES = ["/infozap"];
 
 /**
- * Initializes session tracking + PageView (Pixel + CAPI) on every navigation,
- * skipping post-purchase pages where Purchase has already been credited.
+ * On every navigation, if the route is part of the InfoZap funnel,
+ * loads the Meta Pixel snippet and fires PageView (Pixel + CAPI, deduplicated).
+ * Other routes do not load the Pixel and do not call CAPI.
  */
 export const TrackingProvider = () => {
   const location = useLocation();
   const { init } = useTracking();
 
   useEffect(() => {
-    if (EXCLUDED_ROUTES.some((r) => location.pathname.startsWith(r))) return;
+    const isTracked = TRACKED_ROUTES.some((r) => location.pathname.startsWith(r));
+    if (!isTracked) return;
+    ensurePixel();
     init();
   }, [location.pathname, init]);
 
