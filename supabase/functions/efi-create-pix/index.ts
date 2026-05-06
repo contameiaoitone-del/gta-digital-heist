@@ -32,7 +32,8 @@ Deno.serve(async (req) => {
 
     const parsed = BodySchema.safeParse(await req.json());
     if (!parsed.success) return jsonResponse({ error: "invalid", issues: parsed.error.flatten() }, 400);
-    const { name, email, phone, cpf } = parsed.data;
+    const { name, email, phone, cpf, session_id, event_id_purchase } = parsed.data;
+    const purchaseEventId = event_id_purchase || crypto.randomUUID();
     const cleanCpf = cpf.replace(/\D/g, "");
     if (!isValidCpf(cleanCpf)) return jsonResponse({ error: "invalid_cpf" }, 400);
 
@@ -95,6 +96,8 @@ Deno.serve(async (req) => {
         payment_method: "pix",
         efi_txid: cob.txid,
         status: "pending",
+        session_id: session_id ?? null,
+        event_id_purchase: purchaseEventId,
         raw: { cob, loc: cob.loc },
       })
       .select("id")
