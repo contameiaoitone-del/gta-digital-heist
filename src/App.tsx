@@ -48,6 +48,7 @@ const App = () => (
             <Route path="/membros/login" element={<MembrosLogin />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/membros" element={<RequireAuth><Membros /></RequireAuth>} />
+            <Route path="/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
             <Route path="/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
             <Route path="/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
