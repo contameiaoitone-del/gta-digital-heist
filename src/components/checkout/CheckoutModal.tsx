@@ -70,12 +70,13 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   const goCard = () => setStep("card");
 
   const onPixPaid = () => {
+    const eid = pixData?.event_id_purchase || "";
     onOpenChange(false);
-    navigate("/obrigado?metodo=pix");
+    navigate(`/obrigado?metodo=pix&eventId=${encodeURIComponent(eid)}&value=67&orderId=${encodeURIComponent(pixData?.order_id || "")}`);
   };
-  const onCardPaid = () => {
+  const onCardPaid = (info: { eventId: string; orderId: string }) => {
     onOpenChange(false);
-    navigate("/obrigado?metodo=cartao");
+    navigate(`/obrigado?metodo=cartao&eventId=${encodeURIComponent(info.eventId)}&value=67&orderId=${encodeURIComponent(info.orderId)}`);
   };
   const onCardPending = () => {
     onOpenChange(false);
