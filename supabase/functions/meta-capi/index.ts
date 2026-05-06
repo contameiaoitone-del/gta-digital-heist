@@ -162,6 +162,20 @@ Deno.serve(async (req) => {
     };
     if (TEST_CODE) (payload as Record<string, unknown>).test_event_code = TEST_CODE;
 
+    console.log("[capi] sending", {
+      event_name: body.event_name,
+      event_id: body.event_id,
+      test_code_present: !!TEST_CODE,
+      test_code_len: TEST_CODE?.length ?? 0,
+      test_code_value: TEST_CODE ?? null,
+      has_fbp: !!fbp,
+      has_fbc: !!fbc,
+      has_ip: !!ip,
+      has_ua: !!ua,
+      has_em: !!userData.em,
+      has_ph: !!userData.ph,
+    });
+
     const url = `https://graph.facebook.com/v20.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`;
     const r = await fetch(url, {
       method: "POST",
@@ -169,6 +183,7 @@ Deno.serve(async (req) => {
       body: JSON.stringify(payload),
     });
     const meta = await r.json();
+    console.log("[capi] meta response", { status: r.status, body: meta });
     if (!r.ok) {
       console.error("meta capi failed", meta);
       return json({ error: "meta_capi", detail: meta }, 502);
