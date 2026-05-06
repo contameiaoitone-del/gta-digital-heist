@@ -51,7 +51,7 @@ const Aula = () => {
       setSiblings((sRes.data as Lesson[]) || []);
       setCompleted(!!(pRes as { data: { completed?: boolean } | null }).data?.completed);
       setLoading(false);
-      document.title = `${l.title} — Real Life Academy`;
+      document.title = `${l.title} — InfoZap`;
     })();
   }, [id, session]);
 

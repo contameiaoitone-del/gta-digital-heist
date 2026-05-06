@@ -48,7 +48,7 @@ const Admin = () => {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    document.title = "Admin — Real Life Academy";
+    document.title = "Admin — InfoZap";
     if (isAdmin) loadModules();
   }, [isAdmin]);
 
@@ -189,6 +189,7 @@ const Admin = () => {
               <Plus className="h-4 w-4" /> Novo módulo
             </button>
           </div>
+          <p className="text-xs text-gray-500 mb-2">O <span className="text-[#00ff88]">primeiro módulo da lista</span> aparece como banner principal na área de membros. Use as setas ↑↓ para reordenar.</p>
           <ul className="space-y-2">
             {modules.map((m, i) => (
               <li key={m.id} className={`flex items-center gap-2 p-3 rounded border ${selectedModuleId === m.id ? "border-[#00ff88] bg-white/5" : "border-white/10"}`}>
