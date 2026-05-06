@@ -14,6 +14,7 @@ const RPZap = lazy(() => import("./pages/RPZap"));
 const InfoZap = lazy(() => import("./pages/InfoZap"));
 const CloseFriends = lazy(() => import("./pages/CloseFriends"));
 const RealZapAcademy = lazy(() => import("./pages/RealZapAcademy"));
+const Obrigado = lazy(() => import("./pages/Obrigado"));
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/infozap" element={<InfoZap />} />
             <Route path="/closefriends" element={<CloseFriends />} />
             <Route path="/real-zap-academy" element={<RealZapAcademy />} />
+            <Route path="/obrigado" element={<Obrigado />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

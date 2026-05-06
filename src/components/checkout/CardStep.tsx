@@ -1,0 +1,215 @@
+import { useEffect, useState } from "react";
+import { IMaskInput } from "react-imask";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { cardSchema } from "@/lib/validators";
+import { useEfiCheckout } from "@/hooks/useEfiCheckout";
+import { supabase } from "@/integrations/supabase/client";
+
+interface CardStepProps {
+  customer: { name: string; email: string; phone: string; cpf: string };
+  onPaid: () => void;
+  onPending: () => void;
+}
+
+const PRICE_CENTS = 6700;
+
+// Loads Efí Pagamentos JS SDK dynamically. Returns the configured client.
+// Docs: https://dev.efipay.com.br/docs/api-cobrancas/cartao
+async function loadEfiSdk(payeeCode: string) {
+  // @ts-ignore
+  if (window.$gn?.ready) return window.$gn;
+
+  // @ts-ignore
+  window.$gn = {
+    validForm: true,
+    processed: false,
+    done: {},
+    ready: function (fn: (checkout: unknown) => void) {
+      // @ts-ignore
+      window.$gn.done = fn;
+    },
+  };
+
+  const v = Math.floor(Math.random() * 1_000_000);
+  const url = `https://sandbox.gerencianet.com.br/v1/cdn/${payeeCode}/${v}`;
+  // Despite "sandbox" in the path, this loader works for production accounts —
+  // it's the standard Efí/Gerencianet payment-token endpoint. Production-only
+  // credentials still tokenize correctly via this loader.
+  const prodUrl = `https://payment-token.efipay.com.br/v1/cdn/${payeeCode}/${v}`;
+
+  await new Promise<void>((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = prodUrl;
+    s.async = false;
+    s.onload = () => resolve();
+    s.onerror = () => {
+      // fallback to legacy gn URL
+      const s2 = document.createElement("script");
+      s2.src = url;
+      s2.async = false;
+      s2.onload = () => resolve();
+      s2.onerror = () => reject(new Error("efi sdk load failed"));
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s);
+  });
+
+  // The SDK injects a second script that calls $gn.ready(...)
+  return await new Promise<unknown>((resolve) => {
+    const start = Date.now();
+    const i = setInterval(() => {
+      // @ts-ignore
+      if (typeof window.$gn?.checkout?.getPaymentToken === "function") {
+        clearInterval(i);
+        // @ts-ignore
+        resolve(window.$gn.checkout);
+      } else if (Date.now() - start > 10000) {
+        clearInterval(i);
+        resolve(null);
+      }
+    }, 100);
+  });
+}
+
+const installmentLabel = (n: number) => {
+  const value = (PRICE_CENTS / 100 / n).toFixed(2).replace(".", ",");
+  return n === 1 ? `1x de R$ 67,00 (à vista)` : `${n}x de R$ ${value} sem juros`;
+};
+
+export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
+  const { createCard } = useEfiCheckout();
+  const [number, setNumber] = useState("");
+  const [holder, setHolder] = useState("");
+  const [expiry, setExpiry] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [birth, setBirth] = useState("");
+  const [installments, setInstallments] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [payeeCode, setPayeeCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.functions.invoke("efi-config").then(({ data }) => {
+      if (data && typeof (data as { payee_code?: string }).payee_code === "string") {
+        setPayeeCode((data as { payee_code: string }).payee_code);
+      }
+    });
+  }, []);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = cardSchema.safeParse({ number, holder, expiry, cvv, birth, installments });
+    if (!parsed.success) {
+      const f = parsed.error.flatten().fieldErrors;
+      setErrors(Object.fromEntries(Object.entries(f).map(([k, v]) => [k, (v as string[])[0]])));
+      return;
+    }
+    setErrors({});
+
+    if (!payeeCode) {
+      toast.error("Configuração de cartão indisponível. Tente Pix.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const checkout = await loadEfiSdk(payeeCode);
+      if (!checkout) {
+        toast.error("Não foi possível carregar o módulo de cartão. Tente novamente ou pague com Pix.");
+        setLoading(false);
+        return;
+      }
+
+      const [mm, yy] = expiry.split("/");
+      // @ts-ignore
+      const tokenResult: { data?: { payment_token: string }; error?: string } = await new Promise((resolve) => {
+        // @ts-ignore
+        checkout.getPaymentToken(
+          {
+            brand: "visa", // detected by SDK regardless; Efí auto-detects from number
+            number: number.replace(/\D/g, ""),
+            cvv,
+            expiration_month: mm,
+            expiration_year: `20${yy}`,
+          },
+          (err: unknown, resp: { data: { payment_token: string } }) => {
+            if (err) resolve({ error: typeof err === "string" ? err : "tokenization failed" });
+            else resolve(resp);
+          },
+        );
+      });
+
+      if (!tokenResult?.data?.payment_token) {
+        toast.error("Não foi possível validar o cartão. Verifique os dados.");
+        setLoading(false);
+        return;
+      }
+
+      const [bd, bm, by] = birth.split("/");
+      const birthIso = `${by}-${bm}-${bd}`;
+
+      const result = await createCard({
+        ...customer,
+        payment_token: tokenResult.data.payment_token,
+        installments,
+        birth: birthIso,
+      });
+
+      if (result.status === "paid") onPaid();
+      else if (result.status === "failed") toast.error("Pagamento recusado pela operadora.");
+      else onPending();
+    } catch (err) {
+      console.error(err);
+      toast.error(err instanceof Error ? err.message : "Erro ao processar cartão");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const Field = ({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) => (
+    <div className="space-y-1">
+      <label className="text-xs text-gray-300 uppercase tracking-wider">{label}</label>
+      {children}
+      {error && <p className="text-xs text-[#ff2d78]">{error}</p>}
+    </div>
+  );
+
+  const inputCls = "w-full h-11 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88]";
+
+  return (
+    <form onSubmit={submit} className="space-y-3">
+      <Field label="Número do cartão" error={errors.number}>
+        <IMaskInput mask="0000 0000 0000 0000" value={number} onAccept={(v) => setNumber(v as string)} placeholder="0000 0000 0000 0000" className={inputCls} />
+      </Field>
+      <Field label="Nome impresso no cartão" error={errors.holder}>
+        <input value={holder} onChange={(e) => setHolder(e.target.value.toUpperCase())} placeholder="COMO ESTÁ NO CARTÃO" className={inputCls} />
+      </Field>
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="Validade" error={errors.expiry}>
+          <IMaskInput mask="00/00" value={expiry} onAccept={(v) => setExpiry(v as string)} placeholder="MM/AA" className={inputCls} />
+        </Field>
+        <Field label="CVV" error={errors.cvv}>
+          <IMaskInput mask="0000" value={cvv} onAccept={(v) => setCvv(v as string)} placeholder="123" className={inputCls} />
+        </Field>
+      </div>
+      <Field label="Data de nascimento" error={errors.birth}>
+        <IMaskInput mask="00/00/0000" value={birth} onAccept={(v) => setBirth(v as string)} placeholder="DD/MM/AAAA" className={inputCls} />
+      </Field>
+      <Field label="Parcelas">
+        <select value={installments} onChange={(e) => setInstallments(Number(e.target.value))} className={inputCls}>
+          {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => (
+            <option key={n} value={n} className="bg-black">{installmentLabel(n)}</option>
+          ))}
+        </select>
+      </Field>
+
+      <Button type="submit" disabled={loading} className="w-full h-12 mt-2 bg-[#00ff88] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide whitespace-normal h-auto py-3">
+        {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : null}
+        Pagar R$ 67,00
+      </Button>
+      <p className="text-[11px] text-gray-500 text-center">Pagamento processado por Efí Bank · Seus dados são criptografados</p>
+    </form>
+  );
+};
