@@ -92,19 +92,19 @@ async function callTrack(payload: Record<string, unknown>) {
   }
 }
 
-export function useTracking(opts?: { skipPageView?: boolean }) {
-  const initRef = useRef(false);
+export function useTracking() {
+  const lastUrlRef = useRef<string | null>(null);
 
   const init = useCallback(async () => {
-    if (initRef.current) return;
-    initRef.current = true;
+    const pageUrl = window.location.href;
+    if (lastUrlRef.current === pageUrl) return;
+    lastUrlRef.current = pageUrl;
 
     const sessionId = getSessionId();
     const fbc = readFbc();
     const fbp = getCookie("_fbp");
     const fbclid = new URLSearchParams(window.location.search).get("fbclid") || "";
     const userAgent = navigator.userAgent;
-    const pageUrl = window.location.href;
     const eventId = uuid();
     const geo = await readGeo();
 
@@ -119,8 +119,6 @@ export function useTracking(opts?: { skipPageView?: boolean }) {
       ...geo,
     });
 
-    if (opts?.skipPageView) return;
-
     fbq("track", "PageView", {}, { eventID: eventId });
     callCapi({
       event_name: "PageView",
@@ -132,7 +130,7 @@ export function useTracking(opts?: { skipPageView?: boolean }) {
       user_agent: userAgent,
       ...geo,
     });
-  }, [opts?.skipPageView]);
+  }, []);
 
   const trackInitiateCheckout = useCallback(async (data?: { value?: number; currency?: string }) => {
     const sessionId = getSessionId();
