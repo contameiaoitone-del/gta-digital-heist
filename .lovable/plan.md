@@ -1,22 +1,34 @@
+## Correções no checkout de cartão
 
-## Registrar webhook Efí automaticamente + status em tempo real
+### 1. Foco perdido a cada dígito
+Em `src/components/checkout/CardStep.tsx`, o componente `Field` está declarado dentro de `CardStep`. A cada keystroke, o React desmonta/remonta os inputs.
 
-Resolve o "não tem onde colocar webhook no painel da Efí" fazendo tudo via API, sem o usuário tocar em nada.
+**Fix:** mover `Field` e `inputCls` para escopo do módulo (fora do componente).
 
-### 1. Atualizar `efi-check-status` — consultar Efí em tempo real
+### 2. Erro 502 `property_does_not_exists: payment_token`
+O loader atual tenta `payment-token.efipay.com.br` e cai no fallback `sandbox.gerencianet.com.br` quando falha → gera token de **sandbox** → enviado para API de **produção** → Efí rejeita.
 
-Hoje só lê do banco. Vou mudar para, no caso de Pix pendente, consultar `GET /v2/cob/{txid}` na Efí via mTLS. Se status = `CONCLUIDA`, marca `paid` no banco e retorna. Garante que o pagamento é detectado **mesmo que o webhook não esteja ativo** — o polling do front (a cada 4s) já basta.
+**Fix:** trocar para o SDK oficial moderno `payment-token-efi` via CDN jsDelivr, com `setEnvironment("production")` e `setAccount(payeeCode)` explícitos.
 
-### 2. Nova edge function `efi-register-webhook`
+```js
+const result = await EfiPay.CreditCard
+  .setAccount(payeeCode)
+  .setEnvironment("production")
+  .setCreditCardData({ number, cvv, expirationMonth, expirationYear, holderName, holderDocument, reuse: false })
+  .getPaymentToken();
+```
 
-Faz `PUT /v2/webhook/{chave_pix}?ignorar=` na Efí com `{ webhookUrl: "https://.../efi-webhook" }` + header `x-skip-mtls-checking: true` (truque oficial da Efí pra webhooks que não validam mTLS de servidor — necessário porque Supabase Edge não aceita mTLS de entrada). Idempotente, pode rodar quantas vezes quiser.
+### 3. Endereço de cobrança
+**Não será adicionado.** Confirmado na doc oficial do Efí que `billing_address` é opcional no `POST /v1/charge/one-step`. Mantém conversão alta.
 
-### 3. Eu chamo a function `efi-register-webhook` automaticamente
+## Arquivos alterados
+- `src/components/checkout/CardStep.tsx` — extrair `Field`/`inputCls`, reescrever `loadEfiSdk` para usar SDK oficial, atualizar fluxo de tokenização.
 
-Logo após o deploy, faço uma chamada `curl` à edge function `efi-register-webhook` com o tool de teste. Se voltar `ok: true`, o webhook está registrado na sua chave Pix e pronto.
+## Sem mudanças
+- `supabase/functions/efi-create-card/index.ts` — payload já está correto.
+- `src/hooks/useEfiCheckout.ts`, `src/lib/validators.ts` — sem alteração.
 
-### Resultado
-
-- **Pix funciona com ou sem webhook** (real-time polling no `check-status`).
-- **Webhook registrado automaticamente** na sua chave Pix sem você fazer nada.
-- Você não precisa mexer em nada na Efí nem rodar comando local.
+## Verificação
+1. Abrir checkout cartão → digitar sem perder foco.
+2. Pagar com cartão real → resposta `paid`/`pending`, não mais 502.
+3. Se houver erro, checar `edge_function_logs` de `efi-create-card`.
