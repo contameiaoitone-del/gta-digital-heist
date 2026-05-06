@@ -13,6 +13,10 @@ const RPClose = lazy(() => import("./pages/RPClose"));
 const RPCloseSuccess = lazy(() => import("./pages/RPCloseSuccess"));
 const RPZap = lazy(() => import("./pages/RPZap"));
 const InfoZap = lazy(() => import("./pages/InfoZap"));
+const InfoZapAula = lazy(() => import("./pages/InfoZapAula"));
+const Termos = lazy(() => import("./pages/legal/Termos"));
+const Privacidade = lazy(() => import("./pages/legal/Privacidade"));
+const Contato = lazy(() => import("./pages/legal/Contato"));
 const CloseFriends = lazy(() => import("./pages/CloseFriends"));
 const RealZapAcademy = lazy(() => import("./pages/RealZapAcademy"));
 const Obrigado = lazy(() => import("./pages/Obrigado"));
@@ -42,6 +46,10 @@ const App = () => (
             <Route path="/rp-close-sucesso" element={<RPCloseSuccess />} />
             <Route path="/rp-zap" element={<RPZap />} />
             <Route path="/infozap" element={<InfoZap />} />
+            <Route path="/infozap-aula" element={<InfoZapAula />} />
+            <Route path="/termos" element={<Termos />} />
+            <Route path="/privacidade" element={<Privacidade />} />
+            <Route path="/contato" element={<Contato />} />
             <Route path="/closefriends" element={<CloseFriends />} />
             <Route path="/real-zap-academy" element={<RealZapAcademy />} />
             <Route path="/obrigado" element={<Obrigado />} />
