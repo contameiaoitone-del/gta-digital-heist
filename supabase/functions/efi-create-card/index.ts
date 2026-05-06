@@ -19,7 +19,6 @@ const BodySchema = z.object({
   cpf: z.string().trim().min(11).max(20),
   payment_token: z.string().trim().min(10).max(200),
   installments: z.number().int().min(1).max(12),
-  birth: z.string().trim().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
 
 Deno.serve(async (req) => {
