@@ -45,6 +45,7 @@
         "input-otp": "^1.4.2",
         "lucide-react": "^0.462.0",
         "next-themes": "^0.3.0",
+        "payment-token-efi": "^3.2.1",
         "qrcode.react": "^4.2.0",
         "react": "^18.3.1",
         "react-day-picker": "^8.10.1",
@@ -873,6 +874,8 @@
     "path-parse": ["path-parse@1.0.7", "", {}, "sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw=="],
 
     "path-scurry": ["path-scurry@1.11.1", "", { "dependencies": { "lru-cache": "^10.2.0", "minipass": "^5.0.0 || ^6.0.2 || ^7.0.0" } }, "sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA=="],
+
+    "payment-token-efi": ["payment-token-efi@3.2.1", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/payment-token-efi/-/payment-token-efi-3.2.1.tgz", {}, "sha512-vayjvR9Cg8SllHza01omImtGrPMr66ZfpYXeCApaMRSo7IMtItle76bPMJSnK1JteGpnplRR5LBT5EbEqQOQzA=="],
 
     "picocolors": ["picocolors@1.1.1", "", {}, "sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA=="],
 
