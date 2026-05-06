@@ -1,15 +1,10 @@
-## Conceder acesso admin para caiormdalcin@gmail.com
+## Trocar nome do remetente nos emails de auth para "Real Life Academy"
 
-Usuário já existe em `auth.users` (id: `44cf9481-ead7-4fb9-8bd9-40093c3fed5e`).
+O nome `gta-digital-empire` está hardcoded em `supabase/functions/auth-email-hook/index.ts` (linhas 39 e 49). Renomear o projeto Lovable não atualiza esses valores — eles foram fixados quando os templates foram criados.
 
-### Ação
-Inserir registro em `public.user_roles` com `role = 'admin'` para esse user_id (idempotente via `ON CONFLICT DO NOTHING`).
+### Alteração
+- `SITE_NAME = "gta-digital-empire"` → `SITE_NAME = "Real Life Academy"`
+- `SAMPLE_PROJECT_URL` → `https://reallifeacademy.com.br` (cosmético, só preview)
 
-### SQL
-```sql
-INSERT INTO public.user_roles (user_id, role)
-VALUES ('44cf9481-ead7-4fb9-8bd9-40093c3fed5e', 'admin')
-ON CONFLICT (user_id, role) DO NOTHING;
-```
-
-Após executar, basta acessar `/admin` logado com esse email.
+### Deploy
+Redeploy do `auth-email-hook` para o novo nome aparecer no `From` e no corpo dos emails.
