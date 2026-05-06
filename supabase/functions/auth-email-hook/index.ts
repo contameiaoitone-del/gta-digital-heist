@@ -36,7 +36,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "Real Life Academy"
+const SITE_NAME = "InfoZap"
 const SENDER_DOMAIN = "notify.reallifeacademy.com.br"
 const ROOT_DOMAIN = "reallifeacademy.com.br"
 const FROM_DOMAIN = "reallifeacademy.com.br" // Domain shown in From address (may be root or sender subdomain)
