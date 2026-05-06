@@ -23,12 +23,39 @@ Deno.serve(async (req) => {
     for (const p of pixArr) {
       if (!p.txid) continue;
       const paidAt = p.horario ? new Date(p.horario).toISOString() : new Date().toISOString();
-      const { error } = await supabase
+      const { data: updated, error } = await supabase
         .from("orders")
         .update({ status: "paid", paid_at: paidAt, raw: { ...(p as object), webhook_received_at: new Date().toISOString() } })
         .eq("efi_txid", p.txid)
-        .neq("status", "paid");
-      if (error) console.error("webhook update failed", p.txid, error);
+        .neq("status", "paid")
+        .select("id, customer_name, customer_email, customer_phone, customer_cpf, amount_cents, session_id, event_id_purchase")
+        .maybeSingle();
+      if (error) {
+        console.error("webhook update failed", p.txid, error);
+        continue;
+      }
+      if (!updated) continue;
+
+      // Fire Purchase via CAPI for the now-paid order
+      try {
+        await supabase.functions.invoke("meta-capi", {
+          body: {
+            event_name: "Purchase",
+            event_id: updated.event_id_purchase || crypto.randomUUID(),
+            session_id: updated.session_id || undefined,
+            full_name: updated.customer_name,
+            email: updated.customer_email,
+            phone: updated.customer_phone,
+            cpf: updated.customer_cpf,
+            value: (updated.amount_cents || 0) / 100,
+            currency: "BRL",
+            content_name: "InfoZap",
+            order_id: updated.id,
+          },
+        });
+      } catch (e) {
+        console.error("capi purchase (pix) failed", e);
+      }
     }
     return jsonResponse({ ok: true });
   } catch (e) {
