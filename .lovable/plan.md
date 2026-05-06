@@ -1,38 +1,47 @@
-## Layout estilo Netflix com capas dos módulos
+## Refazer área de membros no estilo Netflix (de verdade)
 
-### Hoje
-A `/membros` mostra um Hero + carrosséis horizontais com **as aulas** (uma row por módulo). Não tem destaque visual para a capa do módulo.
+### O que tá errado hoje
+- As capas dos módulos estão em **16:9 horizontal** (formato de "thumb de aula"), mas a Netflix usa **pôster vertical 2:3** (igual cartaz de filme nas referências que você mandou).
+- Os módulos estão em **grid de 4 colunas** parado. Netflix é **linha horizontal que rola pro lado** ("My List", "Popular on Netflix", "Continue Watching"...).
+- Falta o **hover card grande** (quando passa o mouse a capa cresce e mostra info embaixo).
+- Falta o **billboard** ocupando o topo do jeito Netflix (gradiente lateral + logo do módulo + sinopse + Play / Mais informações).
 
 ### O que vou fazer
 
-**1. `/membros` — grid de capas dos módulos (estilo Netflix)**
-- Hero principal com "continue assistindo" mantido.
-- Em vez de carrossel de aulas por módulo, mostrar um **grid de capas dos módulos** (cards 16:9 grandes, estilo "Séries Netflix").
-- Cada card mostra: capa (`cover_url`), título, nº de aulas, e barra de progresso agregada do módulo.
-- Hover: leve zoom + botão Play no centro.
-- Linha "Continue assistindo" continua mostrando **aulas individuais** (pra retomar de onde parou).
+**1. Capas dos módulos viram pôster vertical (2:3)**
+- Card `aspect-[2/3]` (ex.: 300×450), `object-cover`, cantos arredondados leves.
+- Admin: vou trocar a recomendação de "1280×720 (16:9)" pra **"800×1200 (2:3) — estilo cartaz Netflix"**. As capas atuais que você já subiu continuam funcionando, mas vão aparecer cortadas até você trocar — vou avisar isso na tela.
 
-**2. Nova página `/membros/modulo/:moduleId` — interior do módulo**
-- Header com a capa do módulo em destaque (banner) + título + descrição.
-- Botão "Assistir Aula 1" (ou "Continuar do Ep. X").
-- Lista vertical de aulas (estilo "Episódios" da Netflix): thumbnail + nº + título + descrição + duração + checkmark se concluída + barra de progresso.
-- Clicar em qualquer aula → `/membros/aula/:lessonId` (já existe, toca o vídeo).
+**2. Linhas horizontais (rows) com scroll**
+- Cada seção vira uma `row` com scroll horizontal suave (igual Netflix), sem barra visível, com setas ◀ ▶ que aparecem no hover (desktop) e swipe no mobile.
+- Rows que vou criar:
+  - **Em destaque** (Billboard no topo)
+  - **Continue assistindo** (aulas individuais — capa horizontal 16:9 mesmo, igual Netflix faz com episódios)
+  - **Módulos** (capas 2:3 verticais)
+  - **Novidades** (módulos mais recentes — opcional, só se tiver +6 módulos)
 
-**3. Admin (`/admin`)**
-- Já permite cadastrar **módulos** (com capa via upload no bucket `module-covers`) e **aulas** (com URL do YouTube — extrai o ID, gera thumb e duração manual).
-- Vou só **adicionar dois ajustes**:
-  - Aviso visual destacando que a capa do módulo é o que aparece no grid Netflix.
-  - Recomendação de proporção 16:9 (ex: 1280×720) pra capa.
+**3. Hover card (desktop)**
+- Quando passar o mouse num pôster por ~300ms: card cresce 1.4x, sai do fluxo, mostra embaixo: Play ▶, ✓ marcar concluído, título grande, nº de aulas, % de progresso, descrição curta.
+- Mobile: tap → vai direto pro módulo (sem hover).
 
-Fluxo pra você cadastrar:
-1. Admin → "Novo módulo" → título, descrição, **capa 16:9** → publicar.
-2. Selecionar o módulo → "Nova aula" → título, **URL do YouTube**, descrição, duração (opcional) → publicar.
-3. Repetir aula por aula. Pode reordenar com as setinhas ↑↓.
+**4. Billboard topo (igual Money Heist da sua referência)**
+- Mantém imagem de fundo (capa do módulo em destaque), mas:
+  - Adiciona "**N** SÉRIE" no topo (vou usar inicial verde "R" da Real Life, no lugar do N vermelho).
+  - Match score fake removido. Em vez disso: badge "**Continue de onde parou**" ou "**Novo módulo**".
+  - Botões: ▶ **Assistir** (branco) + ⓘ **Mais informações** (cinza translúcido) — exatamente os 2 botões da Netflix.
+  - Gradiente lateral mais forte pra esquerda + gradiente embaixo (faz a transição com a primeira row).
 
-### Arquivos
-- `src/pages/membros/Membros.tsx` — refatorar pra grid de capas.
-- `src/pages/membros/Modulo.tsx` — **novo** (página interior do módulo).
-- `src/App.tsx` — registrar rota `/membros/modulo/:id`.
-- `src/pages/admin/Admin.tsx` — pequeno hint de proporção da capa.
+**5. Página interior do módulo (`/membros/modulo/:id`)**
+- Já existe — vou só ajustar o banner pra usar a capa em modo "wide" (com blur lateral se a capa for vertical) e a lista de aulas continua estilo episódios.
 
-Aprova que eu implemento.
+### Detalhes técnicos
+- **Arquivos:**
+  - `src/pages/membros/Membros.tsx` — refatorar layout (billboard + rows horizontais + cards 2:3 + hover card).
+  - `src/pages/membros/Modulo.tsx` — ajustar banner pra capa vertical (background blur + capa centralizada).
+  - `src/pages/admin/Admin.tsx` — trocar hint pra "2:3 / 800×1200".
+  - Componente novo: `src/components/membros/Row.tsx` (linha horizontal reutilizável com setas).
+  - Componente novo: `src/components/membros/PosterCard.tsx` (card 2:3 com hover expand).
+- **Sem novas dependências** — uso scroll nativo + Tailwind + Framer Motion (já existe? checo; se não, faço com CSS puro).
+- **Sem migração de banco** — tudo é só layout. Suas capas atuais continuam, só ficam melhores quando você re-enviar em 2:3.
+
+Aprova que eu mando?
