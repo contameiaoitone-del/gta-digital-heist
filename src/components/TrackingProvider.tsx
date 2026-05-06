@@ -22,6 +22,7 @@ export const TrackingProvider = () => {
     if (!isTracked) return;
     ensureUtms();
     ensurePixel();
+    ensureTtq();
     init();
   }, [location.pathname, init]);
 
