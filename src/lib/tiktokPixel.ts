@@ -1,6 +1,6 @@
 // TikTok Pixel loader — loads only on demand (e.g., /infozap routes).
 // Pixel ID is hardcoded (public identifier).
-export const TIKTOK_PIXEL_ID = "D7TMC2JC77U4TTGIIJ70";
+export const TIKTOK_PIXEL_ID = "D4S41KRC77UELK0GVVS0";
 
 declare global {
   interface Window {
