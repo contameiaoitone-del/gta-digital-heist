@@ -239,7 +239,7 @@ const InfoZap = () => {
           <img src={cityBackground} alt="" className="w-full h-full object-cover opacity-[0.18]" />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto text-center">
-          <HiddenContextBlock />
+          <HiddenContextBlock color="#0f0f0f" />
           {/* Pill */}
           <span className="inline-block mb-6 px-4 py-1.5 rounded-full text-sm font-semibold border" style={{ color: GREEN, borderColor: GREEN, backgroundColor: "rgba(0,255,136,0.08)" }}>
             ⚡ Método InfoZap
@@ -272,7 +272,7 @@ const InfoZap = () => {
       {/* PAIN — formato original InfoZap */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-3xl mx-auto">
-          <HiddenContextBlock />
+          <HiddenContextBlock color="#0f0f0f" />
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: PINK }}>O Problema</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             VOCÊ RECONHECE{" "}
@@ -315,7 +315,7 @@ const InfoZap = () => {
       {/* MECHANISM */}
       <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-4xl mx-auto">
-          <HiddenContextBlock />
+          <HiddenContextBlock color="#0f0f0f" />
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>O Mecanismo</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-8" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             Por que o InfoZap funciona quando tudo mais falhou?
@@ -352,7 +352,7 @@ const InfoZap = () => {
       {/* INIMIGO — seção do RZA */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-3xl mx-auto">
-          <HiddenContextBlock />
+          <HiddenContextBlock color="#0f0f0f" />
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             Por que a maioria não sai do zero —{" "}
             <span style={{ color: PINK }}>ou trava antes de chegar em R$1.000/dia</span>
@@ -383,7 +383,7 @@ const InfoZap = () => {
       {/* RESULTADOS REAIS */}
       <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-6xl mx-auto">
-          <HiddenContextBlock />
+          <HiddenContextBlock color="#0f0f0f" />
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Resultados Reais</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             Não é promessa. É o que já está acontecendo.
@@ -515,7 +515,7 @@ const InfoZap = () => {
       {/* O QUE VOCÊ APRENDE — do RZA */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-5xl mx-auto">
-          <HiddenContextBlock />
+          <HiddenContextBlock color="#0f0f0f" />
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>O Que Você Aprende</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             Do primeiro Pix a R$1.000/dia — tudo numa operação só
@@ -576,7 +576,7 @@ const InfoZap = () => {
       {/* BÔNUS — do RZA */}
       <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-4xl mx-auto">
-          <HiddenContextBlock />
+          <HiddenContextBlock color="#0f0f0f" />
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Bônus Exclusivos</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             E ainda leva isso sem custo adicional
@@ -602,7 +602,7 @@ const InfoZap = () => {
       {/* VALUE STACK — do RZA com preço R$67 */}
       <section id="comprar" className="py-16 md:py-24 px-4">
         <div className="max-w-2xl mx-auto">
-          <HiddenContextBlock />
+          <HiddenContextBlock color="#0f0f0f" />
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block text-center" style={{ color: GREEN }}>O Valor Real</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-10 text-center" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             Quanto vale tudo isso?
@@ -689,7 +689,7 @@ const InfoZap = () => {
       {/* FINAL CTA */}
       <section className="py-16 md:py-24 px-4" style={{ backgroundColor: "#0f0f0f" }}>
         <div className="max-w-2xl mx-auto text-center">
-          <HiddenContextBlock />
+          <HiddenContextBlock color="#0f0f0f" />
           <h2 className="text-3xl md:text-5xl font-bold mb-6" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             A única pergunta que importa agora:
           </h2>
@@ -703,7 +703,7 @@ const InfoZap = () => {
       {/* FAQ */}
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-3xl mx-auto">
-          <HiddenContextBlock />
+          <HiddenContextBlock color="#0f0f0f" />
           <span className="text-xs font-bold uppercase tracking-[0.2em] mb-3 block" style={{ color: GREEN }}>Dúvidas</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-10" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             Perguntas frequentes
