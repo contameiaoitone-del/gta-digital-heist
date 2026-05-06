@@ -239,6 +239,7 @@ const InfoZap = () => {
           <img src={cityBackground} alt="" className="w-full h-full object-cover opacity-[0.18]" />
         </div>
         <div className="relative z-10 max-w-3xl mx-auto text-center">
+          <HiddenContextBlock />
           {/* Pill */}
           <span className="inline-block mb-6 px-4 py-1.5 rounded-full text-sm font-semibold border" style={{ color: GREEN, borderColor: GREEN, backgroundColor: "rgba(0,255,136,0.08)" }}>
             ⚡ Método InfoZap
