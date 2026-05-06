@@ -1,1 +1,13 @@
 project_id = "ppfhafqgdkzfintbdmtg"
+
+[functions.efi-create-pix]
+verify_jwt = false
+
+[functions.efi-create-card]
+verify_jwt = false
+
+[functions.efi-check-status]
+verify_jwt = false
+
+[functions.efi-webhook]
+verify_jwt = false
