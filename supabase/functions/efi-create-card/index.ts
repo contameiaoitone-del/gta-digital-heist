@@ -33,10 +33,11 @@ Deno.serve(async (req) => {
 
     const parsed = BodySchema.safeParse(await req.json());
     if (!parsed.success) return jsonResponse({ error: "invalid", issues: parsed.error.flatten() }, 400);
-    const { name, email, phone, cpf, payment_token, installments } = parsed.data;
+    const { name, email, phone, cpf, payment_token, installments, session_id, event_id_purchase } = parsed.data;
     const cleanCpf = cpf.replace(/\D/g, "");
     const cleanPhone = phone.replace(/\D/g, "");
     if (!isValidCpf(cleanCpf)) return jsonResponse({ error: "invalid_cpf" }, 400);
+    const purchaseEventId = event_id_purchase || crypto.randomUUID();
 
     const token = await getCobAccessToken();
 
@@ -95,6 +96,8 @@ Deno.serve(async (req) => {
         efi_charge_id: chargeId,
         status: finalStatus,
         paid_at: isApproved ? new Date().toISOString() : null,
+        session_id: session_id ?? null,
+        event_id_purchase: purchaseEventId,
         raw: charge,
       })
       .select("id")
@@ -104,10 +107,36 @@ Deno.serve(async (req) => {
       return jsonResponse({ error: "db" }, 500);
     }
 
+    // Fire Purchase via CAPI immediately if approved (server-side dedup pair)
+    if (isApproved) {
+      try {
+        await supabase.functions.invoke("meta-capi", {
+          body: {
+            event_name: "Purchase",
+            event_id: purchaseEventId,
+            event_source_url: req.headers.get("referer") || undefined,
+            session_id: session_id ?? undefined,
+            full_name: name,
+            email,
+            phone: cleanPhone,
+            cpf: cleanCpf,
+            value: PRODUCT_AMOUNT_CENTS / 100,
+            currency: "BRL",
+            content_name: PRODUCT_NAME,
+            order_id: order.id,
+          },
+        });
+      } catch (e) {
+        console.error("capi purchase (card) failed", e);
+      }
+    }
+
     return jsonResponse({
       order_id: order.id,
       charge_id: chargeId,
       status: finalStatus,
+      event_id_purchase: purchaseEventId,
+      amount_cents: PRODUCT_AMOUNT_CENTS,
     });
   } catch (e) {
     console.error("efi-create-card error", e);
