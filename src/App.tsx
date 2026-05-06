@@ -19,6 +19,7 @@ const Obrigado = lazy(() => import("./pages/Obrigado"));
 const MembrosLogin = lazy(() => import("./pages/membros/MembrosLogin"));
 const Membros = lazy(() => import("./pages/membros/Membros"));
 const Aula = lazy(() => import("./pages/membros/Aula"));
+const Modulo = lazy(() => import("./pages/membros/Modulo"));
 const AuthCallback = lazy(() => import("./pages/membros/AuthCallback"));
 const Admin = lazy(() => import("./pages/admin/Admin"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/membros/login" element={<MembrosLogin />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/membros" element={<RequireAuth><Membros /></RequireAuth>} />
+            <Route path="/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
             <Route path="/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
             <Route path="/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
