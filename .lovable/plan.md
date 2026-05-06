@@ -1,46 +1,65 @@
-## Objetivo
+## Goal
 
-Corrigir o timing do evento `InitiateCheckout` para disparar quando o modal de checkout abre (não apenas após preencher o formulário) e dar instruções claras pra verificar Test Events do domínio real.
+Replicate the advanced Meta tracking architecture for **TikTok Ads**: client-side TikTok Pixel + server-side Events API (CAPI equivalent) with shared `event_id` for deduplication, hashed user_data, and full session enrichment from `visitor_sessions`.
 
-## Mudança de código
+Events fired on InfoZap funnel: `Pageview`, `InitiateCheckout`, `CompletePayment` (Purchase).
 
-### `src/components/checkout/CheckoutModal.tsx`
+## Required secrets (you'll provide)
 
-Substituir o `useEffect` que dispara `InitiateCheckout` em `step === "method"` por um que dispare quando o modal abre (`open === true`), uma única vez por sessão de modal:
+1. `TIKTOK_PIXEL_ID` — found in TikTok Ads Manager → Assets → Events → Web Events → your pixel
+2. `TIKTOK_ACCESS_TOKEN` — generated in the same pixel page → "Events API" → "Generate Access Token"
+3. (optional) `TIKTOK_TEST_EVENT_CODE` — for real-time Test Events panel validation
 
-```ts
-useEffect(() => {
-  if (open && !initiateFiredRef.current) {
-    initiateFiredRef.current = true;
-    trackInitiateCheckout({ value: 67 });
-  }
-}, [open, trackInitiateCheckout]);
-```
+I'll request these via `add_secret` after you approve.
 
-O `reset()` em `close(false)` já zera o `initiateFiredRef`, então fechar e reabrir o modal vai disparar novamente — comportamento correto.
+## Implementation
 
-Resultado:
-- Pixel Helper acusa `InitiateCheckout` (com `value: 67`, `currency: BRL`, `content_name: InfoZap`, `eventID`) **no instante em que o pop-up abre**.
-- CAPI envia o mesmo evento pro servidor com o mesmo `event_id` (deduplicação).
+### 1. Database
+Add columns to `visitor_sessions`:
+- `ttclid` (TikTok click ID, equivalent to `fbclid`)
+- `ttp` (TikTok browser cookie `_ttp`, equivalent to `_fbp`)
+- `event_id_pageview_tt`, `event_id_initiate_tt`, `event_id_purchase_tt` (separate IDs since TikTok requires its own dedup)
 
-## Verificação após o deploy
+### 2. Frontend — `src/lib/tiktokPixel.ts` (new)
+Mirror `metaPixel.ts`: load TikTok Pixel snippet asynchronously with `ensureTtq()`, expose `waitForTtq()` and `waitForTtp()` helpers.
 
-### A) Pixel Helper (instantâneo)
-1. Abra `https://reallifeacademy.com.br/infozap` com o Pixel Helper ativo.
-2. Veja `PageView` na carga.
-3. Clique em qualquer CTA "Quero meu acesso" → o pop-up abre → Pixel Helper deve mostrar `InitiateCheckout` na hora.
+### 3. Frontend — `src/hooks/useTracking.ts`
+Extend existing hook (don't duplicate) so each tracked event fires Meta + TikTok in parallel:
+- `init()` → also `ttq.track("Pageview", {...}, { event_id })` and call new `tiktok-events` edge function
+- `trackInitiateCheckout()` → also `ttq.track("InitiateCheckout", { value, currency, contents })` + server call
+- `trackPurchase()` → also TikTok `CompletePayment` (called from `Obrigado` page and `efi-webhook`)
+- Capture `ttclid` from URL and read `_ttp` cookie alongside `fbc`/`fbp`
 
-### B) Test Events do domínio real (duas opções)
-- **Opção 1 (sem código):** Gerenciador de Eventos → Pixel `1533634077714814` → aba **"Testar eventos"** → cole `https://reallifeacademy.com.br/infozap` no campo "Testar eventos do navegador" → "Abrir site". Os eventos do **Pixel browser** do domínio aparecerão ali (CAPI ainda não, porque sem `META_TEST_EVENT_CODE`).
-- **Opção 2 (browser + CAPI):** copie o código `TESTxxxxx` da aba Test Events e me envie — eu re-adiciono como secret `META_TEST_EVENT_CODE` temporariamente para CAPI também aparecer. Depois dos testes, removo de novo.
+### 4. `src/components/TrackingProvider.tsx`
+Add `ensureTtq()` next to `ensurePixel()` so TikTok loads only on `/infozap` (same gating as Meta).
 
-### C) Eventos de produção (com delay)
-Em **Visão geral / Eventos do site**, espere 5–20 min após interagir. Você verá:
-- `PageView` e `InitiateCheckout` com colunas **Browser**, **Server**, **Deduplicado**.
-- "Deduplicado" significa que Pixel + CAPI estão compartilhando o mesmo `event_id` (resultado desejado — Meta não conta em dobro).
+### 5. New edge function — `supabase/functions/tiktok-events/index.ts`
+Server-side Events API to `https://business-api.tiktok.com/open_api/v1.3/event/track/`:
+- Accepts same payload shape as `meta-capi`
+- Hashes `email`, `phone` (E.164), `external_id` (CPF), `first_name`, `last_name` with SHA-256
+- Sends `ttclid`, `ttp`, `ip`, `user_agent` un-hashed in `user.*`
+- Pulls session context from `visitor_sessions` by `session_id` (same as Meta)
+- Sends shared `event_id` for browser/server dedup
+- Headers: `Access-Token: <TIKTOK_ACCESS_TOKEN>`
+- Supports `test_event_code` when secret is set
 
-### D) EMQ (Qualidade de Correspondência)
-Vai subir nos próximos dias conforme volume aumenta. Com email, telefone, nome, CPF, IP, UA, fbp, fbc, geo todos enviados hashados, o esperado é EMQ 7+ no `Purchase` e 5+ no `InitiateCheckout`/`PageView`.
+### 6. Server-side Purchase — `supabase/functions/efi-webhook/index.ts`
+After invoking `meta-capi` on payment confirmation, also invoke `tiktok-events` with `CompletePayment` and the stored `event_id_purchase_tt`.
 
-## Por que `fbp`/`fbc` ainda aparecem vazios em testes diretos
-Comportamento normal: `_fbp` é setado pelo próprio script do Pixel após carregar (já tratamos com `waitForFbp`). `_fbc` só é setado quando há `fbclid` na URL — ou seja, só quando o tráfego vem de um clique em anúncio Meta. Tráfego direto, orgânico ou de outras fontes nunca terá `fbc`. Não é bug.
+### 7. `track-session` edge function
+Accept and persist new fields: `ttclid`, `ttp`, `event_id_pageview_tt`, `event_id_initiate_tt`, `event_id_purchase_tt`.
+
+## Validation
+
+After deploy:
+1. Visit `/infozap?ttclid=test123` → TikTok Pixel Helper extension should show Pageview firing client-side
+2. Open checkout modal → InitiateCheckout fires
+3. Complete a R$67 Pix test → CompletePayment appears in TikTok Events Manager → "Diagnostics" tab as **deduplicated** (Browser + Server)
+4. Match Quality score should be 7+ thanks to hashed email/phone/CPF/name + ttclid + ttp + IP + UA
+
+## Files touched
+
+- new: `src/lib/tiktokPixel.ts`, `supabase/functions/tiktok-events/index.ts`
+- edited: `src/hooks/useTracking.ts`, `src/components/TrackingProvider.tsx`, `supabase/functions/track-session/index.ts`, `supabase/functions/efi-webhook/index.ts`
+- migration: add 5 columns to `visitor_sessions`
+- secrets: `TIKTOK_PIXEL_ID`, `TIKTOK_ACCESS_TOKEN` (+ optional test code)
