@@ -36,7 +36,7 @@ export interface CardResponse {
 export function useEfiCheckout() {
   const [loading, setLoading] = useState(false);
 
-  const createPix = useCallback(async (payload: CustomerPayload): Promise<PixResponse> => {
+  const createPix = useCallback(async (payload: CustomerPayload & { session_id?: string; event_id_purchase?: string }): Promise<PixResponse> => {
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("efi-create-pix", { body: payload });
