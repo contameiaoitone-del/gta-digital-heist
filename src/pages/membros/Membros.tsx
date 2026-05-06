@@ -44,7 +44,7 @@ const Membros = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.title = "Área de Membros — Real Life Academy";
+    document.title = "Área de Membros — InfoZap";
     (async () => {
       const [mRes, lRes, pRes] = await Promise.all([
         supabase.from("modules").select("*").order("position"),
@@ -83,8 +83,8 @@ const Membros = () => {
       <header className="fixed top-0 left-0 right-0 z-40 bg-gradient-to-b from-[#080808] via-[#080808]/80 to-transparent">
         <div className="max-w-[1800px] mx-auto px-4 md:px-12 py-4 flex items-center justify-between">
           <Link to="/membros" className="flex items-center gap-2">
-            <span className="text-2xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.06em" }}>
-              REAL LIFE <span style={{ color: "#00ff88" }}>ACADEMY</span>
+            <span className="text-2xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.06em", color: "#00ff88" }}>
+              INFOZAP
             </span>
           </Link>
           <div className="flex items-center gap-2">
@@ -100,37 +100,39 @@ const Membros = () => {
         </div>
       </header>
 
-      {/* BILLBOARD estilo Netflix */}
+      {/* BILLBOARD estilo Netflix — usa o primeiro módulo. Reordene no Admin para trocar. */}
       {heroModule && (
-        <section className="relative h-[78vh] min-h-[520px] w-full overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center scale-105"
-            style={{
-              backgroundImage: `url(${heroModule.cover_url || (heroLesson && (heroLesson.thumbnail_url || ytThumb(heroLesson.youtube_id))) || ""})`,
-            }}
-          />
-          {/* Gradients: lateral esquerdo + bottom (transição com row) */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/70 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#080808] via-[#080808]/60 to-transparent" />
+        <section className="relative h-[58vh] min-h-[420px] max-h-[640px] w-full overflow-hidden pt-16">
+          {heroModule.cover_url || (heroLesson && (heroLesson.thumbnail_url || ytThumb(heroLesson.youtube_id))) ? (
+            <img
+              src={heroModule.cover_url || heroLesson?.thumbnail_url || ytThumb(heroLesson?.youtube_id || null) || ""}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover object-top"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a]" />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/85 to-[#080808]/10" />
+          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#080808] via-[#080808]/85 to-transparent" />
 
-          <div className="relative z-10 max-w-[1800px] mx-auto px-4 md:px-12 h-full flex flex-col justify-end pb-24 md:pb-32">
-            <div className="flex items-center gap-2 mb-4">
+          <div className="relative z-10 max-w-[1800px] mx-auto px-4 md:px-12 h-full flex flex-col justify-end pb-16 md:pb-20">
+            <div className="flex items-center gap-2 mb-3">
               <span
-                className="text-3xl font-black px-2 leading-none"
+                className="text-2xl font-black px-1.5 leading-none"
                 style={{ fontFamily: "'Bebas Neue', cursive", color: "#00ff88" }}
               >
-                R
+                I
               </span>
-              <span className="text-xs uppercase tracking-[0.3em] text-white/80">Real Life Academy</span>
+              <span className="text-[11px] uppercase tracking-[0.3em] text-white/80">InfoZap</span>
             </div>
             <h1
-              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 max-w-3xl drop-shadow-2xl"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-3 max-w-2xl drop-shadow-2xl"
               style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.02em" }}
             >
               {heroModule.title}
             </h1>
             {heroModule.description && (
-              <p className="text-base md:text-lg text-gray-200 max-w-xl mb-6 line-clamp-3 drop-shadow-lg">
+              <p className="text-sm md:text-base text-gray-200 max-w-lg mb-5 line-clamp-2 drop-shadow-lg">
                 {heroModule.description}
               </p>
             )}
@@ -138,18 +140,18 @@ const Membros = () => {
               {heroLesson && (
                 <button
                   onClick={() => navigate(`/membros/aula/${heroLesson.id}`)}
-                  className="flex items-center gap-2 px-7 py-3 rounded font-bold uppercase bg-white text-black hover:bg-white/85 transition-colors"
+                  className="flex items-center gap-2 px-6 py-2.5 rounded font-bold uppercase bg-white text-black hover:bg-white/85 transition-colors text-sm"
                   style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
                 >
-                  <Play className="h-5 w-5 fill-black" /> {progress[heroLesson.id] ? "Continuar" : "Assistir"}
+                  <Play className="h-4 w-4 fill-black" /> {progress[heroLesson.id] ? "Continuar" : "Assistir"}
                 </button>
               )}
               <button
                 onClick={() => navigate(`/membros/modulo/${heroModule.id}`)}
-                className="flex items-center gap-2 px-7 py-3 rounded font-bold uppercase bg-white/20 hover:bg-white/30 backdrop-blur text-white transition-colors"
+                className="flex items-center gap-2 px-6 py-2.5 rounded font-bold uppercase bg-white/20 hover:bg-white/30 backdrop-blur text-white transition-colors text-sm"
                 style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
               >
-                <Info className="h-5 w-5" /> Mais informações
+                <Info className="h-4 w-4" /> Mais informações
               </button>
             </div>
           </div>

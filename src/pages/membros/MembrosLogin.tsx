@@ -12,7 +12,7 @@ const MembrosLogin = () => {
   const [magicLoading, setMagicLoading] = useState(false);
 
   useEffect(() => {
-    document.title = "Entrar — Real Life Academy";
+    document.title = "Entrar — InfoZap";
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate("/membros", { replace: true });
     });
