@@ -15,68 +15,59 @@ interface CardStepProps {
 
 const PRICE_CENTS = 6700;
 
-// Loads Efí Pagamentos JS SDK dynamically. Returns the configured client.
-// Docs: https://dev.efipay.com.br/docs/api-cobrancas/cartao
-async function loadEfiSdk(payeeCode: string) {
-  // @ts-ignore
-  if (window.$gn?.ready) return window.$gn;
+const SDK_URL =
+  "https://cdn.jsdelivr.net/npm/payment-token-efi@latest/dist/payment-token-efi.umd.min.js";
 
+// Loads the official EfiPay payment-token JS SDK (production-safe).
+// Docs: https://github.com/efipay/js-payment-token-efi
+async function loadEfiSdk(): Promise<unknown> {
   // @ts-ignore
-  window.$gn = {
-    validForm: true,
-    processed: false,
-    done: {},
-    ready: function (fn: (checkout: unknown) => void) {
-      // @ts-ignore
-      window.$gn.done = fn;
-    },
-  };
-
-  const v = Math.floor(Math.random() * 1_000_000);
-  const url = `https://sandbox.gerencianet.com.br/v1/cdn/${payeeCode}/${v}`;
-  // Despite "sandbox" in the path, this loader works for production accounts —
-  // it's the standard Efí/Gerencianet payment-token endpoint. Production-only
-  // credentials still tokenize correctly via this loader.
-  const prodUrl = `https://payment-token.efipay.com.br/v1/cdn/${payeeCode}/${v}`;
+  if (typeof window.EfiPay !== "undefined") return window.EfiPay;
 
   await new Promise<void>((resolve, reject) => {
+    const existing = document.querySelector(`script[src="${SDK_URL}"]`) as HTMLScriptElement | null;
+    if (existing) {
+      existing.addEventListener("load", () => resolve());
+      existing.addEventListener("error", () => reject(new Error("efi sdk load failed")));
+      // @ts-ignore — already loaded
+      if (typeof window.EfiPay !== "undefined") resolve();
+      return;
+    }
     const s = document.createElement("script");
-    s.src = prodUrl;
-    s.async = false;
+    s.src = SDK_URL;
+    s.async = true;
     s.onload = () => resolve();
-    s.onerror = () => {
-      // fallback to legacy gn URL
-      const s2 = document.createElement("script");
-      s2.src = url;
-      s2.async = false;
-      s2.onload = () => resolve();
-      s2.onerror = () => reject(new Error("efi sdk load failed"));
-      document.head.appendChild(s2);
-    };
+    s.onerror = () => reject(new Error("efi sdk load failed"));
     document.head.appendChild(s);
   });
 
-  // The SDK injects a second script that calls $gn.ready(...)
-  return await new Promise<unknown>((resolve) => {
-    const start = Date.now();
-    const i = setInterval(() => {
-      // @ts-ignore
-      if (typeof window.$gn?.checkout?.getPaymentToken === "function") {
-        clearInterval(i);
-        // @ts-ignore
-        resolve(window.$gn.checkout);
-      } else if (Date.now() - start > 10000) {
-        clearInterval(i);
-        resolve(null);
-      }
-    }, 100);
-  });
+  // @ts-ignore
+  return window.EfiPay;
 }
 
 const installmentLabel = (n: number) => {
   const value = (PRICE_CENTS / 100 / n).toFixed(2).replace(".", ",");
   return n === 1 ? `1x de R$ 67,00 (à vista)` : `${n}x de R$ ${value} sem juros`;
 };
+
+const inputCls =
+  "w-full h-11 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88]";
+
+const Field = ({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) => (
+  <div className="space-y-1">
+    <label className="text-xs text-gray-300 uppercase tracking-wider">{label}</label>
+    {children}
+    {error && <p className="text-xs text-[#ff2d78]">{error}</p>}
+  </div>
+);
 
 export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
   const { createCard } = useEfiCheckout();
@@ -96,6 +87,7 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
         setPayeeCode((data as { payee_code: string }).payee_code);
       }
     });
+    loadEfiSdk().catch(() => {});
   }, []);
 
   const submit = async (e: React.FormEvent) => {
@@ -115,33 +107,42 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
 
     setLoading(true);
     try {
-      const checkout = await loadEfiSdk(payeeCode);
-      if (!checkout) {
+      // @ts-ignore
+      const EfiPay: any = await loadEfiSdk();
+      if (!EfiPay?.CreditCard) {
         toast.error("Não foi possível carregar o módulo de cartão. Tente novamente ou pague com Pix.");
         setLoading(false);
         return;
       }
 
       const [mm, yy] = expiry.split("/");
-      // @ts-ignore
-      const tokenResult: { data?: { payment_token: string }; error?: string } = await new Promise((resolve) => {
-        // @ts-ignore
-        checkout.getPaymentToken(
-          {
-            brand: "visa", // detected by SDK regardless; Efí auto-detects from number
-            number: number.replace(/\D/g, ""),
-            cvv,
-            expiration_month: mm,
-            expiration_year: `20${yy}`,
-          },
-          (err: unknown, resp: { data: { payment_token: string } }) => {
-            if (err) resolve({ error: typeof err === "string" ? err : "tokenization failed" });
-            else resolve(resp);
-          },
-        );
-      });
+      const cleanNumber = number.replace(/\D/g, "");
+      const cleanCpf = customer.cpf.replace(/\D/g, "");
 
-      if (!tokenResult?.data?.payment_token) {
+      let tokenResp: { payment_token?: string; card_mask?: string };
+      try {
+        tokenResp = await EfiPay.CreditCard
+          .setAccount(payeeCode)
+          .setEnvironment("production")
+          .setCreditCardData({
+            number: cleanNumber,
+            cvv,
+            expirationMonth: mm,
+            expirationYear: `20${yy}`,
+            holderName: holder,
+            holderDocument: cleanCpf,
+            reuse: false,
+          })
+          .getPaymentToken();
+      } catch (err: any) {
+        console.error("efi tokenize error", err);
+        const msg = err?.error_description || err?.message || "Não foi possível validar o cartão.";
+        toast.error(typeof msg === "string" ? msg : "Verifique os dados do cartão.");
+        setLoading(false);
+        return;
+      }
+
+      if (!tokenResp?.payment_token) {
         toast.error("Não foi possível validar o cartão. Verifique os dados.");
         setLoading(false);
         return;
@@ -152,7 +153,7 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
 
       const result = await createCard({
         ...customer,
-        payment_token: tokenResult.data.payment_token,
+        payment_token: tokenResp.payment_token,
         installments,
         birth: birthIso,
       });
@@ -167,16 +168,6 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
       setLoading(false);
     }
   };
-
-  const Field = ({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) => (
-    <div className="space-y-1">
-      <label className="text-xs text-gray-300 uppercase tracking-wider">{label}</label>
-      {children}
-      {error && <p className="text-xs text-[#ff2d78]">{error}</p>}
-    </div>
-  );
-
-  const inputCls = "w-full h-11 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88]";
 
   return (
     <form onSubmit={submit} className="space-y-3">
