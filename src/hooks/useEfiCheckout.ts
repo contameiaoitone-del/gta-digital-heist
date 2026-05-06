@@ -14,23 +14,29 @@ export interface PixResponse {
   copia_cola: string;
   qrcode_image: string;
   expires_in: number;
+  event_id_purchase: string;
+  amount_cents: number;
 }
 
 export interface CardPayload extends CustomerPayload {
   payment_token: string;
   installments: number;
+  session_id?: string;
+  event_id_purchase?: string;
 }
 
 export interface CardResponse {
   order_id: string;
   charge_id: string;
   status: "paid" | "pending" | "failed" | string;
+  event_id_purchase: string;
+  amount_cents: number;
 }
 
 export function useEfiCheckout() {
   const [loading, setLoading] = useState(false);
 
-  const createPix = useCallback(async (payload: CustomerPayload): Promise<PixResponse> => {
+  const createPix = useCallback(async (payload: CustomerPayload & { session_id?: string; event_id_purchase?: string }): Promise<PixResponse> => {
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("efi-create-pix", { body: payload });

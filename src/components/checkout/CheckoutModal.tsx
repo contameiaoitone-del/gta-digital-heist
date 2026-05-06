@@ -9,6 +9,7 @@ import { customerSchema } from "@/lib/validators";
 import { useEfiCheckout, type PixResponse } from "@/hooks/useEfiCheckout";
 import { PixStep } from "./PixStep";
 import { CardStep } from "./CardStep";
+import { useTracking, getSessionId } from "@/hooks/useTracking";
 
 interface CheckoutModalProps {
   open: boolean;
@@ -20,6 +21,7 @@ type Step = "form" | "method" | "pix" | "card";
 export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   const navigate = useNavigate();
   const { createPix, loading } = useEfiCheckout();
+  const { trackInitiateCheckout, saveLead } = useTracking();
   const [step, setStep] = useState<Step>("form");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -50,12 +52,14 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
       return;
     }
     setErrors({});
+    saveLead({ name, email, phone, cpf });
+    trackInitiateCheckout({ value: 67 });
     setStep("method");
   };
 
   const goPix = async () => {
     try {
-      const r = await createPix(customer);
+      const r = await createPix({ ...customer, session_id: getSessionId() });
       setPixData(r);
       setStep("pix");
     } catch (e) {
@@ -66,12 +70,13 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   const goCard = () => setStep("card");
 
   const onPixPaid = () => {
+    const eid = pixData?.event_id_purchase || "";
     onOpenChange(false);
-    navigate("/obrigado?metodo=pix");
+    navigate(`/obrigado?metodo=pix&eventId=${encodeURIComponent(eid)}&value=67&orderId=${encodeURIComponent(pixData?.order_id || "")}`);
   };
-  const onCardPaid = () => {
+  const onCardPaid = (info: { eventId: string; orderId: string }) => {
     onOpenChange(false);
-    navigate("/obrigado?metodo=cartao");
+    navigate(`/obrigado?metodo=cartao&eventId=${encodeURIComponent(info.eventId)}&value=67&orderId=${encodeURIComponent(info.orderId)}`);
   };
   const onCardPending = () => {
     onOpenChange(false);

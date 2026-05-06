@@ -7,10 +7,11 @@ import EfiPay from "payment-token-efi";
 import { cardSchema } from "@/lib/validators";
 import { useEfiCheckout } from "@/hooks/useEfiCheckout";
 import { supabase } from "@/integrations/supabase/client";
+import { getSessionId } from "@/hooks/useTracking";
 
 interface CardStepProps {
   customer: { name: string; email: string; phone: string; cpf: string };
-  onPaid: () => void;
+  onPaid: (info: { eventId: string; orderId: string }) => void;
   onPending: () => void;
 }
 
@@ -151,9 +152,10 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
         ...customer,
         payment_token: tokenResp.payment_token,
         installments,
+        session_id: getSessionId(),
       });
 
-      if (result.status === "paid") onPaid();
+      if (result.status === "paid") onPaid({ eventId: result.event_id_purchase, orderId: result.order_id });
       else if (result.status === "failed") toast.error("Pagamento recusado pela operadora.");
       else onPending();
     } catch (err) {

@@ -18,6 +18,8 @@ const BodySchema = z.object({
   email: z.string().trim().email().max(160),
   phone: z.string().trim().min(8).max(20),
   cpf: z.string().trim().min(11).max(20),
+  session_id: z.string().trim().min(1).max(80).optional(),
+  event_id_purchase: z.string().trim().min(1).max(80).optional(),
 });
 
 Deno.serve(async (req) => {
@@ -30,7 +32,8 @@ Deno.serve(async (req) => {
 
     const parsed = BodySchema.safeParse(await req.json());
     if (!parsed.success) return jsonResponse({ error: "invalid", issues: parsed.error.flatten() }, 400);
-    const { name, email, phone, cpf } = parsed.data;
+    const { name, email, phone, cpf, session_id, event_id_purchase } = parsed.data;
+    const purchaseEventId = event_id_purchase || crypto.randomUUID();
     const cleanCpf = cpf.replace(/\D/g, "");
     if (!isValidCpf(cleanCpf)) return jsonResponse({ error: "invalid_cpf" }, 400);
 
@@ -93,6 +96,8 @@ Deno.serve(async (req) => {
         payment_method: "pix",
         efi_txid: cob.txid,
         status: "pending",
+        session_id: session_id ?? null,
+        event_id_purchase: purchaseEventId,
         raw: { cob, loc: cob.loc },
       })
       .select("id")
@@ -108,6 +113,8 @@ Deno.serve(async (req) => {
       copia_cola: qr.qrcode,
       qrcode_image: qr.imagemQrcode,
       expires_in: 3600,
+      event_id_purchase: purchaseEventId,
+      amount_cents: PRODUCT_AMOUNT_CENTS,
     });
   } catch (e) {
     console.error("efi-create-pix error", e);
