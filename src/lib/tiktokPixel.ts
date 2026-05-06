@@ -32,7 +32,7 @@ export function ensureTtq(pixelId: string = TIKTOK_PIXEL_ID): void {
 
   if (!snippetInjected && !window.ttq) {
     /* eslint-disable */
-    !(function (w: any, d: Document, t: string) {
+    (function (w: any, d: Document, t: string) {
       w.TiktokAnalyticsObject = t;
       const ttq: any = (w[t] = w[t] || []);
       ttq.methods = [
