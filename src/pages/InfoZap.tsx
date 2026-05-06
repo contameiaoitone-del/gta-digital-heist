@@ -48,7 +48,7 @@ const moduleCovers = [
   { image: infozapModProdutos, title: "Bônus - 3 Produtos Validados" },
 ];
 
-const CHECKOUT_BASE = "https://pay.cakto.com.br/3dsuw79_671863";
+
 
 const GREEN = "#00ff88";
 const PINK = "#ff2d78";
@@ -734,6 +734,7 @@ const InfoZap = () => {
           <CTAButton small />
         </div>
       </div>
+      <CheckoutModal open={checkoutOpen} onOpenChange={setCheckoutOpen} />
     </div>
   );
 };
