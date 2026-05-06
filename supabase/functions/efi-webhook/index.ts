@@ -67,6 +67,15 @@ Deno.serve(async (req) => {
       } catch (e) {
         console.error("tiktok purchase (pix) failed", e);
       }
+
+      // Grant member access (creates user, sends welcome email)
+      try {
+        await supabase.functions.invoke("grant-member-access", {
+          body: { order_id: updated.id },
+        });
+      } catch (e) {
+        console.error("grant access (pix) failed", e);
+      }
     }
     return jsonResponse({ ok: true });
   } catch (e) {
