@@ -19,6 +19,7 @@ const Obrigado = lazy(() => import("./pages/Obrigado"));
 const MembrosLogin = lazy(() => import("./pages/membros/MembrosLogin"));
 const Membros = lazy(() => import("./pages/membros/Membros"));
 const Aula = lazy(() => import("./pages/membros/Aula"));
+const Modulo = lazy(() => import("./pages/membros/Modulo"));
 const AuthCallback = lazy(() => import("./pages/membros/AuthCallback"));
 const Admin = lazy(() => import("./pages/admin/Admin"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
