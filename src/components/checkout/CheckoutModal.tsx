@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IMaskInput } from "react-imask";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -29,11 +29,13 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   const [cpf, setCpf] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pixData, setPixData] = useState<PixResponse | null>(null);
+  const initiateFiredRef = useRef(false);
 
   const reset = () => {
     setStep("form");
     setPixData(null);
     setErrors({});
+    initiateFiredRef.current = false;
   };
 
   const close = (v: boolean) => {
