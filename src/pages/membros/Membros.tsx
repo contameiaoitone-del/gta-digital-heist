@@ -7,6 +7,7 @@ import Row from "@/components/membros/Row";
 import PosterCard from "@/components/membros/PosterCard";
 import EpisodeCard from "@/components/membros/EpisodeCard";
 import infozapBanner from "@/assets/real-life-academy-banner.png";
+import infozapLogo from "@/assets/infozap-logo.png";
 
 interface Module {
   id: string;
@@ -121,12 +122,11 @@ const Membros = () => {
             </span>
             <span className="text-[11px] uppercase tracking-[0.3em] text-white/80">Curso oficial</span>
           </div>
-          <h1
-            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-3 max-w-2xl drop-shadow-2xl"
-            style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.02em" }}
-          >
-            INFOZAP
-          </h1>
+          <img
+            src={infozapLogo}
+            alt="InfoZap"
+            className="h-20 md:h-28 lg:h-32 w-auto mb-3 drop-shadow-2xl"
+          />
           <p className="text-sm md:text-base text-gray-200 max-w-xl mb-5 line-clamp-3 drop-shadow-lg">
             O método completo para escalar produtos digitais no WhatsApp. Tráfego pago, criativos, copy, escala e os bastidores reais de quem fatura todo dia.
           </p>
@@ -167,7 +167,7 @@ const Membros = () => {
         </div>
       )}
 
-      <div className="max-w-[1800px] mx-auto -mt-20 md:-mt-28 relative z-20 space-y-2">
+      <div className="max-w-[1800px] mx-auto mt-6 md:mt-8 relative z-20 space-y-2">
         {/* Continue assistindo */}
         {continueWatching.length > 0 && (
           <Row title="Continue assistindo">
