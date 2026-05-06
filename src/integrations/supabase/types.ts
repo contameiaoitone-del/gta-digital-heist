@@ -24,12 +24,14 @@ export type Database = {
           customer_phone: string
           efi_charge_id: string | null
           efi_txid: string | null
+          event_id_purchase: string | null
           id: string
           installments: number | null
           paid_at: string | null
           payment_method: string
           product: string
           raw: Json | null
+          session_id: string | null
           status: string
           updated_at: string
         }
@@ -42,12 +44,14 @@ export type Database = {
           customer_phone: string
           efi_charge_id?: string | null
           efi_txid?: string | null
+          event_id_purchase?: string | null
           id?: string
           installments?: number | null
           paid_at?: string | null
           payment_method: string
           product: string
           raw?: Json | null
+          session_id?: string | null
           status?: string
           updated_at?: string
         }
@@ -60,12 +64,14 @@ export type Database = {
           customer_phone?: string
           efi_charge_id?: string | null
           efi_txid?: string | null
+          event_id_purchase?: string | null
           id?: string
           installments?: number | null
           paid_at?: string | null
           payment_method?: string
           product?: string
           raw?: Json | null
+          session_id?: string | null
           status?: string
           updated_at?: string
         }
@@ -100,11 +106,19 @@ export type Database = {
           city: string | null
           country: string | null
           created_at: string | null
+          email: string | null
+          event_id_initiate: string | null
+          event_id_pageview: string | null
+          external_id: string | null
           fbc: string | null
+          fbclid: string | null
           fbp: string | null
+          first_name: string | null
           id: string
           ip_address: string | null
+          last_name: string | null
           page_location: string | null
+          phone: string | null
           sck: string
           state: string | null
           updated_at: string | null
@@ -114,11 +128,19 @@ export type Database = {
           city?: string | null
           country?: string | null
           created_at?: string | null
+          email?: string | null
+          event_id_initiate?: string | null
+          event_id_pageview?: string | null
+          external_id?: string | null
           fbc?: string | null
+          fbclid?: string | null
           fbp?: string | null
+          first_name?: string | null
           id?: string
           ip_address?: string | null
+          last_name?: string | null
           page_location?: string | null
+          phone?: string | null
           sck: string
           state?: string | null
           updated_at?: string | null
@@ -128,11 +150,19 @@ export type Database = {
           city?: string | null
           country?: string | null
           created_at?: string | null
+          email?: string | null
+          event_id_initiate?: string | null
+          event_id_pageview?: string | null
+          external_id?: string | null
           fbc?: string | null
+          fbclid?: string | null
           fbp?: string | null
+          first_name?: string | null
           id?: string
           ip_address?: string | null
+          last_name?: string | null
           page_location?: string | null
+          phone?: string | null
           sck?: string
           state?: string | null
           updated_at?: string | null
