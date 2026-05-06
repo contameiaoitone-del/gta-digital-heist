@@ -114,7 +114,7 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
       // 2) Tokenize the card.
       let tokenResp: { payment_token?: string; card_mask?: string };
       try {
-        tokenResp = await withTimeout(
+        tokenResp = (await withTimeout(
           // @ts-ignore
           EfiPay.CreditCard
             .setAccount(payeeCode)
@@ -132,7 +132,7 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
             .getPaymentToken(),
           20000,
           "getPaymentToken",
-        );
+        )) as { payment_token?: string; card_mask?: string };
       } catch (err: any) {
         console.error("efi tokenize error", err);
         const msg = err?.error_description || err?.message || "Não foi possível validar o cartão.";
