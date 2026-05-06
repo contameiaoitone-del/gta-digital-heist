@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
 
     const parsed = BodySchema.safeParse(await req.json());
     if (!parsed.success) return jsonResponse({ error: "invalid", issues: parsed.error.flatten() }, 400);
-    const { name, email, phone, cpf, payment_token, installments, birth } = parsed.data;
+    const { name, email, phone, cpf, payment_token, installments } = parsed.data;
     const cleanCpf = cpf.replace(/\D/g, "");
     const cleanPhone = phone.replace(/\D/g, "");
     if (!isValidCpf(cleanCpf)) return jsonResponse({ error: "invalid_cpf" }, 400);
@@ -57,7 +57,6 @@ Deno.serve(async (req) => {
               name,
               email,
               cpf: cleanCpf,
-              birth,
               phone_number: cleanPhone,
             },
           },
