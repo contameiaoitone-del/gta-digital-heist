@@ -21,7 +21,7 @@ type Step = "form" | "method" | "pix" | "card";
 export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   const navigate = useNavigate();
   const { createPix, loading } = useEfiCheckout();
-  const { trackInitiateCheckout, saveLead, trackTikTokPurchaseTest } = useTracking();
+  const { trackInitiateCheckout, saveLead } = useTracking();
   const [step, setStep] = useState<Step>("form");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
