@@ -253,13 +253,14 @@ const Admin = () => {
           <div className="space-y-3">
             <Field label="Título"><input className={inputCls} value={editingModule.title || ""} onChange={(e) => setEditingModule({ ...editingModule, title: e.target.value })} /></Field>
             <Field label="Descrição"><textarea className={inputCls + " h-24"} value={editingModule.description || ""} onChange={(e) => setEditingModule({ ...editingModule, description: e.target.value })} /></Field>
-            <Field label="Capa (opcional)">
+            <Field label="Capa do módulo (16:9 — recomendado 1280×720)">
               <input type="file" accept="image/*" onChange={async (e) => {
                 const f = e.target.files?.[0];
                 if (!f) return;
                 const url = await uploadCover(f);
                 if (url) setEditingModule({ ...editingModule, cover_url: url });
               }} className="text-sm text-gray-300" />
+              <p className="text-xs text-gray-500 mt-1">Esta capa aparece no grid estilo Netflix da área de membros.</p>
               {editingModule.cover_url && <img src={editingModule.cover_url} alt="" className="mt-2 max-h-32 rounded" />}
             </Field>
             <label className="flex items-center gap-2 text-sm">
