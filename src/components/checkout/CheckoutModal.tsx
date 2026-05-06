@@ -50,8 +50,10 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
     if (open && !initiateFiredRef.current) {
       initiateFiredRef.current = true;
       trackInitiateCheckout({ value: 67 });
+      // TEMP: TikTok conversion unlock — remove after event is liberated
+      trackTikTokPurchaseTest({ value: 67 });
     }
-  }, [open, trackInitiateCheckout]);
+  }, [open, trackInitiateCheckout, trackTikTokPurchaseTest]);
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
