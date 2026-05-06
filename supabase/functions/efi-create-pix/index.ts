@@ -18,6 +18,8 @@ const BodySchema = z.object({
   email: z.string().trim().email().max(160),
   phone: z.string().trim().min(8).max(20),
   cpf: z.string().trim().min(11).max(20),
+  session_id: z.string().trim().min(1).max(80).optional(),
+  event_id_purchase: z.string().trim().min(1).max(80).optional(),
 });
 
 Deno.serve(async (req) => {
