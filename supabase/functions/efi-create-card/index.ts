@@ -129,6 +129,13 @@ Deno.serve(async (req) => {
       } catch (e) {
         console.error("capi purchase (card) failed", e);
       }
+      try {
+        await supabase.functions.invoke("grant-member-access", {
+          body: { order_id: order.id },
+        });
+      } catch (e) {
+        console.error("grant access (card) failed", e);
+      }
     }
 
     return jsonResponse({
