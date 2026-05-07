@@ -29,14 +29,14 @@ const Hero = () => {
           muted
           playsInline
           preload="auto"
-          poster="/hero-poster.jpg"
+          poster="/lp2/hero-poster.jpg"
           // @ts-expect-error - non-standard but supported attribute
           fetchpriority="high"
           disableRemotePlayback
           className="w-full h-full object-cover"
         >
-          <source src="/hero-video-mobile.mp4" type="video/mp4" media="(max-width: 640px)" />
-          <source src="/hero-video.mp4" type="video/mp4" />
+          <source src="/lp2/hero-video-mobile.mp4" type="video/mp4" media="(max-width: 640px)" />
+          <source src="/lp2/hero-video.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-background" />
       </div>
