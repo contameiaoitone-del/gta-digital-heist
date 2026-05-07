@@ -224,6 +224,11 @@ Deno.serve(async (req) => {
         success: ok,
         meta_response: metaResp ?? null,
         error: fetchErr || (!ok ? JSON.stringify(metaResp) : null),
+        utm_source: utm_source || null,
+        utm_medium: utm_medium || null,
+        utm_campaign: utm_campaign || null,
+        utm_content: utm_content || null,
+        utm_term: utm_term || null,
       });
     } catch (e) {
       console.error("meta_capi_log insert failed", e);
