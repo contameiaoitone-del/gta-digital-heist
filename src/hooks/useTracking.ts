@@ -85,6 +85,7 @@ function readUtms(): Record<string, string> {
     }
   } catch { /* noop */ }
   return out;
+}
 
 async function readGeo(): Promise<{ country?: string; state?: string; city?: string }> {
   try {
