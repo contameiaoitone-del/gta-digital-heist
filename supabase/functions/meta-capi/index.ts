@@ -147,6 +147,17 @@ Deno.serve(async (req) => {
     if (body.order_id) customData.order_id = body.order_id;
     if (body.event_name === "Purchase") customData.content_type = "product";
 
+    const utm_source = (session?.utm_source as string) || undefined;
+    const utm_medium = (session?.utm_medium as string) || undefined;
+    const utm_campaign = (session?.utm_campaign as string) || undefined;
+    const utm_content = (session?.utm_content as string) || undefined;
+    const utm_term = (session?.utm_term as string) || undefined;
+    if (utm_source) customData.utm_source = utm_source;
+    if (utm_medium) customData.utm_medium = utm_medium;
+    if (utm_campaign) customData.utm_campaign = utm_campaign;
+    if (utm_content) customData.utm_content = utm_content;
+    if (utm_term) customData.utm_term = utm_term;
+
     const payload: Record<string, unknown> = {
       data: [
         {
