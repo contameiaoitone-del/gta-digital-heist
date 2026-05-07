@@ -230,6 +230,48 @@ export type Database = {
           },
         ]
       }
+      meta_capi_log: {
+        Row: {
+          created_at: string
+          error: string | null
+          event_id: string | null
+          event_name: string
+          id: string
+          meta_response: Json | null
+          order_id: string | null
+          session_id: string | null
+          status_code: number | null
+          success: boolean
+          value: number | null
+        }
+        Insert: {
+          created_at?: string
+          error?: string | null
+          event_id?: string | null
+          event_name: string
+          id?: string
+          meta_response?: Json | null
+          order_id?: string | null
+          session_id?: string | null
+          status_code?: number | null
+          success?: boolean
+          value?: number | null
+        }
+        Update: {
+          created_at?: string
+          error?: string | null
+          event_id?: string | null
+          event_name?: string
+          id?: string
+          meta_response?: Json | null
+          order_id?: string | null
+          session_id?: string | null
+          status_code?: number | null
+          success?: boolean
+          value?: number | null
+        }
+        Relationships: []
+      }
       modules: {
         Row: {
           cover_url: string | null
@@ -279,6 +321,7 @@ export type Database = {
           event_id_purchase: string | null
           id: string
           installments: number | null
+          meta_purchase_sent_at: string | null
           paid_at: string | null
           payment_method: string
           product: string
@@ -299,6 +342,7 @@ export type Database = {
           event_id_purchase?: string | null
           id?: string
           installments?: number | null
+          meta_purchase_sent_at?: string | null
           paid_at?: string | null
           payment_method: string
           product: string
@@ -319,6 +363,7 @@ export type Database = {
           event_id_purchase?: string | null
           id?: string
           installments?: number | null
+          meta_purchase_sent_at?: string | null
           paid_at?: string | null
           payment_method?: string
           product?: string
