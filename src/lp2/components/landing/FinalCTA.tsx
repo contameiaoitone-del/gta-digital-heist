@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Button } from "@/lp2/components/ui/button";
 import { ArrowRight, Zap, Shield, Headphones, Check } from "lucide-react";
 import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
-import { appendUTMs, trackEvent } from "@/lp2/lib/tracking";
+import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 
 const FinalCTA = () => {
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   const guarantees = [
     { icon: Zap, text: "Acesso imediato" },
     { icon: Shield, text: "Plataforma segura" },
@@ -69,18 +71,14 @@ const FinalCTA = () => {
                   </div>
                 </div>
 
-                <a
-                  href={appendUTMs("https://pay.hub.la/ErQ5rSeq1dVv7rNynDUC")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                  onClick={() => trackEvent('InitiateCheckout', { value: 147, currency: 'BRL' })}
+                <Button
+                  size="xl"
+                  onClick={() => setCheckoutOpen(true)}
+                  className="group text-lg w-full bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/25"
                 >
-                  <Button size="xl" className="group text-lg w-full bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/25">
-                    Quero entrar no treinamento
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </a>
+                  Quero entrar no treinamento
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
               </div>
             </div>
 
@@ -90,6 +88,14 @@ const FinalCTA = () => {
           </div>
         </ScrollAnimation>
       </div>
+      <CheckoutModal
+        open={checkoutOpen}
+        onOpenChange={setCheckoutOpen}
+        product="lp2"
+        priceCents={14700}
+        productLabel="Comunidade X1 no Pix"
+        productSubtitle="Acesso completo ao treinamento"
+      />
     </section>
   );
 };
