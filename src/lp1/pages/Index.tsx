@@ -10,7 +10,7 @@ const Index = () => {
       title: "STARTER WHATS",
       description: "APRENDA TUDO DO 0",
       imageUrl: starterImage,
-      link: "/caminho1",
+      link: "/lp1/caminho1",
       isLocked: false,
       externalLink: "https://lp1.joaolucassps.co"
     },
@@ -19,7 +19,7 @@ const Index = () => {
       title: "MENTORIA JOÃO LUCAS",
       description: "MENTORIA INDIVIDUAL",
       imageUrl: mentoriaImage,
-      link: "/mentoria",
+      link: "/lp1/mentoria",
       isLocked: false,
       externalLink: "https://chat.whatsapp.com/KAh47hcDL0n92QXKNg3RGP?mode=gi_t"
     }

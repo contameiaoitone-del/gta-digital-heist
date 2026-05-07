@@ -13,7 +13,7 @@ const Header = ({ showBackButton = false }: HeaderProps) => {
       <div className="container mx-auto px-4 h-16 flex items-center justify-center relative">
         {showBackButton && (
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/lp1')}
             className="absolute left-4 flex items-center gap-2 text-foreground/80 hover:text-primary transition-colors group"
           >
             <ArrowLeft className="w-5 h-5 group-hover:translate-x-[-4px] transition-transform" />
