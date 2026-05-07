@@ -181,6 +181,7 @@ export function useTracking() {
       event_id_pageview: eventId,
       event_id_pageview_tt: eventIdTt,
       ...geo,
+      ...utms,
     });
 
     callCapi({
