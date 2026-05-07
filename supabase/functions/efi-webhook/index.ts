@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
         .update({ status: "paid", paid_at: paidAt, raw: { ...(p as object), webhook_received_at: new Date().toISOString() } })
         .eq("efi_txid", p.txid)
         .neq("status", "paid")
-        .select("id, customer_name, customer_email, customer_phone, customer_cpf, amount_cents, session_id, event_id_purchase")
+        .select("id, product, customer_name, customer_email, customer_phone, customer_cpf, amount_cents, session_id, event_id_purchase")
         .maybeSingle();
       if (error) {
         console.error("webhook update failed", p.txid, error);
@@ -37,6 +37,7 @@ Deno.serve(async (req) => {
       if (!updated) continue;
 
       const purchaseEid = updated.event_id_purchase || crypto.randomUUID();
+      const contentName = updated.product === "lp2" ? "Comunidade X1 no Pix" : "InfoZap";
       const capiBody = {
         event_id: purchaseEid,
         session_id: updated.session_id || undefined,
@@ -46,7 +47,7 @@ Deno.serve(async (req) => {
         cpf: updated.customer_cpf,
         value: (updated.amount_cents || 0) / 100,
         currency: "BRL",
-        content_name: "InfoZap",
+        content_name: contentName,
         order_id: updated.id,
       };
 
