@@ -216,6 +216,7 @@ export function useTracking() {
       session_id: sessionId,
       event_id_initiate: eventId,
       event_id_initiate_tt: eventIdTt,
+      ...readUtms(),
     });
 
     await Promise.all([waitForFbq(2000), waitForTtq(2000)]);
