@@ -51,7 +51,7 @@ const SignupDialog = ({ open, onOpenChange }: SignupDialogProps) => {
       if (authData.user) {
         // Create profile
         const { error: profileError } = await supabase
-          .from('profiles')
+          .from('profiles' as any)
           .insert({
             user_id: authData.user.id,
             full_name: fullName,
