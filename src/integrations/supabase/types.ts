@@ -242,6 +242,11 @@ export type Database = {
           session_id: string | null
           status_code: number | null
           success: boolean
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
           value: number | null
         }
         Insert: {
@@ -255,6 +260,11 @@ export type Database = {
           session_id?: string | null
           status_code?: number | null
           success?: boolean
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
           value?: number | null
         }
         Update: {
@@ -268,6 +278,11 @@ export type Database = {
           session_id?: string | null
           status_code?: number | null
           success?: boolean
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
           value?: number | null
         }
         Relationships: []
@@ -329,6 +344,11 @@ export type Database = {
           session_id: string | null
           status: string
           updated_at: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
           amount_cents: number
@@ -350,6 +370,11 @@ export type Database = {
           session_id?: string | null
           status?: string
           updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
           amount_cents?: number
@@ -371,6 +396,11 @@ export type Database = {
           session_id?: string | null
           status?: string
           updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: []
       }
@@ -497,6 +527,11 @@ export type Database = {
           ttp: string | null
           updated_at: string | null
           user_agent: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
           city?: string | null
@@ -524,6 +559,11 @@ export type Database = {
           ttp?: string | null
           updated_at?: string | null
           user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
           city?: string | null
@@ -551,6 +591,11 @@ export type Database = {
           ttp?: string | null
           updated_at?: string | null
           user_agent?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: []
       }

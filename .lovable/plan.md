@@ -1,44 +1,49 @@
-## Garantir Purchase Pixel antes do redirect pra área de membros
+## Objetivo
 
-### Problema
+Mostrar no painel `/admin/capi-log` qual campanha/conjunto/criativo originou cada venda (UTMs) e o **SCK** (ID de sessão do visitante), além do que já é exibido hoje.
 
-Em `src/pages/Obrigado.tsx`:
-- `trackPurchase` (Pixel client-side) é chamado em um `useEffect`
-- `auto-login-after-payment` roda **em paralelo** e, assim que retorna o `magic_link`, executa `window.location.href = magic_link` — saindo da página antes do beacon do Pixel sair
+## Como vai funcionar
 
-Resultado: server-side CAPI funciona, mas o Pixel browser nem chega a disparar → Meta vê só metade dos eventos e às vezes nem deduplica direito.
+```text
+URL com utms ──► visitor_sessions (sck, utm_*, fbclid, ttclid)
+                          │
+                          ▼
+            checkout (session_id = sck)
+                          │
+                          ▼
+   webhook CaktoPay/Efi ──► orders (session_id, utm_*)
+                          │
+                          ▼
+                meta-capi ──► meta_capi_log (sck + utm_* desnormalizados)
+                          │
+                          ▼
+               /admin/capi-log mostra colunas novas
+```
 
-### Solução
+## Mudanças
 
-Reescrever o fluxo de `Obrigado.tsx` para garantir esta ordem:
+### 1. Banco de dados (migration)
+- `visitor_sessions`: adicionar `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term` (text, nullable).
+- `orders`: adicionar as mesmas 5 colunas `utm_*` (nullable). Já existe `session_id` para ligar com SCK.
+- `meta_capi_log`: adicionar `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term` (desnormalizados para listagem rápida no painel sem joins).
 
-1. **Disparar `Purchase` no Pixel imediatamente** ao montar (`fbq("track", "Purchase", ..., {eventID})`)
-2. **Aguardar mínimo de 4 segundos** com contagem regressiva visível ("Redirecionando em 4… 3… 2… 1")
-3. **Buscar o magic link em paralelo** (sem redirecionar ainda)
-4. **Botão CTA "Acessar área de membros"** visível desde o início — usuário pode clicar antes do timer
-5. **Após 4s + magic link pronto:** redireciona automaticamente
-6. **Se magic link falhar:** botão fica como fallback para `/membros/login`
+### 2. Captura no front (`src/hooks/useTracking.ts` + `src/lib/utmAutoFill.ts`)
+- Ler UTMs da URL na entrada (já são gravadas em cookies). Enviar também ao `track-session` no payload, junto com `fbclid`/`ttclid`.
 
-### Mudanças em `src/pages/Obrigado.tsx`
+### 3. `supabase/functions/track-session/index.ts`
+- Persistir `utm_source/medium/campaign/content/term` na `visitor_sessions` via mesmo padrão `setIf`.
 
-- Refatorar os 2 `useEffect` para coordenar Pixel + auto-login
-- Adicionar state `countdown` (4 → 0)
-- Adicionar state `magicLink` (string | null)
-- Só fazer `window.location.href = magicLink` quando `countdown === 0 && magicLink !== null`
-- Mostrar botão "Acessar área de membros" sempre (não só em failure)
-  - Quando `magicLink` pronto: `<a href={magicLink}>` direto (mais confiável que navigate)
-  - Quando ainda carregando: `<a href="/membros/login">` como fallback
-- Texto: "Pagamento confirmado! Você será redirecionado em {countdown}s..."
+### 4. Checkout / criação de pedido
+- Garantir que ao criar a `order` (Efi/CaktoPay) o `session_id` (SCK) e os UTMs sejam gravados. Para CaktoPay já chega via querystring no checkout; o webhook (`efi-webhook` e similar Cakto) deve pegar UTMs do `visitor_sessions` pelo SCK e gravar nas colunas `utm_*` da `orders`.
 
-### Por que 4 segundos?
+### 5. `supabase/functions/meta-capi/index.ts`
+- Quando carregar `visitor_sessions` pelo `sck`, copiar UTMs para o registro do `meta_capi_log` (novas colunas).
+- Também enviar como `custom_data` para Meta (campos `utm_source` etc) — útil em conversões personalizadas.
 
-- Tempo suficiente para o Pixel browser disparar o request `fbevents.js?ev=Purchase` e receber resposta
-- Curto o bastante para não frustrar o usuário
-- O usuário pode clicar no botão a qualquer momento e pular a espera
+### 6. UI `src/pages/admin/CapiLog.tsx`
+- Adicionar colunas: **SCK** (8 chars + tooltip), **utm_source**, **utm_campaign**, **utm_content** (com tooltip mostrando todos os 5 ao passar o mouse).
+- Adicionar busca por SCK / utm_campaign no topo.
+- Manter colunas atuais (Quando, Evento, Status, HTTP, Valor, event_id, order_id, Erro).
 
-### Validação
-
-1. Comprar via Pix → ao cair na `/obrigado`, ver toast/loader + countdown
-2. Em `/admin/capi-log`: `Purchase` com `success=true`
-3. No Meta Events Manager → Test Events: deve aparecer `Purchase` **Browser** + **Server** com mesmo `event_id` (deduplicado)
-4. Após 4s redireciona pra área de membros logado
+## Resultado
+No painel você verá: data, evento, status, valor, event_id, order_id, **SCK**, **utm_source / campaign / content** — permitindo identificar exatamente qual campanha/conjunto/anúncio gerou cada `Purchase`.

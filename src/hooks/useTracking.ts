@@ -61,6 +61,32 @@ function readTtclid(): string {
   return getCookie("ttclid") || "";
 }
 
+const UTM_COOKIE_MAP: Record<string, string> = {
+  utm_source: "cookieUtmSource",
+  utm_medium: "cookieUtmMedium",
+  utm_campaign: "cookieUtmCampaign",
+  utm_content: "cookieUtmContent",
+  utm_term: "cookieUtmTerm",
+};
+
+function readUtms(): Record<string, string> {
+  const out: Record<string, string> = {};
+  try {
+    const params = new URLSearchParams(window.location.search);
+    for (const k of Object.keys(UTM_COOKIE_MAP)) {
+      const fromUrl = params.get(k);
+      if (fromUrl) {
+        out[k] = fromUrl;
+        document.cookie = `${UTM_COOKIE_MAP[k]}=${encodeURIComponent(fromUrl)}; max-age=${30 * 24 * 60 * 60}; path=/; SameSite=Lax`;
+        continue;
+      }
+      const fromCookie = getCookie(UTM_COOKIE_MAP[k]);
+      if (fromCookie) out[k] = decodeURIComponent(fromCookie);
+    }
+  } catch { /* noop */ }
+  return out;
+}
+
 async function readGeo(): Promise<{ country?: string; state?: string; city?: string }> {
   try {
     const cached = sessionStorage.getItem(GEO_KEY);
@@ -136,6 +162,7 @@ export function useTracking() {
     const eventId = uuid();
     const eventIdTt = uuid();
     const geo = await readGeo();
+    const utms = readUtms();
 
     await waitForFbq(2000);
     await waitForTtq(2000);
@@ -154,6 +181,7 @@ export function useTracking() {
       event_id_pageview: eventId,
       event_id_pageview_tt: eventIdTt,
       ...geo,
+      ...utms,
     });
 
     callCapi({
@@ -188,6 +216,7 @@ export function useTracking() {
       session_id: sessionId,
       event_id_initiate: eventId,
       event_id_initiate_tt: eventIdTt,
+      ...readUtms(),
     });
 
     await Promise.all([waitForFbq(2000), waitForTtq(2000)]);

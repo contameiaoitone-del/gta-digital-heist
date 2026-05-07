@@ -56,6 +56,11 @@ Deno.serve(async (req) => {
     setIf("email", body.email);
     setIf("phone", body.phone);
     setIf("external_id", body.external_id);
+    setIf("utm_source", body.utm_source);
+    setIf("utm_medium", body.utm_medium);
+    setIf("utm_campaign", body.utm_campaign);
+    setIf("utm_content", body.utm_content);
+    setIf("utm_term", body.utm_term);
 
     const sb = createClient(
       Deno.env.get("SUPABASE_URL")!,
