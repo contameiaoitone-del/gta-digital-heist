@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, Link, useNavigate } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { CheckCircle2, Clock, Loader2 } from "lucide-react";
 import { useTracking } from "@/hooks/useTracking";
 import { ensurePixel } from "@/lib/metaPixel";
 import { supabase } from "@/integrations/supabase/client";
 
+const REDIRECT_DELAY_SECONDS = 4;
+
 const Obrigado = () => {
   const [params] = useSearchParams();
-  const navigate = useNavigate();
   const metodo = params.get("metodo");
   const status = params.get("status");
   const eventId = params.get("eventId") || "";
@@ -15,8 +16,11 @@ const Obrigado = () => {
   const orderId = params.get("orderId") || undefined;
   const isPending = status === "pendente";
   const { trackPurchase } = useTracking();
+  const [magicLink, setMagicLink] = useState<string | null>(null);
   const [autoLoginState, setAutoLoginState] = useState<"idle" | "loading" | "ready" | "failed">("idle");
+  const [countdown, setCountdown] = useState<number>(REDIRECT_DELAY_SECONDS);
 
+  // 1) Fire Purchase Pixel ASAP on mount (deduped with CAPI via shared eventId)
   useEffect(() => {
     document.title = "Pagamento confirmado — InfoZap";
     if (!isPending && eventId) {
@@ -25,13 +29,12 @@ const Obrigado = () => {
     }
   }, [isPending, eventId, value, orderId, trackPurchase]);
 
-  // Try auto-login: ask edge function for a magic link and redirect.
+  // 2) Fetch magic link in parallel (do NOT redirect immediately — wait for countdown)
   useEffect(() => {
     if (isPending || !orderId) return;
     let cancelled = false;
     setAutoLoginState("loading");
     (async () => {
-      // Retry a few times since the webhook may not have finished yet.
       for (let i = 0; i < 6; i++) {
         if (cancelled) return;
         try {
@@ -39,11 +42,12 @@ const Obrigado = () => {
             body: { order_id: orderId },
           });
           if (!error && (data as { magic_link?: string })?.magic_link) {
+            if (cancelled) return;
+            setMagicLink((data as { magic_link: string }).magic_link);
             setAutoLoginState("ready");
-            window.location.href = (data as { magic_link: string }).magic_link;
             return;
           }
-        } catch (_e) {
+        } catch {
           /* retry */
         }
         await new Promise((r) => setTimeout(r, 2500));
@@ -54,6 +58,23 @@ const Obrigado = () => {
       cancelled = true;
     };
   }, [isPending, orderId]);
+
+  // 3) Countdown timer — runs only when not pending
+  useEffect(() => {
+    if (isPending) return;
+    if (countdown <= 0) return;
+    const t = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [countdown, isPending]);
+
+  // 4) Auto-redirect when countdown hits 0 AND magic link is ready
+  useEffect(() => {
+    if (isPending) return;
+    if (countdown > 0) return;
+    if (magicLink) {
+      window.location.href = magicLink;
+    }
+  }, [countdown, magicLink, isPending]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: "#080808" }}>
@@ -77,22 +98,25 @@ const Obrigado = () => {
         </p>
 
         {!isPending && (
-          <div className="mb-6">
-            {autoLoginState === "loading" && (
-              <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Liberando seu acesso à área de membros...
-              </div>
-            )}
-            {autoLoginState === "failed" && (
-              <button
-                onClick={() => navigate("/membros/login")}
-                className="px-6 py-3 rounded-lg font-bold uppercase tracking-wide"
-                style={{ backgroundColor: "#00ff88", color: "#000", fontFamily: "'Bebas Neue', cursive" }}
-              >
-                Acessar área de membros
-              </button>
-            )}
+          <div className="mb-6 space-y-3">
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
+              {autoLoginState === "loading" && <Loader2 className="h-4 w-4 animate-spin" />}
+              {countdown > 0 && magicLink
+                ? `Redirecionando para a área de membros em ${countdown}s...`
+                : countdown > 0
+                ? `Liberando seu acesso... (${countdown}s)`
+                : autoLoginState === "failed"
+                ? "Não conseguimos logar automaticamente. Use o botão abaixo."
+                : "Redirecionando..."}
+            </div>
+
+            <a
+              href={magicLink || "/membros/login"}
+              className="inline-block px-6 py-3 rounded-lg font-bold uppercase tracking-wide"
+              style={{ backgroundColor: "#00ff88", color: "#000", fontFamily: "'Bebas Neue', cursive" }}
+            >
+              Acessar área de membros agora
+            </a>
           </div>
         )}
 
