@@ -8,8 +8,7 @@ import {
   isValidCpf,
   getCobAccessToken,
   COB_HOST,
-  PRODUCT_AMOUNT_CENTS,
-  PRODUCT_NAME,
+  getProduct,
 } from "../_shared/efi.ts";
 
 const BodySchema = z.object({
@@ -21,6 +20,7 @@ const BodySchema = z.object({
   installments: z.number().int().min(1).max(12),
   session_id: z.string().trim().min(1).max(80).optional(),
   event_id_purchase: z.string().trim().min(1).max(80).optional(),
+  product: z.enum(["infozap", "lp2"]).optional(),
 });
 
 Deno.serve(async (req) => {
@@ -33,7 +33,8 @@ Deno.serve(async (req) => {
 
     const parsed = BodySchema.safeParse(await req.json());
     if (!parsed.success) return jsonResponse({ error: "invalid", issues: parsed.error.flatten() }, 400);
-    const { name, email, phone, cpf, payment_token, installments, session_id, event_id_purchase } = parsed.data;
+    const { name, email, phone, cpf, payment_token, installments, session_id, event_id_purchase, product: productKey } = parsed.data;
+    const product = getProduct(productKey);
     const cleanCpf = cpf.replace(/\D/g, "");
     const cleanPhone = phone.replace(/\D/g, "");
     if (!isValidCpf(cleanCpf)) return jsonResponse({ error: "invalid_cpf" }, 400);
@@ -50,7 +51,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         items: [
-          { name: PRODUCT_NAME, value: PRODUCT_AMOUNT_CENTS, amount: 1 },
+          { name: product.name, value: product.amount_cents, amount: 1 },
         ],
         payment: {
           credit_card: {
@@ -85,8 +86,8 @@ Deno.serve(async (req) => {
     const { data: order, error: dbErr } = await supabase
       .from("orders")
       .insert({
-        product: "infozap",
-        amount_cents: PRODUCT_AMOUNT_CENTS,
+        product: product.key,
+        amount_cents: product.amount_cents,
         customer_name: name,
         customer_email: email,
         customer_phone: cleanPhone,
@@ -120,9 +121,9 @@ Deno.serve(async (req) => {
             email,
             phone: cleanPhone,
             cpf: cleanCpf,
-            value: PRODUCT_AMOUNT_CENTS / 100,
+            value: product.amount_cents / 100,
             currency: "BRL",
-            content_name: PRODUCT_NAME,
+            content_name: product.name,
             order_id: order.id,
           },
         });
@@ -143,7 +144,7 @@ Deno.serve(async (req) => {
       charge_id: chargeId,
       status: finalStatus,
       event_id_purchase: purchaseEventId,
-      amount_cents: PRODUCT_AMOUNT_CENTS,
+      amount_cents: product.amount_cents,
     });
   } catch (e) {
     console.error("efi-create-card error", e);

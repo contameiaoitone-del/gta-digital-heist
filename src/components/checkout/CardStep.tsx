@@ -13,14 +13,9 @@ interface CardStepProps {
   customer: { name: string; email: string; phone: string; cpf: string };
   onPaid: (info: { eventId: string; orderId: string }) => void;
   onPending: () => void;
+  product?: "infozap" | "lp2";
+  priceCents?: number;
 }
-
-const PRICE_CENTS = 6700;
-
-const installmentLabel = (n: number) => {
-  const value = (PRICE_CENTS / 100 / n).toFixed(2).replace(".", ",");
-  return n === 1 ? `1x de R$ 67,00 (à vista)` : `${n}x de R$ ${value} sem juros`;
-};
 
 const inputCls =
   "w-full h-11 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88]";
@@ -48,7 +43,12 @@ function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
   });
 }
 
-export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
+export const CardStep = ({ customer, onPaid, onPending, product = "infozap", priceCents = 6700 }: CardStepProps) => {
+  const totalLabel = (priceCents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const installmentLabel = (n: number) => {
+    const value = (priceCents / 100 / n).toFixed(2).replace(".", ",");
+    return n === 1 ? `1x de R$ ${totalLabel} (à vista)` : `${n}x de R$ ${value} sem juros`;
+  };
   const { createCard } = useEfiCheckout();
   const [number, setNumber] = useState("");
   const [holder, setHolder] = useState("");
@@ -153,6 +153,7 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
         payment_token: tokenResp.payment_token,
         installments,
         session_id: getSessionId(),
+        product,
       });
 
       if (result.status === "paid") onPaid({ eventId: result.event_id_purchase, orderId: result.order_id });
@@ -192,7 +193,7 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
 
       <Button type="submit" disabled={loading} className="w-full h-12 mt-2 bg-[#00ff88] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide whitespace-normal h-auto py-3">
         {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : null}
-        Pagar R$ 67,00
+        Pagar R$ {totalLabel}
       </Button>
       <p className="text-[11px] text-gray-500 text-center">Pagamento seguro processado pelo Banco Central do Brasil · Seus dados são criptografados</p>
     </form>

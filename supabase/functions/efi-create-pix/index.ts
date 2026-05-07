@@ -9,8 +9,7 @@ import {
   getMtlsClient,
   getPixAccessToken,
   PIX_HOST,
-  PRODUCT_AMOUNT_CENTS,
-  PRODUCT_NAME,
+  getProduct,
 } from "../_shared/efi.ts";
 
 const BodySchema = z.object({
@@ -20,6 +19,7 @@ const BodySchema = z.object({
   cpf: z.string().trim().min(11).max(20),
   session_id: z.string().trim().min(1).max(80).optional(),
   event_id_purchase: z.string().trim().min(1).max(80).optional(),
+  product: z.enum(["infozap", "lp2"]).optional(),
 });
 
 Deno.serve(async (req) => {
@@ -32,7 +32,8 @@ Deno.serve(async (req) => {
 
     const parsed = BodySchema.safeParse(await req.json());
     if (!parsed.success) return jsonResponse({ error: "invalid", issues: parsed.error.flatten() }, 400);
-    const { name, email, phone, cpf, session_id, event_id_purchase } = parsed.data;
+    const { name, email, phone, cpf, session_id, event_id_purchase, product: productKey } = parsed.data;
+    const product = getProduct(productKey);
     const purchaseEventId = event_id_purchase || crypto.randomUUID();
     const cleanCpf = cpf.replace(/\D/g, "");
     if (!isValidCpf(cleanCpf)) return jsonResponse({ error: "invalid_cpf" }, 400);
@@ -41,7 +42,7 @@ Deno.serve(async (req) => {
     if (!pixKey) return jsonResponse({ error: "pix_key_missing" }, 500);
 
     const token = await getPixAccessToken();
-    const reais = (PRODUCT_AMOUNT_CENTS / 100).toFixed(2);
+    const reais = (product.amount_cents / 100).toFixed(2);
 
     // Create cob
     const cobRes = await fetch(`${PIX_HOST}/v2/cob`, {
@@ -57,7 +58,7 @@ Deno.serve(async (req) => {
         devedor: { cpf: cleanCpf, nome: name },
         valor: { original: reais },
         chave: pixKey,
-        solicitacaoPagador: PRODUCT_NAME,
+        solicitacaoPagador: product.name,
       }),
     });
     const cob = await cobRes.json();
@@ -87,8 +88,8 @@ Deno.serve(async (req) => {
     const { data: order, error: dbErr } = await supabase
       .from("orders")
       .insert({
-        product: "infozap",
-        amount_cents: PRODUCT_AMOUNT_CENTS,
+        product: product.key,
+        amount_cents: product.amount_cents,
         customer_name: name,
         customer_email: email,
         customer_phone: phone,
@@ -114,7 +115,7 @@ Deno.serve(async (req) => {
       qrcode_image: qr.imagemQrcode,
       expires_in: 3600,
       event_id_purchase: purchaseEventId,
-      amount_cents: PRODUCT_AMOUNT_CENTS,
+      amount_cents: product.amount_cents,
     });
   } catch (e) {
     console.error("efi-create-pix error", e);
