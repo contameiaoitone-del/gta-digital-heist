@@ -82,18 +82,15 @@ function basicAuth(): string {
 
 // OAuth for Pix API (mTLS required)
 export async function getPixAccessToken(): Promise<string> {
-  const res = await fetch(`${PIX_HOST}/oauth/token`, {
+  const r = await fetch(`${PIX_HOST}/oauth/token`, {
     method: "POST",
     // @ts-ignore deno client
     client: getMtlsClient(),
-    headers: {
-      Authorization: basicAuth(),
-      "Content-Type": "application/json",
-    },
+    headers: { Authorization: basicAuth(), "Content-Type": "application/json" },
     body: JSON.stringify({ grant_type: "client_credentials" }),
   });
-  const data = await res.json();
-  if (!res.ok) {
+  const data = await r.json();
+  if (!r.ok) {
     const error = new Error("efi pix oauth failed: " + JSON.stringify(data));
     error.name = "EfiOAuthError";
     throw error;
