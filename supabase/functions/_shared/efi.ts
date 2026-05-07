@@ -85,6 +85,30 @@ export async function getPixAccessToken(): Promise<string> {
   const id = normalizeSecret(Deno.env.get("EFI_CLIENT_ID"));
   const secret = normalizeSecret(Deno.env.get("EFI_CLIENT_SECRET"));
   const cert = Deno.env.get("EFI_CERT_PEM") ?? "";
+  // Try production first, then homologação (to detect env mismatch).
+  const hosts = [PIX_HOST, "https://pix-h.api.efipay.com.br"];
+  let lastData: unknown = null;
+  for (const host of hosts) {
+    const r = await fetch(`${host}/oauth/token`, {
+      method: "POST",
+      // @ts-ignore deno client
+      client: getMtlsClient(),
+      headers: { Authorization: basicAuth(), "Content-Type": "application/json" },
+      body: JSON.stringify({ grant_type: "client_credentials" }),
+    });
+    const d = await r.json();
+    if (r.ok) {
+      console.log("efi pix oauth ok", { host });
+      return d.access_token as string;
+    }
+    lastData = d;
+    console.log("efi pix oauth failed", { host, data: d });
+  }
+  const error = new Error("efi pix oauth failed: " + JSON.stringify(lastData));
+  error.name = "EfiOAuthError";
+  throw error;
+
+  // unreachable below
   console.log("efi pix oauth attempt", {
     host: PIX_HOST,
     client_id_len: id.length,
