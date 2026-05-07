@@ -16,7 +16,7 @@ All colors MUST be HSL.
 */
 
 @layer base {
-  :root {
+  .lp2-root {
     /* ZapData Dark Theme - Laravel/Filament Style */
     --background: 0 0% 4%;
     --foreground: 0 0% 95%;
@@ -72,11 +72,7 @@ All colors MUST be HSL.
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+  
 
-  body {
-    @apply bg-background text-foreground;
-  }
+  
 }

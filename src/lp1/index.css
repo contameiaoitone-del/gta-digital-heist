@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  .lp1-root {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
 
@@ -41,18 +41,11 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+  
 
-  body {
-    @apply bg-background text-foreground font-netflix overflow-x-hidden;
-  }
+  
 
-  html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-  }
+  
 }
 
 @keyframes pulse {
