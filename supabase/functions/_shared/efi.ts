@@ -82,6 +82,21 @@ function basicAuth(): string {
 
 // OAuth for Pix API (mTLS required)
 export async function getPixAccessToken(): Promise<string> {
+  const id = normalizeSecret(Deno.env.get("EFI_CLIENT_ID"));
+  const secret = normalizeSecret(Deno.env.get("EFI_CLIENT_SECRET"));
+  const cert = Deno.env.get("EFI_CERT_PEM") ?? "";
+  console.log("efi pix oauth attempt", {
+    host: PIX_HOST,
+    client_id_len: id.length,
+    client_id_prefix: id.slice(0, 6),
+    client_id_suffix: id.slice(-4),
+    client_id_starts_Client_Id: id.startsWith("Client_Id_"),
+    client_secret_len: secret.length,
+    client_secret_prefix: secret.slice(0, 6),
+    client_secret_starts_Client_Secret: secret.startsWith("Client_Secret_"),
+    cert_len: cert.length,
+    cert_starts: cert.trim().slice(0, 27),
+  });
   const res = await fetch(`${PIX_HOST}/oauth/token`, {
     method: "POST",
     // @ts-ignore deno client
