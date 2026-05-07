@@ -59,6 +59,20 @@ export default {
           orange: "hsl(var(--neon-orange))",
           yellow: "hsl(var(--neon-yellow))",
         },
+        purple: {
+          DEFAULT: "hsl(var(--purple-glow))",
+          glow: "hsl(var(--purple-glow))",
+          light: "hsl(var(--purple-light))",
+          dark: "hsl(var(--purple-dark))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        surface: {
+          elevated: "hsl(var(--surface-elevated))",
+          hover: "hsl(var(--surface-hover))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -74,6 +88,15 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        glow: "var(--shadow-glow)",
+        card: "var(--shadow-card)",
+      },
+      backgroundImage: {
+        "gradient-purple": "var(--gradient-purple)",
+        "gradient-glow": "var(--gradient-glow)",
+        "gradient-card": "var(--gradient-card)",
       },
       keyframes: {
         "accordion-down": {
