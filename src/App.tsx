@@ -26,6 +26,7 @@ const Aula = lazy(() => import("./pages/membros/Aula"));
 const Modulo = lazy(() => import("./pages/membros/Modulo"));
 const AuthCallback = lazy(() => import("./pages/membros/AuthCallback"));
 const Admin = lazy(() => import("./pages/admin/Admin"));
+const CapiLog = lazy(() => import("./pages/admin/CapiLog"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 import { RequireAuth } from "./hooks/useAuth";
 
@@ -59,6 +60,8 @@ const App = () => (
             <Route path="/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
             <Route path="/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
             <Route path="/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
+            <Route path="/admin/capi-log" element={<RequireAuth requireAdmin><CapiLog /></RequireAuth>} />
+
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

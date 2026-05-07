@@ -162,19 +162,80 @@ Deno.serve(async (req) => {
     };
     if (TEST_CODE) (payload as Record<string, unknown>).test_event_code = TEST_CODE;
 
-    const url = `https://graph.facebook.com/v20.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`;
-    const r = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const meta = await r.json();
-    if (!r.ok) {
-      console.error("meta capi failed", meta);
-      return json({ error: "meta_capi", detail: meta }, 502);
+    // Service-role client for log + idempotency
+    const sbAdmin = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+
+    // Idempotency: if Purchase with this event_id already succeeded, skip.
+    if (body.event_name === "Purchase" && body.event_id) {
+      const { data: dup } = await sbAdmin
+        .from("meta_capi_log")
+        .select("id")
+        .eq("event_id", body.event_id)
+        .eq("event_name", "Purchase")
+        .eq("success", true)
+        .limit(1)
+        .maybeSingle();
+      if (dup) {
+        console.log("meta-capi dedup hit", body.event_id);
+        return json({ success: true, deduped: true });
+      }
     }
 
-    return json({ success: true, meta });
+    const url = `https://graph.facebook.com/v20.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`;
+    let status = 0;
+    let metaResp: unknown = null;
+    let fetchErr: string | null = null;
+    try {
+      const r = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      status = r.status;
+      metaResp = await r.json().catch(() => ({}));
+    } catch (e) {
+      fetchErr = String(e);
+    }
+    const ok = status >= 200 && status < 300 && !fetchErr;
+
+    // Persistent log (best effort)
+    try {
+      await sbAdmin.from("meta_capi_log").insert({
+        event_name: body.event_name,
+        event_id: body.event_id,
+        order_id: body.order_id || null,
+        session_id: body.session_id || null,
+        value: body.value ?? null,
+        status_code: status || null,
+        success: ok,
+        meta_response: metaResp ?? null,
+        error: fetchErr || (!ok ? JSON.stringify(metaResp) : null),
+      });
+    } catch (e) {
+      console.error("meta_capi_log insert failed", e);
+    }
+
+    // Mark order as having sent Purchase to Meta successfully
+    if (ok && body.event_name === "Purchase" && body.order_id) {
+      try {
+        await sbAdmin
+          .from("orders")
+          .update({ meta_purchase_sent_at: new Date().toISOString() })
+          .eq("id", body.order_id);
+      } catch (e) {
+        console.error("orders meta_purchase_sent_at update failed", e);
+      }
+    }
+
+    if (!ok) {
+      console.error("meta capi failed", status, metaResp, fetchErr);
+      return json({ error: "meta_capi", status, detail: metaResp, fetch_error: fetchErr }, 502);
+    }
+
+    return json({ success: true, meta: metaResp });
   } catch (e) {
     console.error("meta-capi error", e);
     return json({ error: "internal", detail: String(e) }, 500);
