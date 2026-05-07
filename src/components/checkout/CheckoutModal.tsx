@@ -14,11 +14,24 @@ import { useTracking, getSessionId } from "@/hooks/useTracking";
 interface CheckoutModalProps {
   open: boolean;
   onOpenChange: (v: boolean) => void;
+  product?: "infozap" | "lp2";
+  priceCents?: number;
+  productLabel?: string;
+  productSubtitle?: string;
+  originalPriceLabel?: string;
 }
 
 type Step = "form" | "method" | "pix" | "card";
 
-export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
+export const CheckoutModal = ({
+  open,
+  onOpenChange,
+  product = "infozap",
+  priceCents = 6700,
+  productLabel = "InfoZap",
+  productSubtitle = "Acesso vitalício + bônus",
+  originalPriceLabel,
+}: CheckoutModalProps) => {
   const navigate = useNavigate();
   const { createPix, loading } = useEfiCheckout();
   const { trackInitiateCheckout, saveLead } = useTracking();
@@ -30,6 +43,8 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pixData, setPixData] = useState<PixResponse | null>(null);
   const initiateFiredRef = useRef(false);
+  const priceReais = priceCents / 100;
+  const priceLabel = priceReais.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   const reset = () => {
     setStep("form");
@@ -49,9 +64,9 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   useEffect(() => {
     if (open && !initiateFiredRef.current) {
       initiateFiredRef.current = true;
-      trackInitiateCheckout({ value: 67 });
+      trackInitiateCheckout({ value: priceReais });
     }
-  }, [open, trackInitiateCheckout]);
+  }, [open, trackInitiateCheckout, priceReais]);
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +83,7 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
 
   const goPix = async () => {
     try {
-      const r = await createPix({ ...customer, session_id: getSessionId() });
+      const r = await createPix({ ...customer, session_id: getSessionId(), product });
       setPixData(r);
       setStep("pix");
     } catch (e) {
@@ -81,11 +96,11 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
   const onPixPaid = () => {
     const eid = pixData?.event_id_purchase || "";
     onOpenChange(false);
-    navigate(`/obrigado?metodo=pix&eventId=${encodeURIComponent(eid)}&value=67&orderId=${encodeURIComponent(pixData?.order_id || "")}`);
+    navigate(`/obrigado?metodo=pix&eventId=${encodeURIComponent(eid)}&value=${priceReais}&orderId=${encodeURIComponent(pixData?.order_id || "")}`);
   };
   const onCardPaid = (info: { eventId: string; orderId: string }) => {
     onOpenChange(false);
-    navigate(`/obrigado?metodo=cartao&eventId=${encodeURIComponent(info.eventId)}&value=67&orderId=${encodeURIComponent(info.orderId)}`);
+    navigate(`/obrigado?metodo=cartao&eventId=${encodeURIComponent(info.eventId)}&value=${priceReais}&orderId=${encodeURIComponent(info.orderId)}`);
   };
   const onCardPending = () => {
     onOpenChange(false);
@@ -113,12 +128,12 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
 
         <div className="flex items-center justify-between bg-[#111] border border-white/10 rounded-lg px-4 py-3 mb-2">
           <div>
-            <p className="text-xs text-gray-400 uppercase tracking-wider">InfoZap</p>
-            <p className="text-sm text-gray-300">Acesso vitalício + bônus</p>
+            <p className="text-xs text-gray-400 uppercase tracking-wider">{productLabel}</p>
+            <p className="text-sm text-gray-300">{productSubtitle}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-gray-500 line-through">R$ 1.379</p>
-            <p className="text-2xl font-bold" style={{ color: "#00ff88", fontFamily: "'Bebas Neue', cursive" }}>R$ 67,00</p>
+            {originalPriceLabel && <p className="text-xs text-gray-500 line-through">{originalPriceLabel}</p>}
+            <p className="text-2xl font-bold" style={{ color: "#00ff88", fontFamily: "'Bebas Neue', cursive" }}>R$ {priceLabel}</p>
           </div>
         </div>
 
@@ -186,7 +201,7 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
         {step === "pix" && pixData && <PixStep data={pixData} onPaid={onPixPaid} />}
 
         {step === "card" && (
-          <CardStep customer={customer} onPaid={onCardPaid} onPending={onCardPending} />
+          <CardStep customer={customer} onPaid={onCardPaid} onPending={onCardPending} product={product} priceCents={priceCents} />
         )}
       </DialogContent>
     </Dialog>
