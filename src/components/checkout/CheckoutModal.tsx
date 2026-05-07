@@ -107,11 +107,11 @@ export const CheckoutModal = ({
     navigate("/obrigado?metodo=cartao&status=pendente");
   };
 
-  const inputCls = "w-full h-11 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88]";
+  const inputCls = "w-full h-11 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#8b3fdb] font-body";
 
   return (
     <Dialog open={open} onOpenChange={close}>
-      <DialogContent className="max-w-md bg-[#0b0b0b] border-white/10 text-white max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-md bg-[#0b0b0b] border-white/10 text-white max-h-[90vh] overflow-y-auto font-body">
         <DialogHeader>
           <div className="flex items-center justify-between">
             {step !== "form" && step !== "pix" && (
@@ -119,7 +119,7 @@ export const CheckoutModal = ({
                 <ArrowLeft className="h-5 w-5" />
               </button>
             )}
-            <DialogTitle className="text-xl flex-1 text-center" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
+            <DialogTitle className="text-2xl flex-1 text-center font-gta tracking-wider">
               {step === "pix" ? "Pague com Pix" : step === "card" ? "Pague com Cartão" : "Finalizar Compra"}
             </DialogTitle>
             <span className="w-5" />
@@ -128,12 +128,12 @@ export const CheckoutModal = ({
 
         <div className="flex items-center justify-between bg-[#111] border border-white/10 rounded-lg px-4 py-3 mb-2">
           <div>
-            <p className="text-xs text-gray-400 uppercase tracking-wider">{productLabel}</p>
+            <p className="text-xs text-gray-400 uppercase tracking-wider font-gta">{productLabel}</p>
             <p className="text-sm text-gray-300">{productSubtitle}</p>
           </div>
           <div className="text-right">
             {originalPriceLabel && <p className="text-xs text-gray-500 line-through">{originalPriceLabel}</p>}
-            <p className="text-2xl font-bold" style={{ color: "#00ff88", fontFamily: "'Bebas Neue', cursive" }}>R$ {priceLabel}</p>
+            <p className="text-2xl font-bold font-gta tracking-wider" style={{ color: "#00ff88" }}>R$ {priceLabel}</p>
           </div>
         </div>
 
@@ -159,7 +159,7 @@ export const CheckoutModal = ({
               <IMaskInput mask="000.000.000-00" value={cpf} onAccept={(v) => setCpf(v as string)} className={inputCls} placeholder="000.000.000-00" />
               {errors.cpf && <p className="text-xs text-[#ff2d78] mt-1">{errors.cpf}</p>}
             </div>
-            <Button type="submit" className="w-full h-12 bg-[#00ff88] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide whitespace-normal h-auto py-3">
+            <Button type="submit" className="w-full h-12 bg-[#00ff88] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide whitespace-normal h-auto py-3 font-gta text-lg">
               Continuar
             </Button>
           </form>
@@ -170,12 +170,12 @@ export const CheckoutModal = ({
             <button
               onClick={goPix}
               disabled={loading}
-              className="w-full flex items-center justify-between rounded-lg border border-white/15 bg-black/40 hover:border-[#00ff88] px-4 py-4 transition-colors text-left disabled:opacity-60"
+              className="w-full flex items-center justify-between rounded-lg border border-white/15 bg-black/40 hover:border-[#8b3fdb] px-4 py-4 transition-colors text-left disabled:opacity-60"
             >
               <div className="flex items-center gap-3">
-                <QrCode className="h-6 w-6" style={{ color: "#00ff88" }} />
+                <QrCode className="h-6 w-6" style={{ color: "#8b3fdb" }} />
                 <div>
-                  <p className="font-semibold">Pix</p>
+                  <p className="font-semibold font-gta tracking-wide text-lg">Pix</p>
                   <p className="text-xs text-gray-400">Aprovação imediata</p>
                 </div>
               </div>
@@ -183,12 +183,12 @@ export const CheckoutModal = ({
             </button>
             <button
               onClick={goCard}
-              className="w-full flex items-center justify-between rounded-lg border border-white/15 bg-black/40 hover:border-[#00ff88] px-4 py-4 transition-colors text-left"
+              className="w-full flex items-center justify-between rounded-lg border border-white/15 bg-black/40 hover:border-[#8b3fdb] px-4 py-4 transition-colors text-left"
             >
               <div className="flex items-center gap-3">
-                <CreditCard className="h-6 w-6" style={{ color: "#00ff88" }} />
+                <CreditCard className="h-6 w-6" style={{ color: "#8b3fdb" }} />
                 <div>
-                  <p className="font-semibold">Cartão de Crédito</p>
+                  <p className="font-semibold font-gta tracking-wide text-lg">Cartão de Crédito</p>
                   <p className="text-xs text-gray-400">Em até 12x sem juros</p>
                 </div>
               </div>

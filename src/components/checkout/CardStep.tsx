@@ -18,7 +18,7 @@ interface CardStepProps {
 }
 
 const inputCls =
-  "w-full h-11 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88]";
+  "w-full h-11 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#8b3fdb] font-body";
 
 const Field = ({
   label,
@@ -191,7 +191,7 @@ export const CardStep = ({ customer, onPaid, onPending, product = "infozap", pri
         </select>
       </Field>
 
-      <Button type="submit" disabled={loading} className="w-full h-12 mt-2 bg-[#00ff88] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide whitespace-normal h-auto py-3">
+      <Button type="submit" disabled={loading} className="w-full h-12 mt-2 bg-[#8b3fdb] hover:bg-[#7530c0] text-white font-bold uppercase tracking-wide whitespace-normal h-auto py-3 font-gta text-lg">
         {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : null}
         Pagar R$ {totalLabel}
       </Button>

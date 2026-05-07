@@ -59,7 +59,7 @@ export const PixStep = ({ data, onPaid }: PixStepProps) => {
         <div className="text-xs text-gray-400 break-all bg-black/40 border border-white/10 rounded-md p-3 max-h-24 overflow-auto font-mono">
           {data.copia_cola}
         </div>
-        <Button onClick={copy} className="mt-3 w-full h-12 bg-[#00ff88] hover:bg-[#00dd77] text-black font-bold uppercase tracking-wide whitespace-normal">
+        <Button onClick={copy} className="mt-3 w-full h-12 bg-[#8b3fdb] hover:bg-[#7530c0] text-white font-bold uppercase tracking-wide whitespace-normal font-gta text-lg">
           {copied ? <Check className="mr-2 h-5 w-5" /> : <Copy className="mr-2 h-5 w-5" />}
           {copied ? "Copiado" : "Copiar código Pix"}
         </Button>
