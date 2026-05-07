@@ -119,6 +119,9 @@ Deno.serve(async (req) => {
     });
   } catch (e) {
     console.error("efi-create-pix error", e);
+    if (e instanceof Error && e.name === "EfiOAuthError") {
+      return jsonResponse({ error: "efi_invalid_credentials" }, 502);
+    }
     return jsonResponse({ error: "internal" }, 500);
   }
 });

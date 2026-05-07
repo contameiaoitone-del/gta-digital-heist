@@ -43,6 +43,15 @@ function normalizePem(raw: string): string {
   return s;
 }
 
+export function normalizeSecret(raw: string | undefined | null): string {
+  if (!raw) return "";
+  let s = raw.trim();
+  if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) {
+    s = s.slice(1, -1).trim();
+  }
+  return s;
+}
+
 function getCert(): { cert: string; key: string } {
   const cert = Deno.env.get("EFI_CERT_PEM");
   const key = Deno.env.get("EFI_KEY_PEM");
@@ -65,8 +74,8 @@ export function getMtlsClient(): any {
 }
 
 function basicAuth(): string {
-  const id = Deno.env.get("EFI_CLIENT_ID");
-  const secret = Deno.env.get("EFI_CLIENT_SECRET");
+  const id = normalizeSecret(Deno.env.get("EFI_CLIENT_ID"));
+  const secret = normalizeSecret(Deno.env.get("EFI_CLIENT_SECRET"));
   if (!id || !secret) throw new Error("EFI_CLIENT_ID/EFI_CLIENT_SECRET missing");
   return "Basic " + btoa(`${id}:${secret}`);
 }
@@ -84,7 +93,11 @@ export async function getPixAccessToken(): Promise<string> {
     body: JSON.stringify({ grant_type: "client_credentials" }),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error("efi pix oauth failed: " + JSON.stringify(data));
+  if (!res.ok) {
+    const error = new Error("efi pix oauth failed: " + JSON.stringify(data));
+    error.name = "EfiOAuthError";
+    throw error;
+  }
   return data.access_token as string;
 }
 
