@@ -179,7 +179,7 @@ export const CheckoutModal = ({ open, onOpenChange }: CheckoutModalProps) => {
               </div>
               <span className="text-xs text-gray-500">→</span>
             </button>
-            <p className="text-[11px] text-gray-500 text-center pt-2">Pagamento seguro processado pela Efí Bank</p>
+            <p className="text-[11px] text-gray-500 text-center pt-2">Pagamento seguro processado pelo Banco Central do Brasil</p>
           </div>
         )}
 

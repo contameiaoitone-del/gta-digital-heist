@@ -194,7 +194,7 @@ export const CardStep = ({ customer, onPaid, onPending }: CardStepProps) => {
         {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : null}
         Pagar R$ 67,00
       </Button>
-      <p className="text-[11px] text-gray-500 text-center">Pagamento processado por Efí Bank · Seus dados são criptografados</p>
+      <p className="text-[11px] text-gray-500 text-center">Pagamento seguro processado pelo Banco Central do Brasil · Seus dados são criptografados</p>
     </form>
   );
 };

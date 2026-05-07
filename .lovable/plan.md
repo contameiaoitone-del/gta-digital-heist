@@ -1,8 +1,16 @@
-## Mover bloco invisível do Hero para o topo absoluto da página
+Atualizar todas as referencias a "Efí Bank" no checkout do InfoZap para "Banco Central do Brasil".
 
-Mover o `<HiddenContextBlock color="#080808" />` que está atualmente dentro do `<div>` interno da seção Hero (linha 242) para fora da `<section>`, como primeiro filho do `<div className="min-h-screen ...">` raiz da página (linha 235).
+## Arquivos afetados
 
-Assim o bloco passa a ser o primeiro elemento renderizado da página, antes do Hero/imagem de fundo.
+1. `src/components/checkout/CardStep.tsx` (linha 197)
+   - De: `Pagamento processado por Efí Bank · Seus dados são criptografados`
+   - Para: `Pagamento seguro processado pelo Banco Central do Brasil · Seus dados são criptografados`
 
-### Arquivo
-- `src/pages/InfoZap.tsx` — mover 1 linha (linha 242 → entre linhas 235 e 236).
+2. `src/components/checkout/CheckoutModal.tsx` (linha 182)
+   - De: `Pagamento seguro processado pela Efí Bank`
+   - Para: `Pagamento seguro processado pelo Banco Central do Brasil`
+
+## Detalhes tecnicos
+- Apenas alteracoes de texto (string replacement) em 2 componentes React.
+- Nenhuma alteracao de logica, banco de dados ou edge functions.
+- Nao ha outras ocorrencias de "Efí Bank" no front-end conforme busca em `src/`.
