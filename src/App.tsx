@@ -26,6 +26,7 @@ const Aula = lazy(() => import("./pages/membros/Aula"));
 const Modulo = lazy(() => import("./pages/membros/Modulo"));
 const AuthCallback = lazy(() => import("./pages/membros/AuthCallback"));
 const Admin = lazy(() => import("./pages/admin/Admin"));
+const CapiLog = lazy(() => import("./pages/admin/CapiLog"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 import { RequireAuth } from "./hooks/useAuth";
 
