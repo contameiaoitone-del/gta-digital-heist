@@ -162,6 +162,7 @@ export function useTracking() {
     const eventId = uuid();
     const eventIdTt = uuid();
     const geo = await readGeo();
+    const utms = readUtms();
 
     await waitForFbq(2000);
     await waitForTtq(2000);
