@@ -28,6 +28,8 @@ const AuthCallback = lazy(() => import("./pages/membros/AuthCallback"));
 const Admin = lazy(() => import("./pages/admin/Admin"));
 const CapiLog = lazy(() => import("./pages/admin/CapiLog"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
+const Lp1App = lazy(() => import("./lp1/Lp1App"));
+const Lp2App = lazy(() => import("./lp2/Lp2App"));
 import { RequireAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
@@ -63,6 +65,8 @@ const App = () => (
             <Route path="/admin/capi-log" element={<RequireAuth requireAdmin><CapiLog /></RequireAuth>} />
 
             <Route path="/unsubscribe" element={<Unsubscribe />} />
+            <Route path="/lp1/*" element={<Lp1App />} />
+            <Route path="/lp2/*" element={<Lp2App />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
