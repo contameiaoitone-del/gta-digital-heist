@@ -107,37 +107,6 @@ export async function getPixAccessToken(): Promise<string> {
   const error = new Error("efi pix oauth failed: " + JSON.stringify(lastData));
   error.name = "EfiOAuthError";
   throw error;
-
-  // unreachable below
-  console.log("efi pix oauth attempt", {
-    host: PIX_HOST,
-    client_id_len: id.length,
-    client_id_prefix: id.slice(0, 6),
-    client_id_suffix: id.slice(-4),
-    client_id_starts_Client_Id: id.startsWith("Client_Id_"),
-    client_secret_len: secret.length,
-    client_secret_prefix: secret.slice(0, 6),
-    client_secret_starts_Client_Secret: secret.startsWith("Client_Secret_"),
-    cert_len: cert.length,
-    cert_starts: cert.trim().slice(0, 27),
-  });
-  const res = await fetch(`${PIX_HOST}/oauth/token`, {
-    method: "POST",
-    // @ts-ignore deno client
-    client: getMtlsClient(),
-    headers: {
-      Authorization: basicAuth(),
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ grant_type: "client_credentials" }),
-  });
-  const data = await res.json();
-  if (!res.ok) {
-    const error = new Error("efi pix oauth failed: " + JSON.stringify(data));
-    error.name = "EfiOAuthError";
-    throw error;
-  }
-  return data.access_token as string;
 }
 
 // OAuth for Cobrança API (cartão) — does NOT require mTLS, but works with it.
