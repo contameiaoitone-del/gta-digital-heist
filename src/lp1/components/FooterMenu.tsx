@@ -1,5 +1,5 @@
 import { Home } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/lp1/contexts/AuthContext";
 
 const FooterMenu = () => {
   const { user } = useAuth();

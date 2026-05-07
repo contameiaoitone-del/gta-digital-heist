@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lp2/components/ui/button";
 import { ArrowRight, Zap, Shield, Headphones, Check } from "lucide-react";
-import ScrollAnimation from "@/components/ui/scroll-animation";
-import { appendUTMs, trackEvent } from "@/lib/tracking";
+import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
+import { appendUTMs, trackEvent } from "@/lp2/lib/tracking";
 
 const FinalCTA = () => {
   const guarantees = [

@@ -1,7 +1,7 @@
 
-import NetflixLayout from "@/components/NetflixLayout";
-import MovieRow from "@/components/MovieRow";
-import { Movie } from "@/components/MovieRow";
+import NetflixLayout from "@/lp1/components/NetflixLayout";
+import MovieRow from "@/lp1/components/MovieRow";
+import { Movie } from "@/lp1/components/MovieRow";
 import { MessageCircle } from "lucide-react";
 
 const Games = () => {

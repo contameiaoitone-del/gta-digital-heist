@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/lp1/components/ui/dialog";
+import { Button } from "@/lp1/components/ui/button";
+import { Input } from "@/lp1/components/ui/input";
+import { Label } from "@/lp1/components/ui/label";
+import { Checkbox } from "@/lp1/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/lp1/hooks/use-toast";
 
 interface SignupDialogProps {
   open: boolean;

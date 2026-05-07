@@ -1,6 +1,6 @@
 import { Zap, Target, Users, Award } from "lucide-react";
-import ScrollAnimation from "@/components/ui/scroll-animation";
-import joaoLucasPhoto from "@/assets/joao-lucas.jpg";
+import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
+import joaoLucasPhoto from "@/lp2/assets/joao-lucas.jpg";
 
 const AboutFounder = () => {
   const highlights = [

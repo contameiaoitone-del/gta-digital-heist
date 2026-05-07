@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Lock } from "lucide-react";
-import { appendUtmToUrl, trackPixelEvent } from "@/lib/utm";
+import { appendUtmToUrl, trackPixelEvent } from "@/lp1/lib/utm";
 
 interface ProductCardProps {
   title: string;

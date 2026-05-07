@@ -1,15 +1,15 @@
-import ScrollAnimation from "@/components/ui/scroll-animation";
+import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
 
 // Import all testimonial images
-import depoimento1 from "@/assets/testimonials/depoimento-1.png";
-import depoimento2 from "@/assets/testimonials/depoimento-2.png";
-import depoimento3 from "@/assets/testimonials/depoimento-3.png";
-import depoimento4 from "@/assets/testimonials/depoimento-4.png";
-import depoimento5 from "@/assets/testimonials/depoimento-5.png";
-import depoimento6 from "@/assets/testimonials/depoimento-6.png";
-import depoimento7 from "@/assets/testimonials/depoimento-7.png";
-import depoimento8 from "@/assets/testimonials/depoimento-8.png";
-import depoimento9 from "@/assets/testimonials/depoimento-9.png";
+import depoimento1 from "@/lp2/assets/testimonials/depoimento-1.png";
+import depoimento2 from "@/lp2/assets/testimonials/depoimento-2.png";
+import depoimento3 from "@/lp2/assets/testimonials/depoimento-3.png";
+import depoimento4 from "@/lp2/assets/testimonials/depoimento-4.png";
+import depoimento5 from "@/lp2/assets/testimonials/depoimento-5.png";
+import depoimento6 from "@/lp2/assets/testimonials/depoimento-6.png";
+import depoimento7 from "@/lp2/assets/testimonials/depoimento-7.png";
+import depoimento8 from "@/lp2/assets/testimonials/depoimento-8.png";
+import depoimento9 from "@/lp2/assets/testimonials/depoimento-9.png";
 
 const Testimonials = () => {
   const testimonials = [

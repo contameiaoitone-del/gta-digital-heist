@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lp2/components/ui/button";
 import { ArrowRight, Zap, BookOpen, Rocket, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { trackCustomEvent } from "@/lib/tracking";
+import { trackCustomEvent } from "@/lp2/lib/tracking";
 
 const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);

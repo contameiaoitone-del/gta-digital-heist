@@ -1,10 +1,10 @@
-import NetflixLayout from "@/components/NetflixLayout";
-import Header from "@/components/Header";
-import VturbPlayer from "@/components/VturbPlayer";
-import VideoWrapper from "@/components/VideoWrapper";
-import { Button } from "@/components/ui/button";
+import NetflixLayout from "@/lp1/components/NetflixLayout";
+import Header from "@/lp1/components/Header";
+import VturbPlayer from "@/lp1/components/VturbPlayer";
+import VideoWrapper from "@/lp1/components/VideoWrapper";
+import { Button } from "@/lp1/components/ui/button";
 import { useEffect, useState } from "react";
-import ConsultoriaQuizPopup from "@/components/ConsultoriaQuizPopup";
+import ConsultoriaQuizPopup from "@/lp1/components/ConsultoriaQuizPopup";
 
 const Call1Hora = () => {
   const [quizOpen, setQuizOpen] = useState(false);

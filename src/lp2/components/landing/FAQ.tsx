@@ -3,8 +3,8 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import ScrollAnimation from "@/components/ui/scroll-animation";
+} from "@/lp2/components/ui/accordion";
+import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
 
 const FAQ = () => {
   const faqs = [

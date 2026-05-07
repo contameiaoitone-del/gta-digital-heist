@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { appendUtmToUrl, trackPixelEvent } from "@/lib/utm";
+import { appendUtmToUrl, trackPixelEvent } from "@/lp1/lib/utm";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "@/lp1/components/ui/dialog";
+import { Button } from "@/lp1/components/ui/button";
 
 interface ConsultoriaQuizPopupProps {
   open: boolean;

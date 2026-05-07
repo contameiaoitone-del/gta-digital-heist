@@ -1,12 +1,12 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/lp1/components/ui/card";
+import { Button } from "@/lp1/components/ui/button";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/lp1/components/ui/carousel";
 
 const PatriarcadoSection = () => {
   const modules = [

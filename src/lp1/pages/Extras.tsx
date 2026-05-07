@@ -1,6 +1,6 @@
 
-import NetflixLayout from "@/components/NetflixLayout";
-import MovieCard from "@/components/MovieCard";
+import NetflixLayout from "@/lp1/components/NetflixLayout";
+import MovieCard from "@/lp1/components/MovieCard";
 
 const Extras = () => {
   const extrasData = [

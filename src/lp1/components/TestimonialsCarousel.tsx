@@ -1,18 +1,18 @@
 import { useRef, useEffect } from "react";
-import dep1 from "@/assets/testimonials/dep-1.png";
-import dep2 from "@/assets/testimonials/dep-2.png";
-import dep3 from "@/assets/testimonials/dep-3.png";
-import dep4 from "@/assets/testimonials/dep-4.png";
-import dep5 from "@/assets/testimonials/dep-5.png";
-import dep6 from "@/assets/testimonials/dep-6.png";
-import dep7 from "@/assets/testimonials/dep-7.png";
-import dep8 from "@/assets/testimonials/dep-8.png";
-import dep9 from "@/assets/testimonials/dep-9.png";
-import dep10 from "@/assets/testimonials/dep-10.png";
-import dep11 from "@/assets/testimonials/dep-11.png";
-import dep12 from "@/assets/testimonials/dep-12.png";
-import dep13 from "@/assets/testimonials/dep-13.png";
-import dep14 from "@/assets/testimonials/dep-14.png";
+import dep1 from "@/lp1/assets/testimonials/dep-1.png";
+import dep2 from "@/lp1/assets/testimonials/dep-2.png";
+import dep3 from "@/lp1/assets/testimonials/dep-3.png";
+import dep4 from "@/lp1/assets/testimonials/dep-4.png";
+import dep5 from "@/lp1/assets/testimonials/dep-5.png";
+import dep6 from "@/lp1/assets/testimonials/dep-6.png";
+import dep7 from "@/lp1/assets/testimonials/dep-7.png";
+import dep8 from "@/lp1/assets/testimonials/dep-8.png";
+import dep9 from "@/lp1/assets/testimonials/dep-9.png";
+import dep10 from "@/lp1/assets/testimonials/dep-10.png";
+import dep11 from "@/lp1/assets/testimonials/dep-11.png";
+import dep12 from "@/lp1/assets/testimonials/dep-12.png";
+import dep13 from "@/lp1/assets/testimonials/dep-13.png";
+import dep14 from "@/lp1/assets/testimonials/dep-14.png";
 
 const testimonials = [
   dep1, dep2, dep3, dep4, dep5, dep6, dep7,

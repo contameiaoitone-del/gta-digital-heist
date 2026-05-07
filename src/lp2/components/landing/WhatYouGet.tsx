@@ -9,7 +9,7 @@ import {
   PlayCircle,
   TrendingUp
 } from "lucide-react";
-import ScrollAnimation from "@/components/ui/scroll-animation";
+import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
 
 const WhatYouGet = () => {
   const mainBenefits = [

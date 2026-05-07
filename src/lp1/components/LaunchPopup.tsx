@@ -4,8 +4,8 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { useIsMobile } from "@/hooks/use-mobile";
+} from "@/lp1/components/ui/dialog";
+import { useIsMobile } from "@/lp1/hooks/use-mobile";
 import "../styles/animations.css";
 
 interface LaunchPopupProps {

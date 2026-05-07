@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lp1/components/ui/button";
 
 const CTASection = () => {
   return (

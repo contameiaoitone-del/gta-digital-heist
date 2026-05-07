@@ -1,7 +1,7 @@
-import NetflixLayout from "@/components/NetflixLayout";
-import ProductCard from "@/components/ProductCard";
-import starterImage from "@/assets/comunidade-x1.png";
-import mentoriaImage from "@/assets/comunidade-x1-mentoria.png";
+import NetflixLayout from "@/lp1/components/NetflixLayout";
+import ProductCard from "@/lp1/components/ProductCard";
+import starterImage from "@/lp1/assets/comunidade-x1.png";
+import mentoriaImage from "@/lp1/assets/comunidade-x1-mentoria.png";
 
 const Index = () => {
   const products = [

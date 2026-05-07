@@ -1,9 +1,9 @@
 
 import { MessageCircle } from "lucide-react";
-import NetflixLayout from "@/components/NetflixLayout";
-import { Movie } from "@/components/MovieRow";
-import MovieCard from "@/components/MovieCard";
-import { Button } from "@/components/ui/button";
+import NetflixLayout from "@/lp1/components/NetflixLayout";
+import { Movie } from "@/lp1/components/MovieRow";
+import MovieCard from "@/lp1/components/MovieCard";
+import { Button } from "@/lp1/components/ui/button";
 
 const Plaquinhas = () => {
   const plaquinhas = [

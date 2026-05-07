@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/lp1/components/ui/button";
 import { Check, Shield, ShieldCheck, Headphones } from "lucide-react";
 
 const benefits = [

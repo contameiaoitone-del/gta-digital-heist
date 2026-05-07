@@ -6,7 +6,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/lp1/components/ui/dialog";
 
 interface UpdatesPopupProps {
   onClose?: () => void;

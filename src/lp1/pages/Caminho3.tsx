@@ -1,10 +1,10 @@
-import NetflixLayout from "@/components/NetflixLayout";
-import Header from "@/components/Header";
-import { Button } from "@/components/ui/button";
-import VturbPlayer from "@/components/VturbPlayer";
-import VideoWrapper from "@/components/VideoWrapper";
+import NetflixLayout from "@/lp1/components/NetflixLayout";
+import Header from "@/lp1/components/Header";
+import { Button } from "@/lp1/components/ui/button";
+import VturbPlayer from "@/lp1/components/VturbPlayer";
+import VideoWrapper from "@/lp1/components/VideoWrapper";
 import { useEffect } from "react";
-import { appendUtmToUrl, trackPixelEvent } from "@/lib/utm";
+import { appendUtmToUrl, trackPixelEvent } from "@/lp1/lib/utm";
 
 const Caminho3 = () => {
   useEffect(() => {

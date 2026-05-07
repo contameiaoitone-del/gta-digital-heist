@@ -4,23 +4,23 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/lp1/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 
-import geradorFunilX1 from "@/assets/tools/gerador-funil-x1.png";
-import organizadorNumeros from "@/assets/tools/organizador-numeros.png";
-import trackOfertas from "@/assets/tools/track-ofertas.png";
-import zapSpy from "@/assets/tools/zap-spy.png";
-import geradorCriativoImagem from "@/assets/tools/gerador-criativo-imagem.png";
-import geradorCriativoVideo from "@/assets/tools/gerador-criativo-video.png";
-import geradorEntregavel from "@/assets/tools/gerador-entregavel.png";
-import geradorAudio from "@/assets/tools/gerador-audio.png";
-import transcricaoAudio from "@/assets/tools/transcricao-audio.png";
-import analisadorCriativo from "@/assets/tools/analisador-criativo.png";
-import automacaoWhatsapp from "@/assets/tools/automacao-whatsapp.png";
-import maturadorWhatsapp from "@/assets/tools/maturador-whatsapp.png";
-import etiquetadorWhatsapp from "@/assets/tools/etiquetador-whatsapp.png";
-import analiseMetricasIa from "@/assets/tools/analise-metricas-ia.png";
+import geradorFunilX1 from "@/lp1/assets/tools/gerador-funil-x1.png";
+import organizadorNumeros from "@/lp1/assets/tools/organizador-numeros.png";
+import trackOfertas from "@/lp1/assets/tools/track-ofertas.png";
+import zapSpy from "@/lp1/assets/tools/zap-spy.png";
+import geradorCriativoImagem from "@/lp1/assets/tools/gerador-criativo-imagem.png";
+import geradorCriativoVideo from "@/lp1/assets/tools/gerador-criativo-video.png";
+import geradorEntregavel from "@/lp1/assets/tools/gerador-entregavel.png";
+import geradorAudio from "@/lp1/assets/tools/gerador-audio.png";
+import transcricaoAudio from "@/lp1/assets/tools/transcricao-audio.png";
+import analisadorCriativo from "@/lp1/assets/tools/analisador-criativo.png";
+import automacaoWhatsapp from "@/lp1/assets/tools/automacao-whatsapp.png";
+import maturadorWhatsapp from "@/lp1/assets/tools/maturador-whatsapp.png";
+import etiquetadorWhatsapp from "@/lp1/assets/tools/etiquetador-whatsapp.png";
+import analiseMetricasIa from "@/lp1/assets/tools/analise-metricas-ia.png";
 
 const tools = [
   { id: 1, image: geradorFunilX1, name: "Gerador de Funil de X1" },
