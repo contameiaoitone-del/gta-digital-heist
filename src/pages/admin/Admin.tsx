@@ -255,6 +255,21 @@ const Admin = () => {
         <Modal onClose={() => setEditingModule(null)} title={editingModule.id ? "Editar módulo" : "Novo módulo"}>
           <div className="space-y-3">
             <Field label="Título"><input className={inputCls} value={editingModule.title || ""} onChange={(e) => setEditingModule({ ...editingModule, title: e.target.value })} /></Field>
+            <Field label="Categoria (sessão)">
+              <input
+                className={inputCls}
+                list="module-categories"
+                placeholder="Ex.: Base do X1"
+                value={editingModule.category || ""}
+                onChange={(e) => setEditingModule({ ...editingModule, category: e.target.value })}
+              />
+              <datalist id="module-categories">
+                {Array.from(new Set(modules.map((m) => m.category).filter(Boolean) as string[])).map((c) => (
+                  <option key={c} value={c} />
+                ))}
+              </datalist>
+              <p className="text-xs text-gray-500 mt-1">Módulos com a mesma categoria aparecem agrupados em uma sessão na área de membros.</p>
+            </Field>
             <Field label="Descrição"><textarea className={inputCls + " h-24"} value={editingModule.description || ""} onChange={(e) => setEditingModule({ ...editingModule, description: e.target.value })} /></Field>
             <Field label="Capa do módulo (2:3 vertical — recomendado 800×1200, estilo cartaz Netflix)">
               <input type="file" accept="image/*" onChange={async (e) => {
