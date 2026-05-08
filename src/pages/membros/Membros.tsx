@@ -15,6 +15,7 @@ interface Module {
   description: string | null;
   cover_url: string | null;
   position: number;
+  category: string | null;
   created_at?: string;
 }
 interface Lesson {
@@ -170,29 +171,42 @@ const Membros = () => {
           </Row>
         )}
 
-        {/* Módulos (cards 2:3 estilo Netflix) */}
-        {modules.length > 0 && (
-          <Row title="Módulos">
-            {modules.map((m) => {
-              const list = lessonsByModule[m.id] || [];
-              const total = list.length;
-              const done = list.filter((l) => progress[l.id]?.completed).length;
-              const pct = total ? (done / total) * 100 : 0;
-              return (
-                <PosterCard
-                  key={m.id}
-                  to={`/membros/modulo/${m.id}`}
-                  title={m.title}
-                  cover={m.cover_url}
-                  description={m.description}
-                  meta={`${total} ${total === 1 ? "aula" : "aulas"}`}
-                  progressPct={pct}
-                  completed={pct === 100 && total > 0}
-                />
-              );
-            })}
-          </Row>
-        )}
+        {/* Módulos agrupados por categoria */}
+        {(() => {
+          if (modules.length === 0) return null;
+          const groups: { category: string; mods: Module[] }[] = [];
+          const seen = new Map<string, Module[]>();
+          modules.forEach((m) => {
+            const key = m.category?.trim() || "Módulos";
+            if (!seen.has(key)) {
+              seen.set(key, []);
+              groups.push({ category: key, mods: seen.get(key)! });
+            }
+            seen.get(key)!.push(m);
+          });
+          return groups.map(({ category, mods }) => (
+            <Row key={category} title={category}>
+              {mods.map((m) => {
+                const list = lessonsByModule[m.id] || [];
+                const total = list.length;
+                const done = list.filter((l) => progress[l.id]?.completed).length;
+                const pct = total ? (done / total) * 100 : 0;
+                return (
+                  <PosterCard
+                    key={m.id}
+                    to={`/membros/modulo/${m.id}`}
+                    title={m.title}
+                    cover={m.cover_url}
+                    description={m.description}
+                    meta={`${total} ${total === 1 ? "aula" : "aulas"}`}
+                    progressPct={pct}
+                    completed={pct === 100 && total > 0}
+                  />
+                );
+              })}
+            </Row>
+          ));
+        })()}
 
       </div>
 

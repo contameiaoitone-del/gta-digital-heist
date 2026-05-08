@@ -289,6 +289,7 @@ export type Database = {
       }
       modules: {
         Row: {
+          category: string | null
           cover_url: string | null
           created_at: string
           description: string | null
@@ -300,6 +301,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          category?: string | null
           cover_url?: string | null
           created_at?: string
           description?: string | null
@@ -311,6 +313,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          category?: string | null
           cover_url?: string | null
           created_at?: string
           description?: string | null
