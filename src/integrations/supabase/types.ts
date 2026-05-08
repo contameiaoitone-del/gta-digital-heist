@@ -154,6 +154,7 @@ export type Database = {
           thumbnail_url: string | null
           title: string
           updated_at: string
+          vturb_player_id: string | null
           youtube_id: string | null
           youtube_url: string | null
         }
@@ -168,6 +169,7 @@ export type Database = {
           thumbnail_url?: string | null
           title: string
           updated_at?: string
+          vturb_player_id?: string | null
           youtube_id?: string | null
           youtube_url?: string | null
         }
@@ -182,6 +184,7 @@ export type Database = {
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
+          vturb_player_id?: string | null
           youtube_id?: string | null
           youtube_url?: string | null
         }
@@ -284,6 +287,30 @@ export type Database = {
           utm_source?: string | null
           utm_term?: string | null
           value?: number | null
+        }
+        Relationships: []
+      }
+      module_categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          position: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          position?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          position?: number
+          updated_at?: string
         }
         Relationships: []
       }
