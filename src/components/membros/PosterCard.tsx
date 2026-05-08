@@ -19,11 +19,6 @@ const PosterCard = ({ to, title, cover, description, category, meta, progressPct
       className="group/card relative flex-shrink-0 w-[180px] md:w-[240px] lg:w-[260px] snap-start hover:z-20"
     >
       <div className="relative aspect-[2/3] rounded-md overflow-hidden bg-[#141414] border border-white/5 transition-transform duration-300 group-hover/card:scale-105 group-hover/card:shadow-2xl group-hover/card:border-white/30">
-        {category && (
-          <div className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-sm bg-black/70 backdrop-blur-sm border border-white/10 text-[10px] uppercase tracking-wider text-white/90" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
-            {category}
-          </div>
-        )}
         {cover ? (
           <img src={cover} alt={title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
         ) : (
@@ -65,8 +60,15 @@ const PosterCard = ({ to, title, cover, description, category, meta, progressPct
         </div>
       </div>
 
-      {/* Title under card on mobile */}
-      <p className="md:hidden mt-2 text-xs text-gray-300 line-clamp-2 px-1">{title}</p>
+      {/* Title + category under card */}
+      <div className="mt-2 px-1">
+        <p className="text-xs md:text-sm text-gray-200 line-clamp-2 font-semibold">{title}</p>
+        {category && (
+          <p className="text-[10px] uppercase tracking-wider text-[#a855f7] mt-0.5" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
+            {category}
+          </p>
+        )}
+      </div>
     </Link>
   );
 };
