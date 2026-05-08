@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -56,19 +56,7 @@ const Admin = () => {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [busy, setBusy] = useState(false);
 
-  useEffect(() => {
-    document.title = "Admin — InfoZap";
-    if (isAdmin) {
-      loadAdminContent();
-    }
-  }, [isAdmin]);
-
-  useEffect(() => {
-    if (selectedModuleId) loadLessons(selectedModuleId);
-    else setLessons([]);
-  }, [selectedModuleId]);
-
-  const syncModuleCategories = async (moduleList: Module[], savedCategories: Category[]) => {
+  const syncModuleCategories = useCallback(async (moduleList: Module[], savedCategories: Category[]) => {
     const savedNames = new Set(savedCategories.map((c) => c.name.trim().toLowerCase()));
     const moduleCategoryNames = Array.from(
       new Set(moduleList.map((m) => m.category?.trim()).filter(Boolean) as string[])
@@ -95,8 +83,8 @@ const Admin = () => {
     if (!error && data) {
       setCategories([...savedCategories, ...((data as Category[]) || [])].sort((a, b) => a.position - b.position));
     }
-  };
-  const loadAdminContent = async () => {
+  }, []);
+  const loadAdminContent = useCallback(async () => {
     const [{ data: modulesData }, { data: categoriesData }] = await Promise.all([
       supabase.from("modules").select("*").order("position"),
       supabase.from("module_categories").select("*").order("position"),
@@ -105,17 +93,17 @@ const Admin = () => {
     const loadedCategories = (categoriesData as Category[]) || [];
     setModules(loadedModules);
     await syncModuleCategories(loadedModules, loadedCategories);
-  };
-  const loadModules = async () => {
+  }, [syncModuleCategories]);
+  const loadModules = useCallback(async () => {
     const { data } = await supabase.from("modules").select("*").order("position");
     const loadedModules = (data as Module[]) || [];
     setModules(loadedModules);
     await syncModuleCategories(loadedModules, categories);
-  };
-  const loadCategories = async () => {
+  }, [categories, syncModuleCategories]);
+  const loadCategories = useCallback(async () => {
     const { data } = await supabase.from("module_categories").select("*").order("position");
     setCategories((data as Category[]) || []);
-  };
+  }, []);
   const addCategory = async () => {
     const name = newCategoryName.trim();
     if (!name) return;
@@ -142,10 +130,22 @@ const Admin = () => {
     ]);
     loadCategories();
   };
-  const loadLessons = async (modId: string) => {
+  const loadLessons = useCallback(async (modId: string) => {
     const { data } = await supabase.from("lessons").select("*").eq("module_id", modId).order("position");
     setLessons((data as Lesson[]) || []);
-  };
+  }, []);
+
+  useEffect(() => {
+    document.title = "Admin — InfoZap";
+    if (isAdmin) {
+      loadAdminContent();
+    }
+  }, [isAdmin, loadAdminContent]);
+
+  useEffect(() => {
+    if (selectedModuleId) loadLessons(selectedModuleId);
+    else setLessons([]);
+  }, [selectedModuleId, loadLessons]);
 
   const saveModule = async () => {
     if (!editingModule || !editingModule.title) return;
