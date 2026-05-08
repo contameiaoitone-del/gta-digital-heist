@@ -275,6 +275,7 @@ const Admin = () => {
                   <p className="font-semibold text-sm">{m.title}</p>
                   <p className="text-xs text-gray-500">
                     {m.published ? <span className="text-[#00ff88]">Publicado</span> : "Rascunho"}
+                    {m.category && <> · <span className="text-[#a855f7]">{m.category}</span></>}
                   </p>
                 </button>
                 <button onClick={() => setEditingModule(m)} className="text-gray-400 hover:text-white p-1"><Pencil className="h-4 w-4" /></button>
@@ -336,7 +337,10 @@ const Admin = () => {
                 onChange={(e) => setEditingModule({ ...editingModule, category: e.target.value })}
               />
               <datalist id="module-categories">
-                {Array.from(new Set(modules.map((m) => m.category).filter(Boolean) as string[])).map((c) => (
+                {Array.from(new Set([
+                  ...categories.map((c) => c.name),
+                  ...(modules.map((m) => m.category).filter(Boolean) as string[]),
+                ])).map((c) => (
                   <option key={c} value={c} />
                 ))}
               </datalist>
