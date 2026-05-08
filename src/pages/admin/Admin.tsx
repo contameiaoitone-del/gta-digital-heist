@@ -21,10 +21,16 @@ interface Lesson {
   description: string | null;
   youtube_url: string | null;
   youtube_id: string | null;
+  vturb_player_id: string | null;
   thumbnail_url: string | null;
   duration_seconds: number | null;
   position: number;
   published: boolean;
+}
+interface Category {
+  id: string;
+  name: string;
+  position: number;
 }
 
 function extractYouTubeId(url: string): string | null {
@@ -44,13 +50,18 @@ const Admin = () => {
   const [modules, setModules] = useState<Module[]>([]);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [editingModule, setEditingModule] = useState<Partial<Module> | null>(null);
   const [editingLesson, setEditingLesson] = useState<Partial<Lesson> | null>(null);
+  const [newCategoryName, setNewCategoryName] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     document.title = "Admin — InfoZap";
-    if (isAdmin) loadModules();
+    if (isAdmin) {
+      loadModules();
+      loadCategories();
+    }
   }, [isAdmin]);
 
   useEffect(() => {
@@ -61,6 +72,36 @@ const Admin = () => {
   const loadModules = async () => {
     const { data } = await supabase.from("modules").select("*").order("position");
     setModules((data as Module[]) || []);
+  };
+  const loadCategories = async () => {
+    const { data } = await supabase.from("module_categories").select("*").order("position");
+    setCategories((data as Category[]) || []);
+  };
+  const addCategory = async () => {
+    const name = newCategoryName.trim();
+    if (!name) return;
+    const { error } = await supabase.from("module_categories").insert({ name, position: categories.length + 1 });
+    if (error) toast.error(error.message);
+    else {
+      setNewCategoryName("");
+      loadCategories();
+    }
+  };
+  const deleteCategory = async (id: string) => {
+    if (!confirm("Excluir categoria? (módulos não serão excluídos)")) return;
+    const { error } = await supabase.from("module_categories").delete().eq("id", id);
+    if (error) toast.error(error.message);
+    else loadCategories();
+  };
+  const moveCategory = async (id: string, dir: -1 | 1) => {
+    const idx = categories.findIndex((c) => c.id === id);
+    const swap = categories[idx + dir];
+    if (!swap) return;
+    await Promise.all([
+      supabase.from("module_categories").update({ position: swap.position }).eq("id", id),
+      supabase.from("module_categories").update({ position: categories[idx].position }).eq("id", swap.id),
+    ]);
+    loadCategories();
   };
   const loadLessons = async (modId: string) => {
     const { data } = await supabase.from("lessons").select("*").eq("module_id", modId).order("position");
@@ -119,6 +160,7 @@ const Admin = () => {
       description: editingLesson.description || null,
       youtube_url: editingLesson.youtube_url || null,
       youtube_id: ytId,
+      vturb_player_id: editingLesson.vturb_player_id?.trim() || null,
       thumbnail_url: ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : editingLesson.thumbnail_url || null,
       duration_seconds: editingLesson.duration_seconds ?? null,
       position: editingLesson.position ?? lessons.length + 1,
@@ -183,6 +225,36 @@ const Admin = () => {
       </header>
 
       <div className="max-w-[1600px] mx-auto px-4 py-6 grid lg:grid-cols-2 gap-6">
+        {/* CATEGORIES */}
+        <section className="lg:col-span-2 border border-white/10 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h2 className="text-lg font-bold" style={{ fontFamily: "'Bebas Neue', cursive" }}>Sessões / Categorias</h2>
+              <p className="text-xs text-gray-500">Defina a ordem em que as sessões aparecem na área de membros (independente da ordem dos módulos).</p>
+            </div>
+          </div>
+          <div className="flex gap-2 mb-3">
+            <input className={inputCls} placeholder="Nome da nova categoria (ex.: Avançado)" value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} />
+            <button onClick={addCategory} className="px-3 py-2 bg-[#00ff88] text-black rounded text-sm font-bold whitespace-nowrap">Adicionar</button>
+          </div>
+          {categories.length === 0 ? (
+            <p className="text-xs text-gray-500">Nenhuma categoria ainda. Categorias usadas pelos módulos aparecerão automaticamente no fim da lista — adicione aqui para controlar a ordem.</p>
+          ) : (
+            <ul className="space-y-1">
+              {categories.map((c, i) => (
+                <li key={c.id} className="flex items-center gap-2 p-2 rounded border border-white/10">
+                  <div className="flex flex-col gap-0.5">
+                    <button onClick={() => moveCategory(c.id, -1)} disabled={i === 0} className="text-gray-500 disabled:opacity-30"><ArrowUp className="h-3 w-3" /></button>
+                    <button onClick={() => moveCategory(c.id, 1)} disabled={i === categories.length - 1} className="text-gray-500 disabled:opacity-30"><ArrowDown className="h-3 w-3" /></button>
+                  </div>
+                  <span className="flex-1 text-sm">{c.name}</span>
+                  <button onClick={() => deleteCategory(c.id)} className="text-gray-400 hover:text-[#ff2d78] p-1"><Trash2 className="h-4 w-4" /></button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
         {/* MODULES */}
         <section>
           <div className="flex items-center justify-between mb-3">
@@ -299,7 +371,23 @@ const Admin = () => {
           <div className="space-y-3">
             <Field label="Título"><input className={inputCls} value={editingLesson.title || ""} onChange={(e) => setEditingLesson({ ...editingLesson, title: e.target.value })} /></Field>
             <Field label="URL do YouTube"><input className={inputCls} placeholder="https://youtube.com/watch?v=..." value={editingLesson.youtube_url || ""} onChange={(e) => setEditingLesson({ ...editingLesson, youtube_url: e.target.value })} /></Field>
-            <Field label="Descrição"><textarea className={inputCls + " h-24"} value={editingLesson.description || ""} onChange={(e) => setEditingLesson({ ...editingLesson, description: e.target.value })} /></Field>
+            <Field label="OU código VTURB (cole o embed completo: <vturb-smartplayer> + <script>)">
+              <textarea
+                className={inputCls + " h-32 font-mono text-xs"}
+                placeholder='<vturb-smartplayer id="vid-..."></vturb-smartplayer><script>...</script>'
+                value={editingLesson.vturb_player_id || ""}
+                onChange={(e) => setEditingLesson({ ...editingLesson, vturb_player_id: e.target.value })}
+              />
+              <p className="text-xs text-gray-500 mt-1">Se preenchido, o VTURB tem prioridade sobre o YouTube. Cole o embed + script de otimização inteiros.</p>
+            </Field>
+            <Field label="Descrição (visível para os usuários)">
+              <textarea
+                className={inputCls + " h-24"}
+                placeholder="Sobre o que é essa aula, principais pontos abordados, etc."
+                value={editingLesson.description || ""}
+                onChange={(e) => setEditingLesson({ ...editingLesson, description: e.target.value })}
+              />
+            </Field>
             <Field label="Duração (segundos)"><input type="number" className={inputCls} value={editingLesson.duration_seconds ?? ""} onChange={(e) => setEditingLesson({ ...editingLesson, duration_seconds: e.target.value ? Number(e.target.value) : null })} /></Field>
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={!!editingLesson.published} onChange={(e) => setEditingLesson({ ...editingLesson, published: e.target.checked })} />

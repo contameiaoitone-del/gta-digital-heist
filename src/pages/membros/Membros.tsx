@@ -18,6 +18,11 @@ interface Module {
   category: string | null;
   created_at?: string;
 }
+interface Category {
+  id: string;
+  name: string;
+  position: number;
+}
 interface Lesson {
   id: string;
   module_id: string;
@@ -43,19 +48,22 @@ const Membros = () => {
   const signOut = useSignOut();
   const [modules, setModules] = useState<Module[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [progress, setProgress] = useState<Record<string, Progress>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     document.title = "Área de Membros — InfoZap";
     (async () => {
-      const [mRes, lRes, pRes] = await Promise.all([
+      const [mRes, lRes, cRes, pRes] = await Promise.all([
         supabase.from("modules").select("*").order("position"),
         supabase.from("lessons").select("*").order("position"),
+        supabase.from("module_categories").select("*").order("position"),
         session ? supabase.from("lesson_progress").select("*").eq("user_id", session.user.id) : Promise.resolve({ data: [] as Progress[] }),
       ]);
       setModules((mRes.data as Module[]) || []);
       setLessons((lRes.data as Lesson[]) || []);
+      setCategories((cRes.data as Category[]) || []);
       const pmap: Record<string, Progress> = {};
       ((pRes as { data: Progress[] | null }).data || []).forEach((p) => (pmap[p.lesson_id] = p));
       setProgress(pmap);
@@ -174,16 +182,20 @@ const Membros = () => {
         {/* Módulos agrupados por categoria */}
         {(() => {
           if (modules.length === 0) return null;
-          const groups: { category: string; mods: Module[] }[] = [];
           const seen = new Map<string, Module[]>();
           modules.forEach((m) => {
             const key = m.category?.trim() || "Módulos";
-            if (!seen.has(key)) {
-              seen.set(key, []);
-              groups.push({ category: key, mods: seen.get(key)! });
-            }
+            if (!seen.has(key)) seen.set(key, []);
             seen.get(key)!.push(m);
           });
+          const orderMap = new Map(categories.map((c) => [c.name, c.position]));
+          const groups = Array.from(seen.entries())
+            .map(([category, mods]) => ({ category, mods }))
+            .sort((a, b) => {
+              const ai = orderMap.has(a.category) ? orderMap.get(a.category)! : 9999;
+              const bi = orderMap.has(b.category) ? orderMap.get(b.category)! : 9999;
+              return ai - bi;
+            });
           return groups.map(({ category, mods }) => (
             <Row key={category} title={category}>
               {mods.map((m) => {
@@ -198,6 +210,7 @@ const Membros = () => {
                     title={m.title}
                     cover={m.cover_url}
                     description={m.description}
+                    category={m.category}
                     meta={`${total} ${total === 1 ? "aula" : "aulas"}`}
                     progressPct={pct}
                     completed={pct === 100 && total > 0}
@@ -210,8 +223,8 @@ const Membros = () => {
 
       </div>
 
-      {/* Footer purple gradient */}
-      <div className="pointer-events-none fixed bottom-0 left-0 right-0 h-48 z-0 bg-gradient-to-t from-purple-600/40 via-purple-900/20 to-transparent" />
+      {/* Footer purple gradient — sutil, somente no fim do site */}
+      <div className="pointer-events-none relative h-20 mt-12 bg-gradient-to-t from-purple-600/15 via-purple-900/5 to-transparent" />
     </div>
   );
 };

@@ -6,18 +6,24 @@ interface PosterCardProps {
   title: string;
   cover: string | null;
   description?: string | null;
+  category?: string | null;
   meta?: string;
   progressPct?: number;
   completed?: boolean;
 }
 
-const PosterCard = ({ to, title, cover, description, meta, progressPct = 0, completed }: PosterCardProps) => {
+const PosterCard = ({ to, title, cover, description, category, meta, progressPct = 0, completed }: PosterCardProps) => {
   return (
     <Link
       to={to}
       className="group/card relative flex-shrink-0 w-[180px] md:w-[240px] lg:w-[260px] snap-start hover:z-20"
     >
       <div className="relative aspect-[2/3] rounded-md overflow-hidden bg-[#141414] border border-white/5 transition-transform duration-300 group-hover/card:scale-105 group-hover/card:shadow-2xl group-hover/card:border-white/30">
+        {category && (
+          <div className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-sm bg-black/70 backdrop-blur-sm border border-white/10 text-[10px] uppercase tracking-wider text-white/90" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
+            {category}
+          </div>
+        )}
         {cover ? (
           <img src={cover} alt={title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
         ) : (

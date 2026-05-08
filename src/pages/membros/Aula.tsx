@@ -11,6 +11,7 @@ interface Lesson {
   description: string | null;
   youtube_id: string | null;
   youtube_url: string | null;
+  vturb_player_id: string | null;
   duration_seconds: number | null;
   position: number;
 }
@@ -30,6 +31,7 @@ const Aula = () => {
   const [loading, setLoading] = useState(true);
   const playerRef = useRef<HTMLIFrameElement>(null);
   const tickRef = useRef<number>(0);
+  const vturbRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -73,6 +75,26 @@ const Aula = () => {
     }, 10000);
     return () => clearInterval(interval);
   }, [lesson, session, completed]);
+
+  // Inject VTURB embed (HTML + scripts) safely so <script> tags execute
+  useEffect(() => {
+    const container = vturbRef.current;
+    if (!container || !lesson?.vturb_player_id) return;
+    container.innerHTML = "";
+    const tpl = document.createElement("template");
+    tpl.innerHTML = lesson.vturb_player_id.trim();
+    Array.from(tpl.content.childNodes).forEach((node) => {
+      if (node.nodeName === "SCRIPT") {
+        const old = node as HTMLScriptElement;
+        const s = document.createElement("script");
+        Array.from(old.attributes).forEach((a) => s.setAttribute(a.name, a.value));
+        s.text = old.text;
+        container.appendChild(s);
+      } else {
+        container.appendChild(node.cloneNode(true));
+      }
+    });
+  }, [lesson?.vturb_player_id]);
 
   const idx = useMemo(() => siblings.findIndex((s) => s.id === lesson?.id), [siblings, lesson]);
   const prev = idx > 0 ? siblings[idx - 1] : null;
@@ -129,7 +151,9 @@ const Aula = () => {
       <div className="max-w-[1600px] mx-auto px-4 py-6 grid lg:grid-cols-[1fr_360px] gap-6">
         <div>
           <div className="aspect-video bg-black rounded-lg overflow-hidden">
-            {lesson.youtube_id ? (
+            {lesson.vturb_player_id ? (
+              <div ref={vturbRef} className="w-full h-full [&>*]:w-full [&>*]:h-full" />
+            ) : lesson.youtube_id ? (
               <iframe
                 ref={playerRef}
                 src={`https://www.youtube.com/embed/${lesson.youtube_id}?rel=0&modestbranding=1`}
