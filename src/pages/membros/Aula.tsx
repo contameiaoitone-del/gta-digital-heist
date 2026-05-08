@@ -11,6 +11,7 @@ interface Lesson {
   description: string | null;
   youtube_id: string | null;
   youtube_url: string | null;
+  vturb_player_id: string | null;
   duration_seconds: number | null;
   position: number;
 }
@@ -129,7 +130,14 @@ const Aula = () => {
       <div className="max-w-[1600px] mx-auto px-4 py-6 grid lg:grid-cols-[1fr_360px] gap-6">
         <div>
           <div className="aspect-video bg-black rounded-lg overflow-hidden">
-            {lesson.youtube_id ? (
+            {lesson.vturb_player_id ? (
+              <div
+                className="w-full h-full"
+                dangerouslySetInnerHTML={{
+                  __html: `<vturb-smartplayer id="vid-${lesson.vturb_player_id}" style="display:block;margin:0 auto;width:100%;height:100%"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/${lesson.vturb_player_id}/players/${lesson.vturb_player_id}/v4/player.js";s.async=true;document.head.appendChild(s);<\/script>`,
+                }}
+              />
+            ) : lesson.youtube_id ? (
               <iframe
                 ref={playerRef}
                 src={`https://www.youtube.com/embed/${lesson.youtube_id}?rel=0&modestbranding=1`}
