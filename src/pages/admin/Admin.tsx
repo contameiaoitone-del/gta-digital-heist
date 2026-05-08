@@ -59,8 +59,7 @@ const Admin = () => {
   useEffect(() => {
     document.title = "Admin — InfoZap";
     if (isAdmin) {
-      loadModules();
-      loadCategories();
+      loadAdminContent();
     }
   }, [isAdmin]);
 
@@ -69,9 +68,49 @@ const Admin = () => {
     else setLessons([]);
   }, [selectedModuleId]);
 
+  const syncModuleCategories = async (moduleList: Module[], savedCategories: Category[]) => {
+    const savedNames = new Set(savedCategories.map((c) => c.name.trim().toLowerCase()));
+    const moduleCategoryNames = Array.from(
+      new Set(moduleList.map((m) => m.category?.trim()).filter(Boolean) as string[])
+    ).filter((name) => !savedNames.has(name.toLowerCase()));
+
+    if (moduleCategoryNames.length === 0) {
+      setCategories(savedCategories);
+      return;
+    }
+
+    const maxPosition = savedCategories.reduce((max, c) => Math.max(max, c.position), 0);
+    const pendingCategories = moduleCategoryNames.map((name, index) => ({
+      id: `module-${name}`,
+      name,
+      position: maxPosition + index + 1,
+    }));
+    setCategories([...savedCategories, ...pendingCategories]);
+
+    const { data, error } = await supabase
+      .from("module_categories")
+      .insert(moduleCategoryNames.map((name, index) => ({ name, position: maxPosition + index + 1 })))
+      .select("*");
+
+    if (!error && data) {
+      setCategories([...savedCategories, ...((data as Category[]) || [])].sort((a, b) => a.position - b.position));
+    }
+  };
+  const loadAdminContent = async () => {
+    const [{ data: modulesData }, { data: categoriesData }] = await Promise.all([
+      supabase.from("modules").select("*").order("position"),
+      supabase.from("module_categories").select("*").order("position"),
+    ]);
+    const loadedModules = (modulesData as Module[]) || [];
+    const loadedCategories = (categoriesData as Category[]) || [];
+    setModules(loadedModules);
+    await syncModuleCategories(loadedModules, loadedCategories);
+  };
   const loadModules = async () => {
     const { data } = await supabase.from("modules").select("*").order("position");
-    setModules((data as Module[]) || []);
+    const loadedModules = (data as Module[]) || [];
+    setModules(loadedModules);
+    await syncModuleCategories(loadedModules, categories);
   };
   const loadCategories = async () => {
     const { data } = await supabase.from("module_categories").select("*").order("position");
@@ -84,14 +123,14 @@ const Admin = () => {
     if (error) toast.error(error.message);
     else {
       setNewCategoryName("");
-      loadCategories();
+      loadAdminContent();
     }
   };
   const deleteCategory = async (id: string) => {
     if (!confirm("Excluir categoria? (módulos não serão excluídos)")) return;
     const { error } = await supabase.from("module_categories").delete().eq("id", id);
     if (error) toast.error(error.message);
-    else loadCategories();
+    else loadAdminContent();
   };
   const moveCategory = async (id: string, dir: -1 | 1) => {
     const idx = categories.findIndex((c) => c.id === id);
