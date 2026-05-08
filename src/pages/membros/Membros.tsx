@@ -210,6 +210,7 @@ const Membros = () => {
                     title={m.title}
                     cover={m.cover_url}
                     description={m.description}
+                    category={m.category}
                     meta={`${total} ${total === 1 ? "aula" : "aulas"}`}
                     progressPct={pct}
                     completed={pct === 100 && total > 0}
