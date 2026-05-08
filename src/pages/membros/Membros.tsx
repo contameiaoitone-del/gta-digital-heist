@@ -100,9 +100,12 @@ const Membros = () => {
 
       {/* BILLBOARD fixo InfoZap (estilo Netflix) */}
       <section className="relative h-[58vh] min-h-[420px] max-h-[640px] w-full overflow-hidden pt-16">
-        <img
-          src={infozapBanner}
-          alt="InfoZap"
+        <video
+          src="/membros-hero.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/80 to-[#080808]/20" />
