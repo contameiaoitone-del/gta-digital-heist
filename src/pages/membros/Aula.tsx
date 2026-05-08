@@ -134,7 +134,7 @@ const Aula = () => {
               <div
                 className="w-full h-full"
                 dangerouslySetInnerHTML={{
-                  __html: `<vturb-smartplayer id="vid-${lesson.vturb_player_id}" style="display:block;margin:0 auto;width:100%;height:100%"></vturb-smartplayer><script type="text/javascript">var s=document.createElement("script");s.src="https://scripts.converteai.net/${lesson.vturb_player_id}/players/${lesson.vturb_player_id}/v4/player.js";s.async=true;document.head.appendChild(s);<\/script>`,
+                  __html: lesson.vturb_player_id,
                 }}
               />
             ) : lesson.youtube_id ? (
