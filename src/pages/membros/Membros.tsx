@@ -15,6 +15,7 @@ interface Module {
   description: string | null;
   cover_url: string | null;
   position: number;
+  category: string | null;
   created_at?: string;
 }
 interface Lesson {
