@@ -371,7 +371,23 @@ const Admin = () => {
           <div className="space-y-3">
             <Field label="Título"><input className={inputCls} value={editingLesson.title || ""} onChange={(e) => setEditingLesson({ ...editingLesson, title: e.target.value })} /></Field>
             <Field label="URL do YouTube"><input className={inputCls} placeholder="https://youtube.com/watch?v=..." value={editingLesson.youtube_url || ""} onChange={(e) => setEditingLesson({ ...editingLesson, youtube_url: e.target.value })} /></Field>
-            <Field label="Descrição"><textarea className={inputCls + " h-24"} value={editingLesson.description || ""} onChange={(e) => setEditingLesson({ ...editingLesson, description: e.target.value })} /></Field>
+            <Field label="OU código VTURB (cole o embed completo: <vturb-smartplayer> + <script>)">
+              <textarea
+                className={inputCls + " h-32 font-mono text-xs"}
+                placeholder='<vturb-smartplayer id="vid-..."></vturb-smartplayer><script>...</script>'
+                value={editingLesson.vturb_player_id || ""}
+                onChange={(e) => setEditingLesson({ ...editingLesson, vturb_player_id: e.target.value })}
+              />
+              <p className="text-xs text-gray-500 mt-1">Se preenchido, o VTURB tem prioridade sobre o YouTube. Cole o embed + script de otimização inteiros.</p>
+            </Field>
+            <Field label="Descrição (visível para os usuários)">
+              <textarea
+                className={inputCls + " h-24"}
+                placeholder="Sobre o que é essa aula, principais pontos abordados, etc."
+                value={editingLesson.description || ""}
+                onChange={(e) => setEditingLesson({ ...editingLesson, description: e.target.value })}
+              />
+            </Field>
             <Field label="Duração (segundos)"><input type="number" className={inputCls} value={editingLesson.duration_seconds ?? ""} onChange={(e) => setEditingLesson({ ...editingLesson, duration_seconds: e.target.value ? Number(e.target.value) : null })} /></Field>
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={!!editingLesson.published} onChange={(e) => setEditingLesson({ ...editingLesson, published: e.target.checked })} />
