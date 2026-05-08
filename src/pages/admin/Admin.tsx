@@ -12,6 +12,7 @@ interface Module {
   cover_url: string | null;
   position: number;
   published: boolean;
+  category: string | null;
 }
 interface Lesson {
   id: string;
@@ -75,6 +76,7 @@ const Admin = () => {
       cover_url: editingModule.cover_url || null,
       position: editingModule.position ?? modules.length + 1,
       published: editingModule.published ?? false,
+      category: editingModule.category?.trim() || null,
     };
     const { error } = editingModule.id
       ? await supabase.from("modules").update(payload).eq("id", editingModule.id)
