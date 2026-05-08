@@ -113,10 +113,10 @@ const Membros = () => {
 
         <div className="relative z-10 max-w-[1800px] mx-auto px-4 md:px-12 h-full flex flex-col justify-end pb-16 md:pb-20">
           <h1
-            className="mb-3 font-gta uppercase leading-none drop-shadow-2xl select-none text-5xl md:text-7xl lg:text-8xl bg-gradient-to-r from-[#a855f7] via-[#9333ea] to-[#6d28d9] bg-clip-text text-transparent"
+            className="mb-3 font-gta uppercase leading-none drop-shadow-2xl select-none text-white text-5xl md:text-7xl lg:text-8xl"
             style={{ letterSpacing: "0.02em" }}
           >
-            Treinamento de <span className="text-[#c084fc]">X1</span>
+            Treinamento de X1
           </h1>
           <p className="text-sm md:text-base text-gray-200 max-w-xl mb-5 line-clamp-3 drop-shadow-lg">
             O <span className="text-[#c084fc] font-semibold">método completo</span> para escalar produtos digitais no <span className="text-[#c084fc] font-semibold">WhatsApp</span>. Tráfego pago, criativos, copy, escala e os <span className="text-[#c084fc] font-semibold">bastidores reais</span> de quem fatura todo dia.
