@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -79,13 +79,21 @@ const MembrosLogin = () => {
   const inputCls = "w-full h-12 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88]";
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-[#080808]">
+    <div className="min-h-screen flex flex-col items-center px-4 bg-[#080808] py-10">
       <div className="max-w-md w-full">
-        <Link to="/" className="block text-center mb-8">
-          <h1 className="text-3xl font-bold text-white" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
-            REAL LIFE <span style={{ color: "#00ff88" }}>ACADEMY</span>
-          </h1>
-        </Link>
+        <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-6 border border-white/10">
+          <video
+            src="/membros-hero.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+        <h1 className="text-3xl font-bold text-white text-center mb-8" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
+          TREINAMENTO DE <span style={{ color: "#a855f7" }}>X1</span>
+        </h1>
 
         <div className="bg-[#111] border border-white/10 rounded-xl p-6">
           <h2 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: "'Bebas Neue', cursive" }}>
