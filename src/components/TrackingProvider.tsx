@@ -6,7 +6,7 @@ import { ensureTtq } from "@/lib/tiktokPixel";
 import { ensureUtms } from "@/lib/utmAutoFill";
 
 // Tracking (Pixel + CAPI) is enabled on the InfoZap funnel and on the LP1/LP2 landing pages.
-const TRACKED_ROUTES = ["/infozap", "/lp1", "/lp2"];
+const TRACKED_ROUTES = ["/lp1", "/lp2"];
 
 /**
  * On every navigation, if the route is part of the InfoZap funnel,
