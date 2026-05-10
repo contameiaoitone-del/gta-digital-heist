@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Copy, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useEfiCheckout } from "@/hooks/useEfiCheckout";
+import { QRCodeSVG } from "qrcode.react";
 
 interface PixStepProps {
   data: { order_id: string; copia_cola: string; qrcode_image: string; expires_in: number };
@@ -53,7 +54,15 @@ export const PixStep = ({ data, onPaid }: PixStepProps) => {
     <div className="flex flex-col items-center text-center space-y-4">
       <p className="text-sm text-gray-300">Escaneie o QR Code ou copie o código abaixo</p>
       <div className="rounded-lg overflow-hidden bg-white p-2">
-        <img src={`data:image/png;base64,${data.qrcode_image.replace(/^data:image\/png;base64,/, "")}`} alt="QR Code Pix" className="w-56 h-56" />
+        {data.qrcode_image ? (
+          <img
+            src={`data:image/png;base64,${data.qrcode_image.replace(/^data:image\/png;base64,/, "")}`}
+            alt="QR Code Pix"
+            className="w-56 h-56"
+          />
+        ) : (
+          <QRCodeSVG value={data.copia_cola} size={224} level="M" />
+        )}
       </div>
       <div className="w-full">
         <div className="text-xs text-gray-400 break-all bg-black/40 border border-white/10 rounded-md p-3 max-h-24 overflow-auto font-mono">
