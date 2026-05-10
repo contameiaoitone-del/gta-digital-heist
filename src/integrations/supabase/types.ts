@@ -364,11 +364,13 @@ export type Database = {
           efi_charge_id: string | null
           efi_txid: string | null
           event_id_purchase: string | null
+          gateway_txid: string | null
           id: string
           installments: number | null
           meta_purchase_sent_at: string | null
           paid_at: string | null
           payment_method: string
+          pix_gateway: string | null
           product: string
           raw: Json | null
           session_id: string | null
@@ -390,11 +392,13 @@ export type Database = {
           efi_charge_id?: string | null
           efi_txid?: string | null
           event_id_purchase?: string | null
+          gateway_txid?: string | null
           id?: string
           installments?: number | null
           meta_purchase_sent_at?: string | null
           paid_at?: string | null
           payment_method: string
+          pix_gateway?: string | null
           product: string
           raw?: Json | null
           session_id?: string | null
@@ -416,11 +420,13 @@ export type Database = {
           efi_charge_id?: string | null
           efi_txid?: string | null
           event_id_purchase?: string | null
+          gateway_txid?: string | null
           id?: string
           installments?: number | null
           meta_purchase_sent_at?: string | null
           paid_at?: string | null
           payment_method?: string
+          pix_gateway?: string | null
           product?: string
           raw?: Json | null
           session_id?: string | null
@@ -431,6 +437,33 @@ export type Database = {
           utm_medium?: string | null
           utm_source?: string | null
           utm_term?: string | null
+        }
+        Relationships: []
+      }
+      payment_settings: {
+        Row: {
+          active_pix_gateway: string
+          id: number
+          updated_at: string
+          updated_by: string | null
+          zzgate_client_id: string | null
+          zzgate_client_secret: string | null
+        }
+        Insert: {
+          active_pix_gateway?: string
+          id?: number
+          updated_at?: string
+          updated_by?: string | null
+          zzgate_client_id?: string | null
+          zzgate_client_secret?: string | null
+        }
+        Update: {
+          active_pix_gateway?: string
+          id?: number
+          updated_at?: string
+          updated_by?: string | null
+          zzgate_client_id?: string | null
+          zzgate_client_secret?: string | null
         }
         Relationships: []
       }
