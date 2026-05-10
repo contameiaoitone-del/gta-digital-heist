@@ -84,7 +84,8 @@ const PaymentCredentials = () => {
   const [efiCert, setEfiCert] = useState("");
   const [efiKey, setEfiKey] = useState("");
 
-  const [busy, setBusy] = useState(false);
+  const [savingEfi, setSavingEfi] = useState(false);
+  const [savingZz, setSavingZz] = useState(false);
   const [testingZz, setTestingZz] = useState(false);
   const [testingEfi, setTestingEfi] = useState(false);
 
@@ -110,30 +111,43 @@ const PaymentCredentials = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdmin]);
 
-  const save = async () => {
-    setBusy(true);
+  const saveGateway = async () => {
+    const { error } = await supabase.functions.invoke("payment-settings?action=update", {
+      body: { active_pix_gateway: gateway },
+    });
+    if (error) toast.error("Erro ao salvar gateway");
+    else toast.success("Gateway atualizado");
+  };
+
+  const saveEfi = async () => {
+    setSavingEfi(true);
     const body: Record<string, unknown> = {
-      active_pix_gateway: gateway,
-      zzgate_client_id: zzClientId,
       efi_client_id: efiClientId,
       efi_pix_key: efiPixKey,
       efi_payee_code: efiPayee,
     };
-    if (zzClientSecret.trim()) body.zzgate_client_secret = zzClientSecret.trim();
     if (efiClientSecret.trim()) body.efi_client_secret = efiClientSecret.trim();
     if (efiCert.trim()) body.efi_cert_pem = efiCert.trim();
     if (efiKey.trim()) body.efi_key_pem = efiKey.trim();
     const { error } = await supabase.functions.invoke("payment-settings?action=update", { body });
-    setBusy(false);
-    if (error) {
-      toast.error("Erro ao salvar");
-      return;
-    }
-    toast.success("Configurações salvas");
-    setZzClientSecret("");
+    setSavingEfi(false);
+    if (error) return toast.error("Erro ao salvar credenciais Efí");
+    toast.success("Credenciais Efí salvas");
     setEfiClientSecret("");
     setEfiCert("");
     setEfiKey("");
+    await refresh();
+  };
+
+  const saveZz = async () => {
+    setSavingZz(true);
+    const body: Record<string, unknown> = { zzgate_client_id: zzClientId };
+    if (zzClientSecret.trim()) body.zzgate_client_secret = zzClientSecret.trim();
+    const { error } = await supabase.functions.invoke("payment-settings?action=update", { body });
+    setSavingZz(false);
+    if (error) return toast.error("Erro ao salvar credenciais ZZGate");
+    toast.success("Credenciais ZZGate salvas");
+    setZzClientSecret("");
     await refresh();
   };
 
@@ -220,6 +234,14 @@ const PaymentCredentials = () => {
               </button>
             ))}
           </div>
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={saveGateway}
+              className="px-4 py-2 bg-[#00ff88] text-black rounded font-bold flex items-center gap-2 text-sm"
+            >
+              <Save className="h-4 w-4" /> Salvar gateway
+            </button>
+          </div>
         </section>
 
         {/* Efí credentials */}
@@ -288,6 +310,14 @@ const PaymentCredentials = () => {
                 {testingEfi ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}
                 Testar conexão
               </button>
+              <button
+                onClick={saveEfi}
+                disabled={savingEfi}
+                className="ml-auto px-5 py-2 bg-[#00ff88] text-black rounded font-bold flex items-center gap-2 text-sm disabled:opacity-50"
+              >
+                {savingEfi ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                Salvar credenciais Efí
+              </button>
             </div>
           </div>
         </section>
@@ -329,20 +359,17 @@ const PaymentCredentials = () => {
                 {testingZz ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}
                 Testar conexão
               </button>
+              <button
+                onClick={saveZz}
+                disabled={savingZz}
+                className="ml-auto px-5 py-2 bg-[#00ff88] text-black rounded font-bold flex items-center gap-2 text-sm disabled:opacity-50"
+              >
+                {savingZz ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                Salvar credenciais ZZGate
+              </button>
             </div>
           </div>
         </section>
-
-        <div className="flex justify-end">
-          <button
-            onClick={save}
-            disabled={busy}
-            className="px-5 py-2.5 bg-[#00ff88] text-black rounded font-bold flex items-center gap-2 disabled:opacity-50"
-          >
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-            Salvar configurações
-          </button>
-        </div>
 
         <p className="text-xs text-gray-600 text-center">
           Cartão de crédito é sempre processado via Efí — o seletor acima afeta apenas o Pix.
