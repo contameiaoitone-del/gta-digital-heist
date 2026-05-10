@@ -48,7 +48,7 @@ Deno.serve(async (req) => {
     const cobRes = await fetch(`${PIX_HOST}/v2/cob`, {
       method: "POST",
       // @ts-ignore deno client
-      client: getMtlsClient(),
+      client: await getMtlsClient(),
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -71,7 +71,7 @@ Deno.serve(async (req) => {
     const qrRes = await fetch(`${PIX_HOST}/v2/loc/${cob.loc.id}/qrcode`, {
       method: "GET",
       // @ts-ignore deno client
-      client: getMtlsClient(),
+      client: await getMtlsClient(),
       headers: { Authorization: `Bearer ${token}` },
     });
     const qr = await qrRes.json();

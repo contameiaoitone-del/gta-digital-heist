@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
         {
           method: "GET",
           // @ts-ignore deno mTLS client
-          client: getMtlsClient(),
+          client: await getMtlsClient(),
           headers: { Authorization: `Bearer ${token}` },
         },
       );
@@ -43,7 +43,7 @@ Deno.serve(async (req) => {
       {
         method: "PUT",
         // @ts-ignore deno mTLS client
-        client: getMtlsClient(),
+        client: await getMtlsClient(),
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
       {
         method: "GET",
         // @ts-ignore deno mTLS client
-        client: getMtlsClient(),
+        client: await getMtlsClient(),
         headers: { Authorization: `Bearer ${token}` },
       },
     );

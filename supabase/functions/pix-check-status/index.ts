@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
         const res = await fetch(`${PIX_HOST}/v2/cob/${order.efi_txid}`, {
           method: "GET",
           // @ts-ignore deno mTLS client
-          client: getMtlsClient(),
+          client: await getMtlsClient(),
           headers: { Authorization: `Bearer ${token}` },
         });
         const cob = await res.json();
