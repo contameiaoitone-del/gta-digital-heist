@@ -19,23 +19,24 @@ async function requireAdmin(req: Request): Promise<{ userId: string } | Response
   const auth = req.headers.get("Authorization") || "";
   if (!auth.startsWith("Bearer ")) return jsonResponse({ error: "unauthorized" }, 401);
   const token = auth.replace(/^Bearer\s+/i, "");
-  // Use a user-context client so getUser() works with the JWT
+  // Validate the raw JWT claims directly. Edge Functions don't have an auth session,
+  // and getUser() can fail with "Auth session missing" even when the JWT is valid.
   const userClient = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_ANON_KEY")!,
     { global: { headers: { Authorization: `Bearer ${token}` } } },
   );
-  const { data: userData, error: userErr } = await userClient.auth.getUser(token);
-  const user = userData?.user;
-  if (userErr || !user) {
-    console.warn("payment-settings: getUser failed", userErr);
+  const { data: claimsData, error: claimsErr } = await userClient.auth.getClaims(token);
+  const userId = claimsData?.claims?.sub;
+  if (claimsErr || !userId) {
+    console.warn("payment-settings: getClaims failed", claimsErr);
     return jsonResponse({ error: "unauthorized" }, 401);
   }
   const svc = serviceClient();
-  const { data: roles } = await svc.from("user_roles").select("role").eq("user_id", user.id);
+  const { data: roles } = await svc.from("user_roles").select("role").eq("user_id", userId);
   const isAdmin = (roles || []).some((r: { role: string }) => r.role === "admin");
   if (!isAdmin) return jsonResponse({ error: "forbidden" }, 403);
-  return { userId: user.id };
+  return { userId };
 }
 
 const UpdateSchema = z.object({
