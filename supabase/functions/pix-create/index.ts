@@ -112,7 +112,7 @@ Deno.serve(async (req) => {
     }
 
     // ---------- EFÍ (default) — same logic as efi-create-pix ----------
-    const pixKey = Deno.env.get("EFI_PIX_KEY");
+    const pixKey = await getEfiPixKey();
     if (!pixKey) return jsonResponse({ error: "pix_key_missing" }, 500);
     const token = await getPixAccessToken();
     const reaisStr = reais.toFixed(2);

@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
     const cleanCpf = cpf.replace(/\D/g, "");
     if (!isValidCpf(cleanCpf)) return jsonResponse({ error: "invalid_cpf" }, 400);
 
-    const pixKey = Deno.env.get("EFI_PIX_KEY");
+    const pixKey = await getEfiPixKey();
     if (!pixKey) return jsonResponse({ error: "pix_key_missing" }, 500);
 
     const token = await getPixAccessToken();
