@@ -19,6 +19,8 @@ const Modulo = lazy(() => import("./pages/membros/Modulo"));
 const AuthCallback = lazy(() => import("./pages/membros/AuthCallback"));
 const Admin = lazy(() => import("./pages/admin/Admin"));
 const CapiLog = lazy(() => import("./pages/admin/CapiLog"));
+const AdminUsers = lazy(() => import("./pages/admin/Users"));
+const ResetPassword = lazy(() => import("./pages/membros/ResetPassword"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const Lp1App = lazy(() => import("./lp1/Lp1App"));
 const Lp2App = lazy(() => import("./lp2/Lp2App"));
@@ -41,12 +43,14 @@ const App = () => (
             <Route path="/contato" element={<Contato />} />
             <Route path="/obrigado" element={<Obrigado />} />
             <Route path="/membros/login" element={<MembrosLogin />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/membros" element={<RequireAuth><Membros /></RequireAuth>} />
             <Route path="/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
             <Route path="/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
             <Route path="/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
             <Route path="/admin/capi-log" element={<RequireAuth requireAdmin><CapiLog /></RequireAuth>} />
+            <Route path="/admin/usuarios" element={<RequireAuth requireAdmin><AdminUsers /></RequireAuth>} />
 
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/lp1" element={<Lp1App />} />
