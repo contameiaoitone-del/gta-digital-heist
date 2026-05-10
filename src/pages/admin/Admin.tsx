@@ -136,7 +136,7 @@ const Admin = () => {
   }, []);
 
   useEffect(() => {
-    document.title = "Admin — InfoZap";
+    document.title = "Admin — Treinamento";
     if (isAdmin) {
       loadAdminContent();
     }

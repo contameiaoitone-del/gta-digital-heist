@@ -57,7 +57,7 @@ const Modulo = () => {
       if (!mRes.data) setNotFound(true);
       else {
         setMod(mRes.data as Module);
-        document.title = `${(mRes.data as Module).title} — InfoZap`;
+        document.title = `${(mRes.data as Module).title} — Treinamento`;
       }
       setLessons((lRes.data as Lesson[]) || []);
       const pmap: Record<string, Progress> = {};

@@ -28,7 +28,7 @@ export const CheckoutModal = ({
   onOpenChange,
   product = "infozap",
   priceCents = 6700,
-  productLabel = "InfoZap",
+  productLabel = "Treinamento",
   productSubtitle = "Acesso vitalício + bônus",
   originalPriceLabel,
 }: CheckoutModalProps) => {

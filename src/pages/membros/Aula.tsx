@@ -53,7 +53,7 @@ const Aula = () => {
       setSiblings((sRes.data as Lesson[]) || []);
       setCompleted(!!(pRes as { data: { completed?: boolean } | null }).data?.completed);
       setLoading(false);
-      document.title = `${l.title} — InfoZap`;
+      document.title = `${l.title} — Treinamento`;
     })();
   }, [id, session]);
 

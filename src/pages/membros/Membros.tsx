@@ -53,7 +53,7 @@ const Membros = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    document.title = "Área de Membros — InfoZap";
+    document.title = "Área de Membros — Treinamento";
     (async () => {
       const [mRes, lRes, cRes, pRes] = await Promise.all([
         supabase.from("modules").select("*").order("position"),
@@ -107,7 +107,7 @@ const Membros = () => {
         </div>
       </header>
 
-      {/* BILLBOARD fixo InfoZap (estilo Netflix) */}
+      {/* BILLBOARD fixo Treinamento (estilo Netflix) */}
       <section className="relative h-[58vh] min-h-[420px] max-h-[640px] w-full overflow-hidden pt-16">
         <video
           src="/membros-hero.mp4"

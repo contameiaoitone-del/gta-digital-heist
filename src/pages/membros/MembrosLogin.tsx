@@ -13,7 +13,7 @@ const MembrosLogin = () => {
   const [resetLoading, setResetLoading] = useState(false);
 
   useEffect(() => {
-    document.title = "Entrar — InfoZap";
+    document.title = "Entrar — Treinamento";
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate("/membros", { replace: true });
     });

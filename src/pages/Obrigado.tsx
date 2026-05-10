@@ -22,10 +22,10 @@ const Obrigado = () => {
 
   // 1) Fire Purchase Pixel ASAP on mount (deduped with CAPI via shared eventId)
   useEffect(() => {
-    document.title = "Pagamento confirmado — InfoZap";
+    document.title = "Pagamento confirmado — Treinamento";
     if (!isPending && eventId) {
       ensurePixel();
-      trackPurchase({ value, eventId, orderId, productName: "InfoZap", currency: "BRL" });
+      trackPurchase({ value, eventId, orderId, productName: "Treinamento", currency: "BRL" });
     }
   }, [isPending, eventId, value, orderId, trackPurchase]);
 
