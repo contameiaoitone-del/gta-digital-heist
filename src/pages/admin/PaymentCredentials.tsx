@@ -9,14 +9,18 @@ interface SettingsResponse {
   active_pix_gateway: "efi" | "zzgate";
   zzgate_client_id: string;
   zzgate_client_secret_masked: string;
+  zzgate_client_secret: string;
   zzgate_has_secret: boolean;
   efi_client_id: string;
   efi_client_secret_masked: string;
+  efi_client_secret: string;
   efi_has_secret: boolean;
   efi_pix_key: string;
   efi_payee_code: string;
   efi_has_cert: boolean;
   efi_has_key: boolean;
+  efi_cert_pem: string;
+  efi_key_pem: string;
 }
 
 const inputCls =
@@ -99,9 +103,13 @@ const PaymentCredentials = () => {
     setData(s);
     setGateway(s.active_pix_gateway);
     setZzClientId(s.zzgate_client_id || "");
+    setZzClientSecret(s.zzgate_client_secret || "");
     setEfiClientId(s.efi_client_id || "");
+    setEfiClientSecret(s.efi_client_secret || "");
     setEfiPixKey(s.efi_pix_key || "");
     setEfiPayee(s.efi_payee_code || "");
+    setEfiCert(s.efi_cert_pem || "");
+    setEfiKey(s.efi_key_pem || "");
   };
 
   useEffect(() => {
@@ -133,9 +141,6 @@ const PaymentCredentials = () => {
     setSavingEfi(false);
     if (error) return toast.error("Erro ao salvar credenciais Efí");
     toast.success("Credenciais Efí salvas");
-    setEfiClientSecret("");
-    setEfiCert("");
-    setEfiKey("");
     await refresh();
   };
 
@@ -147,7 +152,6 @@ const PaymentCredentials = () => {
     setSavingZz(false);
     if (error) return toast.error("Erro ao salvar credenciais ZZGate");
     toast.success("Credenciais ZZGate salvas");
-    setZzClientSecret("");
     await refresh();
   };
 
