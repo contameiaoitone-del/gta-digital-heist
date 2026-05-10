@@ -8,17 +8,9 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import { TrackingProvider } from "./components/TrackingProvider";
 
-const Links = lazy(() => import("./pages/Links"));
-const RPClose = lazy(() => import("./pages/RPClose"));
-const RPCloseSuccess = lazy(() => import("./pages/RPCloseSuccess"));
-const RPZap = lazy(() => import("./pages/RPZap"));
-const InfoZap = lazy(() => import("./pages/InfoZap"));
-const InfoZapAula = lazy(() => import("./pages/InfoZapAula"));
 const Termos = lazy(() => import("./pages/legal/Termos"));
 const Privacidade = lazy(() => import("./pages/legal/Privacidade"));
 const Contato = lazy(() => import("./pages/legal/Contato"));
-const CloseFriends = lazy(() => import("./pages/CloseFriends"));
-const RealZapAcademy = lazy(() => import("./pages/RealZapAcademy"));
 const Obrigado = lazy(() => import("./pages/Obrigado"));
 const MembrosLogin = lazy(() => import("./pages/membros/MembrosLogin"));
 const Membros = lazy(() => import("./pages/membros/Membros"));
@@ -44,17 +36,9 @@ const App = () => (
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/links" element={<Links />} />
-            <Route path="/rp-close" element={<RPClose />} />
-            <Route path="/rp-close-sucesso" element={<RPCloseSuccess />} />
-            <Route path="/rp-zap" element={<RPZap />} />
-            <Route path="/infozap" element={<InfoZap />} />
-            <Route path="/infozap-aula" element={<InfoZapAula />} />
             <Route path="/termos" element={<Termos />} />
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/contato" element={<Contato />} />
-            <Route path="/closefriends" element={<CloseFriends />} />
-            <Route path="/real-zap-academy" element={<RealZapAcademy />} />
             <Route path="/obrigado" element={<Obrigado />} />
             <Route path="/membros/login" element={<MembrosLogin />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
@@ -65,8 +49,8 @@ const App = () => (
             <Route path="/admin/capi-log" element={<RequireAuth requireAdmin><CapiLog /></RequireAuth>} />
 
             <Route path="/unsubscribe" element={<Unsubscribe />} />
-            <Route path="/lp1/*" element={<Lp1App />} />
-            <Route path="/lp2/*" element={<Lp2App />} />
+            <Route path="/lp1" element={<Lp1App />} />
+            <Route path="/lp2" element={<Lp2App />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
