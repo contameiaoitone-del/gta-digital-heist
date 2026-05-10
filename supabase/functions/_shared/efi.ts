@@ -1,5 +1,6 @@
 // Shared helpers for Efí Bank API (production only, mTLS).
 // Used by efi-create-pix, efi-create-card, efi-webhook.
+import { loadPaymentSettings } from "./pix-gateway.ts";
 
 export const PIX_HOST = "https://pix.api.efipay.com.br";
 export const COB_HOST = "https://cobrancas.api.efipay.com.br";
@@ -52,41 +53,89 @@ export function normalizeSecret(raw: string | undefined | null): string {
   return s;
 }
 
-function getCert(): { cert: string; key: string } {
-  const cert = Deno.env.get("EFI_CERT_PEM");
-  const key = Deno.env.get("EFI_KEY_PEM");
-  if (!cert || !key) {
-    throw new Error("EFI_CERT_PEM/EFI_KEY_PEM not configured");
+export interface EfiCreds {
+  clientId: string;
+  clientSecret: string;
+  certPem: string;
+  keyPem: string;
+  pixKey: string;
+  payeeCode: string;
+}
+
+// Load Efí creds: prefer DB (admin-managed) values, fallback to env secrets.
+export async function loadEfiCreds(): Promise<EfiCreds> {
+  let s: Awaited<ReturnType<typeof loadPaymentSettings>> | null = null;
+  try {
+    s = await loadPaymentSettings();
+  } catch (_) {
+    s = null;
   }
-  return { cert: normalizePem(cert), key: normalizePem(key) };
+  const pick = (db: string | null | undefined, envKey: string) =>
+    normalizeSecret(db) || normalizeSecret(Deno.env.get(envKey));
+  return {
+    clientId: pick(s?.efi_client_id, "EFI_CLIENT_ID"),
+    clientSecret: pick(s?.efi_client_secret, "EFI_CLIENT_SECRET"),
+    certPem: (s?.efi_cert_pem && s.efi_cert_pem.trim()) || Deno.env.get("EFI_CERT_PEM") || "",
+    keyPem: (s?.efi_key_pem && s.efi_key_pem.trim()) || Deno.env.get("EFI_KEY_PEM") || "",
+    pixKey: pick(s?.efi_pix_key, "EFI_PIX_KEY"),
+    payeeCode: pick(s?.efi_payee_code, "EFI_PAYEE_CODE"),
+  };
+}
+
+export async function getEfiPixKey(): Promise<string> {
+  return (await loadEfiCreds()).pixKey;
+}
+
+export async function getEfiPayeeCode(): Promise<string> {
+  return (await loadEfiCreds()).payeeCode;
 }
 
 // Build a Deno HTTP client with mTLS using the Efí PEM cert+key.
 // deno-lint-ignore no-explicit-any
 let _client: any = null;
+let _clientFingerprint = "";
 // deno-lint-ignore no-explicit-any
-export function getMtlsClient(): any {
-  if (_client) return _client;
-  const { cert, key } = getCert();
+export async function getMtlsClient(certOverride?: string, keyOverride?: string): Promise<any> {
+  let cert = certOverride;
+  let key = keyOverride;
+  if (!cert || !key) {
+    const c = await loadEfiCreds();
+    cert = c.certPem;
+    key = c.keyPem;
+  }
+  if (!cert || !key) throw new Error("EFI_CERT_PEM/EFI_KEY_PEM not configured");
+  cert = normalizePem(cert);
+  key = normalizePem(key);
+  const fp = `${cert.length}:${key.length}`;
+  if (_client && _clientFingerprint === fp) return _client;
   // @ts-ignore — Deno.createHttpClient is available in supabase edge runtime
   _client = Deno.createHttpClient({ cert, key });
+  _clientFingerprint = fp;
   return _client;
 }
 
-function basicAuth(): string {
-  const id = normalizeSecret(Deno.env.get("EFI_CLIENT_ID"));
-  const secret = normalizeSecret(Deno.env.get("EFI_CLIENT_SECRET"));
+async function basicAuth(idOverride?: string, secretOverride?: string): Promise<string> {
+  let id = idOverride ? normalizeSecret(idOverride) : "";
+  let secret = secretOverride ? normalizeSecret(secretOverride) : "";
+  if (!id || !secret) {
+    const c = await loadEfiCreds();
+    if (!id) id = c.clientId;
+    if (!secret) secret = c.clientSecret;
+  }
   if (!id || !secret) throw new Error("EFI_CLIENT_ID/EFI_CLIENT_SECRET missing");
   return "Basic " + btoa(`${id}:${secret}`);
 }
 
 // OAuth for Pix API (mTLS required)
-export async function getPixAccessToken(): Promise<string> {
+export async function getPixAccessToken(creds?: Partial<EfiCreds>): Promise<string> {
   const r = await fetch(`${PIX_HOST}/oauth/token`, {
     method: "POST",
     // @ts-ignore deno client
-    client: getMtlsClient(),
-    headers: { Authorization: basicAuth(), "Content-Type": "application/json" },
+    client: await getMtlsClient(creds?.certPem, creds?.keyPem),
+    headers: {
+      Authorization: await basicAuth(creds?.clientId, creds?.clientSecret),
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ grant_type: "client_credentials" }),
   });
   const data = await r.json();
@@ -99,11 +148,11 @@ export async function getPixAccessToken(): Promise<string> {
 }
 
 // OAuth for Cobrança API (cartão) — does NOT require mTLS, but works with it.
-export async function getCobAccessToken(): Promise<string> {
+export async function getCobAccessToken(creds?: Partial<EfiCreds>): Promise<string> {
   const res = await fetch(`${COB_HOST}/v1/authorize`, {
     method: "POST",
     headers: {
-      Authorization: basicAuth(),
+      Authorization: await basicAuth(creds?.clientId, creds?.clientSecret),
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ grant_type: "client_credentials" }),
