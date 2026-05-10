@@ -25,7 +25,7 @@ async function requireAdmin(req: Request): Promise<{ userId: string } | Response
     Deno.env.get("SUPABASE_ANON_KEY")!,
     { global: { headers: { Authorization: `Bearer ${token}` } } },
   );
-  const { data: userData, error: userErr } = await userClient.auth.getUser();
+  const { data: userData, error: userErr } = await userClient.auth.getUser(token);
   const user = userData?.user;
   if (userErr || !user) {
     console.warn("payment-settings: getUser failed", userErr);
