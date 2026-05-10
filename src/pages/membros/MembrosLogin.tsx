@@ -91,10 +91,7 @@ const MembrosLogin = () => {
           </button>
 
           <p className="text-xs text-gray-500 text-center mt-4">
-            Ainda não é aluno?{" "}
-            <Link to="/infozap" className="underline text-gray-400 hover:text-white">
-              Conheça o InfoZap
-            </Link>
+            Acesso restrito a alunos.
           </p>
         </div>
       </div>
