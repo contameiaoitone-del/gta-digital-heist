@@ -79,9 +79,9 @@ const MembrosLogin = () => {
   const inputCls = "w-full h-12 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88]";
 
   return (
-    <div className="relative min-h-screen bg-[#080808] overflow-hidden">
+    <div className="relative min-h-screen bg-[#080808] flex flex-col">
       {/* Billboard de vídeo (estilo área de membros) */}
-      <section className="absolute inset-x-0 top-0 h-[58vh] min-h-[420px] max-h-[640px] w-full overflow-hidden pointer-events-none">
+      <section className="relative w-full overflow-hidden h-[40vh] min-h-[260px] max-h-[420px] md:h-[45vh] md:min-h-[320px] md:max-h-[480px]">
         <video
           src="/membros-hero.mp4"
           autoPlay
@@ -90,11 +90,11 @@ const MembrosLogin = () => {
           playsInline
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/80 to-[#080808]/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/70 to-[#080808]/30" />
         <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#080808] via-[#080808]/85 to-transparent" />
-        <div className="relative z-10 h-full max-w-[1800px] mx-auto px-4 md:px-12 flex flex-col justify-end pb-10 md:pb-14">
+        <div className="relative z-10 h-full max-w-[1400px] mx-auto px-4 md:px-12 flex flex-col justify-end pb-6 md:pb-10">
           <h1
-            className="font-gta uppercase leading-none drop-shadow-2xl select-none text-white text-4xl md:text-6xl lg:text-7xl text-center md:text-left"
+            className="font-gta uppercase leading-none drop-shadow-2xl select-none text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-center md:text-left"
             style={{ letterSpacing: "0.02em" }}
           >
             Treinamento de <span style={{ color: "#a855f7" }}>X1</span>
@@ -102,8 +102,8 @@ const MembrosLogin = () => {
         </div>
       </section>
 
-      {/* Card de login */}
-      <div className="relative z-10 min-h-screen flex items-end md:items-center justify-center px-4 pt-[40vh] pb-10 md:py-20">
+      {/* Card de login — flui abaixo do banner, centralizado, sem sobreposição */}
+      <div className="flex-1 flex items-start justify-center px-4 -mt-8 md:-mt-12 pb-12 relative z-10">
         <div className="bg-[#111] border border-white/10 rounded-xl p-6 max-w-md w-full shadow-2xl">
           <h2 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: "'Bebas Neue', cursive" }}>
             Entrar na área de membros
