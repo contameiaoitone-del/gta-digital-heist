@@ -37,7 +37,7 @@ const App = () => (
         <TrackingProvider />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Lp2App />} />
             <Route path="/termos" element={<Termos />} />
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/contato" element={<Contato />} />
@@ -55,6 +55,7 @@ const App = () => (
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/lp1" element={<Lp1App />} />
             <Route path="/lp2" element={<Lp2App />} />
+            <Route path="/home-original" element={<Index />} />
             {/* Redirects de rotas antigas removidas */}
             <Route path="/infozap" element={<Navigate to="/lp2" replace />} />
             <Route path="/infozap-aula" element={<Navigate to="/lp2" replace />} />
