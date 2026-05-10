@@ -1,6 +1,7 @@
 // Admin-only endpoint to read/update payment_settings and test gateway creds.
 // Validates the caller's JWT and verifies they have role 'admin'.
 import { z } from "https://esm.sh/zod@3.23.8";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { corsHeaders, jsonResponse, getPixAccessToken, normalizeSecret } from "../_shared/efi.ts";
 import {
   serviceClient,
