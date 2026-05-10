@@ -10,6 +10,7 @@ const MembrosLogin = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [magicLoading, setMagicLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
 
   useEffect(() => {
     document.title = "Entrar — InfoZap";
@@ -38,11 +39,41 @@ const MembrosLogin = () => {
     setMagicLoading(true);
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim().toLowerCase(),
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=/membros` },
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/membros`,
+        shouldCreateUser: false,
+      },
     });
     setMagicLoading(false);
-    if (error) toast.error(error.message);
-    else toast.success("Enviamos um link de acesso pro seu email!");
+    if (error) {
+      const msg = /signups? not allowed|user not found|not_found/i.test(error.message)
+        ? "Email não cadastrado no sistema."
+        : error.message;
+      toast.error(msg);
+    } else toast.success("Enviamos um link de acesso pro seu email!");
+  };
+
+  const sendReset = async () => {
+    if (!email) {
+      toast.error("Digite seu email primeiro");
+      return;
+    }
+    setResetLoading(true);
+    // Use OTP with shouldCreateUser:false so non-existent emails are rejected.
+    // Link redirects to /reset-password where user sets a new password.
+    const { error } = await supabase.auth.signInWithOtp({
+      email: email.trim().toLowerCase(),
+      options: {
+        shouldCreateUser: false,
+        emailRedirectTo: `${window.location.origin}/reset-password`,
+      },
+    });
+    setResetLoading(false);
+    if (error) {
+      toast.error("Email não encontrado. Verifique se você já tem cadastro.");
+      return;
+    }
+    toast.success("Enviamos um link para redefinir sua senha!");
   };
 
   const inputCls = "w-full h-12 rounded-md bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88]";
@@ -88,6 +119,14 @@ const MembrosLogin = () => {
             className="w-full h-11 rounded-md border border-white/20 text-white text-sm hover:border-[#00ff88] disabled:opacity-60"
           >
             {magicLoading ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Receber link de acesso por email"}
+          </button>
+
+          <button
+            onClick={sendReset}
+            disabled={resetLoading}
+            className="w-full mt-2 text-xs text-gray-400 hover:text-[#00ff88] disabled:opacity-60"
+          >
+            {resetLoading ? "Enviando..." : "Esqueci minha senha"}
           </button>
 
           <p className="text-xs text-gray-500 text-center mt-4">

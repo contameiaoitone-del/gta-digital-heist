@@ -260,6 +260,11 @@ const Admin = () => {
           <h1 className="text-xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
             ADMIN <span style={{ color: "#00ff88" }}>· Conteúdo</span>
           </h1>
+          <div className="ml-auto flex items-center gap-2">
+            <Link to="/admin/usuarios" className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
+              Usuários
+            </Link>
+          </div>
         </div>
       </header>
 
