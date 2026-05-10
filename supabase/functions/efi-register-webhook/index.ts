@@ -6,6 +6,7 @@ import {
   getMtlsClient,
   getPixAccessToken,
   PIX_HOST,
+  getEfiPixKey,
 } from "../_shared/efi.ts";
 
 Deno.serve(async (req) => {

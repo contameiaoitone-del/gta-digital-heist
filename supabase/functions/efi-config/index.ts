@@ -1,4 +1,4 @@
-import { corsHeaders, jsonResponse } from "../_shared/efi.ts";
+import { corsHeaders, jsonResponse, getEfiPayeeCode } from "../_shared/efi.ts";
 
 // Returns the public payee code used to load the Efí JS SDK in the browser.
 // This identifier is safe to expose (it's part of the SDK loader URL).

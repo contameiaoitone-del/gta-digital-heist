@@ -11,6 +11,7 @@ import {
   getPixAccessToken,
   PIX_HOST,
   getProduct,
+  getEfiPixKey,
 } from "../_shared/efi.ts";
 import {
   loadPaymentSettings,
