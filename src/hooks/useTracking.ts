@@ -223,13 +223,13 @@ export function useTracking() {
     const [fbp, ttp] = await Promise.all([waitForFbp(1500), waitForTtp(1500)]);
 
     fbq("track", "InitiateCheckout",
-      { value: data?.value, currency: data?.currency || "BRL", content_name: "InfoZap" },
+      { value: data?.value, currency: data?.currency || "BRL", content_name: "Treinamento" },
       { eventID: eventId },
     );
     ttq("InitiateCheckout",
       {
         value: data?.value, currency: data?.currency || "BRL",
-        contents: [{ content_id: "infozap", content_name: "InfoZap", content_type: "product", quantity: 1, price: data?.value || 0 }],
+        contents: [{ content_id: "infozap", content_name: "Treinamento", content_type: "product", quantity: 1, price: data?.value || 0 }],
         content_type: "product",
       },
       { event_id: eventIdTt },
@@ -243,7 +243,7 @@ export function useTracking() {
       fbc, fbp,
       user_agent: navigator.userAgent,
       value: data?.value, currency: data?.currency || "BRL",
-      content_name: "InfoZap",
+      content_name: "Treinamento",
     });
     callTiktok({
       event_name: "InitiateCheckout",
@@ -253,7 +253,7 @@ export function useTracking() {
       ttclid, ttp,
       user_agent: navigator.userAgent,
       value: data?.value, currency: data?.currency || "BRL",
-      content_name: "InfoZap",
+      content_name: "Treinamento",
       content_id: "infozap",
     });
   }, []);
@@ -285,7 +285,7 @@ export function useTracking() {
       ttq("CompletePayment",
         {
           value: data.value, currency: data.currency || "BRL",
-          contents: [{ content_id: data.orderId || "infozap", content_name: data.productName || "InfoZap", content_type: "product", quantity: 1, price: data.value }],
+          contents: [{ content_id: data.orderId || "infozap", content_name: data.productName || "Treinamento", content_type: "product", quantity: 1, price: data.value }],
           content_type: "product",
           order_id: data.orderId,
         },

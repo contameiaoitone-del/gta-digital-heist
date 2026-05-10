@@ -3,7 +3,7 @@ const Privacidade = () => (
     <div className="max-w-3xl mx-auto">
       <h1 className="text-4xl font-bold mb-8" style={{ fontFamily: "'Bebas Neue', cursive" }}>Política de Privacidade</h1>
       <div className="space-y-4 text-gray-300 text-sm leading-relaxed">
-        <p>Esta Política descreve como coletamos, utilizamos e protegemos os dados dos usuários do InfoZap, em conformidade com a LGPD (Lei 13.709/2018).</p>
+        <p>Esta Política descreve como coletamos, utilizamos e protegemos os dados dos usuários do Treinamento, em conformidade com a LGPD (Lei 13.709/2018).</p>
         <h2 className="text-xl font-bold text-white mt-6">1. Dados coletados</h2>
         <p>Coletamos nome, e-mail, telefone e dados de pagamento informados durante a compra, além de dados técnicos de navegação (cookies, IP, tipo de dispositivo).</p>
         <h2 className="text-xl font-bold text-white mt-6">2. Finalidade</h2>

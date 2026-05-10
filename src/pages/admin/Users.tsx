@@ -121,7 +121,7 @@ const Users = () => {
                   <th className="text-left px-3 py-2">Criado</th>
                   <th className="text-left px-3 py-2">Último login</th>
                   <th className="text-left px-3 py-2">Admin</th>
-                  <th className="text-left px-3 py-2">Acesso InfoZap</th>
+                  <th className="text-left px-3 py-2">Acesso Treinamento</th>
                   <th className="text-right px-3 py-2">Ações</th>
                 </tr>
               </thead>
