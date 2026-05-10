@@ -10,6 +10,7 @@ import {
   getPixAccessToken,
   PIX_HOST,
   getProduct,
+  getEfiPixKey,
 } from "../_shared/efi.ts";
 
 const BodySchema = z.object({
@@ -38,7 +39,7 @@ Deno.serve(async (req) => {
     const cleanCpf = cpf.replace(/\D/g, "");
     if (!isValidCpf(cleanCpf)) return jsonResponse({ error: "invalid_cpf" }, 400);
 
-    const pixKey = Deno.env.get("EFI_PIX_KEY");
+    const pixKey = await getEfiPixKey();
     if (!pixKey) return jsonResponse({ error: "pix_key_missing" }, 500);
 
     const token = await getPixAccessToken();
@@ -48,7 +49,7 @@ Deno.serve(async (req) => {
     const cobRes = await fetch(`${PIX_HOST}/v2/cob`, {
       method: "POST",
       // @ts-ignore deno client
-      client: getMtlsClient(),
+      client: await getMtlsClient(),
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -71,7 +72,7 @@ Deno.serve(async (req) => {
     const qrRes = await fetch(`${PIX_HOST}/v2/loc/${cob.loc.id}/qrcode`, {
       method: "GET",
       // @ts-ignore deno client
-      client: getMtlsClient(),
+      client: await getMtlsClient(),
       headers: { Authorization: `Bearer ${token}` },
     });
     const qr = await qrRes.json();

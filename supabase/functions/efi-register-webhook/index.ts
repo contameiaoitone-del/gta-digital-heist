@@ -6,6 +6,7 @@ import {
   getMtlsClient,
   getPixAccessToken,
   PIX_HOST,
+  getEfiPixKey,
 } from "../_shared/efi.ts";
 
 Deno.serve(async (req) => {
@@ -15,7 +16,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const pixKey = Deno.env.get("EFI_PIX_KEY");
+    const pixKey = await getEfiPixKey();
     if (!pixKey) return jsonResponse({ error: "pix_key_missing" }, 500);
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
@@ -28,7 +29,7 @@ Deno.serve(async (req) => {
         {
           method: "GET",
           // @ts-ignore deno mTLS client
-          client: getMtlsClient(),
+          client: await getMtlsClient(),
           headers: { Authorization: `Bearer ${token}` },
         },
       );
@@ -43,7 +44,7 @@ Deno.serve(async (req) => {
       {
         method: "PUT",
         // @ts-ignore deno mTLS client
-        client: getMtlsClient(),
+        client: await getMtlsClient(),
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -63,7 +64,7 @@ Deno.serve(async (req) => {
       {
         method: "GET",
         // @ts-ignore deno mTLS client
-        client: getMtlsClient(),
+        client: await getMtlsClient(),
         headers: { Authorization: `Bearer ${token}` },
       },
     );

@@ -7,6 +7,12 @@ export interface PaymentSettings {
   active_pix_gateway: PixGateway;
   zzgate_client_id: string | null;
   zzgate_client_secret: string | null;
+  efi_client_id: string | null;
+  efi_client_secret: string | null;
+  efi_pix_key: string | null;
+  efi_payee_code: string | null;
+  efi_cert_pem: string | null;
+  efi_key_pem: string | null;
 }
 
 export function serviceClient() {
@@ -20,11 +26,23 @@ export async function loadPaymentSettings(): Promise<PaymentSettings> {
   const supabase = serviceClient();
   const { data, error } = await supabase
     .from("payment_settings")
-    .select("active_pix_gateway, zzgate_client_id, zzgate_client_secret")
+    .select(
+      "active_pix_gateway, zzgate_client_id, zzgate_client_secret, efi_client_id, efi_client_secret, efi_pix_key, efi_payee_code, efi_cert_pem, efi_key_pem",
+    )
     .eq("id", 1)
     .maybeSingle();
   if (error || !data) {
-    return { active_pix_gateway: "efi", zzgate_client_id: null, zzgate_client_secret: null };
+    return {
+      active_pix_gateway: "efi",
+      zzgate_client_id: null,
+      zzgate_client_secret: null,
+      efi_client_id: null,
+      efi_client_secret: null,
+      efi_pix_key: null,
+      efi_payee_code: null,
+      efi_cert_pem: null,
+      efi_key_pem: null,
+    };
   }
   return data as PaymentSettings;
 }

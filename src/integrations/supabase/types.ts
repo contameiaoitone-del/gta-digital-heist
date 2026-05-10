@@ -443,6 +443,12 @@ export type Database = {
       payment_settings: {
         Row: {
           active_pix_gateway: string
+          efi_cert_pem: string | null
+          efi_client_id: string | null
+          efi_client_secret: string | null
+          efi_key_pem: string | null
+          efi_payee_code: string | null
+          efi_pix_key: string | null
           id: number
           updated_at: string
           updated_by: string | null
@@ -451,6 +457,12 @@ export type Database = {
         }
         Insert: {
           active_pix_gateway?: string
+          efi_cert_pem?: string | null
+          efi_client_id?: string | null
+          efi_client_secret?: string | null
+          efi_key_pem?: string | null
+          efi_payee_code?: string | null
+          efi_pix_key?: string | null
           id?: number
           updated_at?: string
           updated_by?: string | null
@@ -459,6 +471,12 @@ export type Database = {
         }
         Update: {
           active_pix_gateway?: string
+          efi_cert_pem?: string | null
+          efi_client_id?: string | null
+          efi_client_secret?: string | null
+          efi_key_pem?: string | null
+          efi_payee_code?: string | null
+          efi_pix_key?: string | null
           id?: number
           updated_at?: string
           updated_by?: string | null
