@@ -18,13 +18,19 @@ async function requireAdmin(req: Request): Promise<{ userId: string } | Response
   const auth = req.headers.get("Authorization") || "";
   if (!auth.startsWith("Bearer ")) return jsonResponse({ error: "unauthorized" }, 401);
   const token = auth.replace(/^Bearer\s+/i, "");
-  const svc = serviceClient();
-  const { data: userData, error: userErr } = await svc.auth.getUser(token);
+  // Use a user-context client so getUser() works with the JWT
+  const userClient = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_ANON_KEY")!,
+    { global: { headers: { Authorization: `Bearer ${token}` } } },
+  );
+  const { data: userData, error: userErr } = await userClient.auth.getUser();
   const user = userData?.user;
   if (userErr || !user) {
     console.warn("payment-settings: getUser failed", userErr);
     return jsonResponse({ error: "unauthorized" }, 401);
   }
+  const svc = serviceClient();
   const { data: roles } = await svc.from("user_roles").select("role").eq("user_id", user.id);
   const isAdmin = (roles || []).some((r: { role: string }) => r.role === "admin");
   if (!isAdmin) return jsonResponse({ error: "forbidden" }, 403);
