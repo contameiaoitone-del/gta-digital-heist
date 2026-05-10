@@ -2,12 +2,11 @@
 // Validates the caller's JWT and verifies they have role 'admin'.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { z } from "https://esm.sh/zod@3.23.8";
-import { corsHeaders, jsonResponse } from "../_shared/efi.ts";
+import { corsHeaders, jsonResponse, getPixAccessToken, normalizeSecret } from "../_shared/efi.ts";
 import {
   serviceClient,
   loadPaymentSettings,
   getZzgateAccessToken,
-  getZzgateWebhookUrl,
 } from "../_shared/pix-gateway.ts";
 
 function mask(s: string | null): string {
@@ -37,12 +36,18 @@ const UpdateSchema = z.object({
   active_pix_gateway: z.enum(["efi", "zzgate"]).optional(),
   zzgate_client_id: z.string().trim().max(200).nullable().optional(),
   zzgate_client_secret: z.string().trim().max(400).nullable().optional(),
+  efi_client_id: z.string().trim().max(200).nullable().optional(),
+  efi_client_secret: z.string().trim().max(400).nullable().optional(),
+  efi_pix_key: z.string().trim().max(200).nullable().optional(),
+  efi_payee_code: z.string().trim().max(60).nullable().optional(),
+  efi_cert_pem: z.string().max(20000).nullable().optional(),
+  efi_key_pem: z.string().max(20000).nullable().optional(),
 });
 
 const TestSchema = z.object({
-  gateway: z.enum(["zzgate"]),
-  client_id: z.string().trim().min(1).max(200),
-  client_secret: z.string().trim().min(1).max(400),
+  gateway: z.enum(["zzgate", "efi"]),
+  client_id: z.string().trim().max(200).optional(),
+  client_secret: z.string().trim().max(400).optional(),
 });
 
 Deno.serve(async (req) => {
@@ -57,12 +62,25 @@ Deno.serve(async (req) => {
   try {
     if (action === "get") {
       const s = await loadPaymentSettings();
+      // Fall back to env values for Efí so the admin sees current secrets (masked)
+      const efiClientId = s.efi_client_id || normalizeSecret(Deno.env.get("EFI_CLIENT_ID"));
+      const efiClientSecret = s.efi_client_secret || normalizeSecret(Deno.env.get("EFI_CLIENT_SECRET"));
+      const efiPixKey = s.efi_pix_key || normalizeSecret(Deno.env.get("EFI_PIX_KEY"));
+      const efiPayee = s.efi_payee_code || normalizeSecret(Deno.env.get("EFI_PAYEE_CODE"));
+      const hasCert = !!(s.efi_cert_pem || Deno.env.get("EFI_CERT_PEM"));
+      const hasKey = !!(s.efi_key_pem || Deno.env.get("EFI_KEY_PEM"));
       return jsonResponse({
         active_pix_gateway: s.active_pix_gateway,
         zzgate_client_id: s.zzgate_client_id || "",
         zzgate_client_secret_masked: mask(s.zzgate_client_secret),
         zzgate_has_secret: !!s.zzgate_client_secret,
-        webhook_url: getZzgateWebhookUrl(),
+        efi_client_id: efiClientId || "",
+        efi_client_secret_masked: mask(efiClientSecret),
+        efi_has_secret: !!efiClientSecret,
+        efi_pix_key: efiPixKey || "",
+        efi_payee_code: efiPayee || "",
+        efi_has_cert: hasCert,
+        efi_has_key: hasKey,
       });
     }
 
@@ -77,6 +95,19 @@ Deno.serve(async (req) => {
       if (parsed.data.zzgate_client_secret !== undefined) {
         patch.zzgate_client_secret = parsed.data.zzgate_client_secret || null;
       }
+      // Efí — update only when a value is sent (empty string is ignored to preserve current)
+      const setIfFilled = (key: keyof typeof parsed.data, col: string) => {
+        const v = parsed.data[key];
+        if (v !== undefined && v !== null && String(v).trim() !== "") {
+          patch[col] = String(v);
+        }
+      };
+      setIfFilled("efi_client_id", "efi_client_id");
+      setIfFilled("efi_client_secret", "efi_client_secret");
+      setIfFilled("efi_pix_key", "efi_pix_key");
+      setIfFilled("efi_payee_code", "efi_payee_code");
+      setIfFilled("efi_cert_pem", "efi_cert_pem");
+      setIfFilled("efi_key_pem", "efi_key_pem");
       const svc = serviceClient();
       const { error } = await svc.from("payment_settings").update(patch).eq("id", 1);
       if (error) return jsonResponse({ error: "db", detail: error.message }, 500);
@@ -88,7 +119,19 @@ Deno.serve(async (req) => {
       const parsed = TestSchema.safeParse(body);
       if (!parsed.success) return jsonResponse({ error: "invalid" }, 400);
       try {
-        await getZzgateAccessToken(parsed.data.client_id, parsed.data.client_secret);
+        if (parsed.data.gateway === "zzgate") {
+          if (!parsed.data.client_id || !parsed.data.client_secret) {
+            return jsonResponse({ ok: false, error: "missing creds" }, 200);
+          }
+          await getZzgateAccessToken(parsed.data.client_id, parsed.data.client_secret);
+        } else {
+          // Efí: use override if provided, else current saved/env creds
+          await getPixAccessToken(
+            parsed.data.client_id && parsed.data.client_secret
+              ? { clientId: parsed.data.client_id, clientSecret: parsed.data.client_secret }
+              : undefined,
+          );
+        }
         return jsonResponse({ ok: true });
       } catch (e) {
         return jsonResponse({ ok: false, error: String(e) }, 200);
