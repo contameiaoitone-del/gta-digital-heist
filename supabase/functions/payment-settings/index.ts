@@ -80,14 +80,18 @@ Deno.serve(async (req) => {
         active_pix_gateway: s.active_pix_gateway,
         zzgate_client_id: s.zzgate_client_id || "",
         zzgate_client_secret_masked: mask(s.zzgate_client_secret),
+        zzgate_client_secret: s.zzgate_client_secret || "",
         zzgate_has_secret: !!s.zzgate_client_secret,
         efi_client_id: efiClientId || "",
         efi_client_secret_masked: mask(efiClientSecret),
+        efi_client_secret: efiClientSecret || "",
         efi_has_secret: !!efiClientSecret,
         efi_pix_key: efiPixKey || "",
         efi_payee_code: efiPayee || "",
         efi_has_cert: hasCert,
         efi_has_key: hasKey,
+        efi_cert_pem: s.efi_cert_pem || normalizeSecret(Deno.env.get("EFI_CERT_PEM")) || "",
+        efi_key_pem: s.efi_key_pem || normalizeSecret(Deno.env.get("EFI_KEY_PEM")) || "",
       });
     }
 
