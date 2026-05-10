@@ -40,7 +40,7 @@ export function useEfiCheckout() {
   const createPix = useCallback(async (payload: CustomerPayload & { session_id?: string; event_id_purchase?: string; product?: "infozap" | "lp2" }): Promise<PixResponse> => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("efi-create-pix", { body: payload });
+      const { data, error } = await supabase.functions.invoke("pix-create", { body: payload });
       if (error) throw new Error(error.message);
       if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
       return data as PixResponse;
@@ -50,7 +50,7 @@ export function useEfiCheckout() {
   }, []);
 
   const checkStatus = useCallback(async (orderId: string): Promise<{ status: string }> => {
-    const { data, error } = await supabase.functions.invoke("efi-check-status", {
+    const { data, error } = await supabase.functions.invoke("pix-check-status", {
       body: { order_id: orderId },
     });
     if (error) throw new Error(error.message);
