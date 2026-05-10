@@ -59,20 +59,20 @@ const MembrosLogin = () => {
       return;
     }
     setResetLoading(true);
-    // Pre-check: only allow reset for emails that already exist
-    const { error: otpErr } = await supabase.auth.signInWithOtp({
+    // Use OTP with shouldCreateUser:false so non-existent emails are rejected.
+    // Link redirects to /reset-password where user sets a new password.
+    const { error } = await supabase.auth.signInWithOtp({
       email: email.trim().toLowerCase(),
-      options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/reset-password` },
+      options: {
+        shouldCreateUser: false,
+        emailRedirectTo: `${window.location.origin}/reset-password`,
+      },
     });
     setResetLoading(false);
-    if (otpErr) {
+    if (error) {
       toast.error("Email não encontrado. Verifique se você já tem cadastro.");
       return;
     }
-    // Send actual recovery email
-    await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
     toast.success("Enviamos um link para redefinir sua senha!");
   };
 
