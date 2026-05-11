@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, Download, FileText, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { MentoriaPaywall } from "@/components/membros/MentoriaPaywall";
 
@@ -19,7 +19,13 @@ interface Lesson {
   cta_enabled?: boolean | null;
   cta_label?: string | null;
   cta_url?: string | null;
+  release_days?: number | null;
+  content_mode?: string | null;
+  header_image_url?: string | null;
+  text_content?: string | null;
 }
+interface CTA { id: string; label: string; url: string; position: number }
+interface Attachment { id: string; name: string; file_url: string; size_bytes: number | null; mime: string | null; position: number }
 
 const linkify = (text: string) => {
   const re = /(https?:\/\/[^\s]+)/gi;
@@ -43,6 +49,9 @@ const linkify = (text: string) => {
 interface Module {
   id: string;
   title: string;
+  product?: string;
+  kind?: string;
+  release_days?: number | null;
 }
 interface LessonMeta {
   lesson_id: string;
@@ -66,6 +75,9 @@ const Aula = () => {
   const [loading, setLoading] = useState(true);
   const [meta, setMeta] = useState<LessonMeta | null>(null);
   const [hasMentoriaAccess, setHasMentoriaAccess] = useState(false);
+  const [ctas, setCtas] = useState<CTA[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [dripLockDays, setDripLockDays] = useState<number | null>(null);
   const playerRef = useRef<HTMLIFrameElement>(null);
   const tickRef = useRef<number>(0);
   const vturbRef = useRef<HTMLDivElement>(null);
