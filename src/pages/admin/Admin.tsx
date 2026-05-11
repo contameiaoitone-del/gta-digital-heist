@@ -79,6 +79,10 @@ const Admin = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [editingModule, setEditingModule] = useState<Partial<Module> | null>(null);
   const [editingLesson, setEditingLesson] = useState<Partial<Lesson> | null>(null);
+  const [lessonCtas, setLessonCtas] = useState<LessonCTA[]>([]);
+  const [lessonAttachments, setLessonAttachments] = useState<LessonAttachment[]>([]);
+  const [showVideoYT, setShowVideoYT] = useState(false);
+  const [showVideoVturb, setShowVideoVturb] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [busy, setBusy] = useState(false);
 
