@@ -388,6 +388,9 @@ const Admin = () => {
             <Link to="/admin/usuarios" className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Usuários
             </Link>
+            <Link to="/admin/trackeamento" className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
+              Trackeamento
+            </Link>
             <Link to="/admin/configuracoes" className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Configurações
             </Link>
