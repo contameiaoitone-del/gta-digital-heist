@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { Link, Navigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -25,8 +25,9 @@ interface PaidModule {
 
 const Users = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
+  const { product: productParam } = useParams<{ product?: string }>();
   const [searchParams] = useSearchParams();
-  const productFilter = searchParams.get("product");
+  const productFilter = productParam || searchParams.get("product") || "infozap";
   const [areaName, setAreaName] = useState<string | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [paidModules, setPaidModules] = useState<PaidModule[]>([]);
@@ -60,7 +61,7 @@ const Users = () => {
     setBusy(true);
     const [usersRes, modsRes] = await Promise.all([
       call({ action: "list" }),
-      supabase.from("modules").select("id, title, kind").eq("kind", "mentoria").order("position"),
+      supabase.from("modules").select("id, title, kind, product").eq("kind", "mentoria").eq("product", productFilter).order("position"),
     ]);
     setBusy(false);
     if (usersRes) setUsers((usersRes as { users: AdminUser[] }).users);
@@ -72,13 +73,12 @@ const Users = () => {
     setPaidModules(paid);
     // Reset filter if it's no longer valid
     if (filterPaidProduct && !paid.some((p) => p.product === filterPaidProduct)) setFilterPaidProduct("");
-  }, [call, filterPaidProduct]);
+  }, [call, filterPaidProduct, productFilter]);
 
   useEffect(() => {
     document.title = "Admin · Usuários";
     if (isAdmin) load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAdmin]);
+  }, [isAdmin, load]);
 
   useEffect(() => {
     if (!productFilter) { setAreaName(null); return; }
@@ -113,7 +113,7 @@ const Users = () => {
       full_name: cFullName.trim() || undefined,
       phone: cPhone.trim() || undefined,
       cpf: cCpf.trim() || undefined,
-      is_admin: cAdmin, access_treinamento: cTrein, access_mentoria: false,
+      is_admin: cAdmin, access_treinamento: cTrein, access_product: productFilter, access_mentoria: false,
     });
     setCreating(false);
     if (r) {
@@ -147,7 +147,7 @@ const Users = () => {
     return users.filter((u) => {
       if (q && !(u.email || "").toLowerCase().includes(q) && !(u.full_name || "").toLowerCase().includes(q)) return false;
       if (filterAdmin && !u.roles.includes("admin")) return false;
-      if (filterTreinamento && !hasAccessTo(u, "infozap")) return false;
+      if (filterTreinamento && !hasAccessTo(u, productFilter)) return false;
       if (filterPaidProduct && !hasAccessTo(u, filterPaidProduct)) return false;
       if (productFilter && !u.roles.includes("admin") && !hasAccessTo(u, productFilter)) return false;
       return true;
@@ -157,7 +157,10 @@ const Users = () => {
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
-  if (!isAdmin) return <Navigate to="/membros" replace />;
+  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(productFilter)}/membros`} replace />;
+
+  const productPath = encodeURIComponent(productFilter);
+  const adminPath = `/${productPath}/admin`;
 
   const CheckCell = ({ active, onClick, title }: { active: boolean; onClick: () => void; title: string }) => (
     <button
@@ -173,7 +176,7 @@ const Users = () => {
     <div className="min-h-screen bg-[#080808] text-white">
       <header className="sticky top-0 z-40 bg-[#080808] border-b border-white/10">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
-          <Link to={`/admin${productFilter ? `?product=${encodeURIComponent(productFilter)}` : ""}`} className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
+          <Link to={adminPath} className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
           <h1 className="text-xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
             ADMIN <span style={{ color: "#00ff88" }}>· Usuários{areaName ? ` · ${areaName}` : ""}</span>
           </h1>
@@ -244,7 +247,7 @@ const Users = () => {
               <tbody>
                 {filtered.map((u) => {
                   const isU = u.roles.includes("admin");
-                  const hasTrein = hasAccessTo(u, "infozap");
+                  const hasTrein = hasAccessTo(u, productFilter);
                   return (
                     <tr key={u.id} className="border-t border-white/10 hover:bg-white/5">
                       <td className="px-3 py-2">
@@ -261,7 +264,7 @@ const Users = () => {
                         <CheckCell active={isU} onClick={() => toggleAdmin(u)} title={isU ? "Remover admin" : "Tornar admin"} />
                       </td>
                       <td className="px-3 py-2">
-                        <CheckCell active={hasTrein} onClick={() => toggleAccess(u, "infozap")} title={hasTrein ? "Remover acesso ao treinamento" : "Liberar acesso ao treinamento"} />
+                        <CheckCell active={hasTrein} onClick={() => toggleAccess(u, productFilter)} title={hasTrein ? "Remover acesso ao treinamento" : "Liberar acesso ao treinamento"} />
                       </td>
                       {paidModules.map((p) => {
                         const has = hasAccessTo(u, p.product) || hasAnyMentoriaAccess(u);

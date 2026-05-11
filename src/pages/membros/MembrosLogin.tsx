@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Fingerprint, X } from "lucide-react";
@@ -7,6 +7,8 @@ import { browserSupportsWebAuthn, startAuthentication } from "@simplewebauthn/br
 
 const MembrosLogin = () => {
   const navigate = useNavigate();
+  const { product = "infozap" } = useParams<{ product?: string }>();
+  const productPath = `/${encodeURIComponent(product)}`;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,9 +25,9 @@ const MembrosLogin = () => {
   useEffect(() => {
     document.title = "Entrar — Treinamento";
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate("/membros", { replace: true });
+      if (data.session) navigate(`${productPath}/membros`, { replace: true });
     });
-  }, [navigate]);
+  }, [navigate, productPath]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +38,7 @@ const MembrosLogin = () => {
       toast.error("Email ou senha inválidos");
       return;
     }
-    navigate("/membros", { replace: true });
+    navigate(`${productPath}/membros`, { replace: true });
   };
 
   const loginWithBiometrics = async () => {
@@ -67,7 +69,7 @@ const MembrosLogin = () => {
       });
       if (otpErr) throw otpErr;
       toast.success("Login realizado!");
-      navigate("/membros", { replace: true });
+      navigate(`${productPath}/membros`, { replace: true });
     } catch (e: any) {
       const msg = e?.message || "";
       if (/NotAllowedError|cancel/i.test(msg)) {
@@ -90,7 +92,7 @@ const MembrosLogin = () => {
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim().toLowerCase(),
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/membros`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(`${productPath}/membros`)}`,
         shouldCreateUser: false,
       },
     });
@@ -115,7 +117,7 @@ const MembrosLogin = () => {
       email: email.trim().toLowerCase(),
       options: {
         shouldCreateUser: false,
-        emailRedirectTo: `${window.location.origin}/reset-password`,
+        emailRedirectTo: `${window.location.origin}${productPath}/reset-password`,
       },
     });
     setResetLoading(false);

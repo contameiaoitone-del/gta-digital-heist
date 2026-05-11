@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
 
     const { data: order } = await supabase
       .from("orders")
-      .select("id, customer_email, status")
+      .select("id, customer_email, status, product")
       .eq("id", order_id)
       .maybeSingle();
 
@@ -41,10 +41,13 @@ Deno.serve(async (req) => {
       console.error("ensure grant failed", e);
     }
 
+    const product = order.product || "infozap";
+    const productSlug = product.startsWith("mentoria:") ? "infozap" : product;
+
     const { data: linkData, error: linkErr } = await supabase.auth.admin.generateLink({
       type: "magiclink",
       email,
-      options: { redirectTo: `${siteUrl}/auth/callback?next=/membros` },
+      options: { redirectTo: `${siteUrl}/auth/callback?next=/${encodeURIComponent(productSlug)}/membros` },
     });
     if (linkErr) {
       console.error("generateLink failed", linkErr);

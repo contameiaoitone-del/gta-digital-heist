@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -386,19 +386,21 @@ function CapiLogBody() {
 
 const Trackeamento = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
+  const { product = "infozap" } = useParams<{ product?: string }>();
+  const adminPath = `/${encodeURIComponent(product)}/admin`;
 
   useEffect(() => { document.title = "Trackeamento — Admin"; }, []);
 
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
-  if (!isAdmin) return <Navigate to="/membros" replace />;
+  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(product)}/membros`} replace />;
 
   return (
     <div className="min-h-screen bg-[#080808] text-white">
       <header className="sticky top-0 z-40 bg-[#080808] border-b border-white/10">
         <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center gap-3">
-          <Link to="/admin" className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
+          <Link to={adminPath} className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
           <h1 className="text-xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
             TRACKEAMENTO
           </h1>

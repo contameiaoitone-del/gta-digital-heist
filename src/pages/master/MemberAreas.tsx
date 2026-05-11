@@ -153,7 +153,7 @@ export default function MemberAreas() {
                 ) : (
                   <>
                     <Link
-                      to={`/admin?product=${encodeURIComponent(a.product)}`}
+                      to={`/${encodeURIComponent(a.product)}/admin`}
                       className="text-xs text-gray-400 hover:text-white flex items-center gap-1"
                     >
                       <ExternalLink className="h-3.5 w-3.5" /> Painel

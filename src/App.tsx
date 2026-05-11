@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useSearchParams } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import NotFound from "./pages/NotFound";
 import { TrackingProvider } from "./components/TrackingProvider";
@@ -31,9 +31,14 @@ const MasterHome = lazy(() => import("./pages/master/MasterHome"));
 const MemberAreas = lazy(() => import("./pages/master/MemberAreas"));
 const LandingPages = lazy(() => import("./pages/master/LandingPages"));
 import { RequireAuth } from "./hooks/useAuth";
-const Index = lazy(() => import("./pages/Index"));
 
 const queryClient = new QueryClient();
+
+const LegacyProductRedirect = ({ suffix = "" }: { suffix?: string }) => {
+  const [searchParams] = useSearchParams();
+  const product = searchParams.get("product") || "infozap";
+  return <Navigate to={`/${encodeURIComponent(product)}/admin${suffix}`} replace />;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -44,7 +49,7 @@ const App = () => (
         <TrackingProvider />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Lp2App />} />
             <Route path="/home" element={<RequireAuth requireAdmin><MasterHome /></RequireAuth>} />
             <Route path="/areas" element={<RequireAuth requireAdmin><MemberAreas /></RequireAuth>} />
             <Route path="/landing-pages" element={<RequireAuth requireAdmin><LandingPages /></RequireAuth>} />
@@ -52,19 +57,31 @@ const App = () => (
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/contato" element={<Contato />} />
             <Route path="/obrigado" element={<Obrigado />} />
-            <Route path="/membros/login" element={<MembrosLogin />} />
+            <Route path="/membros/login" element={<Navigate to="/infozap/membros/login" replace />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/membros" element={<RequireAuth><Membros /></RequireAuth>} />
-            <Route path="/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
-            <Route path="/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
+            <Route path="/membros" element={<Navigate to="/infozap/membros" replace />} />
+            <Route path="/membros/modulo/:id" element={<Navigate to="/infozap/membros" replace />} />
+            <Route path="/membros/aula/:id" element={<Navigate to="/infozap/membros" replace />} />
             <Route path="/membros/share/:token" element={<ShareConsume />} />
-            <Route path="/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
-            <Route path="/admin/capi-log" element={<RequireAuth requireAdmin><CapiLog /></RequireAuth>} />
-            <Route path="/admin/usuarios" element={<RequireAuth requireAdmin><AdminUsers /></RequireAuth>} />
-            <Route path="/admin/credenciais" element={<RequireAuth requireAdmin><AdminPaymentCredentials /></RequireAuth>} />
-            <Route path="/admin/configuracoes" element={<RequireAuth requireAdmin><AdminConfiguracoes /></RequireAuth>} />
-            <Route path="/admin/trackeamento" element={<RequireAuth requireAdmin><AdminTrackeamento /></RequireAuth>} />
+            <Route path="/admin" element={<LegacyProductRedirect />} />
+            <Route path="/admin/capi-log" element={<LegacyProductRedirect suffix="/capi-log" />} />
+            <Route path="/admin/usuarios" element={<LegacyProductRedirect suffix="/usuarios" />} />
+            <Route path="/admin/credenciais" element={<LegacyProductRedirect suffix="/credenciais" />} />
+            <Route path="/admin/configuracoes" element={<LegacyProductRedirect suffix="/configuracoes" />} />
+            <Route path="/admin/trackeamento" element={<LegacyProductRedirect suffix="/trackeamento" />} />
+            <Route path="/:product/membros/login" element={<MembrosLogin />} />
+            <Route path="/:product/reset-password" element={<ResetPassword />} />
+            <Route path="/:product/membros" element={<RequireAuth><Membros /></RequireAuth>} />
+            <Route path="/:product/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
+            <Route path="/:product/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
+            <Route path="/:product/membros/share/:token" element={<ShareConsume />} />
+            <Route path="/:product/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
+            <Route path="/:product/admin/capi-log" element={<RequireAuth requireAdmin><CapiLog /></RequireAuth>} />
+            <Route path="/:product/admin/usuarios" element={<RequireAuth requireAdmin><AdminUsers /></RequireAuth>} />
+            <Route path="/:product/admin/credenciais" element={<RequireAuth requireAdmin><AdminPaymentCredentials /></RequireAuth>} />
+            <Route path="/:product/admin/configuracoes" element={<RequireAuth requireAdmin><AdminConfiguracoes /></RequireAuth>} />
+            <Route path="/:product/admin/trackeamento" element={<RequireAuth requireAdmin><AdminTrackeamento /></RequireAuth>} />
 
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/lp1" element={<Lp1App />} />

@@ -10,6 +10,8 @@ const AuthCallback = () => {
 
   useEffect(() => {
     const next = params.get("next") || "/membros";
+    const productMatch = next.match(/^\/([^/]+)\/membros/);
+    const loginFallback = productMatch ? `/${productMatch[1]}/membros/login` : "/infozap/membros/login";
     // The Supabase JS client auto-detects the session from the URL hash.
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
       if (session) navigate(next, { replace: true });
@@ -21,7 +23,7 @@ const AuthCallback = () => {
     // If no session after 5s, send to login
     const t = setTimeout(() => {
       supabase.auth.getSession().then(({ data }) => {
-        if (!data.session) navigate("/membros/login", { replace: true });
+        if (!data.session) navigate(loginFallback, { replace: true });
       });
     }, 5000);
     return () => {

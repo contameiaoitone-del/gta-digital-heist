@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Play, LogOut, Settings, User as UserIcon } from "lucide-react";
 import { useAuth, useSignOut } from "@/hooks/useAuth";
@@ -51,6 +51,7 @@ const ytThumb = (id: string | null) => (id ? `https://i.ytimg.com/vi/${id}/hqdef
 
 const Membros = () => {
   const navigate = useNavigate();
+  const { product = "infozap" } = useParams<{ product?: string }>();
   const { isAdmin, session } = useAuth();
   const signOut = useSignOut();
   const { settings } = useSiteSettings();
@@ -62,19 +63,22 @@ const Membros = () => {
   const [loading, setLoading] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
   const [userVars, setUserVars] = useState<{ name: string; full_name: string; email: string; phone: string }>({ name: "", full_name: "", email: "", phone: "" });
+  const productPath = `/${encodeURIComponent(product)}`;
 
   useEffect(() => {
     document.title = "Área de Membros — Treinamento";
     (async () => {
       const [mRes, lRes, cRes, pRes, aRes] = await Promise.all([
-        supabase.from("modules").select("*").order("position"),
+        supabase.from("modules").select("*").eq("product", product).order("position"),
         supabase.from("lessons").select("*").order("position"),
-        supabase.from("module_categories").select("*").order("position"),
+        supabase.from("module_categories").select("*").eq("product", product).order("position"),
         session ? supabase.from("lesson_progress").select("*").eq("user_id", session.user.id) : Promise.resolve({ data: [] as Progress[] }),
         session ? supabase.from("member_access").select("product, granted_at").eq("user_id", session.user.id).eq("active", true) : Promise.resolve({ data: [] }),
       ]);
-      setModules((mRes.data as Module[]) || []);
-      setLessons((lRes.data as Lesson[]) || []);
+      const loadedModules = (mRes.data as Module[]) || [];
+      const moduleIds = new Set(loadedModules.map((m) => m.id));
+      setModules(loadedModules);
+      setLessons(((lRes.data as Lesson[]) || []).filter((l) => moduleIds.has(l.module_id)));
       setCategories((cRes.data as Category[]) || []);
       const pmap: Record<string, Progress> = {};
       ((pRes as { data: Progress[] | null }).data || []).forEach((p) => (pmap[p.lesson_id] = p));
@@ -99,7 +103,7 @@ const Membros = () => {
         setUserVars({ name: first, full_name: fullName, email, phone });
       }
     })();
-  }, [session]);
+  }, [session, product]);
 
   const computeLockDays = (m: Module): number | null => {
     if (m.kind !== "treinamento") return null;
@@ -152,7 +156,7 @@ const Membros = () => {
           </div>
           <div className="flex items-center gap-2">
             {isAdmin && (
-              <Link to="/admin" className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[var(--ms-secondary,#00ff88)]" style={{ ['--ms-secondary' as any]: settings.secondary_color || "#00ff88" }}>
+              <Link to={`${productPath}/admin`} className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[var(--ms-secondary,#00ff88)]" style={{ ['--ms-secondary' as any]: settings.secondary_color || "#00ff88" }}>
                 <Settings className="h-4 w-4" /> Admin
               </Link>
             )}
@@ -219,7 +223,7 @@ const Membros = () => {
           <div className="flex flex-wrap gap-3">
             {heroLesson && (
               <button
-                onClick={() => navigate(`/membros/aula/${heroLesson.id}`)}
+                onClick={() => navigate(`${productPath}/membros/aula/${heroLesson.id}`)}
                 className="flex items-center gap-2 px-6 py-2.5 rounded font-bold uppercase bg-white text-black hover:bg-white/85 transition-colors text-sm"
                 style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
               >
@@ -237,7 +241,7 @@ const Membros = () => {
           </h2>
           <p className="text-gray-400">Os módulos serão liberados em breve. Volte logo!</p>
           {isAdmin && (
-            <Link to="/admin" className="inline-block mt-6 px-5 py-3 rounded bg-[#00ff88] text-black font-bold uppercase text-sm">
+            <Link to={`${productPath}/admin`} className="inline-block mt-6 px-5 py-3 rounded bg-[#00ff88] text-black font-bold uppercase text-sm">
               Cadastrar conteúdo no admin
             </Link>
           )}
@@ -255,7 +259,7 @@ const Membros = () => {
               return (
                 <EpisodeCard
                   key={l.id}
-                  to={`/membros/aula/${l.id}`}
+                  to={`${productPath}/membros/aula/${l.id}`}
                   title={l.title}
                   thumb={l.thumbnail_url || ytThumb(l.youtube_id)}
                   moduleTitle={modules.find((m) => m.id === l.module_id)?.title}
@@ -293,7 +297,7 @@ const Membros = () => {
                 return (
                   <PosterCard
                     key={m.id}
-                    to={`/membros/modulo/${m.id}`}
+                    to={`${productPath}/membros/modulo/${m.id}`}
                     title={m.title}
                     cover={m.cover_url}
                     description={m.description}

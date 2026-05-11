@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, Plus, Trash2, Copy, ExternalLink, ChevronDown, ChevronRight } from "lucide-react";
@@ -37,6 +37,8 @@ function Section({ title, children, defaultOpen = false }: { title: string; chil
 }
 
 const Configuracoes = () => {
+  const { product = "infozap" } = useParams<{ product?: string }>();
+  const productPath = `/${encodeURIComponent(product)}`;
   const [settings, setSettings] = useState<SiteSettings>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -169,7 +171,7 @@ const Configuracoes = () => {
     <div className="min-h-screen bg-[#080808] text-white">
       <header className="sticky top-0 z-40 bg-[#080808] border-b border-white/10">
         <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center gap-3">
-          <Link to="/admin" className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
+          <Link to={`${productPath}/admin`} className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
           <h1 className="text-xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
             CONFIGURAÇÕES
           </h1>

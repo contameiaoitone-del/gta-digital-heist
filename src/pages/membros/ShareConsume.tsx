@@ -4,10 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 
 const ShareConsume = () => {
-  const { token } = useParams();
+  const { product = "infozap", token } = useParams<{ product?: string; token?: string }>();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const ranRef = useRef(false);
+  const productPath = `/${encodeURIComponent(product)}`;
 
   useEffect(() => {
     if (ranRef.current || !token) return;
@@ -33,12 +34,12 @@ const ShareConsume = () => {
           localStorage.removeItem("share_session_expires_at");
         }
         localStorage.setItem("share_session_active", "1");
-        navigate("/membros", { replace: true });
+        navigate(`${productPath}/membros`, { replace: true });
       } catch (e) {
         setError((e as Error).message || "Falha");
       }
     })();
-  }, [token, navigate]);
+  }, [token, navigate, productPath]);
 
   if (error) {
     return (
@@ -46,7 +47,7 @@ const ShareConsume = () => {
         <div>
           <h1 className="text-2xl font-bold mb-3" style={{ fontFamily: "'Bebas Neue', cursive" }}>Link inválido</h1>
           <p className="text-gray-400 mb-6">{error}</p>
-          <button onClick={() => navigate("/membros/login")} className="text-sm underline text-gray-400">Ir para login</button>
+          <button onClick={() => navigate(`${productPath}/membros/login`)} className="text-sm underline text-gray-400">Ir para login</button>
         </div>
       </div>
     );

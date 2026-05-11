@@ -11,6 +11,7 @@ const Obrigado = () => {
   const [params] = useSearchParams();
   const metodo = params.get("metodo");
   const status = params.get("status");
+  const product = params.get("product") || "infozap";
   const eventId = params.get("eventId") || "";
   const value = Number(params.get("value") || "67");
   const orderId = params.get("orderId") || undefined;
@@ -111,7 +112,7 @@ const Obrigado = () => {
             </div>
 
             <a
-              href={magicLink || "/membros/login"}
+              href={magicLink || `/${encodeURIComponent(product)}/membros/login`}
               className="inline-block px-6 py-3 rounded-lg font-bold uppercase tracking-wide"
               style={{ backgroundColor: "#00ff88", color: "#000", fontFamily: "'Bebas Neue', cursive" }}
             >
