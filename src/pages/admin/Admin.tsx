@@ -567,6 +567,23 @@ const Admin = () => {
                 <option value="coming_soon">Em breve (aparece com tag, sem acesso)</option>
               </select>
             </Field>
+            <Field label="Liberação (drip)">
+              <div className="flex gap-2 items-center">
+                <select
+                  className={inputCls + " max-w-[220px]"}
+                  value={(editingModule.release_days ?? 0) > 0 ? "delayed" : "immediate"}
+                  onChange={(e) => setEditingModule({ ...editingModule, release_days: e.target.value === "immediate" ? 0 : (editingModule.release_days || 7) })}
+                >
+                  <option value="immediate">Imediata após pagamento</option>
+                  <option value="delayed">Liberar após N dias</option>
+                </select>
+                {(editingModule.release_days ?? 0) > 0 && (
+                  <input type="number" min={1} className={inputCls + " max-w-[120px]"} value={editingModule.release_days || 0}
+                    onChange={(e) => setEditingModule({ ...editingModule, release_days: Math.max(1, Number(e.target.value) || 1) })} />
+                )}
+                <span className="text-xs text-gray-500">dias após a compra</span>
+              </div>
+            </Field>
             <div className="flex gap-2 justify-end pt-2">
               <button onClick={() => setEditingModule(null)} className="px-4 py-2 text-sm text-gray-400">Cancelar</button>
               <button onClick={saveModule} disabled={busy} className="px-4 py-2 bg-[#00ff88] text-black font-bold rounded text-sm">{busy ? "Salvando..." : "Salvar"}</button>
