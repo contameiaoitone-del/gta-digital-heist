@@ -1,1 +1,7 @@
 project_id = "abnozqhdulaapmdwxdcz"
+
+[functions.webauthn-auth-options]
+verify_jwt = false
+
+[functions.webauthn-auth-verify]
+verify_jwt = false
