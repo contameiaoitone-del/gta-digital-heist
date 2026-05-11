@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Trash2, KeyRound, Shield, ShieldOff, Check, X, UserPlus } from "lucide-react";
+import { ArrowLeft, Loader2, Trash2, KeyRound, Shield, ShieldOff, Check, X, UserPlus, Fingerprint } from "lucide-react";
 
 interface AdminUser {
   id: string;
@@ -125,6 +125,15 @@ const Users = () => {
     }
   };
 
+  const resetBiometrics = async (u: AdminUser) => {
+    if (!confirm(`Resetar biometria de ${u.email}? Ele(a) precisará cadastrar novamente.`)) return;
+    const r = await call({ action: "reset_biometrics", user_id: u.id });
+    if (r) {
+      toast.success("Biometria resetada");
+      load();
+    }
+  };
+
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
@@ -194,6 +203,9 @@ const Users = () => {
                           </button>
                           <button onClick={() => { setPwUserId(u.id); setNewPassword(""); }} className="p-2 rounded border border-white/15 hover:border-[#00ff88]" title="Alterar senha">
                             <KeyRound className="h-4 w-4" />
+                          </button>
+                          <button onClick={() => resetBiometrics(u)} className="p-2 rounded border border-white/15 hover:border-[#00ff88]" title="Resetar biometria">
+                            <Fingerprint className="h-4 w-4" />
                           </button>
                           <button onClick={() => deleteUser(u)} className="p-2 rounded border border-white/15 hover:border-[#ff2d78] text-gray-400 hover:text-[#ff2d78]" title="Excluir">
                             <Trash2 className="h-4 w-4" />

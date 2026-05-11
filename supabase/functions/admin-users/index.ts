@@ -138,6 +138,14 @@ Deno.serve(async (req) => {
       return json({ ok: true });
     }
 
+    if (action === "reset_biometrics") {
+      const { user_id } = body;
+      if (!user_id) return json({ error: "user_id required" }, 400);
+      const { error } = await admin.from("webauthn_credentials").delete().eq("user_id", user_id);
+      if (error) return json({ error: error.message }, 400);
+      return json({ ok: true });
+    }
+
     if (action === "create_user") {
       const { email, password, is_admin, access_treinamento, access_mentoria } = body as {
         email?: string;
