@@ -40,6 +40,7 @@ interface Lesson {
   position: number;
   status?: string;
   release_days?: number | null;
+  vturb_player_id?: string | null;
 }
 interface Progress {
   lesson_id: string;
