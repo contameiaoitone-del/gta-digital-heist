@@ -61,7 +61,7 @@ const Modulo = () => {
   const productPath = `/${encodeURIComponent(routeParamRaw)}`;
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || !product) return;
     (async () => {
       const [mRes, lRes, pRes] = await Promise.all([
         supabase.from("modules").select("*").eq("id", id).eq("product", product).maybeSingle(),
