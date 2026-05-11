@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { MentoriaPaywall } from "@/components/membros/MentoriaPaywall";
 
@@ -15,7 +15,30 @@ interface Lesson {
   vturb_player_id: string | null;
   duration_seconds: number | null;
   position: number;
+  cta_enabled?: boolean | null;
+  cta_label?: string | null;
+  cta_url?: string | null;
 }
+
+const linkify = (text: string) => {
+  const re = /(https?:\/\/[^\s]+)/gi;
+  const parts = text.split(re);
+  return parts.map((part, i) =>
+    /^https?:\/\//i.test(part) ? (
+      <a
+        key={i}
+        href={part}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-[#00ff88] underline underline-offset-2 hover:brightness-110 break-all"
+      >
+        {part}
+      </a>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+};
 interface Module {
   id: string;
   title: string;
@@ -230,7 +253,25 @@ const Aula = () => {
               <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>
                 {lesson.title}
               </h1>
-              {lesson.description && <p className="text-gray-300 leading-relaxed">{lesson.description}</p>}
+              {lesson.cta_enabled && lesson.cta_url && (
+                <div className="flex justify-center my-4">
+                  <a
+                    href={lesson.cta_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#00ff88] text-black font-bold uppercase text-sm hover:brightness-110 transition"
+                    style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
+                  >
+                    {lesson.cta_label || "Acessar"}
+                    <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                </div>
+              )}
+              {lesson.description && (
+                <p className="text-gray-300 leading-relaxed whitespace-pre-wrap break-words">
+                  {linkify(lesson.description)}
+                </p>
+              )}
             </div>
             <button
               onClick={markComplete}
