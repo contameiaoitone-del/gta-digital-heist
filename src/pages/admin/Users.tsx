@@ -158,9 +158,9 @@ const Users = () => {
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
-  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(productFilter)}/membros`} replace />;
+  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(routeParam)}/membros`} replace />;
 
-  const productPath = encodeURIComponent(productFilter);
+  const productPath = encodeURIComponent(routeParam);
   const adminPath = `/${productPath}/admin`;
 
   const CheckCell = ({ active, onClick, title }: { active: boolean; onClick: () => void; title: string }) => (
