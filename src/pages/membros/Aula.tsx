@@ -233,7 +233,25 @@ const Aula = () => {
               <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>
                 {lesson.title}
               </h1>
-              {lesson.description && <p className="text-gray-300 leading-relaxed">{lesson.description}</p>}
+              {lesson.cta_enabled && lesson.cta_url && (
+                <div className="flex justify-center my-4">
+                  <a
+                    href={lesson.cta_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#00ff88] text-black font-bold uppercase text-sm hover:brightness-110 transition"
+                    style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
+                  >
+                    {lesson.cta_label || "Acessar"}
+                    <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                </div>
+              )}
+              {lesson.description && (
+                <p className="text-gray-300 leading-relaxed whitespace-pre-wrap break-words">
+                  {linkify(lesson.description)}
+                </p>
+              )}
             </div>
             <button
               onClick={markComplete}
