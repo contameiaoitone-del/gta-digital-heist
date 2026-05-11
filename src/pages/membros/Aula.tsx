@@ -112,14 +112,43 @@ const Aula = () => {
       }
       const l = lessonData as Lesson;
       setLesson(l);
-      const [mRes, sRes, pRes] = await Promise.all([
-        supabase.from("modules").select("id, title").eq("id", l.module_id).maybeSingle(),
+      const [mRes, sRes, pRes, ctaRes, attRes] = await Promise.all([
+        supabase.from("modules").select("id, title, product, kind, release_days").eq("id", l.module_id).maybeSingle(),
         supabase.from("lessons").select("*").eq("module_id", l.module_id).order("position"),
         session ? supabase.from("lesson_progress").select("completed, watched_seconds").eq("user_id", session.user.id).eq("lesson_id", l.id).maybeSingle() : Promise.resolve({ data: null }),
+        supabase.from("lesson_ctas").select("*").eq("lesson_id", l.id).order("position"),
+        supabase.from("lesson_attachments").select("*").eq("lesson_id", l.id).order("position"),
       ]);
-      setModule((mRes.data as Module) || null);
+      const modData = (mRes.data as Module) || null;
+      setModule(modData);
       setSiblings((sRes.data as Lesson[]) || []);
       setCompleted(!!(pRes as { data: { completed?: boolean } | null }).data?.completed);
+      setCtas((ctaRes.data as CTA[]) || []);
+      setAttachments((attRes.data as Attachment[]) || []);
+      // Drip lock check (only treinamento)
+      if (modData && session && modData.kind === "treinamento") {
+        const moduleDays = modData.release_days || 0;
+        const lessonDays = l.release_days || 0;
+        const totalDays = Math.max(moduleDays, lessonDays);
+        if (totalDays > 0 && modData.product) {
+          const { data: acc } = await supabase
+            .from("member_access")
+            .select("granted_at")
+            .eq("user_id", session.user.id)
+            .eq("product", modData.product)
+            .eq("active", true)
+            .order("granted_at", { ascending: true })
+            .limit(1)
+            .maybeSingle();
+          if (acc?.granted_at) {
+            const unlockAt = new Date(new Date(acc.granted_at).getTime() + totalDays * 24 * 60 * 60 * 1000);
+            const remainingMs = unlockAt.getTime() - Date.now();
+            if (remainingMs > 0) {
+              setDripLockDays(Math.ceil(remainingMs / (1000 * 60 * 60 * 24)));
+            } else setDripLockDays(null);
+          }
+        } else setDripLockDays(null);
+      } else setDripLockDays(null);
       setLoading(false);
       document.title = `${l.title} — Treinamento`;
     })();
