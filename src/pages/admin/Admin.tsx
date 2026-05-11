@@ -16,6 +16,7 @@ interface Module {
   category: string | null;
   kind?: string;
   price_cents?: number | null;
+  release_days?: number;
 }
 interface Lesson {
   id: string;
@@ -33,6 +34,24 @@ interface Lesson {
   cta_enabled?: boolean;
   cta_label?: string | null;
   cta_url?: string | null;
+  release_days?: number;
+  content_mode?: "video" | "text";
+  header_image_url?: string | null;
+  text_content?: string | null;
+}
+interface LessonCTA {
+  id?: string;
+  label: string;
+  url: string;
+  position: number;
+}
+interface LessonAttachment {
+  id?: string;
+  name: string;
+  file_url: string;
+  size_bytes?: number | null;
+  mime?: string | null;
+  position: number;
 }
 interface Category {
   id: string;
