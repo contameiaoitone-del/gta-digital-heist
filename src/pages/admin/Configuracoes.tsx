@@ -252,6 +252,12 @@ const Configuracoes = () => {
                 value={settings.hero_title_html ?? settings.hero_title ?? ""}
                 onChange={(html) => setSettings({ ...settings, hero_title_html: html })}
                 placeholder="Treinamento de X1"
+                variables={[
+                  { label: "Nome", token: "{{name}}" },
+                  { label: "Nome completo", token: "{{full_name}}" },
+                  { label: "E-mail", token: "{{email}}" },
+                  { label: "Telefone", token: "{{phone}}" },
+                ]}
               />
               <p className="text-[11px] text-gray-500 mt-1">Selecione um trecho do texto para colorir só essas palavras. Use o botão de emoji para inserir um ícone.</p>
             </div>
@@ -263,6 +269,12 @@ const Configuracoes = () => {
                 multiline
                 value={settings.hero_description_html ?? settings.hero_description ?? ""}
                 onChange={(html) => setSettings({ ...settings, hero_description_html: html })}
+                variables={[
+                  { label: "Nome", token: "{{name}}" },
+                  { label: "Nome completo", token: "{{full_name}}" },
+                  { label: "E-mail", token: "{{email}}" },
+                  { label: "Telefone", token: "{{phone}}" },
+                ]}
               />
             </div>
 
