@@ -30,7 +30,8 @@ function Section({ title, children, defaultOpen = false }: { title: string; chil
         <h2 className="text-lg font-bold" style={{ fontFamily: "'Bebas Neue', cursive" }}>{title}</h2>
         {open ? <ChevronDown className="h-5 w-5 text-gray-400" /> : <ChevronRight className="h-5 w-5 text-gray-400" />}
       </button>
-      {open && <div className="p-5 pt-0">{children}</div>}
+      {/* Always mount children so data loads in background; hide when closed */}
+      <div className={open ? "p-5 pt-0" : "hidden"}>{children}</div>
     </section>
   );
 }
