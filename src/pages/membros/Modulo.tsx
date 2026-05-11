@@ -3,12 +3,15 @@ import { Link, useNavigate, useParams, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Play, CheckCircle2, LogOut, Settings } from "lucide-react";
 import { useAuth, useSignOut } from "@/hooks/useAuth";
+import { MentoriaPaywall } from "@/components/membros/MentoriaPaywall";
 
 interface Module {
   id: string;
   title: string;
   description: string | null;
   cover_url: string | null;
+  kind?: string;
+  price_cents?: number | null;
 }
 interface Lesson {
   id: string;
@@ -45,6 +48,7 @@ const Modulo = () => {
   const [progress, setProgress] = useState<Record<string, Progress>>({});
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [hasMentoriaAccess, setHasMentoriaAccess] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -63,6 +67,20 @@ const Modulo = () => {
       const pmap: Record<string, Progress> = {};
       ((pRes as { data: Progress[] | null }).data || []).forEach((p) => (pmap[p.lesson_id] = p));
       setProgress(pmap);
+      // Check mentoria access
+      const m = mRes.data as Module | null;
+      if (m?.kind === "mentoria" && session) {
+        const { data: acc } = await supabase
+          .from("member_access")
+          .select("id")
+          .eq("user_id", session.user.id)
+          .in("product", [`mentoria:${m.id}`, "mentoria"])
+          .eq("active", true)
+          .maybeSingle();
+        setHasMentoriaAccess(!!acc);
+      } else {
+        setHasMentoriaAccess(true);
+      }
       setLoading(false);
     })();
   }, [id, session]);
@@ -73,6 +91,8 @@ const Modulo = () => {
   }, [lessons, progress]);
 
   if (notFound) return <Navigate to="/membros" replace />;
+
+  const isMentoriaLocked = mod?.kind === "mentoria" && !hasMentoriaAccess;
 
   return (
     <div className="min-h-screen bg-[#080808] text-white pb-24">
@@ -130,6 +150,16 @@ const Modulo = () => {
 
       {/* Lista de aulas */}
       <div className="max-w-[1100px] mx-auto px-4 md:px-8 mt-10">
+        {isMentoriaLocked && mod ? (
+          <MentoriaPaywall
+            moduleId={mod.id}
+            moduleTitle={mod.title}
+            priceCents={mod.price_cents || 0}
+            defaultName={(session?.user?.user_metadata as { full_name?: string })?.full_name || ""}
+            onPaid={() => window.location.reload()}
+          />
+        ) : (
+          <>
         <h2 className="text-2xl font-bold mb-5" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.04em" }}>
           Aulas
         </h2>
@@ -175,6 +205,8 @@ const Modulo = () => {
             );
           })}
         </ul>
+          </>
+        )}
       </div>
     </div>
   );
