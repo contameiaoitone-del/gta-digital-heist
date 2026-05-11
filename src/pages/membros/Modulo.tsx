@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Play, CheckCircle2, LogOut, Settings } from "lucide-react";
 import { useAuth, useSignOut } from "@/hooks/useAuth";
 import { MentoriaPaywall } from "@/components/membros/MentoriaPaywall";
+import { useResolvedArea } from "@/hooks/useResolvedArea";
 
 interface Module {
   id: string;
@@ -44,7 +45,9 @@ const fmtDuration = (s: number | null) => {
 };
 
 const Modulo = () => {
-  const { product = "treinamento", id } = useParams<{ product?: string; id: string }>();
+  const { product: routeParamRaw = "treinamento", id } = useParams<{ product?: string; id: string }>();
+  const resolved = useResolvedArea();
+  const product = resolved.loading ? "" : (resolved.product || routeParamRaw);
   const navigate = useNavigate();
   const { isAdmin, session } = useAuth();
   const signOut = useSignOut();
@@ -55,10 +58,10 @@ const Modulo = () => {
   const [notFound, setNotFound] = useState(false);
   const [hasMentoriaAccess, setHasMentoriaAccess] = useState(false);
   const [accessGrantedAt, setAccessGrantedAt] = useState<string | null>(null);
-  const productPath = `/${encodeURIComponent(product)}`;
+  const productPath = `/${encodeURIComponent(routeParamRaw)}`;
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || !product) return;
     (async () => {
       const [mRes, lRes, pRes] = await Promise.all([
         supabase.from("modules").select("*").eq("id", id).eq("product", product).maybeSingle(),

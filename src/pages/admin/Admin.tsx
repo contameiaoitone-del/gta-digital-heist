@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useResolvedArea } from "@/hooks/useResolvedArea";
 import { toast } from "sonner";
 import { Loader2, Plus, Pencil, Trash2, ArrowUp, ArrowDown, ArrowLeft, ChevronRight } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
@@ -79,7 +80,9 @@ const Admin = () => {
   const canSeeTracking = userEmail === "joaolucasps2001@gmail.com";
   const { product: productParam } = useParams<{ product?: string }>();
   const [searchParams] = useSearchParams();
-  const productFilter = productParam || searchParams.get("product") || "treinamento";
+  const resolved = useResolvedArea();
+  const productFilter = resolved.loading ? "" : (resolved.product || productParam || searchParams.get("product") || "treinamento");
+  const routeParam = productParam || searchParams.get("product") || "treinamento";
   const [areaName, setAreaName] = useState<string | null>(null);
   const [modules, setModules] = useState<Module[]>([]);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
@@ -191,16 +194,14 @@ const Admin = () => {
 
   useEffect(() => {
     document.title = "Admin — Treinamento";
-    if (isAdmin) {
+    if (isAdmin && productFilter) {
       loadAdminContent();
     }
-  }, [isAdmin, loadAdminContent]);
+  }, [isAdmin, loadAdminContent, productFilter]);
 
   useEffect(() => {
-    if (!productFilter) { setAreaName(null); return; }
-    supabase.from("member_areas").select("name").eq("product", productFilter).maybeSingle()
-      .then(({ data }) => setAreaName((data as { name: string } | null)?.name || productFilter));
-  }, [productFilter]);
+    setAreaName(resolved.areaName || (productFilter || null));
+  }, [resolved.areaName, productFilter]);
 
   useEffect(() => {
     if (selectedModuleId) loadLessons(selectedModuleId);
@@ -401,10 +402,10 @@ const Admin = () => {
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
-  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(productFilter)}/membros`} replace />;
+  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(routeParam)}/membros`} replace />;
 
   const inputCls = "w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88] text-sm";
-  const productPath = encodeURIComponent(productFilter);
+  const productPath = encodeURIComponent(routeParam);
   const adminPath = `/${productPath}/admin`;
   const membersPath = `/${productPath}/membros`;
 

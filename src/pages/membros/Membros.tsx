@@ -9,6 +9,7 @@ import EpisodeCard from "@/components/membros/EpisodeCard";
 import PasskeySetup from "@/components/membros/PasskeySetup";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import ProfileDialog from "@/components/membros/ProfileDialog";
+import { useResolvedArea } from "@/hooks/useResolvedArea";
 
 interface Module {
   id: string;
@@ -51,7 +52,7 @@ const ytThumb = (id: string | null) => (id ? `https://i.ytimg.com/vi/${id}/hqdef
 
 const Membros = () => {
   const navigate = useNavigate();
-  const { product = "treinamento" } = useParams<{ product?: string }>();
+  const { product: routeParamRaw = "treinamento" } = useParams<{ product?: string }>();
   const { isAdmin, session } = useAuth();
   const signOut = useSignOut();
   const { settings } = useSiteSettings();
@@ -63,10 +64,13 @@ const Membros = () => {
   const [loading, setLoading] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
   const [userVars, setUserVars] = useState<{ name: string; full_name: string; email: string; phone: string }>({ name: "", full_name: "", email: "", phone: "" });
-  const productPath = `/${encodeURIComponent(product)}`;
+  const resolved = useResolvedArea();
+  const product = resolved.loading ? "" : (resolved.product || routeParamRaw);
+  const productPath = `/${encodeURIComponent(routeParamRaw)}`;
 
   useEffect(() => {
     document.title = "Área de Membros — Treinamento";
+    if (!product) return;
     (async () => {
       const [mRes, lRes, cRes, pRes, aRes] = await Promise.all([
         supabase.from("modules").select("*").eq("product", product).order("position"),

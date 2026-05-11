@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, Trash2, KeyRound, Check, X, UserPlus, Fingerprint, Search } from "lucide-react";
+import { useResolvedArea } from "@/hooks/useResolvedArea";
 
 interface AdminUser {
   id: string;
@@ -27,7 +28,9 @@ const Users = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
   const { product: productParam } = useParams<{ product?: string }>();
   const [searchParams] = useSearchParams();
-  const productFilter = productParam || searchParams.get("product") || "treinamento";
+  const resolved = useResolvedArea();
+  const routeParam = productParam || searchParams.get("product") || "treinamento";
+  const productFilter = resolved.loading ? "" : (resolved.product || routeParam);
   const [areaName, setAreaName] = useState<string | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [paidModules, setPaidModules] = useState<PaidModule[]>([]);
@@ -77,14 +80,12 @@ const Users = () => {
 
   useEffect(() => {
     document.title = "Admin · Usuários";
-    if (isAdmin) load();
-  }, [isAdmin, load]);
+    if (isAdmin && productFilter) load();
+  }, [isAdmin, load, productFilter]);
 
   useEffect(() => {
-    if (!productFilter) { setAreaName(null); return; }
-    supabase.from("member_areas").select("name").eq("product", productFilter).maybeSingle()
-      .then(({ data }) => setAreaName((data as { name: string } | null)?.name || productFilter));
-  }, [productFilter]);
+    setAreaName(resolved.areaName || (productFilter || null));
+  }, [resolved.areaName, productFilter]);
 
   const hasAccessTo = (u: AdminUser, product: string) =>
     u.access.some((a) => a.product === product && a.active);
@@ -157,9 +158,9 @@ const Users = () => {
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
-  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(productFilter)}/membros`} replace />;
+  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(routeParam)}/membros`} replace />;
 
-  const productPath = encodeURIComponent(productFilter);
+  const productPath = encodeURIComponent(routeParam);
   const adminPath = `/${productPath}/admin`;
 
   const CheckCell = ({ active, onClick, title }: { active: boolean; onClick: () => void; title: string }) => (
