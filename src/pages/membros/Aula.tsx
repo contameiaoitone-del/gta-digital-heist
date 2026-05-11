@@ -24,7 +24,7 @@ const linkify = (text: string) => {
   const re = /(https?:\/\/[^\s]+)/gi;
   const parts = text.split(re);
   return parts.map((part, i) =>
-    re.test(part) ? (
+    /^https?:\/\//i.test(part) ? (
       <a
         key={i}
         href={part}
