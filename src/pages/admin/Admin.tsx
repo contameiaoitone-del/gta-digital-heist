@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { Loader2, Plus, Pencil, Trash2, ArrowUp, ArrowDown, ArrowLeft, ChevronRight } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 interface Module {
   id: string;
@@ -26,6 +27,7 @@ interface Lesson {
   youtube_url: string | null;
   youtube_id: string | null;
   vturb_player_id: string | null;
+  vturb_optimization_code?: string | null;
   thumbnail_url: string | null;
   duration_seconds: number | null;
   position: number;
@@ -232,7 +234,9 @@ const Admin = () => {
     if (!editingLesson || !editingLesson.title || !selectedModuleId) return;
     setBusy(true);
     const ytId = extractYouTubeId(editingLesson.youtube_url || "");
-    const contentMode = editingLesson.content_mode || "video";
+    // Mutual exclusion: only one video source can be active. If any video toggle is on, force video mode.
+    const hasVideo = showVideoYT || showVideoVturb;
+    const contentMode: "video" | "text" = hasVideo ? "video" : (editingLesson.content_mode || "video");
     const payload = {
       module_id: selectedModuleId,
       title: editingLesson.title,
@@ -240,6 +244,7 @@ const Admin = () => {
       youtube_url: contentMode === "video" && showVideoYT ? (editingLesson.youtube_url || null) : null,
       youtube_id: contentMode === "video" && showVideoYT ? ytId : null,
       vturb_player_id: contentMode === "video" && showVideoVturb ? (editingLesson.vturb_player_id?.trim() || null) : null,
+      vturb_optimization_code: contentMode === "video" && showVideoVturb ? (editingLesson.vturb_optimization_code?.trim() || null) : null,
       thumbnail_url: ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : editingLesson.thumbnail_url || null,
       duration_seconds: editingLesson.duration_seconds ?? null,
       position: editingLesson.position ?? lessons.length + 1,
@@ -526,12 +531,12 @@ const Admin = () => {
                 value={(editingModule.kind as string) || "treinamento"}
                 onChange={(e) => setEditingModule({ ...editingModule, kind: e.target.value })}
               >
-                <option value="treinamento">Treinamento (acesso liberado a quem comprou)</option>
-                <option value="mentoria">Mentoria (módulo pago individualmente)</option>
+                <option value="treinamento">Liberado a quem comprou</option>
+                <option value="mentoria">Módulo pago</option>
               </select>
             </Field>
             {(editingModule.kind === "mentoria") && (
-              <Field label="Valor (R$) — cobrado por aluno para liberar este módulo">
+              <Field label="Valor (R$) cobrado por este módulo pago">
                 <input
                   type="number"
                   step="0.01"
@@ -604,47 +609,72 @@ const Admin = () => {
                 Conteúdo da aula
               </div>
               <div className="p-3 space-y-4">
-                {/* Sub-section: Vídeo */}
-                <details open={editingLesson.content_mode !== "text"} className="border border-white/10 rounded">
-                  <summary className="cursor-pointer px-3 py-2 text-sm font-semibold bg-white/[0.03] select-none">Vídeo</summary>
-                  <div className="p-3 space-y-3">
-                    <label className="flex items-center justify-between gap-3 text-sm">
-                      <span>Adicionar URL de YouTube</span>
-                      <input type="checkbox" checked={showVideoYT} disabled={editingLesson.content_mode === "text"} onChange={(e) => setShowVideoYT(e.target.checked)} />
-                    </label>
-                    {showVideoYT && editingLesson.content_mode !== "text" && (
-                      <input className={inputCls} placeholder="https://youtube.com/watch?v=..." value={editingLesson.youtube_url || ""} onChange={(e) => setEditingLesson({ ...editingLesson, youtube_url: e.target.value })} />
-                    )}
-                    <label className="flex items-center justify-between gap-3 text-sm">
-                      <span>Adicionar URL Vturb (embed)</span>
-                      <input type="checkbox" checked={showVideoVturb} disabled={editingLesson.content_mode === "text"} onChange={(e) => setShowVideoVturb(e.target.checked)} />
-                    </label>
-                    {showVideoVturb && editingLesson.content_mode !== "text" && (
+                {/* Vídeo: YT/Vturb mutuamente exclusivos via toggle */}
+                <div className="border border-white/10 rounded p-3 space-y-3">
+                  <p className="text-sm font-semibold">Vídeo</p>
+                  <p className="text-[11px] text-gray-500 -mt-2">Escolha uma única fonte de vídeo por aula (YouTube ou Vturb).</p>
+
+                  <div className="flex items-center justify-between gap-3 text-sm">
+                    <span>Adicionar URL de YouTube</span>
+                    <Switch
+                      checked={showVideoYT}
+                      onCheckedChange={(v) => {
+                        setShowVideoYT(v);
+                        if (v) {
+                          setShowVideoVturb(false);
+                          setEditingLesson((l) => l ? { ...l, content_mode: "video" } : l);
+                        }
+                      }}
+                    />
+                  </div>
+                  {showVideoYT && (
+                    <input className={inputCls} placeholder="https://youtube.com/watch?v=..." value={editingLesson.youtube_url || ""} onChange={(e) => setEditingLesson({ ...editingLesson, youtube_url: e.target.value })} />
+                  )}
+
+                  <div className="flex items-center justify-between gap-3 text-sm">
+                    <span>Adicionar Vturb</span>
+                    <Switch
+                      checked={showVideoVturb}
+                      onCheckedChange={(v) => {
+                        setShowVideoVturb(v);
+                        if (v) {
+                          setShowVideoYT(false);
+                          setEditingLesson((l) => l ? { ...l, content_mode: "video" } : l);
+                        }
+                      }}
+                    />
+                  </div>
+                  {showVideoVturb && (
+                    <div className="space-y-2">
+                      <label className="block text-xs text-gray-400">URL do vídeo / código do player Vturb</label>
                       <textarea
-                        className={inputCls + " h-28 font-mono text-xs"}
-                        placeholder='<vturb-smartplayer id="vid-..."></vturb-smartplayer><script>...</script>'
+                        className={inputCls + " h-24 font-mono text-xs"}
+                        placeholder='Cole aqui o trecho do <vturb-smartplayer id="vid-..."></vturb-smartplayer> + <script>...</script>'
                         value={editingLesson.vturb_player_id || ""}
                         onChange={(e) => setEditingLesson({ ...editingLesson, vturb_player_id: e.target.value })}
                       />
-                    )}
-                    {editingLesson.content_mode === "text" && (
-                      <p className="text-xs text-gray-500">Modo "apenas texto" está habilitado. Desabilite na aba abaixo para usar vídeo.</p>
-                    )}
-                  </div>
-                </details>
+                      <label className="block text-xs text-gray-400">Código de otimização (opcional)</label>
+                      <textarea
+                        className={inputCls + " h-20 font-mono text-xs"}
+                        placeholder='Cole aqui as tags <link rel="preload" ...> fornecidas pela Vturb'
+                        value={editingLesson.vturb_optimization_code || ""}
+                        onChange={(e) => setEditingLesson({ ...editingLesson, vturb_optimization_code: e.target.value })}
+                      />
+                      <p className="text-[11px] text-gray-500">Os códigos do player e de otimização são injetados na página da aula exatamente como a Vturb fornece.</p>
+                    </div>
+                  )}
+                </div>
 
-                {/* Sub-section: Conteúdo em texto */}
-                <details open={editingLesson.content_mode === "text"} className="border border-white/10 rounded">
-                  <summary className="cursor-pointer px-3 py-2 text-sm font-semibold bg-white/[0.03] select-none">Conteúdo em texto</summary>
-                  <div className="p-3 space-y-3">
-                    <label className="flex items-center justify-between gap-3 text-sm">
+                {/* Conteúdo em texto — só aparece se nenhum vídeo está habilitado */}
+                {!showVideoYT && !showVideoVturb && (
+                  <div className="border border-white/10 rounded p-3 space-y-3">
+                    <div className="flex items-center justify-between gap-3 text-sm">
                       <span>Habilitar conteúdo apenas em texto (sem vídeo)</span>
-                      <input type="checkbox" checked={editingLesson.content_mode === "text"} onChange={(e) => {
-                        const text = e.target.checked;
-                        setEditingLesson({ ...editingLesson, content_mode: text ? "text" : "video" });
-                        if (text) { setShowVideoYT(false); setShowVideoVturb(false); }
-                      }} />
-                    </label>
+                      <Switch
+                        checked={editingLesson.content_mode === "text"}
+                        onCheckedChange={(v) => setEditingLesson({ ...editingLesson, content_mode: v ? "text" : "video" })}
+                      />
+                    </div>
                     {editingLesson.content_mode === "text" && (
                       <>
                         <Field label="Imagem de cabeçalho (cobre o topo da aula)">
@@ -670,7 +700,7 @@ const Admin = () => {
                       </>
                     )}
                   </div>
-                </details>
+                )}
               </div>
             </div>
 
