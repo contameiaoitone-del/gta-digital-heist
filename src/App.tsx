@@ -75,6 +75,7 @@ const App = () => (
             <Route path="/:product/membros" element={<RequireAuth><Membros /></RequireAuth>} />
             <Route path="/:product/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
             <Route path="/:product/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
+            <Route path="/:product/membros/share/:token" element={<ShareConsume />} />
             <Route path="/:product/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
             <Route path="/:product/admin/capi-log" element={<RequireAuth requireAdmin><CapiLog /></RequireAuth>} />
             <Route path="/:product/admin/usuarios" element={<RequireAuth requireAdmin><AdminUsers /></RequireAuth>} />
