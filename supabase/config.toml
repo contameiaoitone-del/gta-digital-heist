@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.webauthn-auth-verify]
 verify_jwt = false
+
+[functions.share-link-consume]
+verify_jwt = false
