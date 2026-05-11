@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { MentoriaPaywall } from "@/components/membros/MentoriaPaywall";
 
@@ -15,6 +15,9 @@ interface Lesson {
   vturb_player_id: string | null;
   duration_seconds: number | null;
   position: number;
+  cta_enabled?: boolean | null;
+  cta_label?: string | null;
+  cta_url?: string | null;
 }
 interface Module {
   id: string;
