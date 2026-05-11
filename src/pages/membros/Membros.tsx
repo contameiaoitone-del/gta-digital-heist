@@ -40,6 +40,7 @@ interface Lesson {
   position: number;
   status?: string;
   release_days?: number | null;
+  vturb_player_id?: string | null;
 }
 interface Progress {
   lesson_id: string;
@@ -49,6 +50,11 @@ interface Progress {
 }
 
 const ytThumb = (id: string | null) => (id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null);
+const vturbThumb = (embed: string | null | undefined): string | null => {
+  if (!embed) return null;
+  const m = embed.match(/scripts\.converteai\.net\/([0-9a-f-]+)\/players\/([0-9a-f]+)/i);
+  return m ? `https://images.converteai.net/${m[1]}/players/${m[2]}/thumbnail.jpg` : null;
+};
 
 const Membros = () => {
   const navigate = useNavigate();
@@ -265,7 +271,7 @@ const Membros = () => {
                   key={l.id}
                   to={`${productPath}/membros/aula/${l.id}`}
                   title={l.title}
-                  thumb={l.thumbnail_url || ytThumb(l.youtube_id)}
+                  thumb={l.thumbnail_url || ytThumb(l.youtube_id) || vturbThumb(l.vturb_player_id) || modules.find((m) => m.id === l.module_id)?.cover_url || null}
                   moduleTitle={modules.find((m) => m.id === l.module_id)?.title}
                   progressPct={pct}
                 />
