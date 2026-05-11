@@ -980,27 +980,7 @@ export type Database = {
       }
     }
     Views: {
-      tracking_pixels_public: {
-        Row: {
-          active: boolean | null
-          id: string | null
-          pixel_id: string | null
-          platform: string | null
-        }
-        Insert: {
-          active?: boolean | null
-          id?: string | null
-          pixel_id?: string | null
-          platform?: string | null
-        }
-        Update: {
-          active?: boolean | null
-          id?: string | null
-          pixel_id?: string | null
-          platform?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       delete_email: {
@@ -1010,6 +990,14 @@ export type Database = {
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number
+      }
+      get_active_tracking_pixels: {
+        Args: never
+        Returns: {
+          id: string
+          pixel_id: string
+          platform: string
+        }[]
       }
       get_lesson_module_meta: {
         Args: { _lesson_id: string }
