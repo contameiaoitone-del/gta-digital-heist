@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Pencil, Plus, Trash2, ExternalLink, Save, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Area {
   id: string;
@@ -11,6 +12,7 @@ interface Area {
   name: string;
   product: string;
   created_at: string;
+  owner_id: string;
 }
 
 function slugify(s: string) {
@@ -23,6 +25,8 @@ function slugify(s: string) {
 }
 
 export default function MemberAreas() {
+  const { session, isSuperAdmin } = useAuth();
+  const userId = session?.user?.id;
   const [areas, setAreas] = useState<Area[]>([]);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -32,28 +36,33 @@ export default function MemberAreas() {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("member_areas")
-      .select("*")
-      .order("created_at");
+    let q = supabase.from("member_areas").select("*").order("created_at");
+    if (!isSuperAdmin && userId) q = q.eq("owner_id", userId);
+    const { data, error } = await q;
     if (error) toast.error(error.message);
     else setAreas((data as Area[]) || []);
     setLoading(false);
   };
 
   useEffect(() => {
-    load();
-  }, []);
+    if (userId !== undefined) load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, isSuperAdmin]);
 
   const create = async () => {
     const name = newName.trim();
-    if (!name) return;
+    if (!name || !userId) return;
     const slug = slugify(name);
     if (!slug) {
       toast.error("Nome inválido");
       return;
     }
-    const { error } = await supabase.from("member_areas").insert({ name, slug, product: slug });
+    // Generate a unique product/slug per owner to keep legacy columns consistent
+    const uniqueSuffix = crypto.randomUUID().slice(0, 8);
+    const product = `${slug}-${uniqueSuffix}`;
+    const { error } = await supabase
+      .from("member_areas")
+      .insert({ name, slug: product, product, owner_id: userId });
     if (error) toast.error(error.message);
     else {
       toast.success("Área criada");
@@ -76,11 +85,7 @@ export default function MemberAreas() {
   };
 
   const remove = async (a: Area) => {
-    if (a.product === "treinamento") {
-      toast.error("Esta área é a principal e não pode ser removida");
-      return;
-    }
-    if (!confirm(`Excluir a área "${a.name}"? Os módulos e acessos vinculados ao produto "${a.product}" continuarão existindo no banco.`)) return;
+    if (!confirm(`Excluir a área "${a.name}"? Os módulos e acessos continuarão existindo no banco.`)) return;
     const { error } = await supabase.from("member_areas").delete().eq("id", a.id);
     if (error) toast.error(error.message);
     else {
@@ -142,7 +147,7 @@ export default function MemberAreas() {
                 ) : (
                   <div className="flex-1">
                     <div className="font-medium">{a.name}</div>
-                    <div className="text-[11px] text-gray-500">product: {a.product} · slug: {a.slug}</div>
+                    <div className="text-[11px] text-gray-500 font-mono">id: {a.id}</div>
                   </div>
                 )}
                 {editingId === a.id ? (
@@ -153,7 +158,7 @@ export default function MemberAreas() {
                 ) : (
                   <>
                     <Link
-                      to={`/${encodeURIComponent(a.product)}/admin`}
+                      to={`/${a.id}/admin`}
                       className="text-xs text-gray-400 hover:text-white flex items-center gap-1"
                     >
                       <ExternalLink className="h-3.5 w-3.5" /> Painel
