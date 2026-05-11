@@ -65,6 +65,7 @@ const App = () => (
             <Route path="/admin/configuracoes" element={<Navigate to="/infozap/admin/configuracoes" replace />} />
             <Route path="/admin/trackeamento" element={<Navigate to="/infozap/admin/trackeamento" replace />} />
             <Route path="/:product/membros/login" element={<MembrosLogin />} />
+            <Route path="/:product/reset-password" element={<ResetPassword />} />
             <Route path="/:product/membros" element={<RequireAuth><Membros /></RequireAuth>} />
             <Route path="/:product/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
             <Route path="/:product/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
