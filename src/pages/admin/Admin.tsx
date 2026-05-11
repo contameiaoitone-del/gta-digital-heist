@@ -484,6 +484,22 @@ const Admin = () => {
               />
             </Field>
             <Field label="Duração (segundos)"><input type="number" className={inputCls} value={editingLesson.duration_seconds ?? ""} onChange={(e) => setEditingLesson({ ...editingLesson, duration_seconds: e.target.value ? Number(e.target.value) : null })} /></Field>
+            <div className="border border-white/10 rounded p-3 space-y-2">
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" checked={!!editingLesson.cta_enabled} onChange={(e) => setEditingLesson({ ...editingLesson, cta_enabled: e.target.checked })} />
+                Ativar botão de redirect (acima da descrição)
+              </label>
+              {editingLesson.cta_enabled && (
+                <>
+                  <Field label="Texto do botão">
+                    <input className={inputCls} placeholder="Ex: Acessar material complementar" value={editingLesson.cta_label || ""} onChange={(e) => setEditingLesson({ ...editingLesson, cta_label: e.target.value })} />
+                  </Field>
+                  <Field label="Link de redirecionamento">
+                    <input className={inputCls} placeholder="https://..." value={editingLesson.cta_url || ""} onChange={(e) => setEditingLesson({ ...editingLesson, cta_url: e.target.value })} />
+                  </Field>
+                </>
+              )}
+            </div>
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={!!editingLesson.published} onChange={(e) => setEditingLesson({ ...editingLesson, published: e.target.checked })} />
               Publicada
