@@ -66,23 +66,37 @@ Deno.serve(async (req) => {
   if (req.method !== "POST") return json({ error: "method" }, 405);
 
   try {
-    const PIXEL_ID = Deno.env.get("TIKTOK_PIXEL_ID");
-    const ACCESS_TOKEN = Deno.env.get("TIKTOK_ACCESS_TOKEN");
     const TEST_CODE = Deno.env.get("TIKTOK_TEST_EVENT_CODE");
-    if (!PIXEL_ID || !ACCESS_TOKEN) return json({ error: "tiktok_not_configured" }, 500);
+    const ENV_PIXEL_ID = Deno.env.get("TIKTOK_PIXEL_ID");
+    const ENV_ACCESS_TOKEN = Deno.env.get("TIKTOK_ACCESS_TOKEN");
 
     const body = (await req.json()) as TtBody;
     if (!body?.event_name || !body?.event_id) return json({ error: "missing_event" }, 400);
 
     let session: Record<string, unknown> | null = null;
+    const sb = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
     if (body.session_id) {
-      const sb = createClient(
-        Deno.env.get("SUPABASE_URL")!,
-        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-      );
       const { data } = await sb.from("visitor_sessions").select("*").eq("sck", body.session_id).maybeSingle();
       session = data;
     }
+
+    // Resolve target pixels from DB; fall back to env if none configured.
+    const { data: dbPixels } = await sb
+      .from("tracking_pixels")
+      .select("pixel_id, access_token")
+      .eq("platform", "tiktok")
+      .eq("active", true);
+    const targets: Array<{ pixel_id: string; access_token: string }> = [];
+    for (const p of (dbPixels || []) as Array<{ pixel_id: string; access_token: string | null }>) {
+      if (p.pixel_id && p.access_token) targets.push({ pixel_id: p.pixel_id, access_token: p.access_token });
+    }
+    if (targets.length === 0 && ENV_PIXEL_ID && ENV_ACCESS_TOKEN) {
+      targets.push({ pixel_id: ENV_PIXEL_ID, access_token: ENV_ACCESS_TOKEN });
+    }
+    if (targets.length === 0) return json({ error: "tiktok_not_configured" }, 500);
 
     const ipHeader =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -132,36 +146,43 @@ Deno.serve(async (req) => {
     }
     if (body.order_id) properties.order_id = body.order_id;
 
-    const payload: Record<string, unknown> = {
-      event_source: "web",
-      event_source_id: PIXEL_ID,
-      data: [
-        {
-          event: body.event_name,
-          event_time: Math.floor(Date.now() / 1000),
-          event_id: body.event_id,
-          user,
-          properties,
-          page: body.event_source_url ? { url: body.event_source_url } : undefined,
-        },
-      ],
-    };
-    if (TEST_CODE) (payload as Record<string, unknown>).test_event_code = TEST_CODE;
+    const results: Array<{ pixel_id: string; ok: boolean; meta: unknown }> = [];
+    for (const t of targets) {
+      const payload: Record<string, unknown> = {
+        event_source: "web",
+        event_source_id: t.pixel_id,
+        data: [
+          {
+            event: body.event_name,
+            event_time: Math.floor(Date.now() / 1000),
+            event_id: body.event_id,
+            user,
+            properties,
+            page: body.event_source_url ? { url: body.event_source_url } : undefined,
+          },
+        ],
+      };
+      if (TEST_CODE) (payload as Record<string, unknown>).test_event_code = TEST_CODE;
 
-    const r = await fetch("https://business-api.tiktok.com/open_api/v1.3/event/track/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Token": ACCESS_TOKEN,
-      },
-      body: JSON.stringify(payload),
-    });
-    const meta = await r.json();
-    if (!r.ok || (meta && typeof meta === "object" && "code" in meta && (meta as { code: number }).code !== 0)) {
-      console.error("tiktok events failed", meta);
-      return json({ error: "tiktok_events", detail: meta }, 502);
+      let meta: unknown = null;
+      let ok = false;
+      try {
+        const r = await fetch("https://business-api.tiktok.com/open_api/v1.3/event/track/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Access-Token": t.access_token },
+          body: JSON.stringify(payload),
+        });
+        meta = await r.json();
+        ok = r.ok && !(meta && typeof meta === "object" && "code" in meta && (meta as { code: number }).code !== 0);
+      } catch (e) {
+        meta = { error: String(e) };
+      }
+      if (!ok) console.error("tiktok events failed", t.pixel_id, meta);
+      results.push({ pixel_id: t.pixel_id, ok, meta });
     }
-    return json({ success: true, meta });
+    const anyOk = results.some((r) => r.ok);
+    if (!anyOk) return json({ error: "tiktok_events", results }, 502);
+    return json({ success: true, results });
   } catch (e) {
     console.error("tiktok-events error", e);
     return json({ error: "internal", detail: String(e) }, 500);
