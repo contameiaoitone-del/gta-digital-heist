@@ -185,7 +185,7 @@ const Users = () => {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Pesquisar por email"
+              placeholder="Pesquisar por email ou nome"
               className="w-full h-10 rounded bg-black/40 border border-white/15 pl-9 pr-3 text-white text-sm focus:outline-none focus:border-[#00ff88]"
             />
           </div>
