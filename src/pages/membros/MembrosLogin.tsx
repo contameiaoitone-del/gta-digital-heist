@@ -185,6 +185,10 @@ const MembrosLogin = () => {
           loop
           muted
           playsInline
+          preload="auto"
+          // @ts-expect-error - non-standard but supported attribute
+          fetchpriority="high"
+          disableRemotePlayback
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/70 to-[#080808]/30" />
