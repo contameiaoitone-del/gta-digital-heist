@@ -13,6 +13,8 @@ interface Module {
   kind?: string;
   price_cents?: number | null;
   status?: string;
+  product?: string;
+  release_days?: number | null;
 }
 interface Lesson {
   id: string;
@@ -24,6 +26,7 @@ interface Lesson {
   duration_seconds: number | null;
   position: number;
   status?: string;
+  release_days?: number | null;
 }
 interface Progress {
   lesson_id: string;
@@ -51,6 +54,7 @@ const Modulo = () => {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [hasMentoriaAccess, setHasMentoriaAccess] = useState(false);
+  const [accessGrantedAt, setAccessGrantedAt] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -83,9 +87,30 @@ const Modulo = () => {
       } else {
         setHasMentoriaAccess(true);
       }
+      // Drip access lookup for treinamento
+      if (m?.kind === "treinamento" && session && m.product) {
+        const { data: acc } = await supabase
+          .from("member_access")
+          .select("granted_at")
+          .eq("user_id", session.user.id)
+          .eq("product", m.product)
+          .eq("active", true)
+          .order("granted_at", { ascending: true })
+          .limit(1)
+          .maybeSingle();
+        setAccessGrantedAt((acc as { granted_at: string } | null)?.granted_at || null);
+      }
       setLoading(false);
     })();
   }, [id, session]);
+
+  const lessonLockDays = (l: Lesson): number | null => {
+    if (!mod || mod.kind !== "treinamento") return null;
+    const days = Math.max(mod.release_days || 0, l.release_days || 0);
+    if (days <= 0 || !accessGrantedAt) return null;
+    const remaining = new Date(accessGrantedAt).getTime() + days * 86400000 - Date.now();
+    return remaining > 0 ? Math.ceil(remaining / 86400000) : null;
+  };
 
   const nextLesson = useMemo(() => {
     const playable = lessons.filter((l) => l.status !== "coming_soon");
@@ -174,22 +199,24 @@ const Modulo = () => {
             const p = progress[l.id];
             const pct = p && l.duration_seconds ? Math.min(100, (p.watched_seconds / l.duration_seconds) * 100) : p?.completed ? 100 : 0;
             const coming = l.status === "coming_soon";
-            const RowEl: React.ElementType = coming ? "div" : Link;
-            const rowProps = coming ? { "aria-disabled": true } : { to: `/membros/aula/${l.id}` };
+            const lockDays = lessonLockDays(l);
+            const locked = coming || (lockDays !== null && lockDays > 0);
+            const RowEl: React.ElementType = locked ? "div" : Link;
+            const rowProps = locked ? { "aria-disabled": true } : { to: `/membros/aula/${l.id}` };
             return (
               <li key={l.id}>
                 <RowEl
                   {...rowProps}
-                  className={`group flex gap-4 py-4 px-2 -mx-2 rounded transition-colors ${coming ? "cursor-not-allowed opacity-70" : "hover:bg-white/[0.03]"}`}
+                  className={`group flex gap-4 py-4 px-2 -mx-2 rounded transition-colors ${locked ? "cursor-not-allowed opacity-70" : "hover:bg-white/[0.03]"}`}
                 >
                   <div className="text-2xl md:text-3xl text-gray-600 font-bold w-8 md:w-10 text-center flex-shrink-0" style={{ fontFamily: "'Bebas Neue', cursive" }}>
                     {idx + 1}
                   </div>
                   <div className="relative w-32 md:w-48 aspect-video flex-shrink-0 rounded overflow-hidden bg-[#1a1a1a]">
                     {(l.thumbnail_url || ytThumb(l.youtube_id)) && (
-                      <img src={l.thumbnail_url || ytThumb(l.youtube_id) || ""} alt={l.title} className={`w-full h-full object-cover ${coming ? "grayscale" : ""}`} loading="lazy" />
+                      <img src={l.thumbnail_url || ytThumb(l.youtube_id) || ""} alt={l.title} className={`w-full h-full object-cover ${locked ? "grayscale" : ""}`} loading="lazy" />
                     )}
-                    {!coming && (
+                    {!locked && (
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
                         <Play className="h-8 w-8 text-white fill-white" />
                       </div>
@@ -197,6 +224,11 @@ const Modulo = () => {
                     {coming && (
                       <div className="absolute top-1 left-1 bg-[#facc15] text-black rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
                         Em breve
+                      </div>
+                    )}
+                    {!coming && lockDays !== null && lockDays > 0 && (
+                      <div className="absolute top-1 left-1 bg-[#facc15] text-black rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
+                        Libera em {lockDays}d
                       </div>
                     )}
                     {pct > 0 && (
@@ -210,6 +242,9 @@ const Modulo = () => {
                       <h3 className="font-semibold text-base md:text-lg line-clamp-1">{l.title}</h3>
                       {p?.completed && <CheckCircle2 className="h-4 w-4 text-[#00ff88] flex-shrink-0" />}
                       {coming && <span className="text-[10px] bg-[#facc15] text-black rounded px-1.5 py-0.5 font-bold uppercase">Em breve</span>}
+                      {!coming && lockDays !== null && lockDays > 0 && (
+                        <span className="text-[10px] bg-[#facc15] text-black rounded px-1.5 py-0.5 font-bold uppercase">Libera em {lockDays}d</span>
+                      )}
                     </div>
                     {l.description && <p className="text-sm text-gray-400 line-clamp-2 mb-1">{l.description}</p>}
                     {l.duration_seconds && <p className="text-xs text-gray-500">{fmtDuration(l.duration_seconds)}</p>}
