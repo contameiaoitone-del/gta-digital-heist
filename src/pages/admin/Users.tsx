@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Trash2, KeyRound, Shield, ShieldOff, Check, X, UserPlus, Fingerprint, Search } from "lucide-react";
+import { ArrowLeft, Loader2, Trash2, KeyRound, Check, X, UserPlus, Fingerprint, Search } from "lucide-react";
 
 interface AdminUser {
   id: string;
