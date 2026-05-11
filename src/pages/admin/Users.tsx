@@ -78,8 +78,7 @@ const Users = () => {
   useEffect(() => {
     document.title = "Admin · Usuários";
     if (isAdmin) load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAdmin]);
+  }, [isAdmin, load]);
 
   useEffect(() => {
     if (!productFilter) { setAreaName(null); return; }
