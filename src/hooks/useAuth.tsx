@@ -71,6 +71,25 @@ export const RequireAuth = ({
   requireAdmin?: boolean;
 }) => {
   const { session, loading, hasAccess, isAdmin, checkedAccess } = useAuth();
+  // Share-link expiry watcher: if the user signed in via a share link with an
+  // expiration, sign them out automatically when it expires.
+  useEffect(() => {
+    if (!session) return;
+    const expIso = localStorage.getItem("share_session_expires_at");
+    if (!expIso) return;
+    const expMs = new Date(expIso).getTime();
+    const tick = async () => {
+      if (Date.now() >= expMs) {
+        localStorage.removeItem("share_session_expires_at");
+        localStorage.removeItem("share_session_active");
+        await supabase.auth.signOut();
+        window.location.href = "/membros/login";
+      }
+    };
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, [session]);
   if (loading || (session && !checkedAccess)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white">
