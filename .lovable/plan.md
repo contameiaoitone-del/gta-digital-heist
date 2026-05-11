@@ -1,106 +1,64 @@
-## Visão geral
+## Login com Passkey (biometria — Face ID / digital)
 
-Hoje os módulos são todos "treinamento" e o acesso é liberado pela tabela `member_access` (produto `infozap`). Vamos introduzir o conceito de **módulo de mentoria**, que é pago individualmente. O acesso continua sendo controlado por `member_access`, agora com um produto por módulo de mentoria (`mentoria:<module_id>`), além do produto global `mentoria` (acesso a tudo).
+Adicionar um botão com ícone de digital na tela `/membros/login` que permite ao usuário autenticar via passkey (WebAuthn) usando a biometria do dispositivo (Face ID, Touch ID, digital Android, Windows Hello). Usaremos `@simplewebauthn/browser` no frontend e `@simplewebauthn/server` em uma Edge Function.
 
----
+### Fluxo do usuário
 
-## 1. Banco de dados (migration)
+1. Usuário já cadastrado faz login normal (email + senha) uma primeira vez.
+2. Em `/membros` (ou na própria tela de login após login), aparece um banner "Ativar login com biometria". Ao clicar, o navegador pede Face ID / digital e a passkey é registrada.
+3. Em logins futuros: usuário digita o e-mail → clica no ícone de digital ao lado → o navegador pede biometria → login automático sem senha.
 
-**Tabela `modules`** — adicionar:
-- `kind text NOT NULL DEFAULT 'treinamento'` (valores: `treinamento` | `mentoria`)
-- `price_cents integer` (obrigatório quando `kind='mentoria'`, validado por trigger)
+### Banco de dados (nova migração)
 
-**Tabela `orders`** — usar a estrutura existente; novos pedidos de mentoria gravam `product = 'mentoria:<module_id>'`, `amount_cents = modules.price_cents`.
+Tabela `webauthn_credentials`:
+- `user_id` (uuid, FK auth.users)
+- `credential_id` (text, único — base64url)
+- `public_key` (text — base64url)
+- `counter` (bigint)
+- `transports` (text[])
+- `device_name` (text)
+- `last_used_at` (timestamptz)
 
-**Tabela `member_access`** — sem mudança de schema. Concessões de mentoria usam:
-- `product = 'mentoria:<module_id>'` para acesso a um módulo específico
-- `product = 'mentoria'` para acesso global a todos os módulos de mentoria (atribuição manual via admin)
+Tabela `webauthn_challenges` (curta duração, ~5 min):
+- `email` (text) ou `user_id` (uuid)
+- `challenge` (text)
+- `type` (`registration` | `authentication`)
+- `expires_at` (timestamptz)
 
-**RLS de `lessons`** — atualizar o policy "Members view published lessons" para considerar mentoria:
-```
-published AND EXISTS (
-  SELECT 1 FROM modules m
-  WHERE m.id = lessons.module_id AND m.published
-  AND (
-    (m.kind = 'treinamento' AND has_active_access(auth.uid(), m.product))
-    OR (m.kind = 'mentoria' AND (
-         has_active_access(auth.uid(), 'mentoria')
-      OR has_active_access(auth.uid(), 'mentoria:' || m.id::text)
-    ))
-  )
-)
-```
-Mesma lógica no policy de `modules`.
+RLS: somente o próprio usuário lê/deleta suas credenciais; inserts feitos via Edge Function (service role).
 
----
+### Edge Functions
 
-## 2. Admin — Conteúdo (`src/pages/admin/Admin.tsx`)
+Quatro funções, todas usando `@simplewebauthn/server` via npm import (`npm:@simplewebauthn/server`):
 
-No editor de módulo (`editingModule`):
-- Novo seletor **Tipo**: "Treinamento" / "Mentoria".
-- Quando **Mentoria** for selecionado, mostrar campo obrigatório **Valor (R$)** convertido para `price_cents`.
-- Salvar `kind` e `price_cents` no payload.
-- Listagem de módulos: badge mostrando `Mentoria · R$ X,XX` quando aplicável.
+1. `webauthn-register-options` (auth obrigatório) — gera opções de registro, salva challenge.
+2. `webauthn-register-verify` (auth obrigatório) — verifica resposta, persiste credencial.
+3. `webauthn-auth-options` (público) — recebe `email`, busca user_id e credenciais, retorna opções de autenticação + salva challenge. Para evitar enumeração de e-mails, sempre retorna opções (com `allowCredentials` vazio se não existir).
+4. `webauthn-auth-verify` (público) — verifica resposta, e se válida emite uma sessão Supabase via `auth.admin.generateLink({ type: 'magiclink' })` + troca por sessão, OU usa `signInWithIdToken` custom. Padrão escolhido: gerar magic link e devolver `action_link` que o cliente abre internamente para criar a sessão (mais simples e seguro que JWT custom).
 
----
+`rpId` = host do app (ex.: `gta-digital-heist.lovable.app`). `origin` = `window.location.origin`. Configurar via env var `WEBAUTHN_RP_ID` + `WEBAUTHN_ORIGIN`.
 
-## 3. Gate de pagamento na página da aula (`src/pages/membros/Aula.tsx` e `Modulo.tsx`)
+### Frontend (`MembrosLogin.tsx`)
 
-Fluxo ao abrir uma aula de módulo `mentoria`:
-1. Frontend consulta `member_access` para `mentoria` ou `mentoria:<module_id>`.
-2. Se já tiver acesso → libera normalmente.
-3. Caso contrário → renderiza um overlay com:
-   - Título do módulo + valor.
-   - QR Code Pix gerado pela edge function existente (`pix-create`), usando o gateway ativo definido em `payment_settings.active_pix_gateway` (Efí ou ZZGate).
-   - Polling em `pix-check-status` (já existe). Quando `paid`, o webhook (`efi-webhook` / `zzgate-webhook`) cria o registro em `member_access` com `product = 'mentoria:<module_id>'` e a UI recarrega.
-4. Mesmo overlay disponível no card da aula em `Modulo.tsx` (botão "Liberar mentoria — R$ X").
+- Instalar `@simplewebauthn/browser`.
+- Adicionar botão `<button>` com ícone `Fingerprint` (lucide) ao lado do campo de e-mail.
+- Habilitado apenas se: `email` preenchido E `browserSupportsWebAuthn()` retorna true.
+- Ao clicar: chama `webauthn-auth-options` → `startAuthentication()` → `webauthn-auth-verify` → cria sessão → `navigate('/membros')`.
+- Tratamento de erros: "Nenhuma passkey encontrada para este e-mail. Faça login com senha e ative a biometria nas configurações."
 
-**Edge functions afetadas:**
-- `pix-create`: aceitar `product = 'mentoria:<module_id>'` e validar `amount_cents` contra `modules.price_cents` no servidor (não confiar no cliente).
-- `efi-webhook` e `zzgate-webhook`: ao confirmar pagamento, se `order.product` começar com `mentoria:`, fazer upsert em `member_access` com esse mesmo `product`.
+### Registro da passkey
 
----
+Adicionar componente `PasskeySetup.tsx` em `/membros` (página principal) — card "Ative login por biometria" mostrado quando o usuário ainda não tem credencial registrada. Botão chama `webauthn-register-options` → `startRegistration()` → `webauthn-register-verify`.
 
-## 4. Admin — Usuários (`src/pages/admin/Users.tsx`)
+### Detalhes técnicos
 
-- Nova coluna **Acesso Mentoria** com toggle "Liberar / Remover" (igual à coluna atual de Treinamento), chamando `admin-users` action `set_access` com `product = 'mentoria'`.
-- Atualizar `admin-users` (já tem `set_access`) — apenas passar o produto certo do frontend; nenhuma mudança necessária na função.
-- Botão **"Novo usuário"** no header da página, abrindo modal com:
-  - Email, Senha (mín. 6 caracteres).
-  - Checkboxes: "Acesso Treinamento", "Acesso Mentoria", "Tornar admin".
-  - Submete para `admin-users` action `create_user` (nova).
+- Biblioteca: `@simplewebauthn/browser` (cliente) e `@simplewebauthn/server` (Deno via `npm:`).
+- `userVerification: 'preferred'`, `authenticatorAttachment: 'platform'` para priorizar biometria do dispositivo.
+- Challenges armazenados server-side e expirados em 5 min.
+- RP ID configurável por env var para funcionar tanto no preview quanto no domínio publicado.
 
-**Edge function `admin-users`** — adicionar action `create_user`:
-- Cria usuário via `admin.auth.admin.createUser({ email, password, email_confirm: true })`.
-- Aplica `user_roles` (admin) e `member_access` (treinamento / mentoria) conforme checkboxes.
-- Retorna o usuário criado.
+### Fora de escopo
 
----
-
-## 5. Detalhes técnicos
-
-```
-modules
-  + kind ('treinamento' | 'mentoria', default 'treinamento')
-  + price_cents (int, validado por trigger quando kind='mentoria')
-
-member_access (sem mudança)
-  product:
-    'infozap'                → treinamento
-    'mentoria'               → todos os módulos de mentoria (admin manual)
-    'mentoria:<module_id>'   → acesso pago a um módulo específico
-
-orders.product → 'mentoria:<module_id>' para pagamentos de mentoria
-```
-
-Permissões: `kind` e `price_cents` editáveis apenas por admin (já coberto pelo policy "Admins manage modules").
-
-Validação no `pix-create` para garantir que o valor cobrado é o `price_cents` salvo no módulo (impede manipulação no cliente).
-
----
-
-## Fora do escopo
-
-- Reembolso / cancelamento de acesso pago.
-- Mostrar histórico de mentorias compradas para o usuário.
-- Cupons de desconto.
+- Gerenciamento avançado (renomear/remover passkeys individuais) — apenas listagem básica + botão remover.
+- Sincronização entre dispositivos (já é nativa via iCloud Keychain / Google Password Manager).
+- 2FA combinando senha + passkey.

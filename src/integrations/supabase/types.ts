@@ -686,6 +686,72 @@ export type Database = {
         }
         Relationships: []
       }
+      webauthn_challenges: {
+        Row: {
+          challenge: string
+          created_at: string
+          email: string | null
+          expires_at: string
+          id: string
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          challenge: string
+          created_at?: string
+          email?: string | null
+          expires_at?: string
+          id?: string
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          challenge?: string
+          created_at?: string
+          email?: string | null
+          expires_at?: string
+          id?: string
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      webauthn_credentials: {
+        Row: {
+          counter: number
+          created_at: string
+          credential_id: string
+          device_name: string | null
+          id: string
+          last_used_at: string | null
+          public_key: string
+          transports: string[] | null
+          user_id: string
+        }
+        Insert: {
+          counter?: number
+          created_at?: string
+          credential_id: string
+          device_name?: string | null
+          id?: string
+          last_used_at?: string | null
+          public_key: string
+          transports?: string[] | null
+          user_id: string
+        }
+        Update: {
+          counter?: number
+          created_at?: string
+          credential_id?: string
+          device_name?: string | null
+          id?: string
+          last_used_at?: string | null
+          public_key?: string
+          transports?: string[] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -712,6 +778,7 @@ export type Database = {
           module_title: string
         }[]
       }
+      get_user_id_by_email: { Args: { _email: string }; Returns: string }
       has_active_access: {
         Args: { _product?: string; _user_id: string }
         Returns: boolean

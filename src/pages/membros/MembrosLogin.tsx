@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Fingerprint } from "lucide-react";
+import { browserSupportsWebAuthn, startAuthentication } from "@simplewebauthn/browser";
 
 const MembrosLogin = () => {
   const navigate = useNavigate();
@@ -11,6 +12,12 @@ const MembrosLogin = () => {
   const [loading, setLoading] = useState(false);
   const [magicLoading, setMagicLoading] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
+  const [bioLoading, setBioLoading] = useState(false);
+  const [bioSupported, setBioSupported] = useState(false);
+
+  useEffect(() => {
+    setBioSupported(browserSupportsWebAuthn());
+  }, []);
 
   useEffect(() => {
     document.title = "Entrar — Treinamento";
@@ -29,6 +36,48 @@ const MembrosLogin = () => {
       return;
     }
     navigate("/membros", { replace: true });
+  };
+
+  const loginWithBiometrics = async () => {
+    if (!email) {
+      toast.error("Digite seu email primeiro");
+      return;
+    }
+    setBioLoading(true);
+    try {
+      const normalized = email.trim().toLowerCase();
+      const { data: optsData, error: optsErr } = await supabase.functions.invoke("webauthn-auth-options", {
+        body: { email: normalized },
+      });
+      if (optsErr) throw optsErr;
+      if (!optsData?.hasCredentials) {
+        toast.error("Nenhuma biometria cadastrada para este e-mail. Faça login com senha e ative depois.");
+        return;
+      }
+      const asseResp = await startAuthentication({ optionsJSON: optsData.options });
+      const { data: verifyData, error: verifyErr } = await supabase.functions.invoke("webauthn-auth-verify", {
+        body: { email: normalized, response: asseResp },
+      });
+      if (verifyErr || !verifyData?.verified) throw verifyErr || new Error("Falha na verificação");
+
+      const { error: otpErr } = await supabase.auth.verifyOtp({
+        type: "magiclink",
+        token_hash: verifyData.token_hash,
+      });
+      if (otpErr) throw otpErr;
+      toast.success("Login realizado!");
+      navigate("/membros", { replace: true });
+    } catch (e: any) {
+      const msg = e?.message || "";
+      if (/NotAllowedError|cancel/i.test(msg)) {
+        toast.error("Biometria cancelada");
+      } else {
+        toast.error("Não foi possível entrar com biometria");
+      }
+      console.error(e);
+    } finally {
+      setBioLoading(false);
+    }
   };
 
   const sendMagic = async () => {
@@ -113,7 +162,25 @@ const MembrosLogin = () => {
           <form onSubmit={submit} className="space-y-4">
             <div>
               <label className="text-xs text-gray-300 uppercase tracking-wider">Email</label>
-              <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className={inputCls} placeholder="seu@email.com" required />
+              <div className="flex gap-2">
+                <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className={inputCls} placeholder="seu@email.com" required />
+                {bioSupported && (
+                  <button
+                    type="button"
+                    onClick={loginWithBiometrics}
+                    disabled={bioLoading || !email}
+                    title="Entrar com biometria (Face ID / digital)"
+                    aria-label="Entrar com biometria"
+                    className="h-12 w-12 shrink-0 rounded-md border border-white/15 bg-black/40 flex items-center justify-center hover:border-[#00ff88] disabled:opacity-50"
+                  >
+                    {bioLoading ? (
+                      <Loader2 className="h-5 w-5 animate-spin text-white" />
+                    ) : (
+                      <Fingerprint className="h-6 w-6 text-[#00ff88]" />
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
             <div>
               <label className="text-xs text-gray-300 uppercase tracking-wider">Senha</label>
