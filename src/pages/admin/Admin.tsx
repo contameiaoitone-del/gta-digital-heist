@@ -231,32 +231,77 @@ const Admin = () => {
     if (!editingLesson || !editingLesson.title || !selectedModuleId) return;
     setBusy(true);
     const ytId = extractYouTubeId(editingLesson.youtube_url || "");
+    const contentMode = editingLesson.content_mode || "video";
     const payload = {
       module_id: selectedModuleId,
       title: editingLesson.title,
       description: editingLesson.description || null,
-      youtube_url: editingLesson.youtube_url || null,
-      youtube_id: ytId,
-      vturb_player_id: editingLesson.vturb_player_id?.trim() || null,
+      youtube_url: contentMode === "video" && showVideoYT ? (editingLesson.youtube_url || null) : null,
+      youtube_id: contentMode === "video" && showVideoYT ? ytId : null,
+      vturb_player_id: contentMode === "video" && showVideoVturb ? (editingLesson.vturb_player_id?.trim() || null) : null,
       thumbnail_url: ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : editingLesson.thumbnail_url || null,
       duration_seconds: editingLesson.duration_seconds ?? null,
       position: editingLesson.position ?? lessons.length + 1,
       published: (editingLesson.status ?? (editingLesson.published === false ? "hidden" : "published")) === "published",
       status: editingLesson.status ?? (editingLesson.published === false ? "hidden" : "published"),
-      cta_enabled: !!editingLesson.cta_enabled,
-      cta_label: editingLesson.cta_enabled ? (editingLesson.cta_label?.trim() || null) : null,
-      cta_url: editingLesson.cta_enabled ? (editingLesson.cta_url?.trim() || null) : null,
+      cta_enabled: false,
+      cta_label: null,
+      cta_url: null,
+      release_days: Math.max(0, Number(editingLesson.release_days) || 0),
+      content_mode: contentMode,
+      header_image_url: contentMode === "text" ? (editingLesson.header_image_url || null) : null,
+      text_content: contentMode === "text" ? (editingLesson.text_content || null) : null,
     };
-    const { error } = editingLesson.id
-      ? await supabase.from("lessons").update(payload).eq("id", editingLesson.id)
-      : await supabase.from("lessons").insert(payload);
-    setBusy(false);
-    if (error) toast.error(error.message);
-    else {
-      toast.success("Salvo");
-      setEditingLesson(null);
-      loadLessons(selectedModuleId);
+    let lessonId = editingLesson.id;
+    let saveErr;
+    if (lessonId) {
+      const { error } = await supabase.from("lessons").update(payload).eq("id", lessonId);
+      saveErr = error;
+    } else {
+      const { data, error } = await supabase.from("lessons").insert(payload).select("id").single();
+      saveErr = error;
+      lessonId = (data as { id: string } | null)?.id;
     }
+    if (saveErr || !lessonId) {
+      setBusy(false);
+      toast.error(saveErr?.message || "Erro ao salvar");
+      return;
+    }
+    // Sync CTAs (delete all, reinsert)
+    await supabase.from("lesson_ctas").delete().eq("lesson_id", lessonId);
+    const validCtas = lessonCtas.filter((c) => c.label.trim() && c.url.trim());
+    if (validCtas.length > 0) {
+      await supabase.from("lesson_ctas").insert(
+        validCtas.map((c, i) => ({ lesson_id: lessonId, label: c.label.trim(), url: c.url.trim(), position: i }))
+      );
+    }
+    // Sync attachments (delete removed, insert new ones)
+    const { data: existingAtt } = await supabase.from("lesson_attachments").select("id").eq("lesson_id", lessonId);
+    const keptIds = new Set(lessonAttachments.filter((a) => a.id).map((a) => a.id));
+    const toDelete = ((existingAtt as { id: string }[] | null) || []).filter((a) => !keptIds.has(a.id)).map((a) => a.id);
+    if (toDelete.length > 0) await supabase.from("lesson_attachments").delete().in("id", toDelete);
+    // Update positions on existing
+    for (let i = 0; i < lessonAttachments.length; i++) {
+      const a = lessonAttachments[i];
+      if (a.id) {
+        await supabase.from("lesson_attachments").update({ position: i }).eq("id", a.id);
+      } else {
+        await supabase.from("lesson_attachments").insert({
+          lesson_id: lessonId,
+          name: a.name,
+          file_url: a.file_url,
+          size_bytes: a.size_bytes ?? null,
+          mime: a.mime ?? null,
+          position: i,
+        });
+      }
+    }
+    setBusy(false);
+    toast.success("Salvo");
+    setEditingLesson(null);
+    setLessonCtas([]);
+    setLessonAttachments([]);
+    loadLessons(selectedModuleId);
   };
   const deleteLesson = async (id: string) => {
     if (!confirm("Excluir aula?")) return;
