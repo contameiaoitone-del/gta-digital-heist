@@ -251,7 +251,7 @@ const Aula = () => {
       <div className="min-h-screen bg-[#080808] text-white">
         <header className="sticky top-0 z-40 bg-[#080808]/95 border-b border-white/5">
           <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
-            <button onClick={() => navigate("/membros")} className="text-gray-400 hover:text-white">
+            <button onClick={() => navigate(`${productPath}/membros`)} className="text-gray-400 hover:text-white">
               <ArrowLeft className="h-5 w-5" />
             </button>
             <p className="text-sm font-semibold truncate">{meta.module_title}</p>
@@ -274,7 +274,7 @@ const Aula = () => {
       <div className="min-h-screen bg-[#080808] text-white flex items-center justify-center">
         <div className="text-center">
           <p className="mb-4 text-gray-400">Aula não encontrada</p>
-          <Link to="/membros" className="underline">Voltar</Link>
+          <Link to={`${productPath}/membros`} className="underline">Voltar</Link>
         </div>
       </div>
     );
@@ -285,7 +285,7 @@ const Aula = () => {
       <div className="min-h-screen bg-[#080808] text-white">
         <header className="sticky top-0 z-40 bg-[#080808]/95 border-b border-white/5">
           <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
-            <button onClick={() => navigate("/membros")} className="text-gray-400 hover:text-white">
+            <button onClick={() => navigate(`${productPath}/membros`)} className="text-gray-400 hover:text-white">
               <ArrowLeft className="h-5 w-5" />
             </button>
             <p className="text-sm font-semibold truncate">{lesson.title}</p>
@@ -299,7 +299,7 @@ const Aula = () => {
             {lesson.title}
           </h1>
           <p className="text-gray-400 mb-8">Esta aula ainda não foi liberada. Volte em breve!</p>
-          <Link to={module ? `/membros/modulo/${module.id}` : "/membros"} className="inline-block px-5 py-3 rounded bg-[#00ff88] text-black font-bold uppercase text-sm">
+          <Link to={module ? `${productPath}/membros/modulo/${module.id}` : `${productPath}/membros`} className="inline-block px-5 py-3 rounded bg-[#00ff88] text-black font-bold uppercase text-sm">
             Voltar
           </Link>
         </div>
@@ -312,7 +312,7 @@ const Aula = () => {
       <div className="min-h-screen bg-[#080808] text-white">
         <header className="sticky top-0 z-40 bg-[#080808]/95 border-b border-white/5">
           <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
-            <button onClick={() => navigate("/membros")} className="text-gray-400 hover:text-white">
+            <button onClick={() => navigate(`${productPath}/membros`)} className="text-gray-400 hover:text-white">
               <ArrowLeft className="h-5 w-5" />
             </button>
             <p className="text-sm font-semibold truncate">{lesson.title}</p>
@@ -326,7 +326,7 @@ const Aula = () => {
             {lesson.title}
           </h1>
           <p className="text-gray-400 mb-8">Esta aula libera automaticamente {dripLockDays === 1 ? "em 1 dia" : `em ${dripLockDays} dias`} após sua compra.</p>
-          <Link to={module ? `/membros/modulo/${module.id}` : "/membros"} className="inline-block px-5 py-3 rounded bg-[#00ff88] text-black font-bold uppercase text-sm">
+          <Link to={module ? `${productPath}/membros/modulo/${module.id}` : `${productPath}/membros`} className="inline-block px-5 py-3 rounded bg-[#00ff88] text-black font-bold uppercase text-sm">
             Voltar
           </Link>
         </div>
@@ -340,7 +340,7 @@ const Aula = () => {
     <div className="min-h-screen bg-[#080808] text-white">
       <header className="sticky top-0 z-40 bg-[#080808]/95 border-b border-white/5">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
-          <button onClick={() => navigate("/membros")} className="text-gray-400 hover:text-white">
+          <button onClick={() => navigate(`${productPath}/membros`)} className="text-gray-400 hover:text-white">
             <ArrowLeft className="h-5 w-5" />
           </button>
           <div className="flex-1 min-w-0">
@@ -459,12 +459,12 @@ const Aula = () => {
 
           <div className="mt-6 flex justify-between gap-3">
             {prev ? (
-              <Link to={`/membros/aula/${prev.id}`} className="flex items-center gap-2 px-4 py-2 rounded border border-white/15 hover:border-[#00ff88]">
+              <Link to={`${productPath}/membros/aula/${prev.id}`} className="flex items-center gap-2 px-4 py-2 rounded border border-white/15 hover:border-[#00ff88]">
                 <ChevronLeft className="h-4 w-4" /> Anterior
               </Link>
             ) : <span />}
             {next && (
-              <Link to={`/membros/aula/${next.id}`} className="flex items-center gap-2 px-4 py-2 rounded bg-[#00ff88] text-black font-bold">
+              <Link to={`${productPath}/membros/aula/${next.id}`} className="flex items-center gap-2 px-4 py-2 rounded bg-[#00ff88] text-black font-bold">
                 Próxima <ChevronRight className="h-4 w-4" />
               </Link>
             )}
@@ -477,7 +477,7 @@ const Aula = () => {
             {siblings.map((s, i) => (
               <li key={s.id}>
                 <Link
-                  to={`/membros/aula/${s.id}`}
+                  to={`${productPath}/membros/aula/${s.id}`}
                   className={`flex items-center gap-3 p-2 rounded hover:bg-white/5 ${s.id === lesson.id ? "bg-white/10 border-l-2 border-[#00ff88]" : ""}`}
                 >
                   <span className="text-xs text-gray-500 w-6 text-right">{i + 1}.</span>
