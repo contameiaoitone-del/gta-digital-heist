@@ -677,10 +677,16 @@ export type Database = {
       }
       site_settings: {
         Row: {
+          category_color: string | null
+          category_color_enabled: boolean
+          footer_gradient_color: string | null
+          footer_gradient_enabled: boolean
           hero_description: string | null
+          hero_description_html: string | null
           hero_media_type: string | null
           hero_media_url: string | null
           hero_title: string | null
+          hero_title_html: string | null
           id: number
           logo_url: string | null
           primary_color: string | null
@@ -689,10 +695,16 @@ export type Database = {
           updated_by: string | null
         }
         Insert: {
+          category_color?: string | null
+          category_color_enabled?: boolean
+          footer_gradient_color?: string | null
+          footer_gradient_enabled?: boolean
           hero_description?: string | null
+          hero_description_html?: string | null
           hero_media_type?: string | null
           hero_media_url?: string | null
           hero_title?: string | null
+          hero_title_html?: string | null
           id?: number
           logo_url?: string | null
           primary_color?: string | null
@@ -701,10 +713,16 @@ export type Database = {
           updated_by?: string | null
         }
         Update: {
+          category_color?: string | null
+          category_color_enabled?: boolean
+          footer_gradient_color?: string | null
+          footer_gradient_enabled?: boolean
           hero_description?: string | null
+          hero_description_html?: string | null
           hero_media_type?: string | null
           hero_media_url?: string | null
           hero_title?: string | null
+          hero_title_html?: string | null
           id?: number
           logo_url?: string | null
           primary_color?: string | null
