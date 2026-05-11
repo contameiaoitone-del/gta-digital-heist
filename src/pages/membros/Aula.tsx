@@ -15,6 +15,7 @@ interface Lesson {
   vturb_player_id: string | null;
   duration_seconds: number | null;
   position: number;
+  status?: string;
   cta_enabled?: boolean | null;
   cta_label?: string | null;
   cta_url?: string | null;
@@ -208,6 +209,33 @@ const Aula = () => {
         <div className="text-center">
           <p className="mb-4 text-gray-400">Aula não encontrada</p>
           <Link to="/membros" className="underline">Voltar</Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (lesson.status === "coming_soon") {
+    return (
+      <div className="min-h-screen bg-[#080808] text-white">
+        <header className="sticky top-0 z-40 bg-[#080808]/95 border-b border-white/5">
+          <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
+            <button onClick={() => navigate("/membros")} className="text-gray-400 hover:text-white">
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+            <p className="text-sm font-semibold truncate">{lesson.title}</p>
+          </div>
+        </header>
+        <div className="max-w-xl mx-auto px-4 py-24 text-center">
+          <span className="inline-block bg-[#facc15] text-black rounded px-3 py-1 text-xs font-bold uppercase tracking-wider mb-5" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
+            Em breve
+          </span>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>
+            {lesson.title}
+          </h1>
+          <p className="text-gray-400 mb-8">Esta aula ainda não foi liberada. Volte em breve!</p>
+          <Link to={module ? `/membros/modulo/${module.id}` : "/membros"} className="inline-block px-5 py-3 rounded bg-[#00ff88] text-black font-bold uppercase text-sm">
+            Voltar
+          </Link>
         </div>
       </div>
     );

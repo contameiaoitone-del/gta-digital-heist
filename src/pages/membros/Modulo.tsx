@@ -12,6 +12,7 @@ interface Module {
   cover_url: string | null;
   kind?: string;
   price_cents?: number | null;
+  status?: string;
 }
 interface Lesson {
   id: string;
@@ -22,6 +23,7 @@ interface Lesson {
   thumbnail_url: string | null;
   duration_seconds: number | null;
   position: number;
+  status?: string;
 }
 interface Progress {
   lesson_id: string;
@@ -55,7 +57,7 @@ const Modulo = () => {
     (async () => {
       const [mRes, lRes, pRes] = await Promise.all([
         supabase.from("modules").select("*").eq("id", id).maybeSingle(),
-        supabase.from("lessons").select("*").eq("module_id", id).eq("published", true).order("position"),
+        supabase.from("lessons").select("*").eq("module_id", id).in("status", ["published", "coming_soon"]).order("position"),
         session ? supabase.from("lesson_progress").select("*").eq("user_id", session.user.id) : Promise.resolve({ data: [] as Progress[] }),
       ]);
       if (!mRes.data) setNotFound(true);
@@ -86,8 +88,9 @@ const Modulo = () => {
   }, [id, session]);
 
   const nextLesson = useMemo(() => {
-    const inProgress = lessons.find((l) => progress[l.id] && !progress[l.id].completed);
-    return inProgress || lessons.find((l) => !progress[l.id]?.completed) || lessons[0];
+    const playable = lessons.filter((l) => l.status !== "coming_soon");
+    const inProgress = playable.find((l) => progress[l.id] && !progress[l.id].completed);
+    return inProgress || playable.find((l) => !progress[l.id]?.completed) || playable[0];
   }, [lessons, progress]);
 
   if (notFound) return <Navigate to="/membros" replace />;
@@ -170,22 +173,32 @@ const Modulo = () => {
           {lessons.map((l, idx) => {
             const p = progress[l.id];
             const pct = p && l.duration_seconds ? Math.min(100, (p.watched_seconds / l.duration_seconds) * 100) : p?.completed ? 100 : 0;
+            const coming = l.status === "coming_soon";
+            const RowEl: React.ElementType = coming ? "div" : Link;
+            const rowProps = coming ? { "aria-disabled": true } : { to: `/membros/aula/${l.id}` };
             return (
               <li key={l.id}>
-                <Link
-                  to={`/membros/aula/${l.id}`}
-                  className="group flex gap-4 py-4 hover:bg-white/[0.03] transition-colors px-2 -mx-2 rounded"
+                <RowEl
+                  {...rowProps}
+                  className={`group flex gap-4 py-4 px-2 -mx-2 rounded transition-colors ${coming ? "cursor-not-allowed opacity-70" : "hover:bg-white/[0.03]"}`}
                 >
                   <div className="text-2xl md:text-3xl text-gray-600 font-bold w-8 md:w-10 text-center flex-shrink-0" style={{ fontFamily: "'Bebas Neue', cursive" }}>
                     {idx + 1}
                   </div>
                   <div className="relative w-32 md:w-48 aspect-video flex-shrink-0 rounded overflow-hidden bg-[#1a1a1a]">
                     {(l.thumbnail_url || ytThumb(l.youtube_id)) && (
-                      <img src={l.thumbnail_url || ytThumb(l.youtube_id) || ""} alt={l.title} className="w-full h-full object-cover" loading="lazy" />
+                      <img src={l.thumbnail_url || ytThumb(l.youtube_id) || ""} alt={l.title} className={`w-full h-full object-cover ${coming ? "grayscale" : ""}`} loading="lazy" />
                     )}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
-                      <Play className="h-8 w-8 text-white fill-white" />
-                    </div>
+                    {!coming && (
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
+                        <Play className="h-8 w-8 text-white fill-white" />
+                      </div>
+                    )}
+                    {coming && (
+                      <div className="absolute top-1 left-1 bg-[#facc15] text-black rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
+                        Em breve
+                      </div>
+                    )}
                     {pct > 0 && (
                       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/15">
                         <div className="h-full bg-[#00ff88]" style={{ width: `${pct}%` }} />
@@ -196,11 +209,12 @@ const Modulo = () => {
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-semibold text-base md:text-lg line-clamp-1">{l.title}</h3>
                       {p?.completed && <CheckCircle2 className="h-4 w-4 text-[#00ff88] flex-shrink-0" />}
+                      {coming && <span className="text-[10px] bg-[#facc15] text-black rounded px-1.5 py-0.5 font-bold uppercase">Em breve</span>}
                     </div>
                     {l.description && <p className="text-sm text-gray-400 line-clamp-2 mb-1">{l.description}</p>}
                     {l.duration_seconds && <p className="text-xs text-gray-500">{fmtDuration(l.duration_seconds)}</p>}
                   </div>
-                </Link>
+                </RowEl>
               </li>
             );
           })}
