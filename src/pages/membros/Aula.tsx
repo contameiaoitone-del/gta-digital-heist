@@ -327,48 +327,98 @@ const Aula = () => {
 
       <div className="max-w-[1600px] mx-auto px-4 py-6 grid lg:grid-cols-[1fr_360px] gap-6">
         <div>
-          <div className="aspect-video bg-black rounded-lg overflow-hidden">
-            {lesson.vturb_player_id ? (
-              <div ref={vturbRef} className="w-full h-full [&>*]:w-full [&>*]:h-full" />
-            ) : lesson.youtube_id ? (
-              <iframe
-                ref={playerRef}
-                src={`https://www.youtube.com/embed/${lesson.youtube_id}?rel=0&modestbranding=1`}
-                title={lesson.title}
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-500">
-                Vídeo ainda não disponível
+          {isText ? (
+            <div className="relative aspect-video rounded-lg overflow-hidden bg-[#141414]">
+              {lesson.header_image_url ? (
+                <img src={lesson.header_image_url} alt={lesson.title} className="absolute inset-0 w-full h-full object-cover" />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]" />
+              )}
+              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#080808] via-[#080808]/70 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-5 md:p-7">
+                <h1 className="text-3xl md:text-5xl font-bold drop-shadow-lg" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>
+                  {lesson.title}
+                </h1>
               </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="aspect-video bg-black rounded-lg overflow-hidden">
+              {lesson.vturb_player_id ? (
+                <div ref={vturbRef} className="w-full h-full [&>*]:w-full [&>*]:h-full" />
+              ) : lesson.youtube_id ? (
+                <iframe
+                  ref={playerRef}
+                  src={`https://www.youtube.com/embed/${lesson.youtube_id}?rel=0&modestbranding=1`}
+                  title={lesson.title}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-500">
+                  Vídeo ainda não disponível
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="mt-5 flex items-start justify-between gap-4 flex-wrap">
             <div className="min-w-0 flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>
-                {lesson.title}
-              </h1>
-              {lesson.cta_enabled && lesson.cta_url && (
-                <div className="flex justify-center my-4">
-                  <a
-                    href={lesson.cta_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#00ff88] text-black font-bold uppercase text-sm hover:brightness-110 transition"
-                    style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
-                  >
-                    {lesson.cta_label || "Acessar"}
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
+              {!isText && (
+                <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>
+                  {lesson.title}
+                </h1>
+              )}
+              {ctas.length > 0 && (
+                <div className="flex flex-wrap justify-center gap-3 my-4">
+                  {ctas.map((c) => (
+                    <a
+                      key={c.id}
+                      href={c.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#00ff88] text-black font-bold uppercase text-sm hover:brightness-110 transition whitespace-normal h-auto"
+                      style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
+                    >
+                      {c.label}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  ))}
                 </div>
               )}
               {lesson.description && (
                 <p className="text-gray-300 leading-relaxed whitespace-pre-wrap break-words">
                   {linkify(lesson.description)}
                 </p>
+              )}
+              {isText && lesson.text_content && (
+                <div className="mt-5 text-gray-200 leading-relaxed whitespace-pre-wrap break-words text-base">
+                  {linkify(lesson.text_content)}
+                </div>
+              )}
+              {attachments.length > 0 && (
+                <div className="mt-6 border border-white/10 rounded-lg p-4">
+                  <p className="text-sm uppercase tracking-wider text-gray-300 mb-3 font-semibold flex items-center gap-2">
+                    <FileText className="h-4 w-4" /> Materiais da aula
+                  </p>
+                  <ul className="space-y-2">
+                    {attachments.map((a) => (
+                      <li key={a.id}>
+                        <a
+                          href={a.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download
+                          className="flex items-center gap-3 p-2 rounded border border-white/10 hover:border-[#00ff88] hover:bg-white/5 transition"
+                        >
+                          <Download className="h-4 w-4 text-[#00ff88]" />
+                          <span className="flex-1 text-sm truncate">{a.name}</span>
+                          {a.size_bytes ? <span className="text-xs text-gray-500">{(a.size_bytes / 1024 / 1024).toFixed(2)} MB</span> : null}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
             <button
