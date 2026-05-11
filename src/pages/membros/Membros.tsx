@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Play, LogOut, Settings } from "lucide-react";
+import { Play, LogOut, Settings, User as UserIcon } from "lucide-react";
 import { useAuth, useSignOut } from "@/hooks/useAuth";
 import Row from "@/components/membros/Row";
 import PosterCard from "@/components/membros/PosterCard";
 import EpisodeCard from "@/components/membros/EpisodeCard";
 import PasskeySetup from "@/components/membros/PasskeySetup";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
+import ProfileDialog from "@/components/membros/ProfileDialog";
 
 interface Module {
   id: string;
@@ -59,6 +60,8 @@ const Membros = () => {
   const [progress, setProgress] = useState<Record<string, Progress>>({});
   const [accessByProduct, setAccessByProduct] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [userVars, setUserVars] = useState<{ name: string; full_name: string; email: string; phone: string }>({ name: "", full_name: "", email: "", phone: "" });
 
   useEffect(() => {
     document.title = "Área de Membros — Treinamento";
@@ -82,6 +85,19 @@ const Membros = () => {
       });
       setAccessByProduct(amap);
       setLoading(false);
+
+      if (session) {
+        const email = session.user.email || "";
+        const { data: prof } = await supabase.from("profiles").select("full_name, email").eq("id", session.user.id).maybeSingle();
+        const fullName = (prof?.full_name as string | null) || (session.user.user_metadata?.full_name as string | undefined) || "";
+        let phone = (session.user.user_metadata?.phone as string | undefined) || "";
+        if (!phone && email) {
+          const { data: ord } = await supabase.from("orders").select("customer_phone, customer_name").eq("customer_email", email).order("created_at", { ascending: false }).limit(1).maybeSingle();
+          if (ord?.customer_phone) phone = ord.customer_phone as string;
+        }
+        const first = (fullName || "").trim().split(/\s+/)[0] || "";
+        setUserVars({ name: first, full_name: fullName, email, phone });
+      }
     })();
   }, [session]);
 
@@ -114,6 +130,17 @@ const Membros = () => {
   const heroLesson = continueWatching[0] || lessons.find((l) => l.status !== "coming_soon");
   const heroModule = heroLesson ? modules.find((m) => m.id === heroLesson.module_id) : modules[0];
 
+  const renderVars = (html: string) =>
+    html
+      .replace(/\{\{\s*name\s*\}\}/g, userVars.name)
+      .replace(/\{\{\s*full_name\s*\}\}/g, userVars.full_name)
+      .replace(/\{\{\s*email\s*\}\}/g, userVars.email)
+      .replace(/\{\{\s*phone\s*\}\}/g, userVars.phone);
+
+  const totalLessons = lessons.filter((l) => l.status !== "coming_soon").length;
+  const completedLessons = lessons.filter((l) => l.status !== "coming_soon" && progress[l.id]?.completed).length;
+  const overallPct = totalLessons ? Math.round((completedLessons / totalLessons) * 100) : 0;
+
   return (
     <div className="relative min-h-screen text-white pb-20" style={{ backgroundColor: settings.primary_color || "#080808" }}>
       <header className="fixed top-0 left-0 right-0 z-40" style={{ background: `linear-gradient(to bottom, ${settings.primary_color || "#080808"}, ${settings.primary_color || "#080808"}cc, transparent)` }}>
@@ -125,15 +152,13 @@ const Membros = () => {
           </div>
           <div className="flex items-center gap-2">
             {isAdmin && (
-              <>
-                <Link to="/admin" className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[var(--ms-secondary,#00ff88)]" style={{ ['--ms-secondary' as any]: settings.secondary_color || "#00ff88" }}>
-                  <Settings className="h-4 w-4" /> Admin
-                </Link>
-                <Link to="/admin/configuracoes" className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[var(--ms-secondary,#00ff88)]" style={{ ['--ms-secondary' as any]: settings.secondary_color || "#00ff88" }}>
-                  <Settings className="h-4 w-4" /> Configurações
-                </Link>
-              </>
+              <Link to="/admin" className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[var(--ms-secondary,#00ff88)]" style={{ ['--ms-secondary' as any]: settings.secondary_color || "#00ff88" }}>
+                <Settings className="h-4 w-4" /> Admin
+              </Link>
             )}
+            <button onClick={() => setProfileOpen(true)} className="flex items-center gap-1 px-3 py-2 rounded text-sm text-gray-300 hover:text-white border border-white/15 hover:border-[var(--ms-secondary,#00ff88)]" style={{ ['--ms-secondary' as any]: settings.secondary_color || "#00ff88" }}>
+              <UserIcon className="h-4 w-4" /> Perfil
+            </button>
             <button onClick={signOut} className="flex items-center gap-1 px-3 py-2 rounded text-sm text-gray-400 hover:text-white">
               <LogOut className="h-4 w-4" /> Sair
             </button>
@@ -171,7 +196,7 @@ const Membros = () => {
             <h1
               className="mb-3 font-gta uppercase leading-none drop-shadow-2xl select-none text-white text-5xl md:text-7xl lg:text-8xl"
               style={{ letterSpacing: "0.02em" }}
-              dangerouslySetInnerHTML={{ __html: settings.hero_title_html }}
+              dangerouslySetInnerHTML={{ __html: renderVars(settings.hero_title_html) }}
             />
           ) : (
             <h1
@@ -184,7 +209,7 @@ const Membros = () => {
           {settings.hero_description_html ? (
             <div
               className="text-sm md:text-base text-gray-200 max-w-xl mb-5 drop-shadow-lg whitespace-pre-line"
-              dangerouslySetInnerHTML={{ __html: settings.hero_description_html }}
+              dangerouslySetInnerHTML={{ __html: renderVars(settings.hero_description_html) }}
             />
           ) : (
             <p className="text-sm md:text-base text-gray-200 max-w-xl mb-5 line-clamp-3 drop-shadow-lg whitespace-pre-line">
@@ -297,6 +322,15 @@ const Membros = () => {
           }}
         />
       )}
+
+      <ProfileDialog
+        open={profileOpen}
+        onClose={() => setProfileOpen(false)}
+        email={userVars.email}
+        progressPct={overallPct}
+        completedLessons={completedLessons}
+        totalLessons={totalLessons}
+      />
     </div>
   );
 };
