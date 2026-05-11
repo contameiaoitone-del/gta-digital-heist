@@ -759,6 +759,39 @@ export type Database = {
         }
         Relationships: []
       }
+      tracking_pixels: {
+        Row: {
+          access_token: string | null
+          active: boolean
+          created_at: string
+          id: string
+          label: string | null
+          pixel_id: string
+          platform: string
+          updated_at: string
+        }
+        Insert: {
+          access_token?: string | null
+          active?: boolean
+          created_at?: string
+          id?: string
+          label?: string | null
+          pixel_id: string
+          platform: string
+          updated_at?: string
+        }
+        Update: {
+          access_token?: string | null
+          active?: boolean
+          created_at?: string
+          id?: string
+          label?: string | null
+          pixel_id?: string
+          platform?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -957,6 +990,14 @@ export type Database = {
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number
+      }
+      get_active_tracking_pixels: {
+        Args: never
+        Returns: {
+          id: string
+          pixel_id: string
+          platform: string
+        }[]
       }
       get_lesson_module_meta: {
         Args: { _lesson_id: string }
