@@ -332,6 +332,37 @@ const Admin = () => {
     return data.publicUrl;
   };
 
+  const uploadLessonFile = async (file: File): Promise<{ url: string; size: number; mime: string } | null> => {
+    const ext = file.name.split(".").pop() || "bin";
+    const path = `${selectedModuleId || "misc"}/${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage.from("lesson-attachments").upload(path, file, { contentType: file.type || undefined });
+    if (error) {
+      toast.error(error.message);
+      return null;
+    }
+    const { data } = supabase.storage.from("lesson-attachments").getPublicUrl(path);
+    return { url: data.publicUrl, size: file.size, mime: file.type || "application/octet-stream" };
+  };
+
+  const openLessonEditor = async (lesson: Partial<Lesson> | null) => {
+    if (lesson?.id) {
+      const [ctaRes, attRes] = await Promise.all([
+        supabase.from("lesson_ctas").select("*").eq("lesson_id", lesson.id).order("position"),
+        supabase.from("lesson_attachments").select("*").eq("lesson_id", lesson.id).order("position"),
+      ]);
+      setLessonCtas(((ctaRes.data as LessonCTA[] | null) || []).map((c) => ({ id: c.id, label: c.label, url: c.url, position: c.position })));
+      setLessonAttachments(((attRes.data as LessonAttachment[] | null) || []).map((a) => ({ id: a.id, name: a.name, file_url: a.file_url, size_bytes: a.size_bytes, mime: a.mime, position: a.position })));
+      setShowVideoYT(!!lesson.youtube_url);
+      setShowVideoVturb(!!lesson.vturb_player_id);
+    } else {
+      setLessonCtas([]);
+      setLessonAttachments([]);
+      setShowVideoYT(false);
+      setShowVideoVturb(false);
+    }
+    setEditingLesson(lesson);
+  };
+
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
