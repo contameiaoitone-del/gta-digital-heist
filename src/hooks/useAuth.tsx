@@ -137,11 +137,12 @@ export const RequireAuth = ({
 export const useSignOut = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const isMasterRoute = /^\/(home|areas|landing-pages)(\/|$)/.test(location.pathname);
   const product = location.pathname.match(/^\/([^/]+)\/(?:membros|admin)/)?.[1] || "infozap";
   return async () => {
     localStorage.removeItem("share_session_expires_at");
     localStorage.removeItem("share_session_active");
     await supabase.auth.signOut();
-    navigate(`/${encodeURIComponent(product)}/membros/login`);
+    navigate(isMasterRoute ? "/home/login" : `/${encodeURIComponent(product)}/membros/login`);
   };
 };
