@@ -31,6 +31,7 @@ const MasterHome = lazy(() => import("./pages/master/MasterHome"));
 const MemberAreas = lazy(() => import("./pages/master/MemberAreas"));
 const LandingPages = lazy(() => import("./pages/master/LandingPages"));
 import { RequireAuth } from "./hooks/useAuth";
+const Index = lazy(() => import("./pages/Index"));
 
 const queryClient = new QueryClient();
 
@@ -43,7 +44,8 @@ const App = () => (
         <TrackingProvider />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
-            <Route path="/" element={<RequireAuth requireAdmin><MasterHome /></RequireAuth>} />
+            <Route path="/" element={<Index />} />
+            <Route path="/home" element={<RequireAuth requireAdmin><MasterHome /></RequireAuth>} />
             <Route path="/areas" element={<RequireAuth requireAdmin><MemberAreas /></RequireAuth>} />
             <Route path="/landing-pages" element={<RequireAuth requireAdmin><LandingPages /></RequireAuth>} />
             <Route path="/termos" element={<Termos />} />
