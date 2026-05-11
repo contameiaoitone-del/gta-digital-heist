@@ -23,13 +23,14 @@ Deno.serve(async (req) => {
     const authHeader = req.headers.get("Authorization") || "";
     if (!authHeader.startsWith("Bearer ")) return json({ error: "Missing token" }, 401);
 
-    // Validate caller via anon client
+    // Validate caller via JWT claims (Edge Functions have no auth session)
+    const token = authHeader.replace(/^Bearer\s+/i, "");
     const userClient = createClient(SUPABASE_URL, ANON_KEY, {
-      global: { headers: { Authorization: authHeader } },
+      global: { headers: { Authorization: `Bearer ${token}` } },
     });
-    const { data: userData, error: userErr } = await userClient.auth.getUser();
-    if (userErr || !userData.user) return json({ error: "Unauthorized" }, 401);
-    const callerId = userData.user.id;
+    const { data: claimsData, error: claimsErr } = await userClient.auth.getClaims(token);
+    const callerId = claimsData?.claims?.sub;
+    if (claimsErr || !callerId) return json({ error: "Unauthorized" }, 401);
 
     const admin = createClient(SUPABASE_URL, SERVICE_KEY);
 
