@@ -184,12 +184,29 @@ const Aula = () => {
     return () => clearInterval(interval);
   }, [lesson, session, completed]);
 
-  // Inject VTURB embed (HTML + scripts) safely so <script> tags execute
+  // Inject VTURB embed following the React docs pattern: HTML in the page,
+  // player script executed separately in <head> every time this lesson mounts.
   useEffect(() => {
     const container = vturbRef.current;
     if (!container || !lesson?.vturb_player_id) return;
-    // 1) Render the <vturb-smartplayer> element directly (innerHTML doesn't execute scripts, that's fine).
-    container.innerHTML = lesson.vturb_player_id;
+
+    const embedTemplate = document.createElement("template");
+    embedTemplate.innerHTML = lesson.vturb_player_id.trim();
+    const smartPlayer = embedTemplate.content.querySelector("vturb-smartplayer") as HTMLElement | null;
+    const smartPlayerId = smartPlayer?.id || null;
+
+    if (smartPlayerId) {
+      document.querySelectorAll(`vturb-smartplayer#${CSS.escape(smartPlayerId)}`).forEach((node) => {
+        if (!container.contains(node)) node.parentNode?.removeChild(node);
+      });
+    }
+
+    container.replaceChildren();
+    if (smartPlayer) {
+      container.appendChild(smartPlayer.cloneNode(true));
+    } else {
+      container.innerHTML = lesson.vturb_player_id;
+    }
 
     // 2) Inject preload/dns-prefetch <link> tags + _plt timing from optimization code into <head>.
     const headInjected: HTMLElement[] = [];
@@ -228,14 +245,17 @@ const Aula = () => {
     const playerUrlMatch = lesson.vturb_player_id.match(
       /https:\/\/scripts\.converteai\.net\/[^"'\s)]+\/player\.js/i
     );
+    let playerScript: HTMLScriptElement | null = null;
     if (playerUrlMatch) {
       const playerSrc = playerUrlMatch[0];
-      if (!document.head.querySelector(`script[src="${playerSrc}"]`)) {
-        const s = document.createElement("script");
-        s.src = playerSrc;
-        s.async = true;
-        document.head.appendChild(s);
-      }
+      document.head.querySelectorAll(`script[src="${playerSrc}"]`).forEach((node) => node.parentNode?.removeChild(node));
+      const s = document.createElement("script");
+      s.type = "text/javascript";
+      s.src = playerSrc;
+      s.async = true;
+      s.dataset.vturbPlayer = smartPlayerId || "true";
+      document.head.appendChild(s);
+      playerScript = s;
     } else {
       // Fallback: recreate inline <script> tags from the embed so they execute.
       const tpl = document.createElement("template");
@@ -250,8 +270,7 @@ const Aula = () => {
 
     return () => {
       headInjected.forEach((el) => el.parentNode?.removeChild(el));
-      // Note: we intentionally don't remove the player.js <script> tag — it registers the
-      // custom element globally and is safe to keep cached across lessons.
+      playerScript?.parentNode?.removeChild(playerScript);
     };
   }, [lesson?.vturb_player_id, lesson?.vturb_optimization_code]);
 
