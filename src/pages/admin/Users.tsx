@@ -101,13 +101,16 @@ const Users = () => {
     setCreating(true);
     const r = await call({
       action: "create_user", email: cEmail, password: cPassword,
+      full_name: cFullName.trim() || undefined,
+      phone: cPhone.trim() || undefined,
+      cpf: cCpf.trim() || undefined,
       is_admin: cAdmin, access_treinamento: cTrein, access_mentoria: false,
     });
     setCreating(false);
     if (r) {
       toast.success("Usuário criado");
       setShowCreate(false);
-      setCEmail(""); setCPassword(""); setCAdmin(false); setCTrein(true);
+      setCEmail(""); setCPassword(""); setCFullName(""); setCPhone(""); setCCpf(""); setCAdmin(false); setCTrein(true);
       load();
     }
   };
