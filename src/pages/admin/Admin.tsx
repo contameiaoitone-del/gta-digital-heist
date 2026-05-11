@@ -645,7 +645,7 @@ const Field = ({ label, children }: { label: string; children: React.ReactNode }
 );
 const Modal = ({ children, title, onClose }: { children: React.ReactNode; title: string; onClose: () => void }) => (
   <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={onClose}>
-    <div className="bg-[#111] border border-white/10 rounded-xl max-w-md w-full p-5" onClick={(e) => e.stopPropagation()}>
+    <div className="bg-[#111] border border-white/10 rounded-xl max-w-2xl w-full p-5 max-h-[92vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
       <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>{title}</h3>
       {children}
     </div>
