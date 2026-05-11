@@ -71,8 +71,7 @@ function SecretInput({
   );
 }
 
-const PaymentCredentials = () => {
-  const { isAdmin, loading, checkedAccess } = useAuth();
+export function PaymentCredentialsBody() {
   const [data, setData] = useState<SettingsResponse | null>(null);
   const [gateway, setGateway] = useState<"efi" | "zzgate">("efi");
 
@@ -113,11 +112,8 @@ const PaymentCredentials = () => {
   };
 
   useEffect(() => {
-    document.title = "Credenciais de Pagamento — Admin";
-    if (!isAdmin) return;
     void refresh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAdmin]);
+  }, []);
 
   const saveGateway = async () => {
     const { error } = await supabase.functions.invoke("payment-settings?action=update", {
@@ -188,6 +184,117 @@ const PaymentCredentials = () => {
     else toast.error("Credenciais Efí inválidas (ou cert/chave ausente)");
   };
 
+  return (
+    <div className="space-y-6">
+      {/* Gateway picker */}
+      <section className="border border-white/10 rounded-lg p-5">
+        <h3 className="text-base font-bold mb-1" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+          Gateway do Pix
+        </h3>
+        <p className="text-xs text-gray-500 mb-4">
+          Defina qual gateway será usado para gerar QR Codes Pix. Pagamentos com cartão continuam sempre via Efí.
+        </p>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {(["efi", "zzgate"] as const).map((g) => (
+            <button
+              key={g}
+              onClick={() => setGateway(g)}
+              className={`text-left p-4 rounded-lg border transition ${
+                gateway === g ? "border-[#00ff88] bg-[#00ff88]/5" : "border-white/15 hover:border-white/40"
+              }`}
+            >
+              <p className="font-bold">{g === "efi" ? "Efí Bank" : "ZZGate"}</p>
+              <p className="text-xs text-gray-500 mt-1">
+                {g === "efi" ? "Pix via Efí (mTLS)" : "Pix via ZZGate (OAuth Bearer)"}
+              </p>
+            </button>
+          ))}
+        </div>
+        <div className="flex justify-end mt-4">
+          <button onClick={saveGateway} className="px-4 py-2 bg-[#00ff88] text-black rounded font-bold flex items-center gap-2 text-sm">
+            <Save className="h-4 w-4" /> Salvar gateway
+          </button>
+        </div>
+      </section>
+
+      {/* Efí credentials */}
+      <section className="border border-white/10 rounded-lg p-5">
+        <h3 className="text-base font-bold mb-1" style={{ fontFamily: "'Bebas Neue', cursive" }}>Credenciais Efí Bank</h3>
+        <p className="text-xs text-gray-500 mb-4">Usado para Pix (quando Efí for o gateway ativo) e sempre para cartão. Os secrets só são exibidos mascarados.</p>
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs text-gray-400 mb-1">Client ID</label>
+            <input className={inputCls} value={efiClientId} onChange={(e) => setEfiClientId(e.target.value)} placeholder="Client_Id_..." />
+          </div>
+          <div>
+            <label className="block text-xs text-gray-400 mb-1">Client Secret</label>
+            <SecretInput value={efiClientSecret} onChange={setEfiClientSecret} hasCurrent={data?.efi_has_secret} currentMask={data?.efi_client_secret_masked} />
+          </div>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs text-gray-400 mb-1">Chave Pix</label>
+              <input className={inputCls} value={efiPixKey} onChange={(e) => setEfiPixKey(e.target.value)} placeholder="email / cpf / aleatória" />
+            </div>
+            <div>
+              <label className="block text-xs text-gray-400 mb-1">Código do Recebedor (CNPJ)</label>
+              <input className={inputCls} value={efiPayee} onChange={(e) => setEfiPayee(e.target.value)} placeholder="00000000000000" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs text-gray-400 mb-1">Certificado (.pem) {data?.efi_has_cert && <span className="text-gray-600">(deixe em branco para manter)</span>}</label>
+            <textarea className={taCls} value={efiCert} onChange={(e) => setEfiCert(e.target.value)} placeholder={data?.efi_has_cert ? "•••••• (não alterar)" : "-----BEGIN CERTIFICATE-----\n..."} />
+          </div>
+          <div>
+            <label className="block text-xs text-gray-400 mb-1">Chave Privada (.pem) {data?.efi_has_key && <span className="text-gray-600">(deixe em branco para manter)</span>}</label>
+            <textarea className={taCls} value={efiKey} onChange={(e) => setEfiKey(e.target.value)} placeholder={data?.efi_has_key ? "•••••• (não alterar)" : "-----BEGIN PRIVATE KEY-----\n..."} />
+          </div>
+          <div className="flex gap-2 pt-1">
+            <button onClick={testEfi} disabled={testingEfi} className="px-4 py-2 rounded border border-white/15 hover:border-[#00ff88] text-sm flex items-center gap-2 disabled:opacity-50">
+              {testingEfi ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />} Testar conexão
+            </button>
+            <button onClick={saveEfi} disabled={savingEfi} className="ml-auto px-5 py-2 bg-[#00ff88] text-black rounded font-bold flex items-center gap-2 text-sm disabled:opacity-50">
+              {savingEfi ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Salvar credenciais Efí
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ZZGate credentials */}
+      <section className="border border-white/10 rounded-lg p-5">
+        <h3 className="text-base font-bold mb-1" style={{ fontFamily: "'Bebas Neue', cursive" }}>Credenciais ZZGate</h3>
+        <p className="text-xs text-gray-500 mb-4">Obtenha no painel da ZZGate. A URL de postback é enviada automaticamente em cada cobrança.</p>
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs text-gray-400 mb-1">Client ID</label>
+            <input className={inputCls} value={zzClientId} onChange={(e) => setZzClientId(e.target.value)} placeholder="zzg_..." />
+          </div>
+          <div>
+            <label className="block text-xs text-gray-400 mb-1">Client Secret</label>
+            <SecretInput value={zzClientSecret} onChange={setZzClientSecret} hasCurrent={data?.zzgate_has_secret} currentMask={data?.zzgate_client_secret_masked} />
+          </div>
+          <div className="flex gap-2 pt-1">
+            <button onClick={testZzgate} disabled={testingZz} className="px-4 py-2 rounded border border-white/15 hover:border-[#00ff88] text-sm flex items-center gap-2 disabled:opacity-50">
+              {testingZz ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />} Testar conexão
+            </button>
+            <button onClick={saveZz} disabled={savingZz} className="ml-auto px-5 py-2 bg-[#00ff88] text-black rounded font-bold flex items-center gap-2 text-sm disabled:opacity-50">
+              {savingZz ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Salvar credenciais ZZGate
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <p className="text-xs text-gray-600 text-center">
+        Cartão de crédito é sempre processado via Efí — o seletor acima afeta apenas o Pix.
+      </p>
+    </div>
+  );
+}
+
+const PaymentCredentials = () => {
+  const { isAdmin, loading, checkedAccess } = useAuth();
+  useEffect(() => {
+    document.title = "Credenciais de Pagamento — Admin";
+  }, []);
   if (loading || !checkedAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white">
@@ -212,172 +319,8 @@ const PaymentCredentials = () => {
           </h1>
         </div>
       </header>
-
-      <div className="max-w-[1100px] mx-auto px-4 py-6 space-y-6">
-        {/* Gateway picker */}
-        <section className="border border-white/10 rounded-lg p-5">
-          <h2 className="text-lg font-bold mb-1" style={{ fontFamily: "'Bebas Neue', cursive" }}>
-            Gateway do Pix
-          </h2>
-          <p className="text-xs text-gray-500 mb-4">
-            Defina qual gateway será usado para gerar QR Codes Pix. Pagamentos com cartão continuam sempre via Efí.
-          </p>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {(["efi", "zzgate"] as const).map((g) => (
-              <button
-                key={g}
-                onClick={() => setGateway(g)}
-                className={`text-left p-4 rounded-lg border transition ${
-                  gateway === g ? "border-[#00ff88] bg-[#00ff88]/5" : "border-white/15 hover:border-white/40"
-                }`}
-              >
-                <p className="font-bold">{g === "efi" ? "Efí Bank" : "ZZGate"}</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  {g === "efi" ? "Pix via Efí (mTLS)" : "Pix via ZZGate (OAuth Bearer)"}
-                </p>
-              </button>
-            ))}
-          </div>
-          <div className="flex justify-end mt-4">
-            <button
-              onClick={saveGateway}
-              className="px-4 py-2 bg-[#00ff88] text-black rounded font-bold flex items-center gap-2 text-sm"
-            >
-              <Save className="h-4 w-4" /> Salvar gateway
-            </button>
-          </div>
-        </section>
-
-        {/* Efí credentials */}
-        <section className="border border-white/10 rounded-lg p-5">
-          <h2 className="text-lg font-bold mb-1" style={{ fontFamily: "'Bebas Neue', cursive" }}>
-            Credenciais Efí Bank
-          </h2>
-          <p className="text-xs text-gray-500 mb-4">
-            Usado para Pix (quando Efí for o gateway ativo) e sempre para cartão de crédito. Os secrets só são exibidos
-            mascarados — para alterar, cole o novo valor.
-          </p>
-          <div className="space-y-3">
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">Client ID</label>
-              <input className={inputCls} value={efiClientId} onChange={(e) => setEfiClientId(e.target.value)} placeholder="Client_Id_..." />
-            </div>
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">Client Secret</label>
-              <SecretInput
-                value={efiClientSecret}
-                onChange={setEfiClientSecret}
-                hasCurrent={data?.efi_has_secret}
-                currentMask={data?.efi_client_secret_masked}
-              />
-            </div>
-            <div className="grid sm:grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs text-gray-400 mb-1">Chave Pix</label>
-                <input className={inputCls} value={efiPixKey} onChange={(e) => setEfiPixKey(e.target.value)} placeholder="email / cpf / aleatória" />
-              </div>
-              <div>
-                <label className="block text-xs text-gray-400 mb-1">Código do Recebedor (CNPJ)</label>
-                <input className={inputCls} value={efiPayee} onChange={(e) => setEfiPayee(e.target.value)} placeholder="00000000000000" />
-              </div>
-            </div>
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">
-                Certificado (.pem){" "}
-                {data?.efi_has_cert && <span className="text-gray-600">(atual configurado — deixe em branco para manter)</span>}
-              </label>
-              <textarea
-                className={taCls}
-                value={efiCert}
-                onChange={(e) => setEfiCert(e.target.value)}
-                placeholder={data?.efi_has_cert ? "•••••• (não alterar)" : "-----BEGIN CERTIFICATE-----\n..."}
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">
-                Chave Privada (.pem){" "}
-                {data?.efi_has_key && <span className="text-gray-600">(atual configurada — deixe em branco para manter)</span>}
-              </label>
-              <textarea
-                className={taCls}
-                value={efiKey}
-                onChange={(e) => setEfiKey(e.target.value)}
-                placeholder={data?.efi_has_key ? "•••••• (não alterar)" : "-----BEGIN PRIVATE KEY-----\n..."}
-              />
-            </div>
-            <div className="flex gap-2 pt-1">
-              <button
-                onClick={testEfi}
-                disabled={testingEfi}
-                className="px-4 py-2 rounded border border-white/15 hover:border-[#00ff88] text-sm flex items-center gap-2 disabled:opacity-50"
-              >
-                {testingEfi ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}
-                Testar conexão
-              </button>
-              <button
-                onClick={saveEfi}
-                disabled={savingEfi}
-                className="ml-auto px-5 py-2 bg-[#00ff88] text-black rounded font-bold flex items-center gap-2 text-sm disabled:opacity-50"
-              >
-                {savingEfi ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                Salvar credenciais Efí
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* ZZGate credentials */}
-        <section className="border border-white/10 rounded-lg p-5">
-          <h2 className="text-lg font-bold mb-1" style={{ fontFamily: "'Bebas Neue', cursive" }}>
-            Credenciais ZZGate
-          </h2>
-          <p className="text-xs text-gray-500 mb-4">
-            Obtenha no painel da ZZGate. A URL de postback é enviada automaticamente em cada cobrança — não é
-            necessário cadastrar webhook no painel da ZZGate.
-          </p>
-          <div className="space-y-3">
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">Client ID</label>
-              <input
-                className={inputCls}
-                value={zzClientId}
-                onChange={(e) => setZzClientId(e.target.value)}
-                placeholder="zzg_..."
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-gray-400 mb-1">Client Secret</label>
-              <SecretInput
-                value={zzClientSecret}
-                onChange={setZzClientSecret}
-                hasCurrent={data?.zzgate_has_secret}
-                currentMask={data?.zzgate_client_secret_masked}
-              />
-            </div>
-            <div className="flex gap-2 pt-1">
-              <button
-                onClick={testZzgate}
-                disabled={testingZz}
-                className="px-4 py-2 rounded border border-white/15 hover:border-[#00ff88] text-sm flex items-center gap-2 disabled:opacity-50"
-              >
-                {testingZz ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />}
-                Testar conexão
-              </button>
-              <button
-                onClick={saveZz}
-                disabled={savingZz}
-                className="ml-auto px-5 py-2 bg-[#00ff88] text-black rounded font-bold flex items-center gap-2 text-sm disabled:opacity-50"
-              >
-                {savingZz ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                Salvar credenciais ZZGate
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <p className="text-xs text-gray-600 text-center">
-          Cartão de crédito é sempre processado via Efí — o seletor acima afeta apenas o Pix.
-        </p>
+      <div className="max-w-[1100px] mx-auto px-4 py-6">
+        <PaymentCredentialsBody />
       </div>
     </div>
   );

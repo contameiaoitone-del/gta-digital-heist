@@ -9,6 +9,12 @@ export interface SiteSettings {
   hero_description: string | null;
   hero_media_url: string | null;
   hero_media_type: "image" | "video" | null;
+  hero_title_html: string | null;
+  hero_description_html: string | null;
+  footer_gradient_enabled: boolean;
+  footer_gradient_color: string | null;
+  category_color_enabled: boolean;
+  category_color: string | null;
 }
 
 export const DEFAULT_SETTINGS: SiteSettings = {
@@ -20,6 +26,12 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     "O método completo para escalar produtos digitais no WhatsApp. Tráfego pago, criativos, copy, escala e os bastidores reais de quem fatura todo dia.",
   hero_media_url: "/membros-hero.mp4",
   hero_media_type: "video",
+  hero_title_html: null,
+  hero_description_html: null,
+  footer_gradient_enabled: true,
+  footer_gradient_color: "#a855f7",
+  category_color_enabled: true,
+  category_color: "#a855f7",
 };
 
 export function useSiteSettings() {
@@ -40,6 +52,12 @@ export function useSiteSettings() {
           hero_description: data.hero_description ?? DEFAULT_SETTINGS.hero_description,
           hero_media_url: data.hero_media_url ?? DEFAULT_SETTINGS.hero_media_url,
           hero_media_type: (data.hero_media_type as "image" | "video" | null) ?? DEFAULT_SETTINGS.hero_media_type,
+          hero_title_html: (data as any).hero_title_html ?? null,
+          hero_description_html: (data as any).hero_description_html ?? null,
+          footer_gradient_enabled: (data as any).footer_gradient_enabled ?? DEFAULT_SETTINGS.footer_gradient_enabled,
+          footer_gradient_color: (data as any).footer_gradient_color ?? DEFAULT_SETTINGS.footer_gradient_color,
+          category_color_enabled: (data as any).category_color_enabled ?? DEFAULT_SETTINGS.category_color_enabled,
+          category_color: (data as any).category_color ?? DEFAULT_SETTINGS.category_color,
         });
       }
       setLoaded(true);

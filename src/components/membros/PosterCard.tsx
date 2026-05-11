@@ -12,9 +12,10 @@ interface PosterCardProps {
   completed?: boolean;
   comingSoon?: boolean;
   lockedDays?: number | null;
+  categoryColor?: string | null;
 }
 
-const PosterCard = ({ to, title, cover, description, category, meta, progressPct = 0, completed, comingSoon, lockedDays }: PosterCardProps) => {
+const PosterCard = ({ to, title, cover, description, category, meta, progressPct = 0, completed, comingSoon, lockedDays, categoryColor }: PosterCardProps) => {
   const isLocked = comingSoon || (typeof lockedDays === "number" && lockedDays > 0);
   const Wrapper: React.ElementType = isLocked ? "div" : Link;
   const wrapperProps = isLocked ? { "aria-disabled": true } : { to };
@@ -80,7 +81,10 @@ const PosterCard = ({ to, title, cover, description, category, meta, progressPct
       <div className="mt-2 px-1">
         <p className="text-xs md:text-sm text-gray-200 line-clamp-2 font-semibold">{title}</p>
         {category && (
-          <p className="text-[10px] uppercase tracking-wider text-[#a855f7] mt-0.5" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
+          <p
+            className="text-[10px] uppercase tracking-wider mt-0.5"
+            style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em", color: categoryColor || "#9ca3af" }}
+          >
             {category}
           </p>
         )}

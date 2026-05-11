@@ -167,15 +167,30 @@ const Membros = () => {
         <div className="absolute inset-x-0 bottom-0 h-2/3" style={{ background: `linear-gradient(to top, ${settings.primary_color || "#080808"}, ${settings.primary_color || "#080808"}d9, transparent)` }} />
 
         <div className="relative z-10 max-w-[1800px] mx-auto px-4 md:px-12 h-full flex flex-col justify-end pb-16 md:pb-20">
-          <h1
-            className="mb-3 font-gta uppercase leading-none drop-shadow-2xl select-none text-white text-5xl md:text-7xl lg:text-8xl"
-            style={{ letterSpacing: "0.02em" }}
-          >
-            {settings.hero_title || "Treinamento de X1"}
-          </h1>
-          <p className="text-sm md:text-base text-gray-200 max-w-xl mb-5 line-clamp-3 drop-shadow-lg whitespace-pre-line">
-            {settings.hero_description}
-          </p>
+          {settings.hero_title_html ? (
+            <h1
+              className="mb-3 font-gta uppercase leading-none drop-shadow-2xl select-none text-white text-5xl md:text-7xl lg:text-8xl"
+              style={{ letterSpacing: "0.02em" }}
+              dangerouslySetInnerHTML={{ __html: settings.hero_title_html }}
+            />
+          ) : (
+            <h1
+              className="mb-3 font-gta uppercase leading-none drop-shadow-2xl select-none text-white text-5xl md:text-7xl lg:text-8xl"
+              style={{ letterSpacing: "0.02em" }}
+            >
+              {settings.hero_title || "Treinamento de X1"}
+            </h1>
+          )}
+          {settings.hero_description_html ? (
+            <div
+              className="text-sm md:text-base text-gray-200 max-w-xl mb-5 drop-shadow-lg whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: settings.hero_description_html }}
+            />
+          ) : (
+            <p className="text-sm md:text-base text-gray-200 max-w-xl mb-5 line-clamp-3 drop-shadow-lg whitespace-pre-line">
+              {settings.hero_description}
+            </p>
+          )}
           <div className="flex flex-wrap gap-3">
             {heroLesson && (
               <button
@@ -263,6 +278,7 @@ const Membros = () => {
                     completed={pct === 100 && total > 0}
                     comingSoon={m.status === "coming_soon"}
                     lockedDays={computeLockDays(m)}
+                    categoryColor={settings.category_color_enabled ? (settings.category_color || "#a855f7") : null}
                   />
                 );
               })}
@@ -272,8 +288,15 @@ const Membros = () => {
 
       </div>
 
-      {/* Footer purple gradient — sutil, somente no fim do site */}
-      <div className="pointer-events-none relative h-20 mt-12 bg-gradient-to-t from-purple-600/15 via-purple-900/5 to-transparent" />
+      {/* Footer gradient — sutil, somente no fim do site */}
+      {settings.footer_gradient_enabled && (
+        <div
+          className="pointer-events-none relative h-20 mt-12"
+          style={{
+            background: `linear-gradient(to top, ${settings.footer_gradient_color || "#a855f7"}26, ${settings.footer_gradient_color || "#a855f7"}0d, transparent)`,
+          }}
+        />
+      )}
     </div>
   );
 };
