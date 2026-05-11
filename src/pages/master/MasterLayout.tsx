@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { MasterSidebar } from "@/components/master/MasterSidebar";
+import { ImpersonationBanner } from "@/components/super/ImpersonationBanner";
 import { useSignOut } from "@/hooks/useAuth";
 import { LogOut } from "lucide-react";
 
@@ -9,6 +10,7 @@ export default function MasterLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-[#080808] text-white font-body">
+        <ImpersonationBanner />
         <MasterSidebar />
         <div className="flex-1 flex flex-col">
           <header className="h-12 flex items-center justify-between border-b border-white/10 px-3 bg-[#0a0a0a]">
