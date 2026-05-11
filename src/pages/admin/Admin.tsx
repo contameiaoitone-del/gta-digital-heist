@@ -74,7 +74,9 @@ function extractYouTubeId(url: string): string | null {
 }
 
 const Admin = () => {
-  const { isAdmin, loading, checkedAccess } = useAuth();
+  const { isAdmin, loading, checkedAccess, session } = useAuth();
+  const userEmail = session?.user?.email?.toLowerCase() || "";
+  const canSeeTracking = userEmail === "joaolucasps2001@gmail.com";
   const { product: productParam } = useParams<{ product?: string }>();
   const [searchParams] = useSearchParams();
   const productFilter = productParam || searchParams.get("product") || "treinamento";
@@ -418,9 +420,11 @@ const Admin = () => {
             <Link to={`${adminPath}/usuarios`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Usuários
             </Link>
-            <Link to={`${adminPath}/trackeamento`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
-              Trackeamento
-            </Link>
+            {canSeeTracking && (
+              <Link to={`${adminPath}/trackeamento`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
+                Trackeamento
+              </Link>
+            )}
             <Link to={`${adminPath}/configuracoes`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Configurações
             </Link>
