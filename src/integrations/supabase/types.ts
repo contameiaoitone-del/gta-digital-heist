@@ -648,6 +648,72 @@ export type Database = {
         }
         Relationships: []
       }
+      share_links: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          expires_at: string | null
+          id: string
+          label: string | null
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          label?: string | null
+          token: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          label?: string | null
+          token?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          hero_description: string | null
+          hero_media_type: string | null
+          hero_media_url: string | null
+          hero_title: string | null
+          id: number
+          logo_url: string | null
+          primary_color: string | null
+          secondary_color: string | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          hero_description?: string | null
+          hero_media_type?: string | null
+          hero_media_url?: string | null
+          hero_title?: string | null
+          id?: number
+          logo_url?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          hero_description?: string | null
+          hero_media_type?: string | null
+          hero_media_url?: string | null
+          hero_title?: string | null
+          id?: number
+          logo_url?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
