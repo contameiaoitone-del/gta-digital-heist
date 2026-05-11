@@ -50,10 +50,16 @@ interface Progress {
 }
 
 const ytThumb = (id: string | null) => (id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null);
-const vturbThumb = (embed: string | null | undefined): string | null => {
-  if (!embed) return null;
+const vturbThumbs = (embed: string | null | undefined): string[] => {
+  if (!embed) return [];
   const m = embed.match(/scripts\.converteai\.net\/([0-9a-f-]+)\/players\/([0-9a-f]+)/i);
-  return m ? `https://images.converteai.net/${m[1]}/players/${m[2]}/thumbnail.jpg` : null;
+  if (!m) return [];
+  const [, account, player] = m;
+  // HD first, fallback to standard thumbnail
+  return [
+    `https://images.converteai.net/${account}/players/${player}/thumbnail.jpg?width=1280`,
+    `https://images.converteai.net/${account}/players/${player}/thumbnail.jpg`,
+  ];
 };
 
 const Membros = () => {
@@ -271,7 +277,12 @@ const Membros = () => {
                   key={l.id}
                   to={`${productPath}/membros/aula/${l.id}`}
                   title={l.title}
-                  thumb={l.thumbnail_url || ytThumb(l.youtube_id) || vturbThumb(l.vturb_player_id) || modules.find((m) => m.id === l.module_id)?.cover_url || null}
+                  thumbs={[
+                    l.thumbnail_url,
+                    ytThumb(l.youtube_id),
+                    ...vturbThumbs(l.vturb_player_id),
+                    modules.find((m) => m.id === l.module_id)?.cover_url || null,
+                  ]}
                   moduleTitle={modules.find((m) => m.id === l.module_id)?.title}
                   progressPct={pct}
                 />

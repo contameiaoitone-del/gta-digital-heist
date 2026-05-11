@@ -275,7 +275,9 @@ const Admin = () => {
       youtube_id: contentMode === "video" && showVideoYT ? ytId : null,
       vturb_player_id: contentMode === "video" && showVideoVturb ? (editingLesson.vturb_player_id?.trim() || null) : null,
       vturb_optimization_code: contentMode === "video" && showVideoVturb ? (editingLesson.vturb_optimization_code?.trim() || null) : null,
-      thumbnail_url: ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : editingLesson.thumbnail_url || null,
+      thumbnail_url: showVideoYT && ytId
+        ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`
+        : (editingLesson.thumbnail_url || null),
       duration_seconds: editingLesson.duration_seconds ?? null,
       position: editingLesson.position ?? lessons.length + 1,
       published: (editingLesson.status ?? (editingLesson.published === false ? "hidden" : "published")) === "published",
@@ -700,6 +702,30 @@ const Admin = () => {
                       />
                       <p className="text-[11px] text-gray-500">Os códigos do player e de otimização são injetados na página da aula exatamente como a Vturb fornece.</p>
                     </div>
+                  )}
+
+                  {showVideoVturb && (
+                    <Field label="Capa personalizada da aula (opcional — sobrescreve a thumbnail automática do Vturb)">
+                      <input type="file" accept="image/*" onChange={async (e) => {
+                        const f = e.target.files?.[0];
+                        if (!f) return;
+                        const r = await uploadLessonFile(f);
+                        if (r) setEditingLesson({ ...editingLesson, thumbnail_url: r.url });
+                      }} className="text-sm text-gray-300" />
+                      {editingLesson.thumbnail_url && (
+                        <div className="mt-2 flex items-start gap-3">
+                          <img src={editingLesson.thumbnail_url} alt="" className="max-h-32 rounded border border-white/10" />
+                          <button
+                            type="button"
+                            onClick={() => setEditingLesson({ ...editingLesson, thumbnail_url: null })}
+                            className="text-xs text-red-400 hover:text-red-300 underline"
+                          >
+                            Remover capa
+                          </button>
+                        </div>
+                      )}
+                      <p className="text-[11px] text-gray-500 mt-1">Recomendado 16:9 (ex.: 1280×720). Se não enviar, usamos a thumbnail HD do próprio Vturb.</p>
+                    </Field>
                   )}
                 </div>
 
