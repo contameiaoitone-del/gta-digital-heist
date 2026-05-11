@@ -187,6 +187,7 @@ const Aula = () => {
   // Inject VTURB embed following the React docs pattern: HTML in the page,
   // player script executed separately in <head> every time this lesson mounts.
   useEffect(() => {
+    if (loading) return;
     const container = vturbRef.current;
     if (!container || !lesson?.vturb_player_id) return;
 
@@ -272,7 +273,7 @@ const Aula = () => {
       headInjected.forEach((el) => el.parentNode?.removeChild(el));
       playerScript?.parentNode?.removeChild(playerScript);
     };
-  }, [lesson?.vturb_player_id, lesson?.vturb_optimization_code]);
+  }, [loading, lesson?.vturb_player_id, lesson?.vturb_optimization_code]);
 
   const idx = useMemo(() => siblings.findIndex((s) => s.id === lesson?.id), [siblings, lesson]);
   const prev = idx > 0 ? siblings[idx - 1] : null;
