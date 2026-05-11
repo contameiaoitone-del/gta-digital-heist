@@ -154,6 +154,7 @@ export type Database = {
           module_id: string
           position: number
           published: boolean
+          status: string
           thumbnail_url: string | null
           title: string
           updated_at: string
@@ -172,6 +173,7 @@ export type Database = {
           module_id: string
           position?: number
           published?: boolean
+          status?: string
           thumbnail_url?: string | null
           title: string
           updated_at?: string
@@ -190,6 +192,7 @@ export type Database = {
           module_id?: string
           position?: number
           published?: boolean
+          status?: string
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
@@ -335,6 +338,7 @@ export type Database = {
           price_cents: number | null
           product: string
           published: boolean
+          status: string
           title: string
           updated_at: string
         }
@@ -349,6 +353,7 @@ export type Database = {
           price_cents?: number | null
           product?: string
           published?: boolean
+          status?: string
           title: string
           updated_at?: string
         }
@@ -363,6 +368,7 @@ export type Database = {
           price_cents?: number | null
           product?: string
           published?: boolean
+          status?: string
           title?: string
           updated_at?: string
         }
