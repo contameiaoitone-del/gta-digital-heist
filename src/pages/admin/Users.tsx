@@ -136,7 +136,7 @@ const Users = () => {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return users.filter((u) => {
-      if (q && !(u.email || "").toLowerCase().includes(q)) return false;
+      if (q && !(u.email || "").toLowerCase().includes(q) && !(u.full_name || "").toLowerCase().includes(q)) return false;
       if (filterAdmin && !u.roles.includes("admin")) return false;
       if (filterTreinamento && !hasAccessTo(u, "infozap")) return false;
       if (filterPaidProduct && !hasAccessTo(u, filterPaidProduct)) return false;
