@@ -1,5 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
-import { verifyAuthenticationResponse } from "npm:@simplewebauthn/server@10.0.1";
+import { verifyAuthenticationResponse } from "npm:@simplewebauthn/server@13.1.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
