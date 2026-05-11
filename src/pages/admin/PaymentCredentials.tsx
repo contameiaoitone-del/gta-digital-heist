@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -292,6 +292,8 @@ export function PaymentCredentialsBody() {
 
 const PaymentCredentials = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
+  const { product = "infozap" } = useParams<{ product?: string }>();
+  const productPath = `/${encodeURIComponent(product)}`;
   useEffect(() => {
     document.title = "Credenciais de Pagamento — Admin";
   }, []);
@@ -302,13 +304,13 @@ const PaymentCredentials = () => {
       </div>
     );
   }
-  if (!isAdmin) return <Navigate to="/membros" replace />;
+  if (!isAdmin) return <Navigate to={`${productPath}/membros`} replace />;
 
   return (
     <div className="min-h-screen bg-[#080808] text-white">
       <header className="sticky top-0 z-40 bg-[#080808] border-b border-white/10">
         <div className="max-w-[1100px] mx-auto px-4 py-3 flex items-center gap-3">
-          <Link to="/admin" className="text-gray-400 hover:text-white">
+          <Link to={`${productPath}/admin`} className="text-gray-400 hover:text-white">
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <h1
