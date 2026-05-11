@@ -31,7 +31,6 @@ const MasterHome = lazy(() => import("./pages/master/MasterHome"));
 const MemberAreas = lazy(() => import("./pages/master/MemberAreas"));
 const LandingPages = lazy(() => import("./pages/master/LandingPages"));
 import { RequireAuth } from "./hooks/useAuth";
-const Index = lazy(() => import("./pages/Index"));
 
 const queryClient = new QueryClient();
 
@@ -44,7 +43,7 @@ const App = () => (
         <TrackingProvider />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Lp2App />} />
             <Route path="/home" element={<RequireAuth requireAdmin><MasterHome /></RequireAuth>} />
             <Route path="/areas" element={<RequireAuth requireAdmin><MemberAreas /></RequireAuth>} />
             <Route path="/landing-pages" element={<RequireAuth requireAdmin><LandingPages /></RequireAuth>} />
@@ -52,19 +51,29 @@ const App = () => (
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/contato" element={<Contato />} />
             <Route path="/obrigado" element={<Obrigado />} />
-            <Route path="/membros/login" element={<MembrosLogin />} />
+            <Route path="/membros/login" element={<Navigate to="/infozap/membros/login" replace />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/membros" element={<RequireAuth><Membros /></RequireAuth>} />
-            <Route path="/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
-            <Route path="/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
+            <Route path="/membros" element={<Navigate to="/infozap/membros" replace />} />
+            <Route path="/membros/modulo/:id" element={<Navigate to="/infozap/membros" replace />} />
+            <Route path="/membros/aula/:id" element={<Navigate to="/infozap/membros" replace />} />
             <Route path="/membros/share/:token" element={<ShareConsume />} />
-            <Route path="/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
-            <Route path="/admin/capi-log" element={<RequireAuth requireAdmin><CapiLog /></RequireAuth>} />
-            <Route path="/admin/usuarios" element={<RequireAuth requireAdmin><AdminUsers /></RequireAuth>} />
-            <Route path="/admin/credenciais" element={<RequireAuth requireAdmin><AdminPaymentCredentials /></RequireAuth>} />
-            <Route path="/admin/configuracoes" element={<RequireAuth requireAdmin><AdminConfiguracoes /></RequireAuth>} />
-            <Route path="/admin/trackeamento" element={<RequireAuth requireAdmin><AdminTrackeamento /></RequireAuth>} />
+            <Route path="/admin" element={<Navigate to="/infozap/admin" replace />} />
+            <Route path="/admin/capi-log" element={<Navigate to="/infozap/admin/capi-log" replace />} />
+            <Route path="/admin/usuarios" element={<Navigate to="/infozap/admin/usuarios" replace />} />
+            <Route path="/admin/credenciais" element={<Navigate to="/infozap/admin/credenciais" replace />} />
+            <Route path="/admin/configuracoes" element={<Navigate to="/infozap/admin/configuracoes" replace />} />
+            <Route path="/admin/trackeamento" element={<Navigate to="/infozap/admin/trackeamento" replace />} />
+            <Route path="/:product/membros/login" element={<MembrosLogin />} />
+            <Route path="/:product/membros" element={<RequireAuth><Membros /></RequireAuth>} />
+            <Route path="/:product/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
+            <Route path="/:product/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
+            <Route path="/:product/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
+            <Route path="/:product/admin/capi-log" element={<RequireAuth requireAdmin><CapiLog /></RequireAuth>} />
+            <Route path="/:product/admin/usuarios" element={<RequireAuth requireAdmin><AdminUsers /></RequireAuth>} />
+            <Route path="/:product/admin/credenciais" element={<RequireAuth requireAdmin><AdminPaymentCredentials /></RequireAuth>} />
+            <Route path="/:product/admin/configuracoes" element={<RequireAuth requireAdmin><AdminConfiguracoes /></RequireAuth>} />
+            <Route path="/:product/admin/trackeamento" element={<RequireAuth requireAdmin><AdminTrackeamento /></RequireAuth>} />
 
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/lp1" element={<Lp1App />} />
