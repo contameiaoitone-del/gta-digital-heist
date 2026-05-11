@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Plus, Trash2, CheckCircle2, XCircle, ChevronDown, ChevronRight, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Trash2, CheckCircle2, XCircle, ChevronDown, ChevronRight, Eye, EyeOff, Download } from "lucide-react";
 
 type Platform = "meta" | "tiktok";
 
@@ -59,6 +59,7 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
   const [pixels, setPixels] = useState<Pixel[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [importing, setImporting] = useState(false);
   const [pixelId, setPixelId] = useState("");
   const [token, setToken] = useState("");
   const [label, setLabel] = useState("");
@@ -74,8 +75,33 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
     if (error) toast.error(error.message);
     setPixels((data as Pixel[]) || []);
     setLoading(false);
+    return (data as Pixel[]) || [];
   };
-  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+
+  const importFromSystem = async (silent = false) => {
+    setImporting(true);
+    const { data, error } = await supabase.functions.invoke("tracking-pixels-seed");
+    setImporting(false);
+    if (error) { if (!silent) toast.error(error.message); return; }
+    const inserted = (data as any)?.inserted?.filter((r: any) => r.platform === platform) || [];
+    if (inserted.length > 0) {
+      toast.success(`${inserted.length} pixel(s) importado(s) do sistema`);
+      load();
+    } else if (!silent) {
+      toast.info("Nenhum pixel novo encontrado no sistema");
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      const existing = await load();
+      if (existing.length === 0) {
+        // auto-import once if env-based pixels exist
+        await importFromSystem(true);
+      }
+    })();
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
 
   const add = async () => {
     const pid = pixelId.trim();
@@ -107,6 +133,14 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
   return (
     <div>
       <p className="text-xs text-gray-500 mb-4">Cadastre um ou mais pixels {title}. Todos os pixels ativos disparam eventos client-side e via API de conversões (CAPI).</p>
+
+      <div className="mb-4">
+        <button onClick={() => importFromSystem(false)} disabled={importing}
+          className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded border border-white/15 text-gray-300 hover:text-white hover:border-white/30">
+          {importing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+          Importar pixel já configurado no sistema
+        </button>
+      </div>
 
       <div className="border border-white/10 rounded p-4 space-y-2 mb-5">
         <div className="grid md:grid-cols-2 gap-2">
