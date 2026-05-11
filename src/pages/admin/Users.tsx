@@ -177,7 +177,7 @@ const Users = () => {
     <div className="min-h-screen bg-[#080808] text-white">
       <header className="sticky top-0 z-40 bg-[#080808] border-b border-white/10">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
-          <Link to={`/admin${productFilter ? `?product=${encodeURIComponent(productFilter)}` : ""}`} className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
+          <Link to={adminPath} className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
           <h1 className="text-xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
             ADMIN <span style={{ color: "#00ff88" }}>· Usuários{areaName ? ` · ${areaName}` : ""}</span>
           </h1>
@@ -248,7 +248,7 @@ const Users = () => {
               <tbody>
                 {filtered.map((u) => {
                   const isU = u.roles.includes("admin");
-                  const hasTrein = hasAccessTo(u, "infozap");
+                  const hasTrein = hasAccessTo(u, productFilter);
                   return (
                     <tr key={u.id} className="border-t border-white/10 hover:bg-white/5">
                       <td className="px-3 py-2">
@@ -265,7 +265,7 @@ const Users = () => {
                         <CheckCell active={isU} onClick={() => toggleAdmin(u)} title={isU ? "Remover admin" : "Tornar admin"} />
                       </td>
                       <td className="px-3 py-2">
-                        <CheckCell active={hasTrein} onClick={() => toggleAccess(u, "infozap")} title={hasTrein ? "Remover acesso ao treinamento" : "Liberar acesso ao treinamento"} />
+                        <CheckCell active={hasTrein} onClick={() => toggleAccess(u, productFilter)} title={hasTrein ? "Remover acesso ao treinamento" : "Liberar acesso ao treinamento"} />
                       </td>
                       {paidModules.map((p) => {
                         const has = hasAccessTo(u, p.product) || hasAnyMentoriaAccess(u);
