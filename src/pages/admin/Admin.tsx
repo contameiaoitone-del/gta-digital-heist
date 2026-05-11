@@ -77,6 +77,7 @@ const Admin = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
   const [searchParams] = useSearchParams();
   const productFilter = searchParams.get("product");
+  const [areaName, setAreaName] = useState<string | null>(null);
   const [modules, setModules] = useState<Module[]>([]);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -111,19 +112,25 @@ const Admin = () => {
 
     const { data, error } = await supabase
       .from("module_categories")
-      .insert(moduleCategoryNames.map((name, index) => ({ name, position: maxPosition + index + 1 })))
+      .insert(moduleCategoryNames.map((name, index) => ({
+        name,
+        position: maxPosition + index + 1,
+        ...(productFilter ? { product: productFilter } : { product: "infozap" }),
+      })))
       .select("*");
 
     if (!error && data) {
       setCategories([...savedCategories, ...((data as Category[]) || [])].sort((a, b) => a.position - b.position));
     }
-  }, []);
+  }, [productFilter]);
   const loadAdminContent = useCallback(async () => {
     let modulesQuery = supabase.from("modules").select("*").order("position");
     if (productFilter) modulesQuery = modulesQuery.eq("product", productFilter);
+    let categoriesQuery = supabase.from("module_categories").select("*").order("position");
+    if (productFilter) categoriesQuery = categoriesQuery.eq("product", productFilter);
     const [{ data: modulesData }, { data: categoriesData }] = await Promise.all([
       modulesQuery,
-      supabase.from("module_categories").select("*").order("position"),
+      categoriesQuery,
     ]);
     const loadedModules = (modulesData as Module[]) || [];
     const loadedCategories = (categoriesData as Category[]) || [];
@@ -139,13 +146,19 @@ const Admin = () => {
     await syncModuleCategories(loadedModules, categories);
   }, [categories, syncModuleCategories, productFilter]);
   const loadCategories = useCallback(async () => {
-    const { data } = await supabase.from("module_categories").select("*").order("position");
+    let q = supabase.from("module_categories").select("*").order("position");
+    if (productFilter) q = q.eq("product", productFilter);
+    const { data } = await q;
     setCategories((data as Category[]) || []);
-  }, []);
+  }, [productFilter]);
   const addCategory = async () => {
     const name = newCategoryName.trim();
     if (!name) return;
-    const { error } = await supabase.from("module_categories").insert({ name, position: categories.length + 1 });
+    const { error } = await supabase.from("module_categories").insert({
+      name,
+      position: categories.length + 1,
+      ...(productFilter ? { product: productFilter } : { product: "infozap" }),
+    });
     if (error) toast.error(error.message);
     else {
       setNewCategoryName("");
@@ -179,6 +192,12 @@ const Admin = () => {
       loadAdminContent();
     }
   }, [isAdmin, loadAdminContent]);
+
+  useEffect(() => {
+    if (!productFilter) { setAreaName(null); return; }
+    supabase.from("member_areas").select("name").eq("product", productFilter).maybeSingle()
+      .then(({ data }) => setAreaName((data as { name: string } | null)?.name || productFilter));
+  }, [productFilter]);
 
   useEffect(() => {
     if (selectedModuleId) loadLessons(selectedModuleId);
@@ -389,10 +408,10 @@ const Admin = () => {
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
           <Link to="/membros" className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
           <h1 className="text-xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
-            ADMIN <span style={{ color: "#00ff88" }}>· Conteúdo</span>
+            ADMIN <span style={{ color: "#00ff88" }}>· {areaName ? areaName : "Conteúdo"}</span>
           </h1>
           <div className="ml-auto flex items-center gap-2">
-            <Link to="/admin/usuarios" className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
+            <Link to={`/admin/usuarios${productFilter ? `?product=${encodeURIComponent(productFilter)}` : ""}`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Usuários
             </Link>
             <Link to="/admin/trackeamento" className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
