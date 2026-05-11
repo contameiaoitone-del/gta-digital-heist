@@ -216,6 +216,9 @@ const Admin = () => {
       duration_seconds: editingLesson.duration_seconds ?? null,
       position: editingLesson.position ?? lessons.length + 1,
       published: editingLesson.published ?? true,
+      cta_enabled: !!editingLesson.cta_enabled,
+      cta_label: editingLesson.cta_enabled ? (editingLesson.cta_label?.trim() || null) : null,
+      cta_url: editingLesson.cta_enabled ? (editingLesson.cta_url?.trim() || null) : null,
     };
     const { error } = editingLesson.id
       ? await supabase.from("lessons").update(payload).eq("id", editingLesson.id)
