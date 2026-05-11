@@ -33,6 +33,19 @@ export function useAuth() {
     supabase.auth.getSession().then(({ data }) => {
       setState((s) => ({ ...s, session: data.session, loading: false, checkedAccess: false }));
     });
+    // Detect impersonation flag from URL
+    try {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("impersonating") === "1") {
+        if (!localStorage.getItem("impersonator_email")) {
+          localStorage.setItem("impersonator_email", "super_admin");
+        }
+        url.searchParams.delete("impersonating");
+        window.history.replaceState({}, "", url.toString());
+      }
+    } catch (_) {
+      // noop
+    }
     return () => sub.subscription.unsubscribe();
   }, []);
 
