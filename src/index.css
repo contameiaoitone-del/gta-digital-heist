@@ -542,3 +542,9 @@ All colors MUST be HSL.
   100% { transform: translateX(-33.33%); }
 }
 }
+/* RichTextField placeholder */
+.rich-editable:empty:before {
+  content: attr(data-placeholder);
+  color: rgba(255,255,255,0.25);
+  pointer-events: none;
+}
