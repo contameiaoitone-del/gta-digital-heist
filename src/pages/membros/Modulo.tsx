@@ -44,7 +44,7 @@ const fmtDuration = (s: number | null) => {
 };
 
 const Modulo = () => {
-  const { id } = useParams<{ id: string }>();
+  const { product = "infozap", id } = useParams<{ product?: string; id: string }>();
   const navigate = useNavigate();
   const { isAdmin, session } = useAuth();
   const signOut = useSignOut();
@@ -55,12 +55,13 @@ const Modulo = () => {
   const [notFound, setNotFound] = useState(false);
   const [hasMentoriaAccess, setHasMentoriaAccess] = useState(false);
   const [accessGrantedAt, setAccessGrantedAt] = useState<string | null>(null);
+  const productPath = `/${encodeURIComponent(product)}`;
 
   useEffect(() => {
     if (!id) return;
     (async () => {
       const [mRes, lRes, pRes] = await Promise.all([
-        supabase.from("modules").select("*").eq("id", id).maybeSingle(),
+        supabase.from("modules").select("*").eq("id", id).eq("product", product).maybeSingle(),
         supabase.from("lessons").select("*").eq("module_id", id).in("status", ["published", "coming_soon"]).order("position"),
         session ? supabase.from("lesson_progress").select("*").eq("user_id", session.user.id) : Promise.resolve({ data: [] as Progress[] }),
       ]);
@@ -102,7 +103,7 @@ const Modulo = () => {
       }
       setLoading(false);
     })();
-  }, [id, session]);
+  }, [id, session, product]);
 
   const lessonLockDays = (l: Lesson): number | null => {
     if (!mod || mod.kind !== "treinamento") return null;
@@ -118,7 +119,7 @@ const Modulo = () => {
     return inProgress || playable.find((l) => !progress[l.id]?.completed) || playable[0];
   }, [lessons, progress]);
 
-  if (notFound) return <Navigate to="/membros" replace />;
+  if (notFound) return <Navigate to={`${productPath}/membros`} replace />;
 
   const isMentoriaLocked = mod?.kind === "mentoria" && !hasMentoriaAccess;
 
@@ -126,13 +127,13 @@ const Modulo = () => {
     <div className="min-h-screen bg-[#080808] text-white pb-24">
       <header className="sticky top-0 z-40 bg-gradient-to-b from-[#080808] via-[#080808]/95 to-transparent">
         <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
-          <Link to="/membros" className="flex items-center gap-2 text-gray-300 hover:text-white">
+          <Link to={`${productPath}/membros`} className="flex items-center gap-2 text-gray-300 hover:text-white">
             <ArrowLeft className="h-5 w-5" />
             <span className="text-sm uppercase tracking-wider">Voltar</span>
           </Link>
           <div className="flex items-center gap-2">
             {isAdmin && (
-              <Link to="/admin" className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[#00ff88]">
+              <Link to={`${productPath}/admin`} className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[#00ff88]">
                 <Settings className="h-4 w-4" /> Admin
               </Link>
             )}
@@ -160,7 +161,7 @@ const Modulo = () => {
             {nextLesson && (
               <div className="flex flex-wrap gap-3">
                 <button
-                  onClick={() => navigate(`/membros/aula/${nextLesson.id}`)}
+                  onClick={() => navigate(`${productPath}/membros/aula/${nextLesson.id}`)}
                   className="flex items-center gap-2 px-6 py-3 rounded font-bold uppercase"
                   style={{ backgroundColor: "#fff", color: "#000", fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
                 >
@@ -202,7 +203,7 @@ const Modulo = () => {
             const lockDays = lessonLockDays(l);
             const locked = coming || (lockDays !== null && lockDays > 0);
             const RowEl: React.ElementType = locked ? "div" : Link;
-            const rowProps = locked ? { "aria-disabled": true } : { to: `/membros/aula/${l.id}` };
+            const rowProps = locked ? { "aria-disabled": true } : { to: `${productPath}/membros/aula/${l.id}` };
             return (
               <li key={l.id}>
                 <RowEl
