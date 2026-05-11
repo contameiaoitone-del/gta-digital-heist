@@ -121,9 +121,11 @@ const Admin = () => {
   const loadAdminContent = useCallback(async () => {
     let modulesQuery = supabase.from("modules").select("*").order("position");
     if (productFilter) modulesQuery = modulesQuery.eq("product", productFilter);
+    let categoriesQuery = supabase.from("module_categories").select("*").order("position");
+    if (productFilter) categoriesQuery = categoriesQuery.eq("product", productFilter);
     const [{ data: modulesData }, { data: categoriesData }] = await Promise.all([
       modulesQuery,
-      supabase.from("module_categories").select("*").order("position"),
+      categoriesQuery,
     ]);
     const loadedModules = (modulesData as Module[]) || [];
     const loadedCategories = (categoriesData as Category[]) || [];
@@ -139,13 +141,19 @@ const Admin = () => {
     await syncModuleCategories(loadedModules, categories);
   }, [categories, syncModuleCategories, productFilter]);
   const loadCategories = useCallback(async () => {
-    const { data } = await supabase.from("module_categories").select("*").order("position");
+    let q = supabase.from("module_categories").select("*").order("position");
+    if (productFilter) q = q.eq("product", productFilter);
+    const { data } = await q;
     setCategories((data as Category[]) || []);
-  }, []);
+  }, [productFilter]);
   const addCategory = async () => {
     const name = newCategoryName.trim();
     if (!name) return;
-    const { error } = await supabase.from("module_categories").insert({ name, position: categories.length + 1 });
+    const { error } = await supabase.from("module_categories").insert({
+      name,
+      position: categories.length + 1,
+      ...(productFilter ? { product: productFilter } : { product: "infozap" }),
+    });
     if (error) toast.error(error.message);
     else {
       setNewCategoryName("");

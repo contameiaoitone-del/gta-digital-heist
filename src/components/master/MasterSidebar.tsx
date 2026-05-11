@@ -90,13 +90,20 @@ export function MasterSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Landing pages</SidebarGroupLabel>
+          <SidebarGroupLabel>Extras</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton disabled className={soonCls}>
                   <FileText className="h-4 w-4" />
                   <span>Minhas LPs</span>
+                  <SoonBadge />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton disabled className={soonCls}>
+                  <Clock className="h-4 w-4" />
+                  <span>Quiz Interativo</span>
                   <SoonBadge />
                 </SidebarMenuButton>
               </SidebarMenuItem>
