@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Session } from "@supabase/supabase-js";
 import { Loader2 } from "lucide-react";
@@ -71,6 +71,9 @@ export const RequireAuth = ({
   requireAdmin?: boolean;
 }) => {
   const { session, loading, hasAccess, isAdmin, checkedAccess } = useAuth();
+  const location = useLocation();
+  const product = location.pathname.match(/^\/([^/]+)\/(?:membros|admin)/)?.[1] || "infozap";
+  const productPath = `/${encodeURIComponent(product)}`;
   // Share-link expiry watcher: if the user signed in via a share link with an
   // expiration, sign them out automatically when it expires.
   useEffect(() => {
@@ -83,13 +86,13 @@ export const RequireAuth = ({
         localStorage.removeItem("share_session_expires_at");
         localStorage.removeItem("share_session_active");
         await supabase.auth.signOut();
-        window.location.href = "/membros/login";
+        window.location.href = `${productPath}/membros/login`;
       }
     };
     tick();
     const id = window.setInterval(tick, 1000);
     return () => window.clearInterval(id);
-  }, [session]);
+  }, [session, productPath]);
   if (loading || (session && !checkedAccess)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white">
@@ -97,8 +100,8 @@ export const RequireAuth = ({
       </div>
     );
   }
-  if (!session) return <Navigate to="/membros/login" replace />;
-  if (requireAdmin && !isAdmin) return <Navigate to="/membros" replace />;
+  if (!session) return <Navigate to={`${productPath}/membros/login`} replace />;
+  if (requireAdmin && !isAdmin) return <Navigate to={`${productPath}/membros`} replace />;
   if (!requireAdmin && !hasAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white px-4 text-center">
@@ -124,10 +127,12 @@ export const RequireAuth = ({
 
 export const useSignOut = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const product = location.pathname.match(/^\/([^/]+)\/(?:membros|admin)/)?.[1] || "infozap";
   return async () => {
     localStorage.removeItem("share_session_expires_at");
     localStorage.removeItem("share_session_active");
     await supabase.auth.signOut();
-    navigate("/membros/login");
+    navigate(`/${encodeURIComponent(product)}/membros/login`);
   };
 };
