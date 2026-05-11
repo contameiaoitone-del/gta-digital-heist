@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -25,6 +25,9 @@ interface PaidModule {
 
 const Users = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
+  const [searchParams] = useSearchParams();
+  const productFilter = searchParams.get("product");
+  const [areaName, setAreaName] = useState<string | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [paidModules, setPaidModules] = useState<PaidModule[]>([]);
   const [busy, setBusy] = useState(false);
@@ -76,6 +79,12 @@ const Users = () => {
     if (isAdmin) load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdmin]);
+
+  useEffect(() => {
+    if (!productFilter) { setAreaName(null); return; }
+    supabase.from("member_areas").select("name").eq("product", productFilter).maybeSingle()
+      .then(({ data }) => setAreaName((data as { name: string } | null)?.name || productFilter));
+  }, [productFilter]);
 
   const hasAccessTo = (u: AdminUser, product: string) =>
     u.access.some((a) => a.product === product && a.active);
@@ -140,9 +149,10 @@ const Users = () => {
       if (filterAdmin && !u.roles.includes("admin")) return false;
       if (filterTreinamento && !hasAccessTo(u, "infozap")) return false;
       if (filterPaidProduct && !hasAccessTo(u, filterPaidProduct)) return false;
+      if (productFilter && !u.roles.includes("admin") && !hasAccessTo(u, productFilter)) return false;
       return true;
     });
-  }, [users, search, filterAdmin, filterTreinamento, filterPaidProduct]);
+  }, [users, search, filterAdmin, filterTreinamento, filterPaidProduct, productFilter]);
 
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
@@ -163,9 +173,9 @@ const Users = () => {
     <div className="min-h-screen bg-[#080808] text-white">
       <header className="sticky top-0 z-40 bg-[#080808] border-b border-white/10">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
-          <Link to="/admin" className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
+          <Link to={`/admin${productFilter ? `?product=${encodeURIComponent(productFilter)}` : ""}`} className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
           <h1 className="text-xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
-            ADMIN <span style={{ color: "#00ff88" }}>· Usuários</span>
+            ADMIN <span style={{ color: "#00ff88" }}>· Usuários{areaName ? ` · ${areaName}` : ""}</span>
           </h1>
           <button
             onClick={() => setShowCreate(true)}
