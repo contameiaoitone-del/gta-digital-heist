@@ -33,6 +33,9 @@ const Users = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [cEmail, setCEmail] = useState("");
   const [cPassword, setCPassword] = useState("");
+  const [cFullName, setCFullName] = useState("");
+  const [cPhone, setCPhone] = useState("");
+  const [cCpf, setCCpf] = useState("");
   const [cAdmin, setCAdmin] = useState(false);
   const [cTrein, setCTrein] = useState(true);
   const [creating, setCreating] = useState(false);
