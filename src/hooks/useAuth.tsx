@@ -10,6 +10,7 @@ interface AuthState {
   hasAccess: boolean;
   isAdmin: boolean;
   isMaster: boolean;
+  isSuperAdmin: boolean;
   checkedAccess: boolean;
 }
 
@@ -20,6 +21,7 @@ export function useAuth() {
     hasAccess: false,
     isAdmin: false,
     isMaster: false,
+    isSuperAdmin: false,
     checkedAccess: false,
   });
 
@@ -38,7 +40,7 @@ export function useAuth() {
   useEffect(() => {
     if (state.loading) return;
     if (!state.session) {
-      setState((s) => ({ ...s, hasAccess: false, isAdmin: false, isMaster: false, checkedAccess: true }));
+      setState((s) => ({ ...s, hasAccess: false, isAdmin: false, isMaster: false, isSuperAdmin: false, checkedAccess: true }));
       return;
     }
     let cancelled = false;
@@ -50,13 +52,15 @@ export function useAuth() {
       ]);
       if (cancelled) return;
       const roles = (roleRes.data || []).map((r) => r.role);
-      const isMaster = roles.includes("master");
+      const isSuperAdmin = roles.includes("super_admin");
+      const isMaster = isSuperAdmin || roles.includes("master");
       const isAdmin = isMaster || roles.includes("admin");
       setState((s) => ({
         ...s,
         hasAccess: !!accessRes.data || isAdmin,
         isAdmin,
         isMaster,
+        isSuperAdmin,
         checkedAccess: true,
       }));
     })();
@@ -72,14 +76,17 @@ export const RequireAuth = ({
   children,
   requireAdmin = false,
   requireMaster = false,
+  requireSuperAdmin = false,
 }: {
   children: React.ReactNode;
   requireAdmin?: boolean;
   requireMaster?: boolean;
+  requireSuperAdmin?: boolean;
 }) => {
-  const { session, loading, hasAccess, isAdmin, isMaster, checkedAccess } = useAuth();
+  const { session, loading, hasAccess, isAdmin, isMaster, isSuperAdmin, checkedAccess } = useAuth();
   const location = useLocation();
-  const isMasterRoute = requireMaster || /^\/(home|areas|landing-pages)(\/|$)/.test(location.pathname);
+  const isSuperRoute = requireSuperAdmin || /^\/super(\/|$)/.test(location.pathname);
+  const isMasterRoute = isSuperRoute || requireMaster || /^\/(home|areas|landing-pages)(\/|$)/.test(location.pathname);
   const product = location.pathname.match(/^\/([^/]+)\/(?:membros|admin)/)?.[1] || "treinamento";
   const productPath = `/${encodeURIComponent(product)}`;
   // Share-link expiry watcher: if the user signed in via a share link with an
@@ -94,7 +101,7 @@ export const RequireAuth = ({
         localStorage.removeItem("share_session_expires_at");
         localStorage.removeItem("share_session_active");
         await supabase.auth.signOut();
-        window.location.href = isMasterRoute ? "/home/login" : `${productPath}/membros/login`;
+        window.location.href = isSuperRoute ? "/super/login" : isMasterRoute ? "/home/login" : `${productPath}/membros/login`;
       }
     };
     tick();
@@ -108,7 +115,8 @@ export const RequireAuth = ({
       </div>
     );
   }
-  if (!session) return <Navigate to={isMasterRoute ? "/home/login" : `${productPath}/membros/login`} replace />;
+  if (!session) return <Navigate to={isSuperRoute ? "/super/login" : isMasterRoute ? "/home/login" : `${productPath}/membros/login`} replace />;
+  if (requireSuperAdmin && !isSuperAdmin) return <Navigate to="/super/login" replace />;
   if (requireMaster && !isMaster) return <Navigate to="/home/login" replace />;
   if (requireAdmin && !isAdmin) return <Navigate to={`${productPath}/membros`} replace />;
   if (!requireAdmin && !hasAccess) {
