@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useSearchParams } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import NotFound from "./pages/NotFound";
 import { TrackingProvider } from "./components/TrackingProvider";
@@ -34,6 +34,12 @@ import { RequireAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
 
+const LegacyProductRedirect = ({ suffix = "" }: { suffix?: string }) => {
+  const [searchParams] = useSearchParams();
+  const product = searchParams.get("product") || "infozap";
+  return <Navigate to={`/${encodeURIComponent(product)}/admin${suffix}`} replace />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -58,12 +64,12 @@ const App = () => (
             <Route path="/membros/modulo/:id" element={<Navigate to="/infozap/membros" replace />} />
             <Route path="/membros/aula/:id" element={<Navigate to="/infozap/membros" replace />} />
             <Route path="/membros/share/:token" element={<ShareConsume />} />
-            <Route path="/admin" element={<Navigate to="/infozap/admin" replace />} />
-            <Route path="/admin/capi-log" element={<Navigate to="/infozap/admin/capi-log" replace />} />
-            <Route path="/admin/usuarios" element={<Navigate to="/infozap/admin/usuarios" replace />} />
-            <Route path="/admin/credenciais" element={<Navigate to="/infozap/admin/credenciais" replace />} />
-            <Route path="/admin/configuracoes" element={<Navigate to="/infozap/admin/configuracoes" replace />} />
-            <Route path="/admin/trackeamento" element={<Navigate to="/infozap/admin/trackeamento" replace />} />
+            <Route path="/admin" element={<LegacyProductRedirect />} />
+            <Route path="/admin/capi-log" element={<LegacyProductRedirect suffix="/capi-log" />} />
+            <Route path="/admin/usuarios" element={<LegacyProductRedirect suffix="/usuarios" />} />
+            <Route path="/admin/credenciais" element={<LegacyProductRedirect suffix="/credenciais" />} />
+            <Route path="/admin/configuracoes" element={<LegacyProductRedirect suffix="/configuracoes" />} />
+            <Route path="/admin/trackeamento" element={<LegacyProductRedirect suffix="/trackeamento" />} />
             <Route path="/:product/membros/login" element={<MembrosLogin />} />
             <Route path="/:product/reset-password" element={<ResetPassword />} />
             <Route path="/:product/membros" element={<RequireAuth><Membros /></RequireAuth>} />
