@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { Link, Navigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -25,8 +25,9 @@ interface PaidModule {
 
 const Users = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
+  const { product: productParam } = useParams<{ product?: string }>();
   const [searchParams] = useSearchParams();
-  const productFilter = searchParams.get("product");
+  const productFilter = productParam || searchParams.get("product") || "infozap";
   const [areaName, setAreaName] = useState<string | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [paidModules, setPaidModules] = useState<PaidModule[]>([]);
