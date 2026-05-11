@@ -9,6 +9,7 @@ import EpisodeCard from "@/components/membros/EpisodeCard";
 import PasskeySetup from "@/components/membros/PasskeySetup";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import ProfileDialog from "@/components/membros/ProfileDialog";
+import { useResolvedArea } from "@/hooks/useResolvedArea";
 
 interface Module {
   id: string;
@@ -63,9 +64,6 @@ const Membros = () => {
   const [loading, setLoading] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
   const [userVars, setUserVars] = useState<{ name: string; full_name: string; email: string; phone: string }>({ name: "", full_name: "", email: "", phone: "" });
-  // resolve UUID-or-slug to canonical product slug
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { useResolvedArea } = require("@/hooks/useResolvedArea") as typeof import("@/hooks/useResolvedArea");
   const resolved = useResolvedArea();
   const product = resolved.loading ? "" : (resolved.product || routeParamRaw);
   const productPath = `/${encodeURIComponent(routeParamRaw)}`;
