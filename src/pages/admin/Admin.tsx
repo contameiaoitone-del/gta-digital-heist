@@ -28,6 +28,9 @@ interface Lesson {
   duration_seconds: number | null;
   position: number;
   published: boolean;
+  cta_enabled?: boolean;
+  cta_label?: string | null;
+  cta_url?: string | null;
 }
 interface Category {
   id: string;
