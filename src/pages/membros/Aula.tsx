@@ -13,6 +13,7 @@ interface Lesson {
   youtube_id: string | null;
   youtube_url: string | null;
   vturb_player_id: string | null;
+  vturb_optimization_code?: string | null;
   duration_seconds: number | null;
   position: number;
   status?: string;
@@ -178,6 +179,20 @@ const Aula = () => {
     const container = vturbRef.current;
     if (!container || !lesson?.vturb_player_id) return;
     container.innerHTML = "";
+    // Inject optimization code (preload tags etc.) into <head>
+    const headInjected: HTMLElement[] = [];
+    if (lesson.vturb_optimization_code) {
+      const headTpl = document.createElement("template");
+      headTpl.innerHTML = lesson.vturb_optimization_code.trim();
+      Array.from(headTpl.content.childNodes).forEach((node) => {
+        if (node.nodeType === 1) {
+          const el = node.cloneNode(true) as HTMLElement;
+          document.head.appendChild(el);
+          headInjected.push(el);
+        }
+      });
+    }
+    // Inject the player markup + scripts into the container
     const tpl = document.createElement("template");
     tpl.innerHTML = lesson.vturb_player_id.trim();
     Array.from(tpl.content.childNodes).forEach((node) => {
@@ -191,7 +206,10 @@ const Aula = () => {
         container.appendChild(node.cloneNode(true));
       }
     });
-  }, [lesson?.vturb_player_id]);
+    return () => {
+      headInjected.forEach((el) => el.parentNode?.removeChild(el));
+    };
+  }, [lesson?.vturb_player_id, lesson?.vturb_optimization_code]);
 
   const idx = useMemo(() => siblings.findIndex((s) => s.id === lesson?.id), [siblings, lesson]);
   const prev = idx > 0 ? siblings[idx - 1] : null;
