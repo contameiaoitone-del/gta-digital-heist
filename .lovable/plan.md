@@ -1,64 +1,105 @@
-## Login com Passkey (biometria — Face ID / digital)
+## Visão geral
 
-Adicionar um botão com ícone de digital na tela `/membros/login` que permite ao usuário autenticar via passkey (WebAuthn) usando a biometria do dispositivo (Face ID, Touch ID, digital Android, Windows Hello). Usaremos `@simplewebauthn/browser` no frontend e `@simplewebauthn/server` em uma Edge Function.
+Vou expandir o cadastro de aulas/módulos com 4 grandes melhorias, mantendo o painel admin já existente e a página de aula da área de membros.
 
-### Fluxo do usuário
+---
 
-1. Usuário já cadastrado faz login normal (email + senha) uma primeira vez.
-2. Em `/membros` (ou na própria tela de login após login), aparece um banner "Ativar login com biometria". Ao clicar, o navegador pede Face ID / digital e a passkey é registrada.
-3. Em logins futuros: usuário digita o e-mail → clica no ícone de digital ao lado → o navegador pede biometria → login automático sem senha.
+## 1. Múltiplos botões de CTA por aula (com reordenação)
 
-### Banco de dados (nova migração)
+**Hoje:** existe um único botão (`cta_enabled`, `cta_label`, `cta_url`).
 
-Tabela `webauthn_credentials`:
-- `user_id` (uuid, FK auth.users)
-- `credential_id` (text, único — base64url)
-- `public_key` (text — base64url)
-- `counter` (bigint)
-- `transports` (text[])
-- `device_name` (text)
-- `last_used_at` (timestamptz)
+**Mudança:**
+- Nova tabela `lesson_ctas` (lesson_id, label, url, position) — permite N botões com ordem arbitrária.
+- Migração mantém os dados atuais: copia `cta_*` existentes para a nova tabela.
+- No admin, a seção "Botões de redirect" passa a listar os botões cadastrados, com:
+  - Botão "+ Adicionar botão"
+  - Setas ↑/↓ para reordenar
+  - Botão de excluir
+  - Campos: texto e URL
+- Na página da aula, renderiza todos os botões em ordem, centralizados, com a setinha diagonal `ArrowUpRight`.
 
-Tabela `webauthn_challenges` (curta duração, ~5 min):
-- `email` (text) ou `user_id` (uuid)
-- `challenge` (text)
-- `type` (`registration` | `authentication`)
-- `expires_at` (timestamptz)
+---
 
-RLS: somente o próprio usuário lê/deleta suas credenciais; inserts feitos via Edge Function (service role).
+## 2. Reorganização do cadastro: "Conteúdo da aula"
 
-### Edge Functions
+Nova UI dentro do form de aula:
 
-Quatro funções, todas usando `@simplewebauthn/server` via npm import (`npm:@simplewebauthn/server`):
+```text
+▼ Conteúdo da aula
+   ▸ Vídeo
+       [toggle OFF] Adicionar URL de YouTube → input URL (aparece se ON)
+       [toggle OFF] Adicionar URL Vturb     → textarea embed (aparece se ON)
+   ▸ Conteúdo em texto
+       [toggle OFF] Habilitar conteúdo apenas em texto
+           ↓ se ON:
+           - Upload de imagem de cabeçalho (banner full-width)
+           - Textarea longo redimensionável (vertical resize)
+           - Upload de anexos (documentos)
+```
 
-1. `webauthn-register-options` (auth obrigatório) — gera opções de registro, salva challenge.
-2. `webauthn-register-verify` (auth obrigatório) — verifica resposta, persiste credencial.
-3. `webauthn-auth-options` (público) — recebe `email`, busca user_id e credenciais, retorna opções de autenticação + salva challenge. Para evitar enumeração de e-mails, sempre retorna opções (com `allowCredentials` vazio se não existir).
-4. `webauthn-auth-verify` (público) — verifica resposta, e se válida emite uma sessão Supabase via `auth.admin.generateLink({ type: 'magiclink' })` + troca por sessão, OU usa `signInWithIdToken` custom. Padrão escolhido: gerar magic link e devolver `action_link` que o cliente abre internamente para criar a sessão (mais simples e seguro que JWT custom).
+Todos os toggles começam **desligados** por padrão em aulas novas.
 
-`rpId` = host do app (ex.: `gta-digital-heist.lovable.app`). `origin` = `window.location.origin`. Configurar via env var `WEBAUTHN_RP_ID` + `WEBAUTHN_ORIGIN`.
+**Modo texto:** quando habilitado, a página da aula esconde o player e mostra:
+- Imagem de cabeçalho cobrindo o topo (mesmo tamanho do vídeo) com gradiente preto na parte inferior (igual ao hero do membros).
+- Texto longo abaixo (com `linkify` já existente).
+- Lista de documentos anexados para download.
 
-### Frontend (`MembrosLogin.tsx`)
+**Modo vídeo:** continua funcionando como hoje. Adiciona também a seção de **anexos** (sempre disponível, mesmo no modo vídeo) — permite upload de arquivos para download.
 
-- Instalar `@simplewebauthn/browser`.
-- Adicionar botão `<button>` com ícone `Fingerprint` (lucide) ao lado do campo de e-mail.
-- Habilitado apenas se: `email` preenchido E `browserSupportsWebAuthn()` retorna true.
-- Ao clicar: chama `webauthn-auth-options` → `startAuthentication()` → `webauthn-auth-verify` → cria sessão → `navigate('/membros')`.
-- Tratamento de erros: "Nenhuma passkey encontrada para este e-mail. Faça login com senha e ative a biometria nas configurações."
+---
 
-### Registro da passkey
+## 3. Upload de arquivos/anexos
 
-Adicionar componente `PasskeySetup.tsx` em `/membros` (página principal) — card "Ative login por biometria" mostrado quando o usuário ainda não tem credencial registrada. Botão chama `webauthn-register-options` → `startRegistration()` → `webauthn-register-verify`.
+- Novo bucket público `lesson-attachments` (ou private com signed URLs — vou usar público para simplicidade de download direto, igual ao `module-covers`).
+- Nova tabela `lesson_attachments` (lesson_id, name, file_url, size_bytes, mime, position).
+- No admin: drag & drop simples com lista; permite remover.
+- Na página da aula: card "Materiais da aula" com lista de arquivos para baixar.
 
-### Detalhes técnicos
+---
 
-- Biblioteca: `@simplewebauthn/browser` (cliente) e `@simplewebauthn/server` (Deno via `npm:`).
-- `userVerification: 'preferred'`, `authenticatorAttachment: 'platform'` para priorizar biometria do dispositivo.
-- Challenges armazenados server-side e expirados em 5 min.
-- RP ID configurável por env var para funcionar tanto no preview quanto no domínio publicado.
+## 4. Agendamento de liberação (drip content)
 
-### Fora de escopo
+Novo conceito: **liberação imediata** ou **N dias após o pagamento** (drip).
 
-- Gerenciamento avançado (renomear/remover passkeys individuais) — apenas listagem básica + botão remover.
-- Sincronização entre dispositivos (já é nativa via iCloud Keychain / Google Password Manager).
-- 2FA combinando senha + passkey.
+**Schema:**
+- `modules.release_days INT NOT NULL DEFAULT 0` (0 = imediato)
+- `lessons.release_days INT NOT NULL DEFAULT 0`
+
+**Como saber a data do pagamento?** Já existe `member_access.granted_at`. Vou usar essa data como referência para o "drip" do produto correspondente.
+
+**Lógica de acesso (frontend + servidor):**
+- Função SQL `is_drip_unlocked(_user_id, _product, _release_days)` que retorna `true` se `now() >= granted_at + release_days * INTERVAL '1 day'`.
+- Atualizar policy de `lessons` e `modules` para também checar drip (somente para `published`; `coming_soon` continua bloqueado).
+- Na UI:
+  - Se ainda não liberado por drip → mostra badge "Libera em X dias" e bloqueia clique (similar ao "Em breve", mas com contagem).
+  - Página da aula bloqueada renderiza "Esta aula libera em X dias" se acessada antes do prazo.
+- No admin: novo campo "Liberação" com select (Imediata / Após N dias) e input numérico.
+
+---
+
+## Arquivos afetados
+
+**Migração SQL** (uma só):
+- `lesson_ctas` (nova tabela + RLS + copia dados de `lessons.cta_*`)
+- `lesson_attachments` (nova tabela + RLS)
+- bucket `lesson-attachments` + policies (público para read, admin para write)
+- `modules.release_days`, `lessons.release_days`
+- `lessons`: `content_mode` (`'video' | 'text'`), `header_image_url`, `text_content`
+- Função `is_drip_unlocked` + atualização das policies de `lessons` e `modules`.
+
+**Frontend:**
+- `src/pages/admin/Admin.tsx` — novo formulário de aula (CTAs múltiplos, conteúdo da aula com toggles, anexos, release_days nos módulos e aulas).
+- `src/pages/membros/Aula.tsx` — renderiza modo texto, lista de CTAs, anexos, bloqueio por drip.
+- `src/pages/membros/Modulo.tsx` e `src/pages/membros/Membros.tsx` — exibem badge "Libera em X dias" e bloqueiam acesso.
+- `src/components/membros/PosterCard.tsx` — suporta novo estado `lockedDays`.
+- `src/integrations/supabase/types.ts` — regenerado pela migração.
+
+---
+
+## Notas técnicas
+
+- Os campos antigos `cta_enabled/cta_label/cta_url` ficarão como **legacy** após a migração (preservados, mas o admin/leitor passará a usar `lesson_ctas`). Mantenho-os para não quebrar nada.
+- Anexos e header image vão para o bucket `lesson-attachments` (subpastas por `lesson_id`).
+- O drip usa `member_access.granted_at`. Para módulos `mentoria`, considera o acesso `mentoria` ou `mentoria:<module_id>`.
+- Toggle de "apenas texto" é exclusivo: se ligado, esconde campos de vídeo e exige imagem de cabeçalho + texto.
+- Limites: arquivos até 50MB por upload (Supabase storage default).
