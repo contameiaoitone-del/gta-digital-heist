@@ -19,6 +19,9 @@ interface Module {
   category: string | null;
   status?: string;
   created_at?: string;
+  product?: string;
+  kind?: string;
+  release_days?: number | null;
 }
 interface Category {
   id: string;
@@ -35,6 +38,7 @@ interface Lesson {
   duration_seconds: number | null;
   position: number;
   status?: string;
+  release_days?: number | null;
 }
 interface Progress {
   lesson_id: string;
@@ -53,16 +57,18 @@ const Membros = () => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [progress, setProgress] = useState<Record<string, Progress>>({});
+  const [accessByProduct, setAccessByProduct] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     document.title = "Área de Membros — Treinamento";
     (async () => {
-      const [mRes, lRes, cRes, pRes] = await Promise.all([
+      const [mRes, lRes, cRes, pRes, aRes] = await Promise.all([
         supabase.from("modules").select("*").order("position"),
         supabase.from("lessons").select("*").order("position"),
         supabase.from("module_categories").select("*").order("position"),
         session ? supabase.from("lesson_progress").select("*").eq("user_id", session.user.id) : Promise.resolve({ data: [] as Progress[] }),
+        session ? supabase.from("member_access").select("product, granted_at").eq("user_id", session.user.id).eq("active", true) : Promise.resolve({ data: [] }),
       ]);
       setModules((mRes.data as Module[]) || []);
       setLessons((lRes.data as Lesson[]) || []);
@@ -70,9 +76,25 @@ const Membros = () => {
       const pmap: Record<string, Progress> = {};
       ((pRes as { data: Progress[] | null }).data || []).forEach((p) => (pmap[p.lesson_id] = p));
       setProgress(pmap);
+      const amap: Record<string, string> = {};
+      ((aRes as { data: { product: string; granted_at: string }[] | null }).data || []).forEach((a) => {
+        if (!amap[a.product] || a.granted_at < amap[a.product]) amap[a.product] = a.granted_at;
+      });
+      setAccessByProduct(amap);
       setLoading(false);
     })();
   }, [session]);
+
+  const computeLockDays = (m: Module): number | null => {
+    if (m.kind !== "treinamento") return null;
+    const days = m.release_days || 0;
+    if (days <= 0) return null;
+    const grantedAt = m.product ? accessByProduct[m.product] : null;
+    if (!grantedAt) return null;
+    const unlockMs = new Date(grantedAt).getTime() + days * 86400000;
+    const remaining = unlockMs - Date.now();
+    return remaining > 0 ? Math.ceil(remaining / 86400000) : null;
+  };
 
   const lessonsByModule = useMemo(() => {
     const map: Record<string, Lesson[]> = {};
@@ -223,6 +245,7 @@ const Membros = () => {
                     progressPct={pct}
                     completed={pct === 100 && total > 0}
                     comingSoon={m.status === "coming_soon"}
+                    lockedDays={computeLockDays(m)}
                   />
                 );
               })}
