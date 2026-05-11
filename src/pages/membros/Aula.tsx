@@ -66,7 +66,7 @@ interface LessonMeta {
 }
 
 const Aula = () => {
-  const { id } = useParams<{ id: string }>();
+  const { product = "infozap", id } = useParams<{ product?: string; id: string }>();
   const navigate = useNavigate();
   const { session } = useAuth();
   const [lesson, setLesson] = useState<Lesson | null>(null);
@@ -82,6 +82,7 @@ const Aula = () => {
   const playerRef = useRef<HTMLIFrameElement>(null);
   const tickRef = useRef<number>(0);
   const vturbRef = useRef<HTMLDivElement>(null);
+  const productPath = `/${encodeURIComponent(product)}`;
 
   useEffect(() => {
     if (!id) return;
@@ -114,13 +115,19 @@ const Aula = () => {
       const l = lessonData as Lesson;
       setLesson(l);
       const [mRes, sRes, pRes, ctaRes, attRes] = await Promise.all([
-        supabase.from("modules").select("id, title, product, kind, release_days").eq("id", l.module_id).maybeSingle(),
+        supabase.from("modules").select("id, title, product, kind, release_days").eq("id", l.module_id).eq("product", product).maybeSingle(),
         supabase.from("lessons").select("*").eq("module_id", l.module_id).order("position"),
         session ? supabase.from("lesson_progress").select("completed, watched_seconds").eq("user_id", session.user.id).eq("lesson_id", l.id).maybeSingle() : Promise.resolve({ data: null }),
         supabase.from("lesson_ctas").select("*").eq("lesson_id", l.id).order("position"),
         supabase.from("lesson_attachments").select("*").eq("lesson_id", l.id).order("position"),
       ]);
       const modData = (mRes.data as Module) || null;
+      if (!modData) {
+        setLesson(null);
+        setMeta(null);
+        setLoading(false);
+        return;
+      }
       setModule(modData);
       setSiblings((sRes.data as Lesson[]) || []);
       setCompleted(!!(pRes as { data: { completed?: boolean } | null }).data?.completed);
@@ -153,7 +160,7 @@ const Aula = () => {
       setLoading(false);
       document.title = `${l.title} — Treinamento`;
     })();
-  }, [id, session]);
+  }, [id, session, product]);
 
   // Save progress every 10s while on page
   useEffect(() => {
