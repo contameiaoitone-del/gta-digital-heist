@@ -145,6 +145,9 @@ export type Database = {
       lessons: {
         Row: {
           created_at: string
+          cta_enabled: boolean
+          cta_label: string | null
+          cta_url: string | null
           description: string | null
           duration_seconds: number | null
           id: string
@@ -160,6 +163,9 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          cta_enabled?: boolean
+          cta_label?: string | null
+          cta_url?: string | null
           description?: string | null
           duration_seconds?: number | null
           id?: string
@@ -175,6 +181,9 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          cta_enabled?: boolean
+          cta_label?: string | null
+          cta_url?: string | null
           description?: string | null
           duration_seconds?: number | null
           id?: string
