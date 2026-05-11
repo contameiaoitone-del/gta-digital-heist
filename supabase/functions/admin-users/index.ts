@@ -55,9 +55,14 @@ Deno.serve(async (req) => {
       if (error) return json({ error: error.message }, 400);
 
       const ids = list.users.map((u) => u.id);
-      const [rolesRes, accessRes] = await Promise.all([
+      const emails = list.users.map((u) => (u.email || "").toLowerCase()).filter(Boolean);
+      const [rolesRes, accessRes, profilesRes, ordersRes] = await Promise.all([
         admin.from("user_roles").select("user_id, role").in("user_id", ids),
         admin.from("member_access").select("user_id, product, active").in("user_id", ids),
+        admin.from("profiles").select("id, full_name").in("id", ids),
+        emails.length
+          ? admin.from("orders").select("customer_email, customer_phone, customer_name, created_at").in("customer_email", emails).order("created_at", { ascending: false })
+          : Promise.resolve({ data: [] as any[] }),
       ]);
       const rolesByUser = new Map<string, string[]>();
       (rolesRes.data || []).forEach((r) => {
@@ -71,9 +76,27 @@ Deno.serve(async (req) => {
         arr.push({ product: a.product, active: a.active });
         accessByUser.set(a.user_id, arr);
       });
+      const fullNameById = new Map<string, string>();
+      (profilesRes.data || []).forEach((p: any) => { if (p.full_name) fullNameById.set(p.id, p.full_name); });
+      const phoneByEmail = new Map<string, string>();
+      const orderNameByEmail = new Map<string, string>();
+      ((ordersRes as any).data || []).forEach((o: any) => {
+        const e = (o.customer_email || "").toLowerCase();
+        if (e && o.customer_phone && !phoneByEmail.has(e)) phoneByEmail.set(e, o.customer_phone);
+        if (e && o.customer_name && !orderNameByEmail.has(e)) orderNameByEmail.set(e, o.customer_name);
+      });
       const users = list.users.map((u) => ({
         id: u.id,
         email: u.email,
+        full_name:
+          fullNameById.get(u.id) ||
+          (u.user_metadata as any)?.full_name ||
+          orderNameByEmail.get((u.email || "").toLowerCase()) ||
+          null,
+        phone:
+          (u.user_metadata as any)?.phone ||
+          phoneByEmail.get((u.email || "").toLowerCase()) ||
+          null,
         created_at: u.created_at,
         last_sign_in_at: u.last_sign_in_at,
         email_confirmed_at: u.email_confirmed_at,
@@ -147,12 +170,15 @@ Deno.serve(async (req) => {
     }
 
     if (action === "create_user") {
-      const { email, password, is_admin, access_treinamento, access_mentoria } = body as {
+      const { email, password, is_admin, access_treinamento, access_mentoria, full_name, phone, cpf } = body as {
         email?: string;
         password?: string;
         is_admin?: boolean;
         access_treinamento?: boolean;
         access_mentoria?: boolean;
+        full_name?: string;
+        phone?: string;
+        cpf?: string;
       };
       const normEmail = (email || "").trim().toLowerCase();
       if (!normEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normEmail)) {
@@ -161,13 +187,24 @@ Deno.serve(async (req) => {
       if (!password || password.length < 6) {
         return json({ error: "Senha deve ter pelo menos 6 caracteres" }, 400);
       }
+      const userMeta: Record<string, string> = {};
+      if (full_name && full_name.trim()) userMeta.full_name = full_name.trim();
+      if (phone && phone.trim()) userMeta.phone = phone.trim();
+      if (cpf && cpf.trim()) userMeta.cpf = cpf.trim();
       const { data: created, error: createErr } = await admin.auth.admin.createUser({
         email: normEmail,
         password,
         email_confirm: true,
+        user_metadata: userMeta,
       });
       if (createErr || !created.user) return json({ error: createErr?.message || "createUser failed" }, 400);
       const newId = created.user.id;
+      // Upsert profile
+      await admin.from("profiles").upsert({
+        id: newId,
+        email: normEmail,
+        full_name: userMeta.full_name || null,
+      }, { onConflict: "id" });
       if (is_admin) {
         await admin.from("user_roles").upsert({ user_id: newId, role: "admin" }, { onConflict: "user_id,role" });
       }
