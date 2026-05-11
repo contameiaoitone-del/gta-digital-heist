@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { MentoriaPaywall } from "@/components/membros/MentoriaPaywall";
 
 interface Lesson {
   id: string;
@@ -19,6 +20,16 @@ interface Module {
   id: string;
   title: string;
 }
+interface LessonMeta {
+  lesson_id: string;
+  lesson_title: string;
+  module_id: string;
+  module_title: string;
+  module_kind: string;
+  module_price_cents: number | null;
+  module_published: boolean;
+  lesson_published: boolean;
+}
 
 const Aula = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,6 +40,8 @@ const Aula = () => {
   const [siblings, setSiblings] = useState<Lesson[]>([]);
   const [completed, setCompleted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [meta, setMeta] = useState<LessonMeta | null>(null);
+  const [hasMentoriaAccess, setHasMentoriaAccess] = useState(false);
   const playerRef = useRef<HTMLIFrameElement>(null);
   const tickRef = useRef<number>(0);
   const vturbRef = useRef<HTMLDivElement>(null);
@@ -37,9 +50,28 @@ const Aula = () => {
     if (!id) return;
     setLoading(true);
     (async () => {
+      // Always fetch metadata via SECURITY DEFINER fn so we know if it's a paid mentoria module
+      const { data: metaRows } = await supabase.rpc("get_lesson_module_meta", { _lesson_id: id });
+      const m = (metaRows as LessonMeta[] | null)?.[0] || null;
+      setMeta(m);
+
+      // Check mentoria access if applicable
+      if (m?.module_kind === "mentoria" && session) {
+        const { data: acc } = await supabase
+          .from("member_access")
+          .select("product, active")
+          .eq("user_id", session.user.id)
+          .in("product", ["mentoria", `mentoria:${m.module_id}`])
+          .eq("active", true);
+        setHasMentoriaAccess(((acc as { active: boolean }[] | null) || []).length > 0);
+      } else {
+        setHasMentoriaAccess(false);
+      }
+
       const { data: lessonData } = await supabase.from("lessons").select("*").eq("id", id).maybeSingle();
       if (!lessonData) {
         setLoading(false);
+        if (m) document.title = `${m.lesson_title} — Mentoria`;
         return;
       }
       const l = lessonData as Lesson;
@@ -119,6 +151,30 @@ const Aula = () => {
     return (
       <div className="min-h-screen bg-[#080808] text-white flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  // Mentoria locked: show paywall
+  if (meta && meta.module_kind === "mentoria" && !hasMentoriaAccess) {
+    return (
+      <div className="min-h-screen bg-[#080808] text-white">
+        <header className="sticky top-0 z-40 bg-[#080808]/95 border-b border-white/5">
+          <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
+            <button onClick={() => navigate("/membros")} className="text-gray-400 hover:text-white">
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+            <p className="text-sm font-semibold truncate">{meta.module_title}</p>
+          </div>
+        </header>
+        <div className="px-4 py-10">
+          <MentoriaPaywall
+            moduleId={meta.module_id}
+            moduleTitle={meta.module_title}
+            priceCents={meta.module_price_cents || 0}
+            onPaid={() => window.location.reload()}
+          />
+        </div>
       </div>
     );
   }
