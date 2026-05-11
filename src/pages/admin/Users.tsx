@@ -310,11 +310,31 @@ const Users = () => {
 
       {showCreate && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={() => setShowCreate(false)}>
-          <div className="bg-[#111] border border-white/10 rounded-lg p-5 w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[#111] border border-white/10 rounded-lg p-5 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-lg font-bold mb-3" style={{ fontFamily: "'Bebas Neue', cursive" }}>Criar novo usuário</h3>
             <div className="space-y-3">
-              <input type="email" autoFocus value={cEmail} onChange={(e) => setCEmail(e.target.value)} placeholder="Email" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
-              <input type="text" value={cPassword} onChange={(e) => setCPassword(e.target.value)} placeholder="Senha (mínimo 6)" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+              <div>
+                <label className="text-[11px] text-gray-400 uppercase tracking-wider">Email <span className="text-[#ff2d78]">*</span></label>
+                <input type="email" autoFocus value={cEmail} onChange={(e) => setCEmail(e.target.value)} placeholder="email@exemplo.com" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+              </div>
+              <div>
+                <label className="text-[11px] text-gray-400 uppercase tracking-wider">Senha <span className="text-[#ff2d78]">*</span></label>
+                <input type="text" value={cPassword} onChange={(e) => setCPassword(e.target.value)} placeholder="Mínimo 6 caracteres" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+              </div>
+              <div>
+                <label className="text-[11px] text-gray-400 uppercase tracking-wider">Nome completo</label>
+                <input type="text" value={cFullName} onChange={(e) => setCFullName(e.target.value)} placeholder="Opcional" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[11px] text-gray-400 uppercase tracking-wider">Telefone</label>
+                  <input type="text" value={cPhone} onChange={(e) => setCPhone(e.target.value)} placeholder="Opcional" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+                </div>
+                <div>
+                  <label className="text-[11px] text-gray-400 uppercase tracking-wider">CPF</label>
+                  <input type="text" value={cCpf} onChange={(e) => setCCpf(e.target.value)} placeholder="Opcional" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+                </div>
+              </div>
               <label className="flex items-center gap-2 text-sm cursor-pointer">
                 <input type="checkbox" checked={cTrein} onChange={(e) => setCTrein(e.target.checked)} /> Liberar acesso ao treinamento
               </label>
