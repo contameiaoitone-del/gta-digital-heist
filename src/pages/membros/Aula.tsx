@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, Download, FileText, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { MentoriaPaywall } from "@/components/membros/MentoriaPaywall";
+import { useResolvedArea } from "@/hooks/useResolvedArea";
 
 interface Lesson {
   id: string;
@@ -66,7 +67,9 @@ interface LessonMeta {
 }
 
 const Aula = () => {
-  const { product = "treinamento", id } = useParams<{ product?: string; id: string }>();
+  const { product: routeParamRaw = "treinamento", id } = useParams<{ product?: string; id: string }>();
+  const resolved = useResolvedArea();
+  const product = resolved.loading ? "" : (resolved.product || routeParamRaw);
   const navigate = useNavigate();
   const { session } = useAuth();
   const [lesson, setLesson] = useState<Lesson | null>(null);
@@ -82,10 +85,10 @@ const Aula = () => {
   const playerRef = useRef<HTMLIFrameElement>(null);
   const tickRef = useRef<number>(0);
   const vturbRef = useRef<HTMLDivElement>(null);
-  const productPath = `/${encodeURIComponent(product)}`;
+  const productPath = `/${encodeURIComponent(routeParamRaw)}`;
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || !product) return;
     setLoading(true);
     (async () => {
       // Always fetch metadata via SECURITY DEFINER fn so we know if it's a paid mentoria module
