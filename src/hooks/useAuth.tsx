@@ -80,7 +80,7 @@ export const RequireAuth = ({
   const { session, loading, hasAccess, isAdmin, isMaster, checkedAccess } = useAuth();
   const location = useLocation();
   const isMasterRoute = requireMaster || /^\/(home|areas|landing-pages)(\/|$)/.test(location.pathname);
-  const product = location.pathname.match(/^\/([^/]+)\/(?:membros|admin)/)?.[1] || "infozap";
+  const product = location.pathname.match(/^\/([^/]+)\/(?:membros|admin)/)?.[1] || "treinamento";
   const productPath = `/${encodeURIComponent(product)}`;
   // Share-link expiry watcher: if the user signed in via a share link with an
   // expiration, sign them out automatically when it expires.
@@ -138,7 +138,7 @@ export const useSignOut = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isMasterRoute = /^\/(home|areas|landing-pages)(\/|$)/.test(location.pathname);
-  const product = location.pathname.match(/^\/([^/]+)\/(?:membros|admin)/)?.[1] || "infozap";
+  const product = location.pathname.match(/^\/([^/]+)\/(?:membros|admin)/)?.[1] || "treinamento";
   return async () => {
     localStorage.removeItem("share_session_expires_at");
     localStorage.removeItem("share_session_active");

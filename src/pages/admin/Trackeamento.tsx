@@ -386,7 +386,7 @@ function CapiLogBody() {
 
 const Trackeamento = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
-  const { product = "infozap" } = useParams<{ product?: string }>();
+  const { product = "treinamento" } = useParams<{ product?: string }>();
   const adminPath = `/${encodeURIComponent(product)}/admin`;
 
   useEffect(() => { document.title = "Trackeamento — Admin"; }, []);

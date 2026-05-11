@@ -37,7 +37,7 @@ function Section({ title, children, defaultOpen = false }: { title: string; chil
 }
 
 const Configuracoes = () => {
-  const { product = "infozap" } = useParams<{ product?: string }>();
+  const { product = "treinamento" } = useParams<{ product?: string }>();
   const productPath = `/${encodeURIComponent(product)}`;
   const [settings, setSettings] = useState<SiteSettings>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(true);

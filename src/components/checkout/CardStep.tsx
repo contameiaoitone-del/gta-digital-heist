@@ -13,7 +13,7 @@ interface CardStepProps {
   customer: { name: string; email: string; phone: string; cpf: string };
   onPaid: (info: { eventId: string; orderId: string }) => void;
   onPending: () => void;
-  product?: "infozap" | "lp2";
+  product?: "treinamento" | "lp2";
   priceCents?: number;
 }
 
@@ -43,7 +43,7 @@ function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
   });
 }
 
-export const CardStep = ({ customer, onPaid, onPending, product = "infozap", priceCents = 6700 }: CardStepProps) => {
+export const CardStep = ({ customer, onPaid, onPending, product = "treinamento", priceCents = 6700 }: CardStepProps) => {
   const totalLabel = (priceCents / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const installmentLabel = (n: number) => {
     const value = (priceCents / 100 / n).toFixed(2).replace(".", ",");

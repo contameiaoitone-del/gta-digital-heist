@@ -25,7 +25,7 @@ interface CapiLogRow {
 
 const CapiLog = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
-  const { product = "infozap" } = useParams<{ product?: string }>();
+  const { product = "treinamento" } = useParams<{ product?: string }>();
   const productPath = `/${encodeURIComponent(product)}`;
   const [rows, setRows] = useState<CapiLogRow[]>([]);
   const [filter, setFilter] = useState<"all" | "Purchase" | "InitiateCheckout" | "PageView">("Purchase");

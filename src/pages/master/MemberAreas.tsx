@@ -76,7 +76,7 @@ export default function MemberAreas() {
   };
 
   const remove = async (a: Area) => {
-    if (a.product === "infozap") {
+    if (a.product === "treinamento") {
       toast.error("Esta área é a principal e não pode ser removida");
       return;
     }

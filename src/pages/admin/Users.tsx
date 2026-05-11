@@ -27,7 +27,7 @@ const Users = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
   const { product: productParam } = useParams<{ product?: string }>();
   const [searchParams] = useSearchParams();
-  const productFilter = productParam || searchParams.get("product") || "infozap";
+  const productFilter = productParam || searchParams.get("product") || "treinamento";
   const [areaName, setAreaName] = useState<string | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [paidModules, setPaidModules] = useState<PaidModule[]>([]);

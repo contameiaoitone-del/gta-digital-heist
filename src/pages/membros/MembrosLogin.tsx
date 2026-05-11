@@ -7,7 +7,7 @@ import { browserSupportsWebAuthn, startAuthentication } from "@simplewebauthn/br
 
 const MembrosLogin = () => {
   const navigate = useNavigate();
-  const { product = "infozap" } = useParams<{ product?: string }>();
+  const { product = "treinamento" } = useParams<{ product?: string }>();
   const productPath = `/${encodeURIComponent(product)}`;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

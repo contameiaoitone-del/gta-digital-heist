@@ -229,7 +229,7 @@ export function useTracking() {
     ttq("InitiateCheckout",
       {
         value: data?.value, currency: data?.currency || "BRL",
-        contents: [{ content_id: "infozap", content_name: "Treinamento", content_type: "product", quantity: 1, price: data?.value || 0 }],
+        contents: [{ content_id: "treinamento", content_name: "Treinamento", content_type: "product", quantity: 1, price: data?.value || 0 }],
         content_type: "product",
       },
       { event_id: eventIdTt },
@@ -254,7 +254,7 @@ export function useTracking() {
       user_agent: navigator.userAgent,
       value: data?.value, currency: data?.currency || "BRL",
       content_name: "Treinamento",
-      content_id: "infozap",
+      content_id: "treinamento",
     });
   }, []);
 
@@ -285,7 +285,7 @@ export function useTracking() {
       ttq("CompletePayment",
         {
           value: data.value, currency: data.currency || "BRL",
-          contents: [{ content_id: data.orderId || "infozap", content_name: data.productName || "Treinamento", content_type: "product", quantity: 1, price: data.value }],
+          contents: [{ content_id: data.orderId || "treinamento", content_name: data.productName || "Treinamento", content_type: "product", quantity: 1, price: data.value }],
           content_type: "product",
           order_id: data.orderId,
         },

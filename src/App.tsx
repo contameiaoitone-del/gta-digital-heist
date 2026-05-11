@@ -37,7 +37,7 @@ const queryClient = new QueryClient();
 
 const LegacyProductRedirect = ({ suffix = "" }: { suffix?: string }) => {
   const [searchParams] = useSearchParams();
-  const product = searchParams.get("product") || "infozap";
+  const product = searchParams.get("product") || "treinamento";
   return <Navigate to={`/${encodeURIComponent(product)}/admin${suffix}`} replace />;
 };
 

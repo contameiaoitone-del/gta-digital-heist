@@ -77,7 +77,7 @@ const Admin = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
   const { product: productParam } = useParams<{ product?: string }>();
   const [searchParams] = useSearchParams();
-  const productFilter = productParam || searchParams.get("product") || "infozap";
+  const productFilter = productParam || searchParams.get("product") || "treinamento";
   const [areaName, setAreaName] = useState<string | null>(null);
   const [modules, setModules] = useState<Module[]>([]);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
@@ -116,7 +116,7 @@ const Admin = () => {
       .insert(moduleCategoryNames.map((name, index) => ({
         name,
         position: maxPosition + index + 1,
-        ...(productFilter ? { product: productFilter } : { product: "infozap" }),
+        ...(productFilter ? { product: productFilter } : { product: "treinamento" }),
       })))
       .select("*");
 
@@ -158,7 +158,7 @@ const Admin = () => {
     const { error } = await supabase.from("module_categories").insert({
       name,
       position: categories.length + 1,
-      ...(productFilter ? { product: productFilter } : { product: "infozap" }),
+      ...(productFilter ? { product: productFilter } : { product: "treinamento" }),
     });
     if (error) toast.error(error.message);
     else {

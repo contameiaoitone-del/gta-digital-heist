@@ -132,7 +132,7 @@ Deno.serve(async (req) => {
     }
 
     if (action === "set_access") {
-      const { user_id, product = "infozap", active } = body;
+      const { user_id, product = "treinamento", active } = body;
       if (!user_id) return json({ error: "user_id required" }, 400);
       if (active) {
         const { data: existing } = await admin
@@ -210,7 +210,7 @@ Deno.serve(async (req) => {
         await admin.from("user_roles").upsert({ user_id: newId, role: "admin" }, { onConflict: "user_id,role" });
       }
       const accessRows: { user_id: string; product: string; active: boolean }[] = [];
-      if (access_treinamento) accessRows.push({ user_id: newId, product: access_product || "infozap", active: true });
+      if (access_treinamento) accessRows.push({ user_id: newId, product: access_product || "treinamento", active: true });
       if (access_mentoria) accessRows.push({ user_id: newId, product: "mentoria", active: true });
       if (accessRows.length > 0) {
         await admin.from("member_access").upsert(accessRows, { onConflict: "user_id,product" });

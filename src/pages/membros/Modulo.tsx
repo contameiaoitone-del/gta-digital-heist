@@ -44,7 +44,7 @@ const fmtDuration = (s: number | null) => {
 };
 
 const Modulo = () => {
-  const { product = "infozap", id } = useParams<{ product?: string; id: string }>();
+  const { product = "treinamento", id } = useParams<{ product?: string; id: string }>();
   const navigate = useNavigate();
   const { isAdmin, session } = useAuth();
   const signOut = useSignOut();
