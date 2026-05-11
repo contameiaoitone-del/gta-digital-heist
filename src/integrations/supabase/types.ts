@@ -238,6 +238,7 @@ export type Database = {
           thumbnail_url: string | null
           title: string
           updated_at: string
+          vturb_optimization_code: string | null
           vturb_player_id: string | null
           youtube_id: string | null
           youtube_url: string | null
@@ -261,6 +262,7 @@ export type Database = {
           thumbnail_url?: string | null
           title: string
           updated_at?: string
+          vturb_optimization_code?: string | null
           vturb_player_id?: string | null
           youtube_id?: string | null
           youtube_url?: string | null
@@ -284,6 +286,7 @@ export type Database = {
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
+          vturb_optimization_code?: string | null
           vturb_player_id?: string | null
           youtube_id?: string | null
           youtube_url?: string | null
