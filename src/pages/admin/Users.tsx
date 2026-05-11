@@ -61,7 +61,7 @@ const Users = () => {
     setBusy(true);
     const [usersRes, modsRes] = await Promise.all([
       call({ action: "list" }),
-      supabase.from("modules").select("id, title, kind").eq("kind", "mentoria").order("position"),
+      supabase.from("modules").select("id, title, kind, product").eq("kind", "mentoria").eq("product", productFilter).order("position"),
     ]);
     setBusy(false);
     if (usersRes) setUsers((usersRes as { users: AdminUser[] }).users);
@@ -73,7 +73,7 @@ const Users = () => {
     setPaidModules(paid);
     // Reset filter if it's no longer valid
     if (filterPaidProduct && !paid.some((p) => p.product === filterPaidProduct)) setFilterPaidProduct("");
-  }, [call, filterPaidProduct]);
+  }, [call, filterPaidProduct, productFilter]);
 
   useEffect(() => {
     document.title = "Admin · Usuários";
