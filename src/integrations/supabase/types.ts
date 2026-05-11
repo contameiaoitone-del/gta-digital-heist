@@ -321,7 +321,9 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          kind: string
           position: number
+          price_cents: number | null
           product: string
           published: boolean
           title: string
@@ -333,7 +335,9 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          kind?: string
           position?: number
+          price_cents?: number | null
           product?: string
           published?: boolean
           title: string
@@ -345,7 +349,9 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          kind?: string
           position?: number
+          price_cents?: number | null
           product?: string
           published?: boolean
           title?: string
