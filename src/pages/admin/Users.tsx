@@ -238,6 +238,10 @@ const Users = () => {
                   return (
                     <tr key={u.id} className="border-t border-white/10 hover:bg-white/5">
                       <td className="px-3 py-2">
+                        <div className="font-medium">{u.full_name || <span className="text-gray-600">—</span>}</div>
+                        {u.phone && <div className="text-xs text-gray-500">{u.phone}</div>}
+                      </td>
+                      <td className="px-3 py-2">
                         <div className="font-medium">{u.email}</div>
                         <div className="text-xs text-gray-500">{u.email_confirmed_at ? "Confirmado" : "Não confirmado"}</div>
                       </td>
@@ -274,7 +278,7 @@ const Users = () => {
                   );
                 })}
                 {filtered.length === 0 && !busy && (
-                  <tr><td colSpan={6 + paidModules.length} className="px-3 py-10 text-center text-gray-500">Nenhum usuário encontrado.</td></tr>
+                  <tr><td colSpan={7 + paidModules.length} className="px-3 py-10 text-center text-gray-500">Nenhum usuário encontrado.</td></tr>
                 )}
               </tbody>
             </table>
