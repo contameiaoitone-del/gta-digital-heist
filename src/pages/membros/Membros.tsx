@@ -182,10 +182,10 @@ const Membros = () => {
             {heroLesson && (
               <button
                 onClick={() => navigate(`/membros/aula/${heroLesson.id}`)}
-                className="flex items-center gap-2 px-6 py-2.5 rounded font-bold uppercase hover:opacity-90 transition-opacity text-sm"
-                style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em", backgroundColor: settings.secondary_color || "#ffffff", color: "#000" }}
+                className="flex items-center gap-2 px-6 py-2.5 rounded font-bold uppercase bg-white text-black hover:bg-white/85 transition-colors text-sm"
+                style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
               >
-                <Play className="h-4 w-4" style={{ fill: "#000" }} /> {progress[heroLesson.id] ? "Continuar assistindo" : "Começar agora"}
+                <Play className="h-4 w-4 fill-black" /> {progress[heroLesson.id] ? "Continuar assistindo" : "Começar agora"}
               </button>
             )}
           </div>
