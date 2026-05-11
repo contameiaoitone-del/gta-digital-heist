@@ -195,6 +195,7 @@ const Admin = () => {
       category: editingModule.category?.trim() || null,
       kind,
       price_cents: kind === "mentoria" ? editingModule.price_cents! : null,
+      release_days: Math.max(0, Number(editingModule.release_days) || 0),
     };
     const { error } = editingModule.id
       ? await supabase.from("modules").update(payload).eq("id", editingModule.id)
