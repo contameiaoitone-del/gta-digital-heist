@@ -8,6 +8,8 @@ import { ArrowLeft, Loader2, Trash2, KeyRound, Check, X, UserPlus, Fingerprint, 
 interface AdminUser {
   id: string;
   email: string | null;
+  full_name: string | null;
+  phone: string | null;
   created_at: string;
   last_sign_in_at: string | null;
   email_confirmed_at: string | null;
