@@ -21,11 +21,11 @@ import {
 export function MasterSidebar() {
   const { pathname } = useLocation();
   const linkCls = ({ isActive: a }: { isActive: boolean }) =>
-    `flex items-center gap-2 hover:bg-white/5 ${a ? "text-[#00ff88]" : ""}`;
+    `flex items-center gap-2 text-gray-100 hover:bg-white/5 hover:text-[#d95e10] ${a ? "text-[#d95e10]" : ""}`;
   const soonCls =
-    "flex items-center gap-2 opacity-50 cursor-not-allowed select-none";
+    "flex items-center gap-2 text-gray-200 opacity-70 hover:text-[#d95e10] cursor-not-allowed select-none";
   const SoonBadge = () => (
-    <span className="ml-auto text-[9px] uppercase tracking-wider rounded bg-white/10 px-1.5 py-0.5 text-gray-300">
+    <span className="ml-auto text-[9px] uppercase tracking-wider rounded bg-[#d95e10]/15 px-1.5 py-0.5 text-[#d95e10]">
       em breve
     </span>
   );
@@ -94,11 +94,10 @@ export function MasterSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={pathname === "/landing-pages"}>
-                  <NavLink to="/landing-pages" className={linkCls}>
-                    <FileText className="h-4 w-4" />
-                    <span>Página de Vendas</span>
-                  </NavLink>
+                <SidebarMenuButton disabled className={soonCls}>
+                  <FileText className="h-4 w-4" />
+                  <span>Página de Vendas</span>
+                  <SoonBadge />
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
