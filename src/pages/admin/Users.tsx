@@ -114,7 +114,7 @@ const Users = () => {
       full_name: cFullName.trim() || undefined,
       phone: cPhone.trim() || undefined,
       cpf: cCpf.trim() || undefined,
-      is_admin: cAdmin, access_treinamento: cTrein, access_mentoria: false,
+      is_admin: cAdmin, access_treinamento: cTrein, access_product: productFilter, access_mentoria: false,
     });
     setCreating(false);
     if (r) {
@@ -148,7 +148,7 @@ const Users = () => {
     return users.filter((u) => {
       if (q && !(u.email || "").toLowerCase().includes(q) && !(u.full_name || "").toLowerCase().includes(q)) return false;
       if (filterAdmin && !u.roles.includes("admin")) return false;
-      if (filterTreinamento && !hasAccessTo(u, "infozap")) return false;
+      if (filterTreinamento && !hasAccessTo(u, productFilter)) return false;
       if (filterPaidProduct && !hasAccessTo(u, filterPaidProduct)) return false;
       if (productFilter && !u.roles.includes("admin") && !hasAccessTo(u, productFilter)) return false;
       return true;
@@ -158,7 +158,10 @@ const Users = () => {
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
-  if (!isAdmin) return <Navigate to="/membros" replace />;
+  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(productFilter)}/membros`} replace />;
+
+  const productPath = encodeURIComponent(productFilter);
+  const adminPath = `/${productPath}/admin`;
 
   const CheckCell = ({ active, onClick, title }: { active: boolean; onClick: () => void; title: string }) => (
     <button
