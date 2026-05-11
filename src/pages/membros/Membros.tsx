@@ -7,8 +7,6 @@ import Row from "@/components/membros/Row";
 import PosterCard from "@/components/membros/PosterCard";
 import EpisodeCard from "@/components/membros/EpisodeCard";
 import PasskeySetup from "@/components/membros/PasskeySetup";
-import infozapBanner from "@/assets/membros-billboard.webp";
-import infozapLogo from "@/assets/infozap-logo.webp";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 interface Module {
