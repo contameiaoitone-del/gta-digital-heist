@@ -5,6 +5,7 @@ import { ArrowLeft, Play, CheckCircle2, LogOut, Settings } from "lucide-react";
 import { useAuth, useSignOut } from "@/hooks/useAuth";
 import { MentoriaPaywall } from "@/components/membros/MentoriaPaywall";
 import { useResolvedArea } from "@/hooks/useResolvedArea";
+import SmartThumb from "@/components/membros/SmartThumb";
 
 interface Module {
   id: string;
@@ -23,6 +24,7 @@ interface Lesson {
   title: string;
   description: string | null;
   youtube_id: string | null;
+  vturb_player_id?: string | null;
   thumbnail_url: string | null;
   duration_seconds: number | null;
   position: number;
@@ -36,6 +38,16 @@ interface Progress {
 }
 
 const ytThumb = (id: string | null) => (id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null);
+const vturbThumbs = (embed: string | null | undefined): string[] => {
+  if (!embed) return [];
+  const match = embed.match(/scripts\.converteai\.net\/([0-9a-f-]+)\/players\/([0-9a-f]+)/i);
+  if (!match) return [];
+  const [, account, player] = match;
+  return [
+    `https://images.converteai.net/${account}/players/${player}/thumbnail.jpg?width=1280`,
+    `https://images.converteai.net/${account}/players/${player}/thumbnail.jpg`,
+  ];
+};
 const fmtDuration = (s: number | null) => {
   if (!s) return null;
   const m = Math.floor(s / 60);
@@ -217,9 +229,11 @@ const Modulo = () => {
                     {idx + 1}
                   </div>
                   <div className="relative w-32 md:w-48 aspect-video flex-shrink-0 rounded overflow-hidden bg-[#1a1a1a]">
-                    {(l.thumbnail_url || ytThumb(l.youtube_id)) && (
-                      <img src={l.thumbnail_url || ytThumb(l.youtube_id) || ""} alt={l.title} className={`w-full h-full object-cover ${locked ? "grayscale" : ""}`} loading="lazy" />
-                    )}
+                    <SmartThumb
+                      sources={[l.thumbnail_url, ytThumb(l.youtube_id), ...vturbThumbs(l.vturb_player_id), mod?.cover_url]}
+                      alt={l.title}
+                      className={`w-full h-full object-cover ${locked ? "grayscale" : ""}`}
+                    />
                     {!locked && (
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-opacity">
                         <Play className="h-8 w-8 text-white fill-white" />
