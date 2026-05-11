@@ -699,6 +699,19 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_lesson_module_meta: {
+        Args: { _lesson_id: string }
+        Returns: {
+          lesson_id: string
+          lesson_published: boolean
+          lesson_title: string
+          module_id: string
+          module_kind: string
+          module_price_cents: number
+          module_published: boolean
+          module_title: string
+        }[]
+      }
       has_active_access: {
         Args: { _product?: string; _user_id: string }
         Returns: boolean
