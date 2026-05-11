@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Fingerprint } from "lucide-react";
-import { browserSupportsWebAuthn, startAuthentication } from "@simplewebauthn/browser";
+import { Loader2, Fingerprint, X } from "lucide-react";
+import { browserSupportsWebAuthn, startAuthentication, startRegistration } from "@simplewebauthn/browser";
 
 const MembrosLogin = () => {
   const navigate = useNavigate();
@@ -14,6 +14,10 @@ const MembrosLogin = () => {
   const [resetLoading, setResetLoading] = useState(false);
   const [bioLoading, setBioLoading] = useState(false);
   const [bioSupported, setBioSupported] = useState(false);
+  const [emailWarn, setEmailWarn] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
+  const [regPassword, setRegPassword] = useState("");
+  const [regLoading, setRegLoading] = useState(false);
 
   useEffect(() => {
     setBioSupported(browserSupportsWebAuthn());
@@ -39,8 +43,8 @@ const MembrosLogin = () => {
   };
 
   const loginWithBiometrics = async () => {
-    if (!email) {
-      toast.error("Digite seu email primeiro");
+    if (!email.trim()) {
+      setEmailWarn(true);
       return;
     }
     setBioLoading(true);
@@ -51,7 +55,8 @@ const MembrosLogin = () => {
       });
       if (optsErr) throw optsErr;
       if (!optsData?.hasCredentials) {
-        toast.error("Nenhuma biometria cadastrada para este e-mail. Faça login com senha e ative depois.");
+        // No credential registered — open dialog to register now using password
+        setRegisterOpen(true);
         return;
       }
       const asseResp = await startAuthentication({ optionsJSON: optsData.options });
@@ -77,6 +82,49 @@ const MembrosLogin = () => {
       console.error(e);
     } finally {
       setBioLoading(false);
+    }
+  };
+
+  const registerBiometrics = async () => {
+    if (!email.trim() || regPassword.length < 6) {
+      toast.error("Preencha email e senha (mín. 6)");
+      return;
+    }
+    setRegLoading(true);
+    try {
+      const normalized = email.trim().toLowerCase();
+      // 1) Authenticate with password to get a session
+      const { error: signErr } = await supabase.auth.signInWithPassword({ email: normalized, password: regPassword });
+      if (signErr) throw new Error("Email ou senha inválidos");
+      // 2) Request registration options (requires session)
+      const { data: optsData, error: optsErr } = await supabase.functions.invoke("webauthn-register-options", {
+        body: {},
+      });
+      if (optsErr) throw optsErr;
+      // 3) Run device biometric prompt
+      const attResp = await startRegistration({ optionsJSON: optsData.options });
+      const deviceName = navigator.userAgent.includes("iPhone")
+        ? "iPhone"
+        : navigator.userAgent.includes("Android")
+        ? "Android"
+        : navigator.userAgent.includes("Mac")
+        ? "Mac"
+        : "Dispositivo";
+      const { error: vErr } = await supabase.functions.invoke("webauthn-register-verify", {
+        body: { response: attResp, deviceName },
+      });
+      if (vErr) throw vErr;
+      toast.success("Biometria cadastrada! Entrando...");
+      setRegisterOpen(false);
+      setRegPassword("");
+      navigate("/membros", { replace: true });
+    } catch (e: any) {
+      const msg = e?.message || "";
+      if (/NotAllowedError|cancel/i.test(msg)) toast.error("Cadastro cancelado");
+      else toast.error(msg || "Não foi possível cadastrar a biometria");
+      console.error(e);
+    } finally {
+      setRegLoading(false);
     }
   };
 
@@ -168,7 +216,7 @@ const MembrosLogin = () => {
                   <button
                     type="button"
                     onClick={loginWithBiometrics}
-                    disabled={bioLoading || !email}
+                    disabled={bioLoading}
                     title="Entrar com biometria (Face ID / digital)"
                     aria-label="Entrar com biometria"
                     className="h-12 w-12 shrink-0 rounded-md border border-white/15 bg-black/40 flex items-center justify-center hover:border-[#00ff88] disabled:opacity-50"
@@ -218,6 +266,67 @@ const MembrosLogin = () => {
           </p>
         </div>
       </div>
+
+      {/* Email warning popup */}
+      {emailWarn && (
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={() => setEmailWarn(false)}>
+          <div className="bg-[#111] border border-white/10 rounded-lg p-5 w-full max-w-sm relative" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setEmailWarn(false)} aria-label="Fechar" className="absolute top-3 right-3 text-gray-400 hover:text-white">
+              <X className="h-5 w-5" />
+            </button>
+            <div className="flex items-start gap-3">
+              <div className="h-10 w-10 rounded-full bg-[#00ff88]/15 flex items-center justify-center shrink-0">
+                <Fingerprint className="h-5 w-5 text-[#00ff88]" />
+              </div>
+              <div>
+                <h3 className="text-white font-bold mb-1" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+                  Insira seu e-mail primeiro
+                </h3>
+                <p className="text-sm text-gray-400">Digite seu e-mail no campo acima para entrar com biometria.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Register biometrics popup */}
+      {registerOpen && (
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={() => !regLoading && setRegisterOpen(false)}>
+          <div className="bg-[#111] border border-white/10 rounded-lg p-5 w-full max-w-sm relative" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => !regLoading && setRegisterOpen(false)} aria-label="Fechar" className="absolute top-3 right-3 text-gray-400 hover:text-white">
+              <X className="h-5 w-5" />
+            </button>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-full bg-[#00ff88]/15 flex items-center justify-center shrink-0">
+                <Fingerprint className="h-5 w-5 text-[#00ff88]" />
+              </div>
+              <h3 className="text-white font-bold" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+                Cadastrar biometria
+              </h3>
+            </div>
+            <p className="text-sm text-gray-400 mb-3">
+              Nenhuma biometria encontrada para <span className="text-white">{email}</span>. Confirme sua senha para ativar agora.
+            </p>
+            <input
+              type="password"
+              autoFocus
+              value={regPassword}
+              onChange={(e) => setRegPassword(e.target.value)}
+              placeholder="Sua senha"
+              className={inputCls}
+              onKeyDown={(e) => { if (e.key === "Enter") registerBiometrics(); }}
+            />
+            <button
+              onClick={registerBiometrics}
+              disabled={regLoading}
+              className="w-full h-11 mt-3 rounded-md font-bold uppercase disabled:opacity-60"
+              style={{ backgroundColor: "#00ff88", color: "#000", fontFamily: "'Bebas Neue', cursive" }}
+            >
+              {regLoading ? <Loader2 className="h-4 w-4 animate-spin mx-auto" /> : "Cadastrar e entrar"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
