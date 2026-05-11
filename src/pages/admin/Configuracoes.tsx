@@ -6,6 +6,7 @@ import { ArrowLeft, Loader2, Plus, Trash2, Copy, ExternalLink, ChevronDown, Chev
 import { DEFAULT_SETTINGS, type SiteSettings } from "@/hooks/useSiteSettings";
 import { RichTextField } from "@/components/admin/RichTextField";
 import { PaymentCredentialsBody } from "./PaymentCredentials";
+import { useAuth } from "@/hooks/useAuth";
 
 interface ShareLink {
   id: string;
@@ -38,6 +39,8 @@ function Section({ title, children, defaultOpen = false }: { title: string; chil
 
 const Configuracoes = () => {
   const { product = "treinamento" } = useParams<{ product?: string }>();
+  const { session } = useAuth();
+  const canSeeCredenciais = (session?.user?.email || "").toLowerCase() === "joaolucasps2001@gmail.com";
   const productPath = `/${encodeURIComponent(product)}`;
   const [settings, setSettings] = useState<SiteSettings>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(true);
@@ -365,9 +368,11 @@ const Configuracoes = () => {
         </Section>
 
         {/* CREDENCIAIS */}
-        <Section title="Credenciais de pagamento">
-          <PaymentCredentialsBody />
-        </Section>
+        {canSeeCredenciais && (
+          <Section title="Credenciais de pagamento">
+            <PaymentCredentialsBody />
+          </Section>
+        )}
       </div>
     </div>
   );
