@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Smile, Palette } from "lucide-react";
+import { Smile, Palette, Bold, Italic, Underline as UnderlineIcon } from "lucide-react";
 
 const EMOJIS = [
   "😀","😁","😂","🤣","😃","😄","😅","😆","😉","😊","😍","🥰","😘","😎","🤩","🥳",
@@ -66,6 +66,30 @@ export function RichTextField({ value, onChange, placeholder, className = "", mu
   return (
     <div className="relative">
       <div className="flex gap-1 mb-1">
+        <button
+          type="button"
+          onMouseDown={(e) => { e.preventDefault(); saveSelection(); exec("bold"); }}
+          className="flex items-center justify-center px-2 py-1 rounded border border-white/15 hover:border-[#00ff88] text-xs text-gray-300"
+          title="Negrito (selecione o texto)"
+        >
+          <Bold className="h-3.5 w-3.5" />
+        </button>
+        <button
+          type="button"
+          onMouseDown={(e) => { e.preventDefault(); saveSelection(); exec("italic"); }}
+          className="flex items-center justify-center px-2 py-1 rounded border border-white/15 hover:border-[#00ff88] text-xs text-gray-300"
+          title="Itálico (selecione o texto)"
+        >
+          <Italic className="h-3.5 w-3.5" />
+        </button>
+        <button
+          type="button"
+          onMouseDown={(e) => { e.preventDefault(); saveSelection(); exec("underline"); }}
+          className="flex items-center justify-center px-2 py-1 rounded border border-white/15 hover:border-[#00ff88] text-xs text-gray-300"
+          title="Sublinhado (selecione o texto)"
+        >
+          <UnderlineIcon className="h-3.5 w-3.5" />
+        </button>
         <button
           type="button"
           onMouseDown={(e) => { e.preventDefault(); saveSelection(); colorRef.current?.click(); }}
