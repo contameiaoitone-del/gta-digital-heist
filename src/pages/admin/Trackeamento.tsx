@@ -282,7 +282,7 @@ function CapiLogBody() {
   return (
     <div>
       <div className="flex flex-wrap gap-2 mb-4 items-center">
-        {([["all", "Raw"], ["Purchase", "Purchase"], ["InitiateCheckout", "InitiateCheckout"], ["PageView", "PageView"]] as const).map(([f, lbl]) => (
+        {([["all", "Todos"], ["Purchase", "Purchase"], ["InitiateCheckout", "InitiateCheckout"], ["PageView", "PageView"]] as const).map(([f, lbl]) => (
           <button key={f} onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded text-xs uppercase tracking-wider ${filter === f ? "bg-[#00ff88] text-black" : "bg-white/5 text-gray-300 hover:bg-white/10"}`}>
             {lbl}
