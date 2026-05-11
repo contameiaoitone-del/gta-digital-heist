@@ -759,6 +759,39 @@ export type Database = {
         }
         Relationships: []
       }
+      tracking_pixels: {
+        Row: {
+          access_token: string | null
+          active: boolean
+          created_at: string
+          id: string
+          label: string | null
+          pixel_id: string
+          platform: string
+          updated_at: string
+        }
+        Insert: {
+          access_token?: string | null
+          active?: boolean
+          created_at?: string
+          id?: string
+          label?: string | null
+          pixel_id: string
+          platform: string
+          updated_at?: string
+        }
+        Update: {
+          access_token?: string | null
+          active?: boolean
+          created_at?: string
+          id?: string
+          label?: string | null
+          pixel_id?: string
+          platform?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -947,7 +980,27 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      tracking_pixels_public: {
+        Row: {
+          active: boolean | null
+          id: string | null
+          pixel_id: string | null
+          platform: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          id?: string | null
+          pixel_id?: string | null
+          platform?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          id?: string | null
+          pixel_id?: string | null
+          platform?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       delete_email: {
