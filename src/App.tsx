@@ -27,6 +27,9 @@ const AdminTrackeamento = lazy(() => import("./pages/admin/Trackeamento"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const Lp1App = lazy(() => import("./lp1/Lp1App"));
 const Lp2App = lazy(() => import("./lp2/Lp2App"));
+const MasterHome = lazy(() => import("./pages/master/MasterHome"));
+const MemberAreas = lazy(() => import("./pages/master/MemberAreas"));
+const LandingPages = lazy(() => import("./pages/master/LandingPages"));
 import { RequireAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
@@ -40,7 +43,9 @@ const App = () => (
         <TrackingProvider />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
-            <Route path="/" element={<Lp2App />} />
+            <Route path="/" element={<RequireAuth requireAdmin><MasterHome /></RequireAuth>} />
+            <Route path="/areas" element={<RequireAuth requireAdmin><MemberAreas /></RequireAuth>} />
+            <Route path="/landing-pages" element={<RequireAuth requireAdmin><LandingPages /></RequireAuth>} />
             <Route path="/termos" element={<Termos />} />
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/contato" element={<Contato />} />
