@@ -17,6 +17,7 @@ interface Module {
   cover_url: string | null;
   position: number;
   category: string | null;
+  status?: string;
   created_at?: string;
 }
 interface Category {
@@ -220,6 +221,7 @@ const Membros = () => {
                     meta={`${total} ${total === 1 ? "aula" : "aulas"}`}
                     progressPct={pct}
                     completed={pct === 100 && total > 0}
+                    comingSoon={m.status === "coming_soon"}
                   />
                 );
               })}
