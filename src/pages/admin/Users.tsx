@@ -219,6 +219,7 @@ const Users = () => {
             <table className="w-full text-sm">
               <thead className="bg-white/5 text-xs uppercase tracking-wider text-gray-400">
                 <tr>
+                  <th className="text-left px-3 py-2">Nome completo</th>
                   <th className="text-left px-3 py-2">Email</th>
                   <th className="text-left px-3 py-2">Criado</th>
                   <th className="text-left px-3 py-2">Último login</th>
