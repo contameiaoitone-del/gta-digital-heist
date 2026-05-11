@@ -402,10 +402,10 @@ const Admin = () => {
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
-  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(productFilter)}/membros`} replace />;
+  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(routeParam)}/membros`} replace />;
 
   const inputCls = "w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88] text-sm";
-  const productPath = encodeURIComponent(productFilter);
+  const productPath = encodeURIComponent(routeParam);
   const adminPath = `/${productPath}/admin`;
   const membersPath = `/${productPath}/membros`;
 
