@@ -1,24 +1,24 @@
 import { DollarSign, Megaphone, Sparkles, Users, Video, Package } from "lucide-react";
-import module1Cover from "@/assets/rla-module-1.png";
-import module2Cover from "@/assets/rla-module-2.png";
-import module3Cover from "@/assets/rla-module-3.png";
-import module4Cover from "@/assets/rla-module-4.png";
-import module5Cover from "@/assets/rla-module-5.png";
-import module6Cover from "@/assets/rla-module-6.png";
-import module7Cover from "@/assets/rla-module-7.png";
-import module8Cover from "@/assets/rla-module-8.png";
-import module9Cover from "@/assets/rla-module-9.png";
-import module10Cover from "@/assets/rla-module-10.png";
-import module11Cover from "@/assets/rla-module-11.png";
-import module12Cover from "@/assets/rla-module-12.png";
-import module13Cover from "@/assets/rla-module-13.png";
-import module14Cover from "@/assets/rla-module-14.png";
-import module15Cover from "@/assets/rla-module-15.png";
-import module16Cover from "@/assets/rla-module-16.png";
-import module17Cover from "@/assets/rla-module-17.png";
-import module18Cover from "@/assets/rla-module-18.png";
-import module19Cover from "@/assets/rla-module-19.png";
-import module20Cover from "@/assets/rla-module-20.png";
+import module1Cover from "@/assets/rla-module-1.webp";
+import module2Cover from "@/assets/rla-module-2.webp";
+import module3Cover from "@/assets/rla-module-3.webp";
+import module4Cover from "@/assets/rla-module-4.webp";
+import module5Cover from "@/assets/rla-module-5.webp";
+import module6Cover from "@/assets/rla-module-6.webp";
+import module7Cover from "@/assets/rla-module-7.webp";
+import module8Cover from "@/assets/rla-module-8.webp";
+import module9Cover from "@/assets/rla-module-9.webp";
+import module10Cover from "@/assets/rla-module-10.webp";
+import module11Cover from "@/assets/rla-module-11.webp";
+import module12Cover from "@/assets/rla-module-12.webp";
+import module13Cover from "@/assets/rla-module-13.webp";
+import module14Cover from "@/assets/rla-module-14.webp";
+import module15Cover from "@/assets/rla-module-15.webp";
+import module16Cover from "@/assets/rla-module-16.webp";
+import module17Cover from "@/assets/rla-module-17.webp";
+import module18Cover from "@/assets/rla-module-18.webp";
+import module19Cover from "@/assets/rla-module-19.webp";
+import module20Cover from "@/assets/rla-module-20.webp";
 import {
   Carousel,
   CarouselContent,

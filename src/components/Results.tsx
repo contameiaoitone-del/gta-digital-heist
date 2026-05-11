@@ -2,7 +2,7 @@ import { TrendingUp, DollarSign, Zap } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import officeImage from "@/assets/gta-office-money.png";
+import officeImage from "@/assets/gta-office-money.webp";
 const results = [{
   id: 1,
   image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",

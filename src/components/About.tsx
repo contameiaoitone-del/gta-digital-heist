@@ -1,4 +1,4 @@
-import realLifeAcademyHero from "@/assets/real-life-academy-hero.png";
+import realLifeAcademyHero from "@/assets/real-life-academy-hero.webp";
 
 export const About = () => {
   return (

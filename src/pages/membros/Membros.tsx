@@ -6,8 +6,8 @@ import { useAuth, useSignOut } from "@/hooks/useAuth";
 import Row from "@/components/membros/Row";
 import PosterCard from "@/components/membros/PosterCard";
 import EpisodeCard from "@/components/membros/EpisodeCard";
-import infozapBanner from "@/assets/membros-billboard.png";
-import infozapLogo from "@/assets/infozap-logo.png";
+import infozapBanner from "@/assets/membros-billboard.webp";
+import infozapLogo from "@/assets/infozap-logo.webp";
 
 interface Module {
   id: string;
@@ -115,6 +115,10 @@ const Membros = () => {
           loop
           muted
           playsInline
+          preload="auto"
+          // @ts-expect-error - non-standard but supported attribute
+          fetchpriority="high"
+          disableRemotePlayback
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/80 to-[#080808]/20" />

@@ -1,5 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
-import sunsetImage from "@/assets/gta-sunset.png";
+import sunsetImage from "@/assets/gta-sunset.webp";
 
 const modules = [
   {
