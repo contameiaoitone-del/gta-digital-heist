@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -75,6 +75,8 @@ function extractYouTubeId(url: string): string | null {
 
 const Admin = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
+  const [searchParams] = useSearchParams();
+  const productFilter = searchParams.get("product");
   const [modules, setModules] = useState<Module[]>([]);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -117,21 +119,25 @@ const Admin = () => {
     }
   }, []);
   const loadAdminContent = useCallback(async () => {
+    let modulesQuery = supabase.from("modules").select("*").order("position");
+    if (productFilter) modulesQuery = modulesQuery.eq("product", productFilter);
     const [{ data: modulesData }, { data: categoriesData }] = await Promise.all([
-      supabase.from("modules").select("*").order("position"),
+      modulesQuery,
       supabase.from("module_categories").select("*").order("position"),
     ]);
     const loadedModules = (modulesData as Module[]) || [];
     const loadedCategories = (categoriesData as Category[]) || [];
     setModules(loadedModules);
     await syncModuleCategories(loadedModules, loadedCategories);
-  }, [syncModuleCategories]);
+  }, [syncModuleCategories, productFilter]);
   const loadModules = useCallback(async () => {
-    const { data } = await supabase.from("modules").select("*").order("position");
+    let q = supabase.from("modules").select("*").order("position");
+    if (productFilter) q = q.eq("product", productFilter);
+    const { data } = await q;
     const loadedModules = (data as Module[]) || [];
     setModules(loadedModules);
     await syncModuleCategories(loadedModules, categories);
-  }, [categories, syncModuleCategories]);
+  }, [categories, syncModuleCategories, productFilter]);
   const loadCategories = useCallback(async () => {
     const { data } = await supabase.from("module_categories").select("*").order("position");
     setCategories((data as Category[]) || []);
@@ -198,6 +204,7 @@ const Admin = () => {
       kind,
       price_cents: kind === "mentoria" ? editingModule.price_cents! : null,
       release_days: Math.max(0, Number(editingModule.release_days) || 0),
+      ...(productFilter ? { product: productFilter } : {}),
     };
     const { error } = editingModule.id
       ? await supabase.from("modules").update(payload).eq("id", editingModule.id)
