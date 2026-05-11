@@ -8,6 +8,8 @@ import { ArrowLeft, Loader2, Trash2, KeyRound, Check, X, UserPlus, Fingerprint, 
 interface AdminUser {
   id: string;
   email: string | null;
+  full_name: string | null;
+  phone: string | null;
   created_at: string;
   last_sign_in_at: string | null;
   email_confirmed_at: string | null;
@@ -31,6 +33,9 @@ const Users = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [cEmail, setCEmail] = useState("");
   const [cPassword, setCPassword] = useState("");
+  const [cFullName, setCFullName] = useState("");
+  const [cPhone, setCPhone] = useState("");
+  const [cCpf, setCCpf] = useState("");
   const [cAdmin, setCAdmin] = useState(false);
   const [cTrein, setCTrein] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -96,13 +101,16 @@ const Users = () => {
     setCreating(true);
     const r = await call({
       action: "create_user", email: cEmail, password: cPassword,
+      full_name: cFullName.trim() || undefined,
+      phone: cPhone.trim() || undefined,
+      cpf: cCpf.trim() || undefined,
       is_admin: cAdmin, access_treinamento: cTrein, access_mentoria: false,
     });
     setCreating(false);
     if (r) {
       toast.success("Usuário criado");
       setShowCreate(false);
-      setCEmail(""); setCPassword(""); setCAdmin(false); setCTrein(true);
+      setCEmail(""); setCPassword(""); setCFullName(""); setCPhone(""); setCCpf(""); setCAdmin(false); setCTrein(true);
       load();
     }
   };
@@ -128,7 +136,7 @@ const Users = () => {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return users.filter((u) => {
-      if (q && !(u.email || "").toLowerCase().includes(q)) return false;
+      if (q && !(u.email || "").toLowerCase().includes(q) && !(u.full_name || "").toLowerCase().includes(q)) return false;
       if (filterAdmin && !u.roles.includes("admin")) return false;
       if (filterTreinamento && !hasAccessTo(u, "infozap")) return false;
       if (filterPaidProduct && !hasAccessTo(u, filterPaidProduct)) return false;
@@ -177,7 +185,7 @@ const Users = () => {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Pesquisar por email"
+              placeholder="Pesquisar por email ou nome"
               className="w-full h-10 rounded bg-black/40 border border-white/15 pl-9 pr-3 text-white text-sm focus:outline-none focus:border-[#00ff88]"
             />
           </div>
@@ -211,6 +219,7 @@ const Users = () => {
             <table className="w-full text-sm">
               <thead className="bg-white/5 text-xs uppercase tracking-wider text-gray-400">
                 <tr>
+                  <th className="text-left px-3 py-2">Nome completo</th>
                   <th className="text-left px-3 py-2">Email</th>
                   <th className="text-left px-3 py-2">Criado</th>
                   <th className="text-left px-3 py-2">Último login</th>
@@ -228,6 +237,10 @@ const Users = () => {
                   const hasTrein = hasAccessTo(u, "infozap");
                   return (
                     <tr key={u.id} className="border-t border-white/10 hover:bg-white/5">
+                      <td className="px-3 py-2">
+                        <div className="font-medium">{u.full_name || <span className="text-gray-600">—</span>}</div>
+                        {u.phone && <div className="text-xs text-gray-500">{u.phone}</div>}
+                      </td>
                       <td className="px-3 py-2">
                         <div className="font-medium">{u.email}</div>
                         <div className="text-xs text-gray-500">{u.email_confirmed_at ? "Confirmado" : "Não confirmado"}</div>
@@ -265,7 +278,7 @@ const Users = () => {
                   );
                 })}
                 {filtered.length === 0 && !busy && (
-                  <tr><td colSpan={6 + paidModules.length} className="px-3 py-10 text-center text-gray-500">Nenhum usuário encontrado.</td></tr>
+                  <tr><td colSpan={7 + paidModules.length} className="px-3 py-10 text-center text-gray-500">Nenhum usuário encontrado.</td></tr>
                 )}
               </tbody>
             </table>
@@ -297,11 +310,31 @@ const Users = () => {
 
       {showCreate && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={() => setShowCreate(false)}>
-          <div className="bg-[#111] border border-white/10 rounded-lg p-5 w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-[#111] border border-white/10 rounded-lg p-5 w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-lg font-bold mb-3" style={{ fontFamily: "'Bebas Neue', cursive" }}>Criar novo usuário</h3>
             <div className="space-y-3">
-              <input type="email" autoFocus value={cEmail} onChange={(e) => setCEmail(e.target.value)} placeholder="Email" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
-              <input type="text" value={cPassword} onChange={(e) => setCPassword(e.target.value)} placeholder="Senha (mínimo 6)" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+              <div>
+                <label className="text-[11px] text-gray-400 uppercase tracking-wider">Email <span className="text-[#ff2d78]">*</span></label>
+                <input type="email" autoFocus value={cEmail} onChange={(e) => setCEmail(e.target.value)} placeholder="email@exemplo.com" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+              </div>
+              <div>
+                <label className="text-[11px] text-gray-400 uppercase tracking-wider">Senha <span className="text-[#ff2d78]">*</span></label>
+                <input type="text" value={cPassword} onChange={(e) => setCPassword(e.target.value)} placeholder="Mínimo 6 caracteres" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+              </div>
+              <div>
+                <label className="text-[11px] text-gray-400 uppercase tracking-wider">Nome completo</label>
+                <input type="text" value={cFullName} onChange={(e) => setCFullName(e.target.value)} placeholder="Opcional" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[11px] text-gray-400 uppercase tracking-wider">Telefone</label>
+                  <input type="text" value={cPhone} onChange={(e) => setCPhone(e.target.value)} placeholder="Opcional" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+                </div>
+                <div>
+                  <label className="text-[11px] text-gray-400 uppercase tracking-wider">CPF</label>
+                  <input type="text" value={cCpf} onChange={(e) => setCCpf(e.target.value)} placeholder="Opcional" className="w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white focus:outline-none focus:border-[#00ff88] text-sm" />
+                </div>
+              </div>
               <label className="flex items-center gap-2 text-sm cursor-pointer">
                 <input type="checkbox" checked={cTrein} onChange={(e) => setCTrein(e.target.checked)} /> Liberar acesso ao treinamento
               </label>

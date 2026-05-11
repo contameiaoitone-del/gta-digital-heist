@@ -18,9 +18,10 @@ interface Props {
   placeholder?: string;
   className?: string;
   multiline?: boolean;
+  variables?: { label: string; token: string }[];
 }
 
-export function RichTextField({ value, onChange, placeholder, className = "", multiline = false }: Props) {
+export function RichTextField({ value, onChange, placeholder, className = "", multiline = false, variables }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [showEmoji, setShowEmoji] = useState(false);
   const [color, setColor] = useState("#ffffff");
@@ -61,6 +62,13 @@ export function RichTextField({ value, onChange, placeholder, className = "", mu
     document.execCommand("insertText", false, e);
     if (ref.current) onChange(ref.current.innerHTML);
     setShowEmoji(false);
+  };
+
+  const insertVariable = (token: string) => {
+    ref.current?.focus();
+    restoreSelection();
+    document.execCommand("insertText", false, token);
+    if (ref.current) onChange(ref.current.innerHTML);
   };
 
   return (
@@ -141,6 +149,22 @@ export function RichTextField({ value, onChange, placeholder, className = "", mu
               </button>
             ))}
           </div>
+        </div>
+      )}
+      {variables && variables.length > 0 && (
+        <div className="mt-2 flex flex-wrap items-center gap-1">
+          <span className="text-[10px] uppercase tracking-wider text-gray-500 mr-1">Variáveis:</span>
+          {variables.map((v) => (
+            <button
+              key={v.token}
+              type="button"
+              onMouseDown={(e) => { e.preventDefault(); saveSelection(); insertVariable(v.token); }}
+              className="px-2 py-0.5 rounded-full text-[11px] bg-[#00ff88]/10 border border-[#00ff88]/40 text-[#00ff88] hover:bg-[#00ff88]/20"
+              title={`Inserir ${v.token}`}
+            >
+              {v.label}
+            </button>
+          ))}
         </div>
       )}
     </div>
