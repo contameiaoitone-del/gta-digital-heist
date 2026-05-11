@@ -111,13 +111,17 @@ const Admin = () => {
 
     const { data, error } = await supabase
       .from("module_categories")
-      .insert(moduleCategoryNames.map((name, index) => ({ name, position: maxPosition + index + 1 })))
+      .insert(moduleCategoryNames.map((name, index) => ({
+        name,
+        position: maxPosition + index + 1,
+        ...(productFilter ? { product: productFilter } : { product: "infozap" }),
+      })))
       .select("*");
 
     if (!error && data) {
       setCategories([...savedCategories, ...((data as Category[]) || [])].sort((a, b) => a.position - b.position));
     }
-  }, []);
+  }, [productFilter]);
   const loadAdminContent = useCallback(async () => {
     let modulesQuery = supabase.from("modules").select("*").order("position");
     if (productFilter) modulesQuery = modulesQuery.eq("product", productFilter);
