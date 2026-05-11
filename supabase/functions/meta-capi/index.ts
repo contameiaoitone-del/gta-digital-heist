@@ -74,12 +74,9 @@ Deno.serve(async (req) => {
   if (req.method !== "POST") return json({ error: "method" }, 405);
 
   try {
-    const PIXEL_ID = Deno.env.get("META_PIXEL_ID");
-    const ACCESS_TOKEN = Deno.env.get("META_ACCESS_TOKEN");
     const TEST_CODE = Deno.env.get("META_TEST_EVENT_CODE");
-    if (!PIXEL_ID || !ACCESS_TOKEN) {
-      return json({ error: "meta_not_configured" }, 500);
-    }
+    const ENV_PIXEL_ID = Deno.env.get("META_PIXEL_ID");
+    const ENV_ACCESS_TOKEN = Deno.env.get("META_ACCESS_TOKEN");
 
     const body = (await req.json()) as CapiBody;
     if (!body?.event_name || !body?.event_id) {
@@ -173,11 +170,28 @@ Deno.serve(async (req) => {
     };
     if (TEST_CODE) (payload as Record<string, unknown>).test_event_code = TEST_CODE;
 
-    // Service-role client for log + idempotency
+    // Service-role client for log + idempotency + pixel lookup
     const sbAdmin = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
+
+    // Resolve target pixels: prefer DB-managed list; fall back to env vars.
+    const { data: dbPixels } = await sbAdmin
+      .from("tracking_pixels")
+      .select("pixel_id, access_token")
+      .eq("platform", "meta")
+      .eq("active", true);
+    const targets: Array<{ pixel_id: string; access_token: string }> = [];
+    for (const p of (dbPixels || []) as Array<{ pixel_id: string; access_token: string | null }>) {
+      if (p.pixel_id && p.access_token) targets.push({ pixel_id: p.pixel_id, access_token: p.access_token });
+    }
+    if (targets.length === 0 && ENV_PIXEL_ID && ENV_ACCESS_TOKEN) {
+      targets.push({ pixel_id: ENV_PIXEL_ID, access_token: ENV_ACCESS_TOKEN });
+    }
+    if (targets.length === 0) {
+      return json({ error: "meta_not_configured" }, 500);
+    }
 
     // Idempotency: if Purchase with this event_id already succeeded, skip.
     if (body.event_name === "Purchase" && body.event_id) {
@@ -195,47 +209,51 @@ Deno.serve(async (req) => {
       }
     }
 
-    const url = `https://graph.facebook.com/v20.0/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`;
-    let status = 0;
-    let metaResp: unknown = null;
-    let fetchErr: string | null = null;
-    try {
-      const r = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      status = r.status;
-      metaResp = await r.json().catch(() => ({}));
-    } catch (e) {
-      fetchErr = String(e);
-    }
-    const ok = status >= 200 && status < 300 && !fetchErr;
+    // Send to every configured pixel and log each result.
+    const results: Array<{ pixel_id: string; ok: boolean; status: number; meta: unknown; error: string | null }> = [];
+    for (const t of targets) {
+      const url = `https://graph.facebook.com/v20.0/${t.pixel_id}/events?access_token=${t.access_token}`;
+      let status = 0;
+      let metaResp: unknown = null;
+      let fetchErr: string | null = null;
+      try {
+        const r = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        status = r.status;
+        metaResp = await r.json().catch(() => ({}));
+      } catch (e) {
+        fetchErr = String(e);
+      }
+      const ok = status >= 200 && status < 300 && !fetchErr;
+      results.push({ pixel_id: t.pixel_id, ok, status, meta: metaResp, error: fetchErr });
 
-    // Persistent log (best effort)
-    try {
-      await sbAdmin.from("meta_capi_log").insert({
-        event_name: body.event_name,
-        event_id: body.event_id,
-        order_id: body.order_id || null,
-        session_id: body.session_id || null,
-        value: body.value ?? null,
-        status_code: status || null,
-        success: ok,
-        meta_response: metaResp ?? null,
-        error: fetchErr || (!ok ? JSON.stringify(metaResp) : null),
-        utm_source: utm_source || null,
-        utm_medium: utm_medium || null,
-        utm_campaign: utm_campaign || null,
-        utm_content: utm_content || null,
-        utm_term: utm_term || null,
-      });
-    } catch (e) {
-      console.error("meta_capi_log insert failed", e);
+      try {
+        await sbAdmin.from("meta_capi_log").insert({
+          event_name: body.event_name,
+          event_id: body.event_id,
+          order_id: body.order_id || null,
+          session_id: body.session_id || null,
+          value: body.value ?? null,
+          status_code: status || null,
+          success: ok,
+          meta_response: metaResp ?? null,
+          error: fetchErr || (!ok ? JSON.stringify({ pixel_id: t.pixel_id, response: metaResp }) : null),
+          utm_source: utm_source || null,
+          utm_medium: utm_medium || null,
+          utm_campaign: utm_campaign || null,
+          utm_content: utm_content || null,
+          utm_term: utm_term || null,
+        });
+      } catch (e) {
+        console.error("meta_capi_log insert failed", e);
+      }
     }
 
-    // Mark order as having sent Purchase to Meta successfully
-    if (ok && body.event_name === "Purchase" && body.order_id) {
+    const anyOk = results.some((r) => r.ok);
+    if (anyOk && body.event_name === "Purchase" && body.order_id) {
       try {
         await sbAdmin
           .from("orders")
@@ -246,12 +264,11 @@ Deno.serve(async (req) => {
       }
     }
 
-    if (!ok) {
-      console.error("meta capi failed", status, metaResp, fetchErr);
-      return json({ error: "meta_capi", status, detail: metaResp, fetch_error: fetchErr }, 502);
+    if (!anyOk) {
+      console.error("meta capi failed for all pixels", results);
+      return json({ error: "meta_capi", results }, 502);
     }
-
-    return json({ success: true, meta: metaResp });
+    return json({ success: true, results });
   } catch (e) {
     console.error("meta-capi error", e);
     return json({ error: "internal", detail: String(e) }, 500);
