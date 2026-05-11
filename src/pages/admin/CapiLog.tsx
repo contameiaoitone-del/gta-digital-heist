@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2, ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
@@ -25,6 +25,8 @@ interface CapiLogRow {
 
 const CapiLog = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
+  const { product = "infozap" } = useParams<{ product?: string }>();
+  const productPath = `/${encodeURIComponent(product)}`;
   const [rows, setRows] = useState<CapiLogRow[]>([]);
   const [filter, setFilter] = useState<"all" | "Purchase" | "InitiateCheckout" | "PageView">("Purchase");
   const [search, setSearch] = useState("");
@@ -57,13 +59,13 @@ const CapiLog = () => {
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-6 w-6 animate-spin" /></div>;
   }
-  if (!isAdmin) return <Navigate to="/" replace />;
+  if (!isAdmin) return <Navigate to={`${productPath}/membros`} replace />;
 
   return (
     <div className="min-h-screen bg-[#080808] text-white">
       <div className="max-w-[1400px] mx-auto px-4 py-6">
         <div className="flex items-center gap-3 mb-6">
-          <Link to="/admin" className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
+          <Link to={`${productPath}/admin`} className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
           <h1 className="text-2xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>Meta CAPI Log</h1>
         </div>
 
