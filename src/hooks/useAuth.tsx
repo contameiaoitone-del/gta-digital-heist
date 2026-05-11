@@ -125,6 +125,8 @@ export const RequireAuth = ({
 export const useSignOut = () => {
   const navigate = useNavigate();
   return async () => {
+    localStorage.removeItem("share_session_expires_at");
+    localStorage.removeItem("share_session_active");
     await supabase.auth.signOut();
     navigate("/membros/login");
   };
