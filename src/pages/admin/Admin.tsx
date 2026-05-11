@@ -464,7 +464,7 @@ const Admin = () => {
               Aulas {selectedModuleId && <span className="text-gray-500 text-sm">/ {modules.find((m) => m.id === selectedModuleId)?.title}</span>}
             </h2>
             {selectedModuleId && (
-              <button onClick={() => setEditingLesson({ position: lessons.length + 1, status: "published", published: true })} className="flex items-center gap-1 px-3 py-2 bg-[#00ff88] text-black rounded text-sm font-bold">
+              <button onClick={() => openLessonEditor({ position: lessons.length + 1, status: "published", published: true, content_mode: "video", release_days: 0 })} className="flex items-center gap-1 px-3 py-2 bg-[#00ff88] text-black rounded text-sm font-bold">
                 <Plus className="h-4 w-4" /> Nova aula
               </button>
             )}
@@ -487,7 +487,7 @@ const Admin = () => {
                         : <span className="text-gray-500">Oculta</span>} · {l.youtube_id ? `YT: ${l.youtube_id}` : "Sem vídeo"}
                     </p>
                   </div>
-                  <button onClick={() => setEditingLesson(l)} className="text-gray-400 hover:text-white p-1"><Pencil className="h-4 w-4" /></button>
+                  <button onClick={() => openLessonEditor(l)} className="text-gray-400 hover:text-white p-1"><Pencil className="h-4 w-4" /></button>
                   <button onClick={() => deleteLesson(l.id)} className="text-gray-400 hover:text-[#ff2d78] p-1"><Trash2 className="h-4 w-4" /></button>
                 </li>
               ))}
