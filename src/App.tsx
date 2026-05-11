@@ -30,6 +30,7 @@ const Lp2App = lazy(() => import("./lp2/Lp2App"));
 const MasterHome = lazy(() => import("./pages/master/MasterHome"));
 const MemberAreas = lazy(() => import("./pages/master/MemberAreas"));
 const LandingPages = lazy(() => import("./pages/master/LandingPages"));
+const MasterLogin = lazy(() => import("./pages/master/MasterLogin"));
 import { RequireAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
@@ -50,9 +51,10 @@ const App = () => (
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
             <Route path="/" element={<Lp2App />} />
-            <Route path="/home" element={<RequireAuth requireAdmin><MasterHome /></RequireAuth>} />
-            <Route path="/areas" element={<RequireAuth requireAdmin><MemberAreas /></RequireAuth>} />
-            <Route path="/landing-pages" element={<RequireAuth requireAdmin><LandingPages /></RequireAuth>} />
+            <Route path="/home/login" element={<MasterLogin />} />
+            <Route path="/home" element={<RequireAuth requireMaster><MasterHome /></RequireAuth>} />
+            <Route path="/areas" element={<RequireAuth requireMaster><MemberAreas /></RequireAuth>} />
+            <Route path="/landing-pages" element={<RequireAuth requireMaster><LandingPages /></RequireAuth>} />
             <Route path="/termos" element={<Termos />} />
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/contato" element={<Contato />} />

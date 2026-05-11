@@ -155,7 +155,7 @@ export default function MasterHome() {
             <h2 className="font-gta text-lg tracking-wide">Atividade</h2>
             {loading && <Loader2 className="h-4 w-4 animate-spin text-gray-500" />}
           </div>
-          <div className="h-72 w-full">
+          <div className="relative h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data} margin={{ top: 10, right: 12, left: -10, bottom: 0 }}>
                 <defs>
@@ -185,6 +185,11 @@ export default function MasterHome() {
                 <Area type="monotone" dataKey="sessoes" name="Sessões" stroke="#ffffff" fill="url(#gSessoes)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
+            <div className="absolute inset-0 backdrop-blur-md bg-black/40 rounded-md flex items-center justify-center pointer-events-none">
+              <span className="px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-[#ff2d78] text-white shadow-lg">
+                Em breve
+              </span>
+            </div>
           </div>
         </div>
       </div>
