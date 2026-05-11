@@ -304,6 +304,7 @@ export type Database = {
       member_access: {
         Row: {
           active: boolean
+          area_id: string | null
           granted_at: string
           id: string
           order_id: string | null
@@ -312,6 +313,7 @@ export type Database = {
         }
         Insert: {
           active?: boolean
+          area_id?: string | null
           granted_at?: string
           id?: string
           order_id?: string | null
@@ -320,6 +322,7 @@ export type Database = {
         }
         Update: {
           active?: boolean
+          area_id?: string | null
           granted_at?: string
           id?: string
           order_id?: string | null
@@ -341,6 +344,7 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          owner_id: string
           product: string
           slug: string
           updated_at: string
@@ -349,6 +353,7 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          owner_id: string
           product: string
           slug: string
           updated_at?: string
@@ -357,6 +362,7 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          owner_id?: string
           product?: string
           slug?: string
           updated_at?: string
@@ -422,6 +428,7 @@ export type Database = {
       }
       module_categories: {
         Row: {
+          area_id: string | null
           created_at: string
           id: string
           name: string
@@ -430,6 +437,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          area_id?: string | null
           created_at?: string
           id?: string
           name: string
@@ -438,6 +446,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          area_id?: string | null
           created_at?: string
           id?: string
           name?: string
@@ -449,6 +458,7 @@ export type Database = {
       }
       modules: {
         Row: {
+          area_id: string | null
           category: string | null
           cover_url: string | null
           created_at: string
@@ -465,6 +475,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          area_id?: string | null
           category?: string | null
           cover_url?: string | null
           created_at?: string
@@ -481,6 +492,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          area_id?: string | null
           category?: string | null
           cover_url?: string | null
           created_at?: string
@@ -501,6 +513,7 @@ export type Database = {
       orders: {
         Row: {
           amount_cents: number
+          area_id: string | null
           created_at: string
           customer_cpf: string
           customer_email: string
@@ -529,6 +542,7 @@ export type Database = {
         }
         Insert: {
           amount_cents: number
+          area_id?: string | null
           created_at?: string
           customer_cpf: string
           customer_email: string
@@ -557,6 +571,7 @@ export type Database = {
         }
         Update: {
           amount_cents?: number
+          area_id?: string | null
           created_at?: string
           customer_cpf?: string
           customer_email?: string
@@ -683,6 +698,7 @@ export type Database = {
       }
       share_links: {
         Row: {
+          area_id: string | null
           created_at: string
           created_by: string | null
           expires_at: string | null
@@ -691,6 +707,7 @@ export type Database = {
           token: string
         }
         Insert: {
+          area_id?: string | null
           created_at?: string
           created_by?: string | null
           expires_at?: string | null
@@ -699,6 +716,7 @@ export type Database = {
           token: string
         }
         Update: {
+          area_id?: string | null
           created_at?: string
           created_by?: string | null
           expires_at?: string | null
@@ -793,6 +811,7 @@ export type Database = {
         Row: {
           access_token: string | null
           active: boolean
+          area_id: string | null
           created_at: string
           id: string
           label: string | null
@@ -803,6 +822,7 @@ export type Database = {
         Insert: {
           access_token?: string | null
           active?: boolean
+          area_id?: string | null
           created_at?: string
           id?: string
           label?: string | null
@@ -813,6 +833,7 @@ export type Database = {
         Update: {
           access_token?: string | null
           active?: boolean
+          area_id?: string | null
           created_at?: string
           id?: string
           label?: string | null
@@ -1058,6 +1079,7 @@ export type Database = {
         Args: { _product: string; _release_days: number; _user_id: string }
         Returns: boolean
       }
+      is_super_admin: { Args: { _user_id: string }; Returns: boolean }
       move_to_dlq: {
         Args: {
           dlq_name: string
@@ -1074,6 +1096,10 @@ export type Database = {
           msg_id: number
           read_ct: number
         }[]
+      }
+      user_owns_area: {
+        Args: { _area_id: string; _user_id: string }
+        Returns: boolean
       }
     }
     Enums: {
