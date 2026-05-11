@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Play, LogOut, Settings, User as UserIcon } from "lucide-react";
 import { useAuth, useSignOut } from "@/hooks/useAuth";
@@ -51,6 +51,7 @@ const ytThumb = (id: string | null) => (id ? `https://i.ytimg.com/vi/${id}/hqdef
 
 const Membros = () => {
   const navigate = useNavigate();
+  const { product = "infozap" } = useParams<{ product?: string }>();
   const { isAdmin, session } = useAuth();
   const signOut = useSignOut();
   const { settings } = useSiteSettings();
@@ -62,19 +63,23 @@ const Membros = () => {
   const [loading, setLoading] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
   const [userVars, setUserVars] = useState<{ name: string; full_name: string; email: string; phone: string }>({ name: "", full_name: "", email: "", phone: "" });
+  const productPath = `/${encodeURIComponent(product)}`;
 
   useEffect(() => {
     document.title = "Área de Membros — Treinamento";
     (async () => {
       const [mRes, lRes, cRes, pRes, aRes] = await Promise.all([
-        supabase.from("modules").select("*").order("position"),
+        supabase.from("modules").select("*").eq("product", product).order("position"),
         supabase.from("lessons").select("*").order("position"),
-        supabase.from("module_categories").select("*").order("position"),
+        supabase.from("module_categories").select("*").eq("product", product).order("position"),
         session ? supabase.from("lesson_progress").select("*").eq("user_id", session.user.id) : Promise.resolve({ data: [] as Progress[] }),
         session ? supabase.from("member_access").select("product, granted_at").eq("user_id", session.user.id).eq("active", true) : Promise.resolve({ data: [] }),
       ]);
       setModules((mRes.data as Module[]) || []);
-      setLessons((lRes.data as Lesson[]) || []);
+      const loadedModules = (mRes.data as Module[]) || [];
+      const moduleIds = new Set(loadedModules.map((m) => m.id));
+      setModules(loadedModules);
+      setLessons(((lRes.data as Lesson[]) || []).filter((l) => moduleIds.has(l.module_id)));
       setCategories((cRes.data as Category[]) || []);
       const pmap: Record<string, Progress> = {};
       ((pRes as { data: Progress[] | null }).data || []).forEach((p) => (pmap[p.lesson_id] = p));
@@ -99,7 +104,7 @@ const Membros = () => {
         setUserVars({ name: first, full_name: fullName, email, phone });
       }
     })();
-  }, [session]);
+  }, [session, product]);
 
   const computeLockDays = (m: Module): number | null => {
     if (m.kind !== "treinamento") return null;
