@@ -94,10 +94,11 @@ export function MasterSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton disabled className={soonCls}>
-                  <FileText className="h-4 w-4" />
-                  <span>Minhas LPs</span>
-                  <SoonBadge />
+                <SidebarMenuButton asChild isActive={pathname === "/landing-pages"}>
+                  <NavLink to="/landing-pages" className={linkCls}>
+                    <FileText className="h-4 w-4" />
+                    <span>Página de Vendas</span>
+                  </NavLink>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
