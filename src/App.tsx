@@ -24,6 +24,7 @@ const AdminPaymentCredentials = lazy(() => import("./pages/admin/PaymentCredenti
 const ResetPassword = lazy(() => import("./pages/membros/ResetPassword"));
 const ShareConsume = lazy(() => import("./pages/membros/ShareConsume"));
 const AdminConfiguracoes = lazy(() => import("./pages/admin/Configuracoes"));
+const AdminTrackeamento = lazy(() => import("./pages/admin/Trackeamento"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const Lp1App = lazy(() => import("./lp1/Lp1App"));
 const Lp2App = lazy(() => import("./lp2/Lp2App"));
@@ -57,11 +58,11 @@ const App = () => (
             <Route path="/admin/usuarios" element={<RequireAuth requireAdmin><AdminUsers /></RequireAuth>} />
             <Route path="/admin/credenciais" element={<RequireAuth requireAdmin><AdminPaymentCredentials /></RequireAuth>} />
             <Route path="/admin/configuracoes" element={<RequireAuth requireAdmin><AdminConfiguracoes /></RequireAuth>} />
+            <Route path="/admin/trackeamento" element={<RequireAuth requireAdmin><AdminTrackeamento /></RequireAuth>} />
 
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/lp1" element={<Lp1App />} />
             <Route path="/lp2" element={<Lp2App />} />
-            <Route path="/home-original" element={<Index />} />
             {/* Redirects de rotas antigas removidas */}
             <Route path="/infozap" element={<Navigate to="/lp2" replace />} />
             <Route path="/infozap-aula" element={<Navigate to="/lp2" replace />} />
