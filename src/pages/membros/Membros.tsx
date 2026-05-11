@@ -75,7 +75,6 @@ const Membros = () => {
         session ? supabase.from("lesson_progress").select("*").eq("user_id", session.user.id) : Promise.resolve({ data: [] as Progress[] }),
         session ? supabase.from("member_access").select("product, granted_at").eq("user_id", session.user.id).eq("active", true) : Promise.resolve({ data: [] }),
       ]);
-      setModules((mRes.data as Module[]) || []);
       const loadedModules = (mRes.data as Module[]) || [];
       const moduleIds = new Set(loadedModules.map((m) => m.id));
       setModules(loadedModules);
@@ -157,7 +156,7 @@ const Membros = () => {
           </div>
           <div className="flex items-center gap-2">
             {isAdmin && (
-              <Link to="/admin" className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[var(--ms-secondary,#00ff88)]" style={{ ['--ms-secondary' as any]: settings.secondary_color || "#00ff88" }}>
+              <Link to={`${productPath}/admin`} className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[var(--ms-secondary,#00ff88)]" style={{ ['--ms-secondary' as any]: settings.secondary_color || "#00ff88" }}>
                 <Settings className="h-4 w-4" /> Admin
               </Link>
             )}
@@ -224,7 +223,7 @@ const Membros = () => {
           <div className="flex flex-wrap gap-3">
             {heroLesson && (
               <button
-                onClick={() => navigate(`/membros/aula/${heroLesson.id}`)}
+                onClick={() => navigate(`${productPath}/membros/aula/${heroLesson.id}`)}
                 className="flex items-center gap-2 px-6 py-2.5 rounded font-bold uppercase bg-white text-black hover:bg-white/85 transition-colors text-sm"
                 style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
               >
@@ -242,7 +241,7 @@ const Membros = () => {
           </h2>
           <p className="text-gray-400">Os módulos serão liberados em breve. Volte logo!</p>
           {isAdmin && (
-            <Link to="/admin" className="inline-block mt-6 px-5 py-3 rounded bg-[#00ff88] text-black font-bold uppercase text-sm">
+            <Link to={`${productPath}/admin`} className="inline-block mt-6 px-5 py-3 rounded bg-[#00ff88] text-black font-bold uppercase text-sm">
               Cadastrar conteúdo no admin
             </Link>
           )}
@@ -260,7 +259,7 @@ const Membros = () => {
               return (
                 <EpisodeCard
                   key={l.id}
-                  to={`/membros/aula/${l.id}`}
+                  to={`${productPath}/membros/aula/${l.id}`}
                   title={l.title}
                   thumb={l.thumbnail_url || ytThumb(l.youtube_id)}
                   moduleTitle={modules.find((m) => m.id === l.module_id)?.title}
@@ -298,7 +297,7 @@ const Membros = () => {
                 return (
                   <PosterCard
                     key={m.id}
-                    to={`/membros/modulo/${m.id}`}
+                    to={`${productPath}/membros/modulo/${m.id}`}
                     title={m.title}
                     cover={m.cover_url}
                     description={m.description}
