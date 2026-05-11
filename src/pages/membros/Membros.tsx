@@ -17,6 +17,7 @@ interface Module {
   cover_url: string | null;
   position: number;
   category: string | null;
+  status?: string;
   created_at?: string;
 }
 interface Category {
@@ -33,6 +34,7 @@ interface Lesson {
   thumbnail_url: string | null;
   duration_seconds: number | null;
   position: number;
+  status?: string;
 }
 interface Progress {
   lesson_id: string;
@@ -82,12 +84,12 @@ const Membros = () => {
 
   const continueWatching = useMemo(() => {
     return lessons
-      .filter((l) => progress[l.id] && !progress[l.id].completed && progress[l.id].watched_seconds > 5)
+      .filter((l) => l.status !== "coming_soon" && progress[l.id] && !progress[l.id].completed && progress[l.id].watched_seconds > 5)
       .sort((a, b) => new Date(progress[b.id].last_watched_at).getTime() - new Date(progress[a.id].last_watched_at).getTime())
       .slice(0, 12);
   }, [lessons, progress]);
 
-  const heroLesson = continueWatching[0] || lessons[0];
+  const heroLesson = continueWatching[0] || lessons.find((l) => l.status !== "coming_soon");
   const heroModule = heroLesson ? modules.find((m) => m.id === heroLesson.module_id) : modules[0];
 
   return (
@@ -220,6 +222,7 @@ const Membros = () => {
                     meta={`${total} ${total === 1 ? "aula" : "aulas"}`}
                     progressPct={pct}
                     completed={pct === 100 && total > 0}
+                    comingSoon={m.status === "coming_soon"}
                   />
                 );
               })}

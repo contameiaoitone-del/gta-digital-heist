@@ -12,6 +12,7 @@ interface Module {
   cover_url: string | null;
   position: number;
   published: boolean;
+  status?: "hidden" | "published" | "coming_soon";
   category: string | null;
   kind?: string;
   price_cents?: number | null;
@@ -28,6 +29,7 @@ interface Lesson {
   duration_seconds: number | null;
   position: number;
   published: boolean;
+  status?: "hidden" | "published" | "coming_soon";
   cta_enabled?: boolean;
   cta_label?: string | null;
   cta_url?: string | null;
@@ -165,7 +167,8 @@ const Admin = () => {
       description: editingModule.description || null,
       cover_url: editingModule.cover_url || null,
       position: editingModule.position ?? modules.length + 1,
-      published: editingModule.published ?? false,
+      published: (editingModule.status ?? (editingModule.published ? "published" : "hidden")) === "published",
+      status: editingModule.status ?? (editingModule.published ? "published" : "hidden"),
       category: editingModule.category?.trim() || null,
       kind,
       price_cents: kind === "mentoria" ? editingModule.price_cents! : null,
@@ -215,7 +218,8 @@ const Admin = () => {
       thumbnail_url: ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : editingLesson.thumbnail_url || null,
       duration_seconds: editingLesson.duration_seconds ?? null,
       position: editingLesson.position ?? lessons.length + 1,
-      published: editingLesson.published ?? true,
+      published: (editingLesson.status ?? (editingLesson.published === false ? "hidden" : "published")) === "published",
+      status: editingLesson.status ?? (editingLesson.published === false ? "hidden" : "published"),
       cta_enabled: !!editingLesson.cta_enabled,
       cta_label: editingLesson.cta_enabled ? (editingLesson.cta_label?.trim() || null) : null,
       cta_url: editingLesson.cta_enabled ? (editingLesson.cta_url?.trim() || null) : null,
@@ -321,7 +325,7 @@ const Admin = () => {
         <section>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-bold" style={{ fontFamily: "'Bebas Neue', cursive" }}>Módulos</h2>
-            <button onClick={() => setEditingModule({ position: modules.length + 1, published: false })} className="flex items-center gap-1 px-3 py-2 bg-[#00ff88] text-black rounded text-sm font-bold">
+            <button onClick={() => setEditingModule({ position: modules.length + 1, status: "hidden", published: false })} className="flex items-center gap-1 px-3 py-2 bg-[#00ff88] text-black rounded text-sm font-bold">
               <Plus className="h-4 w-4" /> Novo módulo
             </button>
           </div>
@@ -336,7 +340,9 @@ const Admin = () => {
                 <button onClick={() => setSelectedModuleId(m.id)} className="flex-1 text-left">
                   <p className="font-semibold text-sm">{m.title}</p>
                   <p className="text-xs text-gray-500">
-                    {m.published ? <span className="text-[#00ff88]">Publicado</span> : "Rascunho"}
+                    {m.status === "published" ? <span className="text-[#00ff88]">Publicado</span>
+                      : m.status === "coming_soon" ? <span className="text-[#facc15]">Em breve</span>
+                      : <span className="text-gray-500">Oculto</span>}
                     {m.category && <> · <span className="text-[#a855f7]">{m.category}</span></>}
                     {m.kind === "mentoria" && (
                       <> · <span className="text-[#ff2d78]">Mentoria · R$ {((m.price_cents || 0) / 100).toFixed(2)}</span></>
@@ -358,7 +364,7 @@ const Admin = () => {
               Aulas {selectedModuleId && <span className="text-gray-500 text-sm">/ {modules.find((m) => m.id === selectedModuleId)?.title}</span>}
             </h2>
             {selectedModuleId && (
-              <button onClick={() => setEditingLesson({ position: lessons.length + 1, published: true })} className="flex items-center gap-1 px-3 py-2 bg-[#00ff88] text-black rounded text-sm font-bold">
+              <button onClick={() => setEditingLesson({ position: lessons.length + 1, status: "published", published: true })} className="flex items-center gap-1 px-3 py-2 bg-[#00ff88] text-black rounded text-sm font-bold">
                 <Plus className="h-4 w-4" /> Nova aula
               </button>
             )}
@@ -376,7 +382,9 @@ const Admin = () => {
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm truncate">{l.title}</p>
                     <p className="text-xs text-gray-500 truncate">
-                      {l.published ? <span className="text-[#00ff88]">Publicada</span> : "Rascunho"} · {l.youtube_id ? `YT: ${l.youtube_id}` : "Sem vídeo"}
+                      {l.status === "published" ? <span className="text-[#00ff88]">Publicada</span>
+                        : l.status === "coming_soon" ? <span className="text-[#facc15]">Em breve</span>
+                        : <span className="text-gray-500">Oculta</span>} · {l.youtube_id ? `YT: ${l.youtube_id}` : "Sem vídeo"}
                     </p>
                   </div>
                   <button onClick={() => setEditingLesson(l)} className="text-gray-400 hover:text-white p-1"><Pencil className="h-4 w-4" /></button>
@@ -448,10 +456,17 @@ const Admin = () => {
               <p className="text-xs text-gray-500 mt-1">Esta capa aparece no grid estilo Netflix da área de membros.</p>
               {editingModule.cover_url && <img src={editingModule.cover_url} alt="" className="mt-2 max-h-32 rounded" />}
             </Field>
-            <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={!!editingModule.published} onChange={(e) => setEditingModule({ ...editingModule, published: e.target.checked })} />
-              Publicado
-            </label>
+            <Field label="Visibilidade">
+              <select
+                className={inputCls}
+                value={editingModule.status || (editingModule.published ? "published" : "hidden")}
+                onChange={(e) => setEditingModule({ ...editingModule, status: e.target.value as "hidden" | "published" | "coming_soon" })}
+              >
+                <option value="hidden">Oculto (não aparece)</option>
+                <option value="published">Publicado (acesso liberado)</option>
+                <option value="coming_soon">Em breve (aparece com tag, sem acesso)</option>
+              </select>
+            </Field>
             <div className="flex gap-2 justify-end pt-2">
               <button onClick={() => setEditingModule(null)} className="px-4 py-2 text-sm text-gray-400">Cancelar</button>
               <button onClick={saveModule} disabled={busy} className="px-4 py-2 bg-[#00ff88] text-black font-bold rounded text-sm">{busy ? "Salvando..." : "Salvar"}</button>
@@ -500,10 +515,17 @@ const Admin = () => {
                 </>
               )}
             </div>
-            <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={!!editingLesson.published} onChange={(e) => setEditingLesson({ ...editingLesson, published: e.target.checked })} />
-              Publicada
-            </label>
+            <Field label="Visibilidade">
+              <select
+                className={inputCls}
+                value={editingLesson.status || (editingLesson.published === false ? "hidden" : "published")}
+                onChange={(e) => setEditingLesson({ ...editingLesson, status: e.target.value as "hidden" | "published" | "coming_soon" })}
+              >
+                <option value="hidden">Oculta (não aparece)</option>
+                <option value="published">Publicada (acesso liberado)</option>
+                <option value="coming_soon">Em breve (aparece com tag, sem acesso)</option>
+              </select>
+            </Field>
             <div className="flex gap-2 justify-end pt-2">
               <button onClick={() => setEditingLesson(null)} className="px-4 py-2 text-sm text-gray-400">Cancelar</button>
               <button onClick={saveLesson} disabled={busy} className="px-4 py-2 bg-[#00ff88] text-black font-bold rounded text-sm">{busy ? "Salvando..." : "Salvar"}</button>
