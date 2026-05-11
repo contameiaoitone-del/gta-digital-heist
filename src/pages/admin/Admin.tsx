@@ -275,7 +275,9 @@ const Admin = () => {
       youtube_id: contentMode === "video" && showVideoYT ? ytId : null,
       vturb_player_id: contentMode === "video" && showVideoVturb ? (editingLesson.vturb_player_id?.trim() || null) : null,
       vturb_optimization_code: contentMode === "video" && showVideoVturb ? (editingLesson.vturb_optimization_code?.trim() || null) : null,
-      thumbnail_url: ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : editingLesson.thumbnail_url || null,
+      thumbnail_url: showVideoYT && ytId
+        ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`
+        : (editingLesson.thumbnail_url || null),
       duration_seconds: editingLesson.duration_seconds ?? null,
       position: editingLesson.position ?? lessons.length + 1,
       published: (editingLesson.status ?? (editingLesson.published === false ? "hidden" : "published")) === "published",
