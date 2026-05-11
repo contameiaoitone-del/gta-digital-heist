@@ -3,7 +3,13 @@ import { Link, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Plus, Trash2, CheckCircle2, XCircle, ChevronDown, ChevronRight, Eye, EyeOff, Download } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Trash2, CheckCircle2, XCircle, ChevronDown, ChevronRight, Eye, EyeOff, Pencil, Save, X, CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import type { DateRange } from "react-day-picker";
 
 type Platform = "meta" | "tiktok";
 
@@ -59,11 +65,14 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
   const [pixels, setPixels] = useState<Pixel[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
-  const [importing, setImporting] = useState(false);
   const [pixelId, setPixelId] = useState("");
   const [token, setToken] = useState("");
   const [label, setLabel] = useState("");
   const [reveal, setReveal] = useState<Record<string, boolean>>({});
+  const [editing, setEditing] = useState<string | null>(null);
+  const [editPixelId, setEditPixelId] = useState("");
+  const [editToken, setEditToken] = useState("");
+  const [editLabel, setEditLabel] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -78,30 +87,7 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
     return (data as Pixel[]) || [];
   };
 
-  const importFromSystem = async (silent = false) => {
-    setImporting(true);
-    const { data, error } = await supabase.functions.invoke("tracking-pixels-seed");
-    setImporting(false);
-    if (error) { if (!silent) toast.error(error.message); return; }
-    const inserted = (data as any)?.inserted?.filter((r: any) => r.platform === platform) || [];
-    if (inserted.length > 0) {
-      toast.success(`${inserted.length} pixel(s) importado(s) do sistema`);
-      load();
-    } else if (!silent) {
-      toast.info("Nenhum pixel novo encontrado no sistema");
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      const existing = await load();
-      if (existing.length === 0) {
-        // auto-import once if env-based pixels exist
-        await importFromSystem(true);
-      }
-    })();
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, []);
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
 
   const add = async () => {
     const pid = pixelId.trim();
@@ -130,17 +116,30 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
     else load();
   };
 
+  const startEdit = (p: Pixel) => {
+    setEditing(p.id);
+    setEditPixelId(p.pixel_id);
+    setEditToken(p.access_token || "");
+    setEditLabel(p.label || "");
+  };
+  const cancelEdit = () => { setEditing(null); };
+  const saveEdit = async (p: Pixel) => {
+    const pid = editPixelId.trim();
+    if (!pid) { toast.error("Informe o Pixel ID"); return; }
+    const { error } = await supabase.from("tracking_pixels").update({
+      pixel_id: pid,
+      access_token: editToken.trim() || null,
+      label: editLabel.trim() || null,
+    }).eq("id", p.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Pixel atualizado");
+    setEditing(null);
+    load();
+  };
+
   return (
     <div>
       <p className="text-xs text-gray-500 mb-4">Cadastre um ou mais pixels {title}. Todos os pixels ativos disparam eventos client-side e via API de conversões (CAPI).</p>
-
-      <div className="mb-4">
-        <button onClick={() => importFromSystem(false)} disabled={importing}
-          className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded border border-white/15 text-gray-300 hover:text-white hover:border-white/30">
-          {importing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-          Importar pixel já configurado no sistema
-        </button>
-      </div>
 
       <div className="border border-white/10 rounded p-4 space-y-2 mb-5">
         <div className="grid md:grid-cols-2 gap-2">
@@ -163,6 +162,23 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
         <ul className="space-y-2">
           {pixels.map((p) => (
             <li key={p.id} className="border border-white/10 rounded p-3">
+              {editing === p.id ? (
+                <div className="space-y-2">
+                  <div className="grid md:grid-cols-2 gap-2">
+                    <input className={inputCls} placeholder={idPlaceholder} value={editPixelId} onChange={(e) => setEditPixelId(e.target.value)} />
+                    <input className={inputCls} placeholder="Identificação (opcional)" value={editLabel} onChange={(e) => setEditLabel(e.target.value)} />
+                  </div>
+                  <input className={inputCls} placeholder={tokenPlaceholder} value={editToken} onChange={(e) => setEditToken(e.target.value)} />
+                  <div className="flex justify-end gap-2">
+                    <button onClick={cancelEdit} className="flex items-center gap-1 px-3 py-2 border border-white/15 text-gray-300 rounded text-sm hover:text-white">
+                      <X className="h-4 w-4" /> Cancelar
+                    </button>
+                    <button onClick={() => saveEdit(p)} className="flex items-center gap-1 px-3 py-2 bg-[#00ff88] text-black font-bold rounded text-sm">
+                      <Save className="h-4 w-4" /> Salvar
+                    </button>
+                  </div>
+                </div>
+              ) : (
               <div className="flex flex-wrap items-start gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -190,9 +206,13 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
                   <button onClick={() => toggleActive(p)} className="text-xs px-2 py-1 rounded border border-white/15 text-gray-300 hover:text-white">
                     {p.active ? "Desativar" : "Ativar"}
                   </button>
+                  <button onClick={() => startEdit(p)} title="Editar" className="text-xs px-2 py-1 rounded border border-white/15 text-gray-300 hover:text-white inline-flex items-center gap-1">
+                    <Pencil className="h-3.5 w-3.5" /> Editar
+                  </button>
                   <button onClick={() => remove(p)} title="Excluir" className="p-2 text-gray-400 hover:text-[#ff2d78]"><Trash2 className="h-4 w-4" /></button>
                 </div>
               </div>
+              )}
             </li>
           ))}
         </ul>
@@ -203,9 +223,34 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
 
 function CapiLogBody() {
   const [rows, setRows] = useState<CapiLogRow[]>([]);
-  const [filter, setFilter] = useState<"all" | "Purchase" | "InitiateCheckout" | "PageView">("Purchase");
+  const [filter, setFilter] = useState<"all" | "Purchase" | "InitiateCheckout" | "PageView">("all");
+  const [dateFilter, setDateFilter] = useState<"all" | "today" | "yesterday" | "custom">("all");
+  const [customRange, setCustomRange] = useState<DateRange | undefined>();
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [busy, setBusy] = useState(true);
+
+  const dateBounds = useMemo(() => {
+    const now = new Date();
+    if (dateFilter === "today") {
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const end = new Date(start); end.setDate(end.getDate() + 1);
+      return { from: start, to: end };
+    }
+    if (dateFilter === "yesterday") {
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+      const end = new Date(start); end.setDate(end.getDate() + 1);
+      return { from: start, to: end };
+    }
+    if (dateFilter === "custom" && customRange?.from) {
+      const start = new Date(customRange.from);
+      start.setHours(0, 0, 0, 0);
+      const endBase = customRange.to ? new Date(customRange.to) : new Date(customRange.from);
+      const end = new Date(endBase.getFullYear(), endBase.getMonth(), endBase.getDate() + 1);
+      return { from: start, to: end };
+    }
+    return null;
+  }, [dateFilter, customRange]);
 
   useEffect(() => {
     let cancelled = false;
@@ -213,6 +258,9 @@ function CapiLogBody() {
       setBusy(true);
       let q = supabase.from("meta_capi_log").select("*").order("created_at", { ascending: false }).limit(200);
       if (filter !== "all") q = q.eq("event_name", filter);
+      if (dateBounds) {
+        q = q.gte("created_at", dateBounds.from.toISOString()).lt("created_at", dateBounds.to.toISOString());
+      }
       const { data } = await q;
       if (!cancelled) {
         setRows((data as CapiLogRow[]) || []);
@@ -220,7 +268,7 @@ function CapiLogBody() {
       }
     })();
     return () => { cancelled = true; };
-  }, [filter]);
+  }, [filter, dateBounds]);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return rows;
@@ -234,12 +282,45 @@ function CapiLogBody() {
   return (
     <div>
       <div className="flex flex-wrap gap-2 mb-4 items-center">
-        {(["Purchase", "InitiateCheckout", "PageView", "all"] as const).map((f) => (
+        {([["all", "Raw"], ["Purchase", "Purchase"], ["InitiateCheckout", "InitiateCheckout"], ["PageView", "PageView"]] as const).map(([f, lbl]) => (
           <button key={f} onClick={() => setFilter(f)}
             className={`px-3 py-1.5 rounded text-xs uppercase tracking-wider ${filter === f ? "bg-[#00ff88] text-black" : "bg-white/5 text-gray-300 hover:bg-white/10"}`}>
-            {f}
+            {lbl}
           </button>
         ))}
+        <span className="mx-1 h-5 w-px bg-white/10" />
+        {([["all", "Todas as datas"], ["today", "Hoje"], ["yesterday", "Ontem"]] as const).map(([f, lbl]) => (
+          <button key={f} onClick={() => { setDateFilter(f); }}
+            className={`px-3 py-1.5 rounded text-xs uppercase tracking-wider ${dateFilter === f ? "bg-[#00ff88] text-black" : "bg-white/5 text-gray-300 hover:bg-white/10"}`}>
+            {lbl}
+          </button>
+        ))}
+        <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+          <PopoverTrigger asChild>
+            <button
+              className={cn(
+                "inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs uppercase tracking-wider",
+                dateFilter === "custom" ? "bg-[#00ff88] text-black" : "bg-white/5 text-gray-300 hover:bg-white/10",
+              )}>
+              <CalendarIcon className="h-3.5 w-3.5" />
+              {dateFilter === "custom" && customRange?.from
+                ? customRange.to && customRange.to.getTime() !== customRange.from.getTime()
+                  ? `${format(customRange.from, "dd/MM", { locale: ptBR })} – ${format(customRange.to, "dd/MM", { locale: ptBR })}`
+                  : format(customRange.from, "dd/MM/yyyy", { locale: ptBR })
+                : "Período"}
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0 bg-[#0a0a0a] border-white/10" align="start">
+            <Calendar
+              mode="range"
+              selected={customRange}
+              onSelect={(r) => { setCustomRange(r); if (r?.from) setDateFilter("custom"); if (r?.from && r?.to) setCalendarOpen(false); }}
+              numberOfMonths={2}
+              locale={ptBR}
+              className={cn("p-3 pointer-events-auto")}
+            />
+          </PopoverContent>
+        </Popover>
         <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar por SCK, UTM, order_id, event_id..."
           className="ml-auto px-3 py-1.5 rounded bg-white/5 border border-white/10 text-xs w-72 placeholder:text-gray-500 focus:outline-none focus:border-[#00ff88]" />
@@ -343,9 +424,10 @@ const Trackeamento = () => {
           />
         </Section>
 
-        <Section title="CAPI Log (Eventos enviados ao Meta)">
+        <section className="border border-white/10 rounded-lg p-5">
+          <h2 className="text-lg font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>CAPI Log (Eventos enviados ao Meta)</h2>
           <CapiLogBody />
-        </Section>
+        </section>
       </div>
     </div>
   );
