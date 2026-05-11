@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, ChevronLeft, ChevronRight, Download, FileText, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { MentoriaPaywall } from "@/components/membros/MentoriaPaywall";
 
@@ -19,7 +19,13 @@ interface Lesson {
   cta_enabled?: boolean | null;
   cta_label?: string | null;
   cta_url?: string | null;
+  release_days?: number | null;
+  content_mode?: string | null;
+  header_image_url?: string | null;
+  text_content?: string | null;
 }
+interface CTA { id: string; label: string; url: string; position: number }
+interface Attachment { id: string; name: string; file_url: string; size_bytes: number | null; mime: string | null; position: number }
 
 const linkify = (text: string) => {
   const re = /(https?:\/\/[^\s]+)/gi;
@@ -43,6 +49,9 @@ const linkify = (text: string) => {
 interface Module {
   id: string;
   title: string;
+  product?: string;
+  kind?: string;
+  release_days?: number | null;
 }
 interface LessonMeta {
   lesson_id: string;
@@ -66,6 +75,9 @@ const Aula = () => {
   const [loading, setLoading] = useState(true);
   const [meta, setMeta] = useState<LessonMeta | null>(null);
   const [hasMentoriaAccess, setHasMentoriaAccess] = useState(false);
+  const [ctas, setCtas] = useState<CTA[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [dripLockDays, setDripLockDays] = useState<number | null>(null);
   const playerRef = useRef<HTMLIFrameElement>(null);
   const tickRef = useRef<number>(0);
   const vturbRef = useRef<HTMLDivElement>(null);
@@ -100,14 +112,43 @@ const Aula = () => {
       }
       const l = lessonData as Lesson;
       setLesson(l);
-      const [mRes, sRes, pRes] = await Promise.all([
-        supabase.from("modules").select("id, title").eq("id", l.module_id).maybeSingle(),
+      const [mRes, sRes, pRes, ctaRes, attRes] = await Promise.all([
+        supabase.from("modules").select("id, title, product, kind, release_days").eq("id", l.module_id).maybeSingle(),
         supabase.from("lessons").select("*").eq("module_id", l.module_id).order("position"),
         session ? supabase.from("lesson_progress").select("completed, watched_seconds").eq("user_id", session.user.id).eq("lesson_id", l.id).maybeSingle() : Promise.resolve({ data: null }),
+        supabase.from("lesson_ctas").select("*").eq("lesson_id", l.id).order("position"),
+        supabase.from("lesson_attachments").select("*").eq("lesson_id", l.id).order("position"),
       ]);
-      setModule((mRes.data as Module) || null);
+      const modData = (mRes.data as Module) || null;
+      setModule(modData);
       setSiblings((sRes.data as Lesson[]) || []);
       setCompleted(!!(pRes as { data: { completed?: boolean } | null }).data?.completed);
+      setCtas((ctaRes.data as CTA[]) || []);
+      setAttachments((attRes.data as Attachment[]) || []);
+      // Drip lock check (only treinamento)
+      if (modData && session && modData.kind === "treinamento") {
+        const moduleDays = modData.release_days || 0;
+        const lessonDays = l.release_days || 0;
+        const totalDays = Math.max(moduleDays, lessonDays);
+        if (totalDays > 0 && modData.product) {
+          const { data: acc } = await supabase
+            .from("member_access")
+            .select("granted_at")
+            .eq("user_id", session.user.id)
+            .eq("product", modData.product)
+            .eq("active", true)
+            .order("granted_at", { ascending: true })
+            .limit(1)
+            .maybeSingle();
+          if (acc?.granted_at) {
+            const unlockAt = new Date(new Date(acc.granted_at).getTime() + totalDays * 24 * 60 * 60 * 1000);
+            const remainingMs = unlockAt.getTime() - Date.now();
+            if (remainingMs > 0) {
+              setDripLockDays(Math.ceil(remainingMs / (1000 * 60 * 60 * 24)));
+            } else setDripLockDays(null);
+          }
+        } else setDripLockDays(null);
+      } else setDripLockDays(null);
       setLoading(false);
       document.title = `${l.title} — Treinamento`;
     })();
@@ -241,6 +282,35 @@ const Aula = () => {
     );
   }
 
+  if (dripLockDays !== null && dripLockDays > 0) {
+    return (
+      <div className="min-h-screen bg-[#080808] text-white">
+        <header className="sticky top-0 z-40 bg-[#080808]/95 border-b border-white/5">
+          <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
+            <button onClick={() => navigate("/membros")} className="text-gray-400 hover:text-white">
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+            <p className="text-sm font-semibold truncate">{lesson.title}</p>
+          </div>
+        </header>
+        <div className="max-w-xl mx-auto px-4 py-24 text-center">
+          <span className="inline-block bg-[#facc15] text-black rounded px-3 py-1 text-xs font-bold uppercase tracking-wider mb-5" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
+            Libera em {dripLockDays} {dripLockDays === 1 ? "dia" : "dias"}
+          </span>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>
+            {lesson.title}
+          </h1>
+          <p className="text-gray-400 mb-8">Esta aula libera automaticamente {dripLockDays === 1 ? "em 1 dia" : `em ${dripLockDays} dias`} após sua compra.</p>
+          <Link to={module ? `/membros/modulo/${module.id}` : "/membros"} className="inline-block px-5 py-3 rounded bg-[#00ff88] text-black font-bold uppercase text-sm">
+            Voltar
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const isText = lesson.content_mode === "text";
+
   return (
     <div className="min-h-screen bg-[#080808] text-white">
       <header className="sticky top-0 z-40 bg-[#080808]/95 border-b border-white/5">
@@ -257,48 +327,98 @@ const Aula = () => {
 
       <div className="max-w-[1600px] mx-auto px-4 py-6 grid lg:grid-cols-[1fr_360px] gap-6">
         <div>
-          <div className="aspect-video bg-black rounded-lg overflow-hidden">
-            {lesson.vturb_player_id ? (
-              <div ref={vturbRef} className="w-full h-full [&>*]:w-full [&>*]:h-full" />
-            ) : lesson.youtube_id ? (
-              <iframe
-                ref={playerRef}
-                src={`https://www.youtube.com/embed/${lesson.youtube_id}?rel=0&modestbranding=1`}
-                title={lesson.title}
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-500">
-                Vídeo ainda não disponível
+          {isText ? (
+            <div className="relative aspect-video rounded-lg overflow-hidden bg-[#141414]">
+              {lesson.header_image_url ? (
+                <img src={lesson.header_image_url} alt={lesson.title} className="absolute inset-0 w-full h-full object-cover" />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]" />
+              )}
+              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#080808] via-[#080808]/70 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-5 md:p-7">
+                <h1 className="text-3xl md:text-5xl font-bold drop-shadow-lg" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>
+                  {lesson.title}
+                </h1>
               </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="aspect-video bg-black rounded-lg overflow-hidden">
+              {lesson.vturb_player_id ? (
+                <div ref={vturbRef} className="w-full h-full [&>*]:w-full [&>*]:h-full" />
+              ) : lesson.youtube_id ? (
+                <iframe
+                  ref={playerRef}
+                  src={`https://www.youtube.com/embed/${lesson.youtube_id}?rel=0&modestbranding=1`}
+                  title={lesson.title}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-500">
+                  Vídeo ainda não disponível
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="mt-5 flex items-start justify-between gap-4 flex-wrap">
             <div className="min-w-0 flex-1">
-              <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>
-                {lesson.title}
-              </h1>
-              {lesson.cta_enabled && lesson.cta_url && (
-                <div className="flex justify-center my-4">
-                  <a
-                    href={lesson.cta_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#00ff88] text-black font-bold uppercase text-sm hover:brightness-110 transition"
-                    style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
-                  >
-                    {lesson.cta_label || "Acessar"}
-                    <ArrowUpRight className="h-4 w-4" />
-                  </a>
+              {!isText && (
+                <h1 className="text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.03em" }}>
+                  {lesson.title}
+                </h1>
+              )}
+              {ctas.length > 0 && (
+                <div className="flex flex-wrap justify-center gap-3 my-4">
+                  {ctas.map((c) => (
+                    <a
+                      key={c.id}
+                      href={c.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#00ff88] text-black font-bold uppercase text-sm hover:brightness-110 transition whitespace-normal h-auto"
+                      style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}
+                    >
+                      {c.label}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  ))}
                 </div>
               )}
               {lesson.description && (
                 <p className="text-gray-300 leading-relaxed whitespace-pre-wrap break-words">
                   {linkify(lesson.description)}
                 </p>
+              )}
+              {isText && lesson.text_content && (
+                <div className="mt-5 text-gray-200 leading-relaxed whitespace-pre-wrap break-words text-base">
+                  {linkify(lesson.text_content)}
+                </div>
+              )}
+              {attachments.length > 0 && (
+                <div className="mt-6 border border-white/10 rounded-lg p-4">
+                  <p className="text-sm uppercase tracking-wider text-gray-300 mb-3 font-semibold flex items-center gap-2">
+                    <FileText className="h-4 w-4" /> Materiais da aula
+                  </p>
+                  <ul className="space-y-2">
+                    {attachments.map((a) => (
+                      <li key={a.id}>
+                        <a
+                          href={a.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download
+                          className="flex items-center gap-3 p-2 rounded border border-white/10 hover:border-[#00ff88] hover:bg-white/5 transition"
+                        >
+                          <Download className="h-4 w-4 text-[#00ff88]" />
+                          <span className="flex-1 text-sm truncate">{a.name}</span>
+                          {a.size_bytes ? <span className="text-xs text-gray-500">{(a.size_bytes / 1024 / 1024).toFixed(2)} MB</span> : null}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </div>
             <button

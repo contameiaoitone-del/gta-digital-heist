@@ -11,19 +11,21 @@ interface PosterCardProps {
   progressPct?: number;
   completed?: boolean;
   comingSoon?: boolean;
+  lockedDays?: number | null;
 }
 
-const PosterCard = ({ to, title, cover, description, category, meta, progressPct = 0, completed, comingSoon }: PosterCardProps) => {
-  const Wrapper: React.ElementType = comingSoon ? "div" : Link;
-  const wrapperProps = comingSoon ? { "aria-disabled": true } : { to };
+const PosterCard = ({ to, title, cover, description, category, meta, progressPct = 0, completed, comingSoon, lockedDays }: PosterCardProps) => {
+  const isLocked = comingSoon || (typeof lockedDays === "number" && lockedDays > 0);
+  const Wrapper: React.ElementType = isLocked ? "div" : Link;
+  const wrapperProps = isLocked ? { "aria-disabled": true } : { to };
   return (
     <Wrapper
       {...wrapperProps}
-      className={`group/card relative flex-shrink-0 w-[180px] md:w-[240px] lg:w-[260px] snap-start hover:z-20 ${comingSoon ? "cursor-not-allowed" : ""}`}
+      className={`group/card relative flex-shrink-0 w-[180px] md:w-[240px] lg:w-[260px] snap-start hover:z-20 ${isLocked ? "cursor-not-allowed" : ""}`}
     >
       <div className="relative aspect-[2/3] rounded-md overflow-hidden bg-[#141414] border border-white/5 transition-transform duration-300 group-hover/card:scale-105 group-hover/card:shadow-2xl group-hover/card:border-white/30">
         {cover ? (
-          <img src={cover} alt={title} className={`absolute inset-0 w-full h-full object-cover ${comingSoon ? "grayscale opacity-60" : ""}`} loading="lazy" />
+          <img src={cover} alt={title} className={`absolute inset-0 w-full h-full object-cover ${isLocked ? "grayscale opacity-60" : ""}`} loading="lazy" />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
             <span
@@ -38,6 +40,11 @@ const PosterCard = ({ to, title, cover, description, category, meta, progressPct
         {comingSoon && (
           <div className="absolute top-2 left-2 bg-[#facc15] text-black rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider z-10" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
             Em breve
+          </div>
+        )}
+        {!comingSoon && typeof lockedDays === "number" && lockedDays > 0 && (
+          <div className="absolute top-2 left-2 bg-[#facc15] text-black rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider z-10" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.08em" }}>
+            Libera em {lockedDays}d
           </div>
         )}
 

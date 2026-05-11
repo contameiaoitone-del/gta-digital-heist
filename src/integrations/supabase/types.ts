@@ -101,6 +101,82 @@ export type Database = {
         }
         Relationships: []
       }
+      lesson_attachments: {
+        Row: {
+          created_at: string
+          file_url: string
+          id: string
+          lesson_id: string
+          mime: string | null
+          name: string
+          position: number
+          size_bytes: number | null
+        }
+        Insert: {
+          created_at?: string
+          file_url: string
+          id?: string
+          lesson_id: string
+          mime?: string | null
+          name: string
+          position?: number
+          size_bytes?: number | null
+        }
+        Update: {
+          created_at?: string
+          file_url?: string
+          id?: string
+          lesson_id?: string
+          mime?: string | null
+          name?: string
+          position?: number
+          size_bytes?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_attachments_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lesson_ctas: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          lesson_id: string
+          position: number
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label: string
+          lesson_id: string
+          position?: number
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          lesson_id?: string
+          position?: number
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lesson_ctas_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lesson_progress: {
         Row: {
           completed: boolean
@@ -144,17 +220,21 @@ export type Database = {
       }
       lessons: {
         Row: {
+          content_mode: string
           created_at: string
           cta_enabled: boolean
           cta_label: string | null
           cta_url: string | null
           description: string | null
           duration_seconds: number | null
+          header_image_url: string | null
           id: string
           module_id: string
           position: number
           published: boolean
+          release_days: number
           status: string
+          text_content: string | null
           thumbnail_url: string | null
           title: string
           updated_at: string
@@ -163,17 +243,21 @@ export type Database = {
           youtube_url: string | null
         }
         Insert: {
+          content_mode?: string
           created_at?: string
           cta_enabled?: boolean
           cta_label?: string | null
           cta_url?: string | null
           description?: string | null
           duration_seconds?: number | null
+          header_image_url?: string | null
           id?: string
           module_id: string
           position?: number
           published?: boolean
+          release_days?: number
           status?: string
+          text_content?: string | null
           thumbnail_url?: string | null
           title: string
           updated_at?: string
@@ -182,17 +266,21 @@ export type Database = {
           youtube_url?: string | null
         }
         Update: {
+          content_mode?: string
           created_at?: string
           cta_enabled?: boolean
           cta_label?: string | null
           cta_url?: string | null
           description?: string | null
           duration_seconds?: number | null
+          header_image_url?: string | null
           id?: string
           module_id?: string
           position?: number
           published?: boolean
+          release_days?: number
           status?: string
+          text_content?: string | null
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
@@ -338,6 +426,7 @@ export type Database = {
           price_cents: number | null
           product: string
           published: boolean
+          release_days: number
           status: string
           title: string
           updated_at: string
@@ -353,6 +442,7 @@ export type Database = {
           price_cents?: number | null
           product?: string
           published?: boolean
+          release_days?: number
           status?: string
           title: string
           updated_at?: string
@@ -368,6 +458,7 @@ export type Database = {
           price_cents?: number | null
           product?: string
           published?: boolean
+          release_days?: number
           status?: string
           title?: string
           updated_at?: string
@@ -803,6 +894,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_drip_unlocked: {
+        Args: { _product: string; _release_days: number; _user_id: string }
         Returns: boolean
       }
       move_to_dlq: {

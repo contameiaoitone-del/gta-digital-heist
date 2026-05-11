@@ -16,6 +16,7 @@ interface Module {
   category: string | null;
   kind?: string;
   price_cents?: number | null;
+  release_days?: number;
 }
 interface Lesson {
   id: string;
@@ -33,6 +34,24 @@ interface Lesson {
   cta_enabled?: boolean;
   cta_label?: string | null;
   cta_url?: string | null;
+  release_days?: number;
+  content_mode?: "video" | "text";
+  header_image_url?: string | null;
+  text_content?: string | null;
+}
+interface LessonCTA {
+  id?: string;
+  label: string;
+  url: string;
+  position: number;
+}
+interface LessonAttachment {
+  id?: string;
+  name: string;
+  file_url: string;
+  size_bytes?: number | null;
+  mime?: string | null;
+  position: number;
 }
 interface Category {
   id: string;
@@ -60,6 +79,10 @@ const Admin = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [editingModule, setEditingModule] = useState<Partial<Module> | null>(null);
   const [editingLesson, setEditingLesson] = useState<Partial<Lesson> | null>(null);
+  const [lessonCtas, setLessonCtas] = useState<LessonCTA[]>([]);
+  const [lessonAttachments, setLessonAttachments] = useState<LessonAttachment[]>([]);
+  const [showVideoYT, setShowVideoYT] = useState(false);
+  const [showVideoVturb, setShowVideoVturb] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -172,6 +195,7 @@ const Admin = () => {
       category: editingModule.category?.trim() || null,
       kind,
       price_cents: kind === "mentoria" ? editingModule.price_cents! : null,
+      release_days: Math.max(0, Number(editingModule.release_days) || 0),
     };
     const { error } = editingModule.id
       ? await supabase.from("modules").update(payload).eq("id", editingModule.id)
@@ -208,32 +232,77 @@ const Admin = () => {
     if (!editingLesson || !editingLesson.title || !selectedModuleId) return;
     setBusy(true);
     const ytId = extractYouTubeId(editingLesson.youtube_url || "");
+    const contentMode = editingLesson.content_mode || "video";
     const payload = {
       module_id: selectedModuleId,
       title: editingLesson.title,
       description: editingLesson.description || null,
-      youtube_url: editingLesson.youtube_url || null,
-      youtube_id: ytId,
-      vturb_player_id: editingLesson.vturb_player_id?.trim() || null,
+      youtube_url: contentMode === "video" && showVideoYT ? (editingLesson.youtube_url || null) : null,
+      youtube_id: contentMode === "video" && showVideoYT ? ytId : null,
+      vturb_player_id: contentMode === "video" && showVideoVturb ? (editingLesson.vturb_player_id?.trim() || null) : null,
       thumbnail_url: ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : editingLesson.thumbnail_url || null,
       duration_seconds: editingLesson.duration_seconds ?? null,
       position: editingLesson.position ?? lessons.length + 1,
       published: (editingLesson.status ?? (editingLesson.published === false ? "hidden" : "published")) === "published",
       status: editingLesson.status ?? (editingLesson.published === false ? "hidden" : "published"),
-      cta_enabled: !!editingLesson.cta_enabled,
-      cta_label: editingLesson.cta_enabled ? (editingLesson.cta_label?.trim() || null) : null,
-      cta_url: editingLesson.cta_enabled ? (editingLesson.cta_url?.trim() || null) : null,
+      cta_enabled: false,
+      cta_label: null,
+      cta_url: null,
+      release_days: Math.max(0, Number(editingLesson.release_days) || 0),
+      content_mode: contentMode,
+      header_image_url: contentMode === "text" ? (editingLesson.header_image_url || null) : null,
+      text_content: contentMode === "text" ? (editingLesson.text_content || null) : null,
     };
-    const { error } = editingLesson.id
-      ? await supabase.from("lessons").update(payload).eq("id", editingLesson.id)
-      : await supabase.from("lessons").insert(payload);
-    setBusy(false);
-    if (error) toast.error(error.message);
-    else {
-      toast.success("Salvo");
-      setEditingLesson(null);
-      loadLessons(selectedModuleId);
+    let lessonId = editingLesson.id;
+    let saveErr;
+    if (lessonId) {
+      const { error } = await supabase.from("lessons").update(payload).eq("id", lessonId);
+      saveErr = error;
+    } else {
+      const { data, error } = await supabase.from("lessons").insert(payload).select("id").single();
+      saveErr = error;
+      lessonId = (data as { id: string } | null)?.id;
     }
+    if (saveErr || !lessonId) {
+      setBusy(false);
+      toast.error(saveErr?.message || "Erro ao salvar");
+      return;
+    }
+    // Sync CTAs (delete all, reinsert)
+    await supabase.from("lesson_ctas").delete().eq("lesson_id", lessonId);
+    const validCtas = lessonCtas.filter((c) => c.label.trim() && c.url.trim());
+    if (validCtas.length > 0) {
+      await supabase.from("lesson_ctas").insert(
+        validCtas.map((c, i) => ({ lesson_id: lessonId, label: c.label.trim(), url: c.url.trim(), position: i }))
+      );
+    }
+    // Sync attachments (delete removed, insert new ones)
+    const { data: existingAtt } = await supabase.from("lesson_attachments").select("id").eq("lesson_id", lessonId);
+    const keptIds = new Set(lessonAttachments.filter((a) => a.id).map((a) => a.id));
+    const toDelete = ((existingAtt as { id: string }[] | null) || []).filter((a) => !keptIds.has(a.id)).map((a) => a.id);
+    if (toDelete.length > 0) await supabase.from("lesson_attachments").delete().in("id", toDelete);
+    // Update positions on existing
+    for (let i = 0; i < lessonAttachments.length; i++) {
+      const a = lessonAttachments[i];
+      if (a.id) {
+        await supabase.from("lesson_attachments").update({ position: i }).eq("id", a.id);
+      } else {
+        await supabase.from("lesson_attachments").insert({
+          lesson_id: lessonId,
+          name: a.name,
+          file_url: a.file_url,
+          size_bytes: a.size_bytes ?? null,
+          mime: a.mime ?? null,
+          position: i,
+        });
+      }
+    }
+    setBusy(false);
+    toast.success("Salvo");
+    setEditingLesson(null);
+    setLessonCtas([]);
+    setLessonAttachments([]);
+    loadLessons(selectedModuleId);
   };
   const deleteLesson = async (id: string) => {
     if (!confirm("Excluir aula?")) return;
@@ -262,6 +331,37 @@ const Admin = () => {
     }
     const { data } = supabase.storage.from("module-covers").getPublicUrl(path);
     return data.publicUrl;
+  };
+
+  const uploadLessonFile = async (file: File): Promise<{ url: string; size: number; mime: string } | null> => {
+    const ext = file.name.split(".").pop() || "bin";
+    const path = `${selectedModuleId || "misc"}/${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage.from("lesson-attachments").upload(path, file, { contentType: file.type || undefined });
+    if (error) {
+      toast.error(error.message);
+      return null;
+    }
+    const { data } = supabase.storage.from("lesson-attachments").getPublicUrl(path);
+    return { url: data.publicUrl, size: file.size, mime: file.type || "application/octet-stream" };
+  };
+
+  const openLessonEditor = async (lesson: Partial<Lesson> | null) => {
+    if (lesson?.id) {
+      const [ctaRes, attRes] = await Promise.all([
+        supabase.from("lesson_ctas").select("*").eq("lesson_id", lesson.id).order("position"),
+        supabase.from("lesson_attachments").select("*").eq("lesson_id", lesson.id).order("position"),
+      ]);
+      setLessonCtas(((ctaRes.data as LessonCTA[] | null) || []).map((c) => ({ id: c.id, label: c.label, url: c.url, position: c.position })));
+      setLessonAttachments(((attRes.data as LessonAttachment[] | null) || []).map((a) => ({ id: a.id, name: a.name, file_url: a.file_url, size_bytes: a.size_bytes, mime: a.mime, position: a.position })));
+      setShowVideoYT(!!lesson.youtube_url);
+      setShowVideoVturb(!!lesson.vturb_player_id);
+    } else {
+      setLessonCtas([]);
+      setLessonAttachments([]);
+      setShowVideoYT(false);
+      setShowVideoVturb(false);
+    }
+    setEditingLesson(lesson);
   };
 
   if (loading || !checkedAccess) {
@@ -364,7 +464,7 @@ const Admin = () => {
               Aulas {selectedModuleId && <span className="text-gray-500 text-sm">/ {modules.find((m) => m.id === selectedModuleId)?.title}</span>}
             </h2>
             {selectedModuleId && (
-              <button onClick={() => setEditingLesson({ position: lessons.length + 1, status: "published", published: true })} className="flex items-center gap-1 px-3 py-2 bg-[#00ff88] text-black rounded text-sm font-bold">
+              <button onClick={() => openLessonEditor({ position: lessons.length + 1, status: "published", published: true, content_mode: "video", release_days: 0 })} className="flex items-center gap-1 px-3 py-2 bg-[#00ff88] text-black rounded text-sm font-bold">
                 <Plus className="h-4 w-4" /> Nova aula
               </button>
             )}
@@ -387,7 +487,7 @@ const Admin = () => {
                         : <span className="text-gray-500">Oculta</span>} · {l.youtube_id ? `YT: ${l.youtube_id}` : "Sem vídeo"}
                     </p>
                   </div>
-                  <button onClick={() => setEditingLesson(l)} className="text-gray-400 hover:text-white p-1"><Pencil className="h-4 w-4" /></button>
+                  <button onClick={() => openLessonEditor(l)} className="text-gray-400 hover:text-white p-1"><Pencil className="h-4 w-4" /></button>
                   <button onClick={() => deleteLesson(l.id)} className="text-gray-400 hover:text-[#ff2d78] p-1"><Trash2 className="h-4 w-4" /></button>
                 </li>
               ))}
@@ -467,6 +567,23 @@ const Admin = () => {
                 <option value="coming_soon">Em breve (aparece com tag, sem acesso)</option>
               </select>
             </Field>
+            <Field label="Liberação (drip)">
+              <div className="flex gap-2 items-center">
+                <select
+                  className={inputCls + " max-w-[220px]"}
+                  value={(editingModule.release_days ?? 0) > 0 ? "delayed" : "immediate"}
+                  onChange={(e) => setEditingModule({ ...editingModule, release_days: e.target.value === "immediate" ? 0 : (editingModule.release_days || 7) })}
+                >
+                  <option value="immediate">Imediata após pagamento</option>
+                  <option value="delayed">Liberar após N dias</option>
+                </select>
+                {(editingModule.release_days ?? 0) > 0 && (
+                  <input type="number" min={1} className={inputCls + " max-w-[120px]"} value={editingModule.release_days || 0}
+                    onChange={(e) => setEditingModule({ ...editingModule, release_days: Math.max(1, Number(e.target.value) || 1) })} />
+                )}
+                <span className="text-xs text-gray-500">dias após a compra</span>
+              </div>
+            </Field>
             <div className="flex gap-2 justify-end pt-2">
               <button onClick={() => setEditingModule(null)} className="px-4 py-2 text-sm text-gray-400">Cancelar</button>
               <button onClick={saveModule} disabled={busy} className="px-4 py-2 bg-[#00ff88] text-black font-bold rounded text-sm">{busy ? "Salvando..." : "Salvar"}</button>
@@ -480,41 +597,159 @@ const Admin = () => {
         <Modal onClose={() => setEditingLesson(null)} title={editingLesson.id ? "Editar aula" : "Nova aula"}>
           <div className="space-y-3">
             <Field label="Título"><input className={inputCls} value={editingLesson.title || ""} onChange={(e) => setEditingLesson({ ...editingLesson, title: e.target.value })} /></Field>
-            <Field label="URL do YouTube"><input className={inputCls} placeholder="https://youtube.com/watch?v=..." value={editingLesson.youtube_url || ""} onChange={(e) => setEditingLesson({ ...editingLesson, youtube_url: e.target.value })} /></Field>
-            <Field label="OU código VTURB (cole o embed completo: <vturb-smartplayer> + <script>)">
-              <textarea
-                className={inputCls + " h-32 font-mono text-xs"}
-                placeholder='<vturb-smartplayer id="vid-..."></vturb-smartplayer><script>...</script>'
-                value={editingLesson.vturb_player_id || ""}
-                onChange={(e) => setEditingLesson({ ...editingLesson, vturb_player_id: e.target.value })}
-              />
-              <p className="text-xs text-gray-500 mt-1">Se preenchido, o VTURB tem prioridade sobre o YouTube. Cole o embed + script de otimização inteiros.</p>
-            </Field>
-            <Field label="Descrição (visível para os usuários)">
+
+            {/* CONTEÚDO DA AULA */}
+            <div className="border border-white/10 rounded-lg">
+              <div className="px-3 py-2 bg-white/5 border-b border-white/10 text-xs uppercase tracking-wider text-gray-300 font-semibold">
+                Conteúdo da aula
+              </div>
+              <div className="p-3 space-y-4">
+                {/* Sub-section: Vídeo */}
+                <details open={editingLesson.content_mode !== "text"} className="border border-white/10 rounded">
+                  <summary className="cursor-pointer px-3 py-2 text-sm font-semibold bg-white/[0.03] select-none">Vídeo</summary>
+                  <div className="p-3 space-y-3">
+                    <label className="flex items-center justify-between gap-3 text-sm">
+                      <span>Adicionar URL de YouTube</span>
+                      <input type="checkbox" checked={showVideoYT} disabled={editingLesson.content_mode === "text"} onChange={(e) => setShowVideoYT(e.target.checked)} />
+                    </label>
+                    {showVideoYT && editingLesson.content_mode !== "text" && (
+                      <input className={inputCls} placeholder="https://youtube.com/watch?v=..." value={editingLesson.youtube_url || ""} onChange={(e) => setEditingLesson({ ...editingLesson, youtube_url: e.target.value })} />
+                    )}
+                    <label className="flex items-center justify-between gap-3 text-sm">
+                      <span>Adicionar URL Vturb (embed)</span>
+                      <input type="checkbox" checked={showVideoVturb} disabled={editingLesson.content_mode === "text"} onChange={(e) => setShowVideoVturb(e.target.checked)} />
+                    </label>
+                    {showVideoVturb && editingLesson.content_mode !== "text" && (
+                      <textarea
+                        className={inputCls + " h-28 font-mono text-xs"}
+                        placeholder='<vturb-smartplayer id="vid-..."></vturb-smartplayer><script>...</script>'
+                        value={editingLesson.vturb_player_id || ""}
+                        onChange={(e) => setEditingLesson({ ...editingLesson, vturb_player_id: e.target.value })}
+                      />
+                    )}
+                    {editingLesson.content_mode === "text" && (
+                      <p className="text-xs text-gray-500">Modo "apenas texto" está habilitado. Desabilite na aba abaixo para usar vídeo.</p>
+                    )}
+                  </div>
+                </details>
+
+                {/* Sub-section: Conteúdo em texto */}
+                <details open={editingLesson.content_mode === "text"} className="border border-white/10 rounded">
+                  <summary className="cursor-pointer px-3 py-2 text-sm font-semibold bg-white/[0.03] select-none">Conteúdo em texto</summary>
+                  <div className="p-3 space-y-3">
+                    <label className="flex items-center justify-between gap-3 text-sm">
+                      <span>Habilitar conteúdo apenas em texto (sem vídeo)</span>
+                      <input type="checkbox" checked={editingLesson.content_mode === "text"} onChange={(e) => {
+                        const text = e.target.checked;
+                        setEditingLesson({ ...editingLesson, content_mode: text ? "text" : "video" });
+                        if (text) { setShowVideoYT(false); setShowVideoVturb(false); }
+                      }} />
+                    </label>
+                    {editingLesson.content_mode === "text" && (
+                      <>
+                        <Field label="Imagem de cabeçalho (cobre o topo da aula)">
+                          <input type="file" accept="image/*" onChange={async (e) => {
+                            const f = e.target.files?.[0];
+                            if (!f) return;
+                            const r = await uploadLessonFile(f);
+                            if (r) setEditingLesson({ ...editingLesson, header_image_url: r.url });
+                          }} className="text-sm text-gray-300" />
+                          {editingLesson.header_image_url && (
+                            <img src={editingLesson.header_image_url} alt="" className="mt-2 max-h-32 rounded" />
+                          )}
+                        </Field>
+                        <Field label="Texto da aula (links viram clicáveis)">
+                          <textarea
+                            className={inputCls + " min-h-[160px] py-2"}
+                            style={{ resize: "vertical", height: "auto" }}
+                            placeholder="Escreva aqui o conteúdo da aula. URLs serão clicáveis automaticamente."
+                            value={editingLesson.text_content || ""}
+                            onChange={(e) => setEditingLesson({ ...editingLesson, text_content: e.target.value })}
+                          />
+                        </Field>
+                      </>
+                    )}
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <Field label="Descrição curta (opcional, exibida abaixo do título)">
               <textarea
                 className={inputCls + " h-24"}
-                placeholder="Sobre o que é essa aula, principais pontos abordados, etc."
+                placeholder="Resumo curto da aula. Links serão clicáveis."
                 value={editingLesson.description || ""}
                 onChange={(e) => setEditingLesson({ ...editingLesson, description: e.target.value })}
               />
             </Field>
             <Field label="Duração (segundos)"><input type="number" className={inputCls} value={editingLesson.duration_seconds ?? ""} onChange={(e) => setEditingLesson({ ...editingLesson, duration_seconds: e.target.value ? Number(e.target.value) : null })} /></Field>
-            <div className="border border-white/10 rounded p-3 space-y-2">
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={!!editingLesson.cta_enabled} onChange={(e) => setEditingLesson({ ...editingLesson, cta_enabled: e.target.checked })} />
-                Ativar botão de redirect (acima da descrição)
-              </label>
-              {editingLesson.cta_enabled && (
-                <>
-                  <Field label="Texto do botão">
-                    <input className={inputCls} placeholder="Ex: Acessar material complementar" value={editingLesson.cta_label || ""} onChange={(e) => setEditingLesson({ ...editingLesson, cta_label: e.target.value })} />
-                  </Field>
-                  <Field label="Link de redirecionamento">
-                    <input className={inputCls} placeholder="https://..." value={editingLesson.cta_url || ""} onChange={(e) => setEditingLesson({ ...editingLesson, cta_url: e.target.value })} />
-                  </Field>
-                </>
-              )}
+
+            {/* Botões de redirect (CTAs) */}
+            <div className="border border-white/10 rounded-lg p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold">Botões de redirect (acima da descrição)</p>
+                <button onClick={() => setLessonCtas([...lessonCtas, { label: "", url: "", position: lessonCtas.length }])} className="text-xs px-2 py-1 rounded bg-[#00ff88] text-black font-bold flex items-center gap-1">
+                  <Plus className="h-3 w-3" /> Adicionar botão
+                </button>
+              </div>
+              {lessonCtas.length === 0 && <p className="text-xs text-gray-500">Nenhum botão. Adicione um para criar um CTA acima da descrição.</p>}
+              {lessonCtas.map((c, i) => (
+                <div key={i} className="border border-white/10 rounded p-2 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500">#{i + 1}</span>
+                    <div className="flex flex-col gap-0.5 ml-auto">
+                      <button disabled={i === 0} onClick={() => {
+                        const a = [...lessonCtas]; [a[i-1], a[i]] = [a[i], a[i-1]]; setLessonCtas(a);
+                      }} className="text-gray-400 disabled:opacity-30"><ArrowUp className="h-3 w-3" /></button>
+                      <button disabled={i === lessonCtas.length - 1} onClick={() => {
+                        const a = [...lessonCtas]; [a[i+1], a[i]] = [a[i], a[i+1]]; setLessonCtas(a);
+                      }} className="text-gray-400 disabled:opacity-30"><ArrowDown className="h-3 w-3" /></button>
+                    </div>
+                    <button onClick={() => setLessonCtas(lessonCtas.filter((_, idx) => idx !== i))} className="text-gray-400 hover:text-[#ff2d78]"><Trash2 className="h-4 w-4" /></button>
+                  </div>
+                  <input className={inputCls} placeholder="Texto do botão" value={c.label} onChange={(e) => {
+                    const a = [...lessonCtas]; a[i] = { ...c, label: e.target.value }; setLessonCtas(a);
+                  }} />
+                  <input className={inputCls} placeholder="https://..." value={c.url} onChange={(e) => {
+                    const a = [...lessonCtas]; a[i] = { ...c, url: e.target.value }; setLessonCtas(a);
+                  }} />
+                </div>
+              ))}
             </div>
+
+            {/* Anexos / materiais */}
+            <div className="border border-white/10 rounded-lg p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold">Materiais / anexos para download</p>
+                <label className="text-xs px-2 py-1 rounded bg-[#00ff88] text-black font-bold flex items-center gap-1 cursor-pointer">
+                  <Plus className="h-3 w-3" /> Adicionar arquivo
+                  <input type="file" className="hidden" onChange={async (e) => {
+                    const f = e.target.files?.[0];
+                    if (!f) return;
+                    const r = await uploadLessonFile(f);
+                    if (r) setLessonAttachments([...lessonAttachments, { name: f.name, file_url: r.url, size_bytes: r.size, mime: r.mime, position: lessonAttachments.length }]);
+                    e.target.value = "";
+                  }} />
+                </label>
+              </div>
+              {lessonAttachments.length === 0 && <p className="text-xs text-gray-500">Nenhum arquivo. Os anexos ficam disponíveis para download para o aluno.</p>}
+              {lessonAttachments.map((a, i) => (
+                <div key={i} className="flex items-center gap-2 border border-white/10 rounded p-2">
+                  <div className="flex flex-col gap-0.5">
+                    <button disabled={i === 0} onClick={() => {
+                      const arr = [...lessonAttachments]; [arr[i-1], arr[i]] = [arr[i], arr[i-1]]; setLessonAttachments(arr);
+                    }} className="text-gray-400 disabled:opacity-30"><ArrowUp className="h-3 w-3" /></button>
+                    <button disabled={i === lessonAttachments.length - 1} onClick={() => {
+                      const arr = [...lessonAttachments]; [arr[i+1], arr[i]] = [arr[i], arr[i+1]]; setLessonAttachments(arr);
+                    }} className="text-gray-400 disabled:opacity-30"><ArrowDown className="h-3 w-3" /></button>
+                  </div>
+                  <a href={a.file_url} target="_blank" rel="noreferrer" className="flex-1 text-sm truncate text-gray-200 hover:text-[#00ff88]">{a.name}</a>
+                  <span className="text-xs text-gray-500">{a.size_bytes ? (a.size_bytes / 1024 / 1024).toFixed(2) + " MB" : ""}</span>
+                  <button onClick={() => setLessonAttachments(lessonAttachments.filter((_, idx) => idx !== i))} className="text-gray-400 hover:text-[#ff2d78]"><Trash2 className="h-4 w-4" /></button>
+                </div>
+              ))}
+            </div>
+
             <Field label="Visibilidade">
               <select
                 className={inputCls}
@@ -525,6 +760,23 @@ const Admin = () => {
                 <option value="published">Publicada (acesso liberado)</option>
                 <option value="coming_soon">Em breve (aparece com tag, sem acesso)</option>
               </select>
+            </Field>
+            <Field label="Liberação (drip)">
+              <div className="flex gap-2 items-center flex-wrap">
+                <select
+                  className={inputCls + " max-w-[220px]"}
+                  value={(editingLesson.release_days ?? 0) > 0 ? "delayed" : "immediate"}
+                  onChange={(e) => setEditingLesson({ ...editingLesson, release_days: e.target.value === "immediate" ? 0 : (editingLesson.release_days || 7) })}
+                >
+                  <option value="immediate">Imediata após pagamento</option>
+                  <option value="delayed">Liberar após N dias</option>
+                </select>
+                {(editingLesson.release_days ?? 0) > 0 && (
+                  <input type="number" min={1} className={inputCls + " max-w-[120px]"} value={editingLesson.release_days || 0}
+                    onChange={(e) => setEditingLesson({ ...editingLesson, release_days: Math.max(1, Number(e.target.value) || 1) })} />
+                )}
+                <span className="text-xs text-gray-500">dias após a compra</span>
+              </div>
             </Field>
             <div className="flex gap-2 justify-end pt-2">
               <button onClick={() => setEditingLesson(null)} className="px-4 py-2 text-sm text-gray-400">Cancelar</button>
@@ -545,7 +797,7 @@ const Field = ({ label, children }: { label: string; children: React.ReactNode }
 );
 const Modal = ({ children, title, onClose }: { children: React.ReactNode; title: string; onClose: () => void }) => (
   <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={onClose}>
-    <div className="bg-[#111] border border-white/10 rounded-xl max-w-md w-full p-5" onClick={(e) => e.stopPropagation()}>
+    <div className="bg-[#111] border border-white/10 rounded-xl max-w-2xl w-full p-5 max-h-[92vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
       <h3 className="text-lg font-bold mb-4" style={{ fontFamily: "'Bebas Neue', cursive" }}>{title}</h3>
       {children}
     </div>
