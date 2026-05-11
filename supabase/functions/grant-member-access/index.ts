@@ -89,8 +89,10 @@ Deno.serve(async (req) => {
     if (linkErr) console.error("generateLink failed", linkErr);
     const magicLink = linkData?.properties?.action_link || null;
 
-    // Enqueue welcome email (best-effort)
-    try {
+    // Enqueue welcome email (best-effort) — skip for mentoria add-ons since
+    // the user is already an active member.
+    const isMentoriaAddon = (order.product || "").startsWith("mentoria:");
+    if (!isMentoriaAddon) try {
       await supabase.functions.invoke("send-transactional-email", {
         body: {
           templateName: "member-welcome",

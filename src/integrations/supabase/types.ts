@@ -321,7 +321,9 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          kind: string
           position: number
+          price_cents: number | null
           product: string
           published: boolean
           title: string
@@ -333,7 +335,9 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          kind?: string
           position?: number
+          price_cents?: number | null
           product?: string
           published?: boolean
           title: string
@@ -345,7 +349,9 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          kind?: string
           position?: number
+          price_cents?: number | null
           product?: string
           published?: boolean
           title?: string
@@ -692,6 +698,19 @@ export type Database = {
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number
+      }
+      get_lesson_module_meta: {
+        Args: { _lesson_id: string }
+        Returns: {
+          lesson_id: string
+          lesson_published: boolean
+          lesson_title: string
+          module_id: string
+          module_kind: string
+          module_price_cents: number
+          module_published: boolean
+          module_title: string
+        }[]
       }
       has_active_access: {
         Args: { _product?: string; _user_id: string }

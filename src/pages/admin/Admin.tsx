@@ -13,6 +13,8 @@ interface Module {
   position: number;
   published: boolean;
   category: string | null;
+  kind?: string;
+  price_cents?: number | null;
 }
 interface Lesson {
   id: string;
@@ -149,6 +151,11 @@ const Admin = () => {
 
   const saveModule = async () => {
     if (!editingModule || !editingModule.title) return;
+    const kind = (editingModule.kind as string) || "treinamento";
+    if (kind === "mentoria" && (!editingModule.price_cents || editingModule.price_cents <= 0)) {
+      toast.error("Defina o valor da mentoria (em R$).");
+      return;
+    }
     setBusy(true);
     const payload = {
       title: editingModule.title,
@@ -157,6 +164,8 @@ const Admin = () => {
       position: editingModule.position ?? modules.length + 1,
       published: editingModule.published ?? false,
       category: editingModule.category?.trim() || null,
+      kind,
+      price_cents: kind === "mentoria" ? editingModule.price_cents! : null,
     };
     const { error } = editingModule.id
       ? await supabase.from("modules").update(payload).eq("id", editingModule.id)
@@ -323,6 +332,9 @@ const Admin = () => {
                   <p className="text-xs text-gray-500">
                     {m.published ? <span className="text-[#00ff88]">Publicado</span> : "Rascunho"}
                     {m.category && <> · <span className="text-[#a855f7]">{m.category}</span></>}
+                    {m.kind === "mentoria" && (
+                      <> · <span className="text-[#ff2d78]">Mentoria · R$ {((m.price_cents || 0) / 100).toFixed(2)}</span></>
+                    )}
                   </p>
                 </button>
                 <button onClick={() => setEditingModule(m)} className="text-gray-400 hover:text-white p-1"><Pencil className="h-4 w-4" /></button>
@@ -394,6 +406,32 @@ const Admin = () => {
               <p className="text-xs text-gray-500 mt-1">Módulos com a mesma categoria aparecem agrupados em uma sessão na área de membros.</p>
             </Field>
             <Field label="Descrição"><textarea className={inputCls + " h-24"} value={editingModule.description || ""} onChange={(e) => setEditingModule({ ...editingModule, description: e.target.value })} /></Field>
+            <Field label="Tipo de módulo">
+              <select
+                className={inputCls}
+                value={(editingModule.kind as string) || "treinamento"}
+                onChange={(e) => setEditingModule({ ...editingModule, kind: e.target.value })}
+              >
+                <option value="treinamento">Treinamento (acesso liberado a quem comprou)</option>
+                <option value="mentoria">Mentoria (módulo pago individualmente)</option>
+              </select>
+            </Field>
+            {(editingModule.kind === "mentoria") && (
+              <Field label="Valor (R$) — cobrado por aluno para liberar este módulo">
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  className={inputCls}
+                  placeholder="Ex.: 197.00"
+                  value={editingModule.price_cents ? (editingModule.price_cents / 100).toString() : ""}
+                  onChange={(e) => {
+                    const v = parseFloat(e.target.value);
+                    setEditingModule({ ...editingModule, price_cents: Number.isFinite(v) ? Math.round(v * 100) : null });
+                  }}
+                />
+              </Field>
+            )}
             <Field label="Capa do módulo (2:3 vertical — recomendado 800×1200, estilo cartaz Netflix)">
               <input type="file" accept="image/*" onChange={async (e) => {
                 const f = e.target.files?.[0];

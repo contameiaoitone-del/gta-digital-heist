@@ -138,6 +138,40 @@ Deno.serve(async (req) => {
       return json({ ok: true });
     }
 
+    if (action === "create_user") {
+      const { email, password, is_admin, access_treinamento, access_mentoria } = body as {
+        email?: string;
+        password?: string;
+        is_admin?: boolean;
+        access_treinamento?: boolean;
+        access_mentoria?: boolean;
+      };
+      const normEmail = (email || "").trim().toLowerCase();
+      if (!normEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normEmail)) {
+        return json({ error: "Email inválido" }, 400);
+      }
+      if (!password || password.length < 6) {
+        return json({ error: "Senha deve ter pelo menos 6 caracteres" }, 400);
+      }
+      const { data: created, error: createErr } = await admin.auth.admin.createUser({
+        email: normEmail,
+        password,
+        email_confirm: true,
+      });
+      if (createErr || !created.user) return json({ error: createErr?.message || "createUser failed" }, 400);
+      const newId = created.user.id;
+      if (is_admin) {
+        await admin.from("user_roles").upsert({ user_id: newId, role: "admin" }, { onConflict: "user_id,role" });
+      }
+      const accessRows: { user_id: string; product: string; active: boolean }[] = [];
+      if (access_treinamento) accessRows.push({ user_id: newId, product: "infozap", active: true });
+      if (access_mentoria) accessRows.push({ user_id: newId, product: "mentoria", active: true });
+      if (accessRows.length > 0) {
+        await admin.from("member_access").upsert(accessRows, { onConflict: "user_id,product" });
+      }
+      return json({ ok: true, user_id: newId });
+    }
+
     return json({ error: "Unknown action" }, 400);
   } catch (e) {
     return json({ error: (e as Error).message }, 500);
