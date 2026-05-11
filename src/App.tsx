@@ -31,6 +31,8 @@ const MasterHome = lazy(() => import("./pages/master/MasterHome"));
 const MemberAreas = lazy(() => import("./pages/master/MemberAreas"));
 const LandingPages = lazy(() => import("./pages/master/LandingPages"));
 const MasterLogin = lazy(() => import("./pages/master/MasterLogin"));
+const SuperLogin = lazy(() => import("./pages/super/SuperLogin"));
+const SuperHome = lazy(() => import("./pages/super/SuperHome"));
 import { RequireAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
@@ -55,6 +57,8 @@ const App = () => (
             <Route path="/home" element={<RequireAuth requireMaster><MasterHome /></RequireAuth>} />
             <Route path="/areas" element={<RequireAuth requireMaster><MemberAreas /></RequireAuth>} />
             <Route path="/landing-pages" element={<RequireAuth requireMaster><LandingPages /></RequireAuth>} />
+            <Route path="/super/login" element={<SuperLogin />} />
+            <Route path="/super" element={<RequireAuth requireSuperAdmin><SuperHome /></RequireAuth>} />
             <Route path="/termos" element={<Termos />} />
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/contato" element={<Contato />} />

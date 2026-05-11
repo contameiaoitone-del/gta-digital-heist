@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import {
   Sidebar,
   SidebarContent,
@@ -16,10 +17,12 @@ import {
   Database,
   Layers,
   Clock,
+  ShieldCheck,
 } from "lucide-react";
 
 export function MasterSidebar() {
   const { pathname } = useLocation();
+  const { isSuperAdmin } = useAuth();
   const linkCls = ({ isActive: a }: { isActive: boolean }) =>
     `flex items-center gap-2 text-gray-100 hover:bg-white/5 hover:text-[#d95e10] ${a ? "text-[#d95e10]" : ""}`;
   const soonCls =
@@ -93,6 +96,16 @@ export function MasterSidebar() {
           <SidebarGroupLabel>Extras</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              {isSuperAdmin && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton asChild isActive={pathname.startsWith("/super")}>
+                    <NavLink to="/super" className={linkCls}>
+                      <ShieldCheck className="h-4 w-4" />
+                      <span>Super Admin</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
               <SidebarMenuItem>
                 <SidebarMenuButton disabled className={soonCls}>
                   <FileText className="h-4 w-4" />
