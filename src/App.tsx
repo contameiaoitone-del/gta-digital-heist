@@ -22,6 +22,8 @@ const CapiLog = lazy(() => import("./pages/admin/CapiLog"));
 const AdminUsers = lazy(() => import("./pages/admin/Users"));
 const AdminPaymentCredentials = lazy(() => import("./pages/admin/PaymentCredentials"));
 const ResetPassword = lazy(() => import("./pages/membros/ResetPassword"));
+const ShareConsume = lazy(() => import("./pages/membros/ShareConsume"));
+const AdminConfiguracoes = lazy(() => import("./pages/admin/Configuracoes"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const Lp1App = lazy(() => import("./lp1/Lp1App"));
 const Lp2App = lazy(() => import("./lp2/Lp2App"));
@@ -49,10 +51,12 @@ const App = () => (
             <Route path="/membros" element={<RequireAuth><Membros /></RequireAuth>} />
             <Route path="/membros/modulo/:id" element={<RequireAuth><Modulo /></RequireAuth>} />
             <Route path="/membros/aula/:id" element={<RequireAuth><Aula /></RequireAuth>} />
+            <Route path="/membros/share/:token" element={<ShareConsume />} />
             <Route path="/admin" element={<RequireAuth requireAdmin><Admin /></RequireAuth>} />
             <Route path="/admin/capi-log" element={<RequireAuth requireAdmin><CapiLog /></RequireAuth>} />
             <Route path="/admin/usuarios" element={<RequireAuth requireAdmin><AdminUsers /></RequireAuth>} />
             <Route path="/admin/credenciais" element={<RequireAuth requireAdmin><AdminPaymentCredentials /></RequireAuth>} />
+            <Route path="/admin/configuracoes" element={<RequireAuth requireAdmin><AdminConfiguracoes /></RequireAuth>} />
 
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/lp1" element={<Lp1App />} />
