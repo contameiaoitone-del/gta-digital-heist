@@ -19,6 +19,26 @@ interface Lesson {
   cta_label?: string | null;
   cta_url?: string | null;
 }
+
+const linkify = (text: string) => {
+  const re = /(https?:\/\/[^\s]+)/gi;
+  const parts = text.split(re);
+  return parts.map((part, i) =>
+    re.test(part) ? (
+      <a
+        key={i}
+        href={part}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-[#00ff88] underline underline-offset-2 hover:brightness-110 break-all"
+      >
+        {part}
+      </a>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+};
 interface Module {
   id: string;
   title: string;
