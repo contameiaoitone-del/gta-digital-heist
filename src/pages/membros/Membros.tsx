@@ -6,6 +6,7 @@ import { useAuth, useSignOut } from "@/hooks/useAuth";
 import Row from "@/components/membros/Row";
 import PosterCard from "@/components/membros/PosterCard";
 import EpisodeCard from "@/components/membros/EpisodeCard";
+import PasskeySetup from "@/components/membros/PasskeySetup";
 import infozapBanner from "@/assets/membros-billboard.webp";
 import infozapLogo from "@/assets/infozap-logo.webp";
 
@@ -163,6 +164,7 @@ const Membros = () => {
       )}
 
       <div className="max-w-[1800px] mx-auto mt-6 md:mt-8 relative z-20 space-y-2">
+        <PasskeySetup />
         {/* Continue assistindo */}
         {continueWatching.length > 0 && (
           <Row title="Continue assistindo">
