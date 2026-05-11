@@ -26,6 +26,7 @@ interface Lesson {
   youtube_url: string | null;
   youtube_id: string | null;
   vturb_player_id: string | null;
+  vturb_optimization_code?: string | null;
   thumbnail_url: string | null;
   duration_seconds: number | null;
   position: number;
@@ -232,7 +233,9 @@ const Admin = () => {
     if (!editingLesson || !editingLesson.title || !selectedModuleId) return;
     setBusy(true);
     const ytId = extractYouTubeId(editingLesson.youtube_url || "");
-    const contentMode = editingLesson.content_mode || "video";
+    // Mutual exclusion: only one video source can be active. If any video toggle is on, force video mode.
+    const hasVideo = showVideoYT || showVideoVturb;
+    const contentMode: "video" | "text" = hasVideo ? "video" : (editingLesson.content_mode || "video");
     const payload = {
       module_id: selectedModuleId,
       title: editingLesson.title,
@@ -240,6 +243,7 @@ const Admin = () => {
       youtube_url: contentMode === "video" && showVideoYT ? (editingLesson.youtube_url || null) : null,
       youtube_id: contentMode === "video" && showVideoYT ? ytId : null,
       vturb_player_id: contentMode === "video" && showVideoVturb ? (editingLesson.vturb_player_id?.trim() || null) : null,
+      vturb_optimization_code: contentMode === "video" && showVideoVturb ? (editingLesson.vturb_optimization_code?.trim() || null) : null,
       thumbnail_url: ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : editingLesson.thumbnail_url || null,
       duration_seconds: editingLesson.duration_seconds ?? null,
       position: editingLesson.position ?? lessons.length + 1,
