@@ -336,6 +336,33 @@ export type Database = {
           },
         ]
       }
+      member_areas: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          product: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          product: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          product?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       meta_capi_log: {
         Row: {
           created_at: string
@@ -1047,7 +1074,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "student"
+      app_role: "admin" | "student" | "master"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1175,7 +1202,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "student"],
+      app_role: ["admin", "student", "master"],
     },
   },
 } as const
