@@ -195,11 +195,19 @@ const Aula = () => {
       const headTpl = document.createElement("template");
       headTpl.innerHTML = lesson.vturb_optimization_code.trim();
       Array.from(headTpl.content.childNodes).forEach((node) => {
-        if (node.nodeType === 1) {
-          const el = node.cloneNode(true) as HTMLElement;
-          document.head.appendChild(el);
-          headInjected.push(el);
+        if (node.nodeType !== 1) return;
+        let el: HTMLElement;
+        if (node.nodeName === "SCRIPT") {
+          const old = node as HTMLScriptElement;
+          const s = document.createElement("script");
+          Array.from(old.attributes).forEach((a) => s.setAttribute(a.name, a.value));
+          s.text = old.text;
+          el = s;
+        } else {
+          el = node.cloneNode(true) as HTMLElement;
         }
+        document.head.appendChild(el);
+        headInjected.push(el);
       });
     }
     // Inject the player markup + scripts into the container
