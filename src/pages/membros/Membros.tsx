@@ -7,8 +7,7 @@ import Row from "@/components/membros/Row";
 import PosterCard from "@/components/membros/PosterCard";
 import EpisodeCard from "@/components/membros/EpisodeCard";
 import PasskeySetup from "@/components/membros/PasskeySetup";
-import infozapBanner from "@/assets/membros-billboard.webp";
-import infozapLogo from "@/assets/infozap-logo.webp";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 
 interface Module {
   id: string;
@@ -53,6 +52,7 @@ const Membros = () => {
   const navigate = useNavigate();
   const { isAdmin, session } = useAuth();
   const signOut = useSignOut();
+  const { settings } = useSiteSettings();
   const [modules, setModules] = useState<Module[]>([]);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -115,15 +115,24 @@ const Membros = () => {
   const heroModule = heroLesson ? modules.find((m) => m.id === heroLesson.module_id) : modules[0];
 
   return (
-    <div className="relative min-h-screen bg-[#080808] text-white pb-20">
-      <header className="fixed top-0 left-0 right-0 z-40 bg-gradient-to-b from-[#080808] via-[#080808]/80 to-transparent">
+    <div className="relative min-h-screen text-white pb-20" style={{ backgroundColor: settings.primary_color || "#080808" }}>
+      <header className="fixed top-0 left-0 right-0 z-40" style={{ background: `linear-gradient(to bottom, ${settings.primary_color || "#080808"}, ${settings.primary_color || "#080808"}cc, transparent)` }}>
         <div className="max-w-[1800px] mx-auto px-4 md:px-12 py-4 flex items-center justify-between">
-          <div />
+          <div className="flex items-center">
+            {settings.logo_url ? (
+              <img src={settings.logo_url} alt="Logo" className="block max-h-16 w-auto" />
+            ) : null}
+          </div>
           <div className="flex items-center gap-2">
             {isAdmin && (
-              <Link to="/admin" className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[#00ff88]">
-                <Settings className="h-4 w-4" /> Admin
-              </Link>
+              <>
+                <Link to="/admin" className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[var(--ms-secondary,#00ff88)]" style={{ ['--ms-secondary' as any]: settings.secondary_color || "#00ff88" }}>
+                  <Settings className="h-4 w-4" /> Admin
+                </Link>
+                <Link to="/admin/configuracoes" className="hidden sm:flex items-center gap-1 px-3 py-2 rounded text-sm border border-white/15 hover:border-[var(--ms-secondary,#00ff88)]" style={{ ['--ms-secondary' as any]: settings.secondary_color || "#00ff88" }}>
+                  <Settings className="h-4 w-4" /> Configurações
+                </Link>
+              </>
             )}
             <button onClick={signOut} className="flex items-center gap-1 px-3 py-2 rounded text-sm text-gray-400 hover:text-white">
               <LogOut className="h-4 w-4" /> Sair
@@ -134,30 +143,38 @@ const Membros = () => {
 
       {/* BILLBOARD fixo Treinamento (estilo Netflix) */}
       <section className="relative h-[58vh] min-h-[420px] max-h-[640px] w-full overflow-hidden pt-16">
-        <video
-          src="/membros-hero.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          // @ts-expect-error - non-standard but supported attribute
-          fetchpriority="high"
-          disableRemotePlayback
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/80 to-[#080808]/20" />
-        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#080808] via-[#080808]/85 to-transparent" />
+        {settings.hero_media_type === "image" ? (
+          <img
+            src={settings.hero_media_url || "/membros-hero.mp4"}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+        ) : (
+          <video
+            src={settings.hero_media_url || "/membros-hero.mp4"}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            // @ts-expect-error - non-standard but supported attribute
+            fetchpriority="high"
+            disableRemotePlayback
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+        )}
+        <div className="absolute inset-0" style={{ background: `linear-gradient(to right, ${settings.primary_color || "#080808"}, ${settings.primary_color || "#080808"}cc, ${settings.primary_color || "#080808"}33)` }} />
+        <div className="absolute inset-x-0 bottom-0 h-2/3" style={{ background: `linear-gradient(to top, ${settings.primary_color || "#080808"}, ${settings.primary_color || "#080808"}d9, transparent)` }} />
 
         <div className="relative z-10 max-w-[1800px] mx-auto px-4 md:px-12 h-full flex flex-col justify-end pb-16 md:pb-20">
           <h1
             className="mb-3 font-gta uppercase leading-none drop-shadow-2xl select-none text-white text-5xl md:text-7xl lg:text-8xl"
             style={{ letterSpacing: "0.02em" }}
           >
-            Treinamento de X1
+            {settings.hero_title || "Treinamento de X1"}
           </h1>
-          <p className="text-sm md:text-base text-gray-200 max-w-xl mb-5 line-clamp-3 drop-shadow-lg">
-            O <span className="text-[#c084fc] font-semibold">método completo</span> para escalar produtos digitais no <span className="text-[#c084fc] font-semibold">WhatsApp</span>. Tráfego pago, criativos, copy, escala e os <span className="text-[#c084fc] font-semibold">bastidores reais</span> de quem fatura todo dia.
+          <p className="text-sm md:text-base text-gray-200 max-w-xl mb-5 line-clamp-3 drop-shadow-lg whitespace-pre-line">
+            {settings.hero_description}
           </p>
           <div className="flex flex-wrap gap-3">
             {heroLesson && (
