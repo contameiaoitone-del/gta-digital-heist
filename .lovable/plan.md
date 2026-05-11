@@ -1,105 +1,40 @@
-## Visão geral
+## Diagnóstico
 
-Vou expandir o cadastro de aulas/módulos com 4 grandes melhorias, mantendo o painel admin já existente e a página de aula da área de membros.
+O player do VTurb continua não aparecendo no preview. Verifiquei o que está acontecendo:
 
----
+- A aula tem `vturb_player_id` salvo corretamente no banco (com `<vturb-smartplayer>` + `<script>` que injeta o `player.js` da Converteai).
+- A página `Aula.tsx` está renderizando: o container preto (16:9) aparece na tela.
+- Porém **não há nenhuma requisição** para `scripts.converteai.net` na aba network, nem o elemento `<vturb-smartplayer>` aparece no DOM final.
+- Não há erros no console (sem CSP, sem Trusted Types).
 
-## 1. Múltiplos botões de CTA por aula (com reordenação)
+Conclusão: o `<script>` interno do embed do VTurb (que faz `document.createElement("script"); s.src=".../player.js"; document.head.appendChild(s)`) **não está sendo executado** pelo nosso injector via `template.innerHTML` + `s.text = old.text`. Mesmo a correção anterior que recriava o script tag não está disparando o load do `player.js`. Sem `player.js`, o custom element `vturb-smartplayer` nunca é registrado e nunca renderiza nada — o container fica preto.
 
-**Hoje:** existe um único botão (`cta_enabled`, `cta_label`, `cta_url`).
+## Solução
 
-**Mudança:**
-- Nova tabela `lesson_ctas` (lesson_id, label, url, position) — permite N botões com ordem arbitrária.
-- Migração mantém os dados atuais: copia `cta_*` existentes para a nova tabela.
-- No admin, a seção "Botões de redirect" passa a listar os botões cadastrados, com:
-  - Botão "+ Adicionar botão"
-  - Setas ↑/↓ para reordenar
-  - Botão de excluir
-  - Campos: texto e URL
-- Na página da aula, renderiza todos os botões em ordem, centralizados, com a setinha diagonal `ArrowUpRight`.
+Trocar a abordagem frágil de "extrair scripts do template e recriá-los" por algo determinístico: extrair a **URL do player.js** diretamente do embed via regex e carregar como `<script src="...">` real no `<head>`. Esse é o padrão usado pelos próprios geradores de embed do VTurb e nunca falha.
 
----
+### Mudanças em `src/pages/membros/Aula.tsx`
 
-## 2. Reorganização do cadastro: "Conteúdo da aula"
+1. Substituir o `useEffect` de injeção VTurb por:
+   - `container.innerHTML = lesson.vturb_player_id` — renderiza `<vturb-smartplayer id="vid-...">` no DOM (o `<script>` inline contido aí não executa, mas tudo bem).
+   - Extrair a URL do `player.js` do embed com regex (`/https:\/\/scripts\.converteai\.net\/[^"'\s]+\/player\.js/`).
+   - Se o `<head>` ainda não tem um `<script>` com esse `src`, criar um `<script async src="...">` real e anexar em `document.head`. (Re-anexar quando trocar de aula é seguro: `player.js` só registra o custom element uma vez.)
+   - Para o `vturb_optimization_code`: extrair as URLs dos `<link rel="preload">` / `<link rel="dns-prefetch">` e o snippet `_plt`. Inserir as `<link>` em `document.head` (criando elementos via `document.createElement('link')`) e executar o `_plt` setando `window._plt` diretamente em JS, sem depender de parser de scripts inline.
 
-Nova UI dentro do form de aula:
+2. Manter a limpeza no retorno do `useEffect` apenas para os `<link>` injetados (não remover `player.js`, pois é global e cacheado).
 
-```text
-▼ Conteúdo da aula
-   ▸ Vídeo
-       [toggle OFF] Adicionar URL de YouTube → input URL (aparece se ON)
-       [toggle OFF] Adicionar URL Vturb     → textarea embed (aparece se ON)
-   ▸ Conteúdo em texto
-       [toggle OFF] Habilitar conteúdo apenas em texto
-           ↓ se ON:
-           - Upload de imagem de cabeçalho (banner full-width)
-           - Textarea longo redimensionável (vertical resize)
-           - Upload de anexos (documentos)
-```
+3. Como fallback, se a regex não casar, manter a abordagem atual (recriar `<script>` no container) para não quebrar embeds não-padrão.
 
-Todos os toggles começam **desligados** por padrão em aulas novas.
+### Por que isso funciona
 
-**Modo texto:** quando habilitado, a página da aula esconde o player e mostra:
-- Imagem de cabeçalho cobrindo o topo (mesmo tamanho do vídeo) com gradiente preto na parte inferior (igual ao hero do membros).
-- Texto longo abaixo (com `linkify` já existente).
-- Lista de documentos anexados para download.
+- `customElements.define("vturb-smartplayer", ...)` no `player.js` faz upgrade automático de qualquer `<vturb-smartplayer>` já presente no DOM no momento do registro e de qualquer um adicionado depois. Logo, basta garantir que `player.js` carregue uma vez.
+- Não dependemos mais de o navegador tratar `<script>` dentro de `<template>.content` da forma esperada (que é onde nossa implementação atual está silenciosamente falhando).
 
-**Modo vídeo:** continua funcionando como hoje. Adiciona também a seção de **anexos** (sempre disponível, mesmo no modo vídeo) — permite upload de arquivos para download.
+## Validação
 
----
+Depois da mudança:
+1. Abrir `/treinamento/membros/aula/b5a37733-...` e confirmar via DevTools → Network que `scripts.converteai.net/.../player.js` é requisitado e responde 200.
+2. Confirmar que `<vturb-smartplayer>` aparece no DOM com o player renderizado dentro.
+3. Confirmar que o vídeo toca normalmente.
 
-## 3. Upload de arquivos/anexos
-
-- Novo bucket público `lesson-attachments` (ou private com signed URLs — vou usar público para simplicidade de download direto, igual ao `module-covers`).
-- Nova tabela `lesson_attachments` (lesson_id, name, file_url, size_bytes, mime, position).
-- No admin: drag & drop simples com lista; permite remover.
-- Na página da aula: card "Materiais da aula" com lista de arquivos para baixar.
-
----
-
-## 4. Agendamento de liberação (drip content)
-
-Novo conceito: **liberação imediata** ou **N dias após o pagamento** (drip).
-
-**Schema:**
-- `modules.release_days INT NOT NULL DEFAULT 0` (0 = imediato)
-- `lessons.release_days INT NOT NULL DEFAULT 0`
-
-**Como saber a data do pagamento?** Já existe `member_access.granted_at`. Vou usar essa data como referência para o "drip" do produto correspondente.
-
-**Lógica de acesso (frontend + servidor):**
-- Função SQL `is_drip_unlocked(_user_id, _product, _release_days)` que retorna `true` se `now() >= granted_at + release_days * INTERVAL '1 day'`.
-- Atualizar policy de `lessons` e `modules` para também checar drip (somente para `published`; `coming_soon` continua bloqueado).
-- Na UI:
-  - Se ainda não liberado por drip → mostra badge "Libera em X dias" e bloqueia clique (similar ao "Em breve", mas com contagem).
-  - Página da aula bloqueada renderiza "Esta aula libera em X dias" se acessada antes do prazo.
-- No admin: novo campo "Liberação" com select (Imediata / Após N dias) e input numérico.
-
----
-
-## Arquivos afetados
-
-**Migração SQL** (uma só):
-- `lesson_ctas` (nova tabela + RLS + copia dados de `lessons.cta_*`)
-- `lesson_attachments` (nova tabela + RLS)
-- bucket `lesson-attachments` + policies (público para read, admin para write)
-- `modules.release_days`, `lessons.release_days`
-- `lessons`: `content_mode` (`'video' | 'text'`), `header_image_url`, `text_content`
-- Função `is_drip_unlocked` + atualização das policies de `lessons` e `modules`.
-
-**Frontend:**
-- `src/pages/admin/Admin.tsx` — novo formulário de aula (CTAs múltiplos, conteúdo da aula com toggles, anexos, release_days nos módulos e aulas).
-- `src/pages/membros/Aula.tsx` — renderiza modo texto, lista de CTAs, anexos, bloqueio por drip.
-- `src/pages/membros/Modulo.tsx` e `src/pages/membros/Membros.tsx` — exibem badge "Libera em X dias" e bloqueiam acesso.
-- `src/components/membros/PosterCard.tsx` — suporta novo estado `lockedDays`.
-- `src/integrations/supabase/types.ts` — regenerado pela migração.
-
----
-
-## Notas técnicas
-
-- Os campos antigos `cta_enabled/cta_label/cta_url` ficarão como **legacy** após a migração (preservados, mas o admin/leitor passará a usar `lesson_ctas`). Mantenho-os para não quebrar nada.
-- Anexos e header image vão para o bucket `lesson-attachments` (subpastas por `lesson_id`).
-- O drip usa `member_access.granted_at`. Para módulos `mentoria`, considera o acesso `mentoria` ou `mentoria:<module_id>`.
-- Toggle de "apenas texto" é exclusivo: se ligado, esconde campos de vídeo e exige imagem de cabeçalho + texto.
-- Limites: arquivos até 50MB por upload (Supabase storage default).
+Sem mudanças em banco, RLS, edge functions, rotas ou outros componentes — só o bloco de injeção do VTurb em `Aula.tsx`.
