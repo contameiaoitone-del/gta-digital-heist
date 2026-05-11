@@ -1,6 +1,6 @@
 import { Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import cityscapeImage from "@/assets/gta-cityscape-night.png";
+import cityscapeImage from "@/assets/gta-cityscape-night.webp";
 
 const testimonials = [
   {

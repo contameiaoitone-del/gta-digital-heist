@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Shield, ArrowRight } from "lucide-react";
-import luxuryImage from "@/assets/guarantee-hero.png";
+import luxuryImage from "@/assets/guarantee-hero.webp";
 
 export const Guarantee = () => {
   return (

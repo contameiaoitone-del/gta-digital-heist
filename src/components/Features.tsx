@@ -1,6 +1,6 @@
 import { TrendingUp, ShoppingCart, Megaphone, Sparkles, Users, DollarSign } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import laptopImage from "@/assets/gta-laptop-growth.png";
+import laptopImage from "@/assets/gta-laptop-growth.webp";
 const features = [{
   icon: Megaphone,
   title: "Tráfego Pago",

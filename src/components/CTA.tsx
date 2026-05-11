@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, Users, Zap } from "lucide-react";
-import cityscapeImage from "@/assets/gta-cityscape-night.png";
+import cityscapeImage from "@/assets/gta-cityscape-night.webp";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 
 export const CTA = () => {

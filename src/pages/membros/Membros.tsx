@@ -6,8 +6,8 @@ import { useAuth, useSignOut } from "@/hooks/useAuth";
 import Row from "@/components/membros/Row";
 import PosterCard from "@/components/membros/PosterCard";
 import EpisodeCard from "@/components/membros/EpisodeCard";
-import infozapBanner from "@/assets/membros-billboard.png";
-import infozapLogo from "@/assets/infozap-logo.png";
+import infozapBanner from "@/assets/membros-billboard.webp";
+import infozapLogo from "@/assets/infozap-logo.webp";
 
 interface Module {
   id: string;

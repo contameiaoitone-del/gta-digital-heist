@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import heroImage from "@/assets/real-life-academy-collage.png";
+import heroImage from "@/assets/real-life-academy-collage.webp";
 import { GTALogo } from "@/components/GTALogo";
 import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
 export const Hero = () => {
