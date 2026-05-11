@@ -9,6 +9,7 @@ interface AuthState {
   loading: boolean;
   hasAccess: boolean;
   isAdmin: boolean;
+  isMaster: boolean;
   checkedAccess: boolean;
 }
 
@@ -18,6 +19,7 @@ export function useAuth() {
     loading: true,
     hasAccess: false,
     isAdmin: false,
+    isMaster: false,
     checkedAccess: false,
   });
 
@@ -36,7 +38,7 @@ export function useAuth() {
   useEffect(() => {
     if (state.loading) return;
     if (!state.session) {
-      setState((s) => ({ ...s, hasAccess: false, isAdmin: false, checkedAccess: true }));
+      setState((s) => ({ ...s, hasAccess: false, isAdmin: false, isMaster: false, checkedAccess: true }));
       return;
     }
     let cancelled = false;
@@ -47,11 +49,14 @@ export function useAuth() {
         supabase.from("user_roles").select("role").eq("user_id", userId),
       ]);
       if (cancelled) return;
-      const isAdmin = (roleRes.data || []).some((r) => r.role === "admin");
+      const roles = (roleRes.data || []).map((r) => r.role);
+      const isMaster = roles.includes("master");
+      const isAdmin = isMaster || roles.includes("admin");
       setState((s) => ({
         ...s,
         hasAccess: !!accessRes.data || isAdmin,
         isAdmin,
+        isMaster,
         checkedAccess: true,
       }));
     })();
@@ -66,12 +71,15 @@ export function useAuth() {
 export const RequireAuth = ({
   children,
   requireAdmin = false,
+  requireMaster = false,
 }: {
   children: React.ReactNode;
   requireAdmin?: boolean;
+  requireMaster?: boolean;
 }) => {
-  const { session, loading, hasAccess, isAdmin, checkedAccess } = useAuth();
+  const { session, loading, hasAccess, isAdmin, isMaster, checkedAccess } = useAuth();
   const location = useLocation();
+  const isMasterRoute = requireMaster || /^\/(home|areas|landing-pages)(\/|$)/.test(location.pathname);
   const product = location.pathname.match(/^\/([^/]+)\/(?:membros|admin)/)?.[1] || "infozap";
   const productPath = `/${encodeURIComponent(product)}`;
   // Share-link expiry watcher: if the user signed in via a share link with an
@@ -86,13 +94,13 @@ export const RequireAuth = ({
         localStorage.removeItem("share_session_expires_at");
         localStorage.removeItem("share_session_active");
         await supabase.auth.signOut();
-        window.location.href = `${productPath}/membros/login`;
+        window.location.href = isMasterRoute ? "/home/login" : `${productPath}/membros/login`;
       }
     };
     tick();
     const id = window.setInterval(tick, 1000);
     return () => window.clearInterval(id);
-  }, [session, productPath]);
+  }, [session, productPath, isMasterRoute]);
   if (loading || (session && !checkedAccess)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white">
@@ -100,7 +108,8 @@ export const RequireAuth = ({
       </div>
     );
   }
-  if (!session) return <Navigate to={`${productPath}/membros/login`} replace />;
+  if (!session) return <Navigate to={isMasterRoute ? "/home/login" : `${productPath}/membros/login`} replace />;
+  if (requireMaster && !isMaster) return <Navigate to="/home/login" replace />;
   if (requireAdmin && !isAdmin) return <Navigate to={`${productPath}/membros`} replace />;
   if (!requireAdmin && !hasAccess) {
     return (
