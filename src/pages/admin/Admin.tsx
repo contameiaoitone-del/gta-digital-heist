@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, Navigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -75,8 +75,9 @@ function extractYouTubeId(url: string): string | null {
 
 const Admin = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
+  const { product: productParam } = useParams<{ product?: string }>();
   const [searchParams] = useSearchParams();
-  const productFilter = searchParams.get("product");
+  const productFilter = productParam || searchParams.get("product") || "infozap";
   const [areaName, setAreaName] = useState<string | null>(null);
   const [modules, setModules] = useState<Module[]>([]);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
@@ -398,26 +399,29 @@ const Admin = () => {
   if (loading || !checkedAccess) {
     return <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white"><Loader2 className="h-8 w-8 animate-spin" /></div>;
   }
-  if (!isAdmin) return <Navigate to="/membros" replace />;
+  if (!isAdmin) return <Navigate to={`/${encodeURIComponent(productFilter)}/membros`} replace />;
 
   const inputCls = "w-full h-10 rounded bg-black/40 border border-white/15 px-3 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#00ff88] text-sm";
+  const productPath = encodeURIComponent(productFilter);
+  const adminPath = `/${productPath}/admin`;
+  const membersPath = `/${productPath}/membros`;
 
   return (
     <div className="min-h-screen bg-[#080808] text-white">
       <header className="sticky top-0 z-40 bg-[#080808] border-b border-white/10">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center gap-3">
-          <Link to="/membros" className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
+          <Link to={membersPath} className="text-gray-400 hover:text-white"><ArrowLeft className="h-5 w-5" /></Link>
           <h1 className="text-xl font-bold" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
             ADMIN <span style={{ color: "#00ff88" }}>· {areaName ? areaName : "Conteúdo"}</span>
           </h1>
           <div className="ml-auto flex items-center gap-2">
-            <Link to={`/admin/usuarios${productFilter ? `?product=${encodeURIComponent(productFilter)}` : ""}`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
+            <Link to={`${adminPath}/usuarios`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Usuários
             </Link>
-            <Link to="/admin/trackeamento" className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
+            <Link to={`${adminPath}/trackeamento`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Trackeamento
             </Link>
-            <Link to="/admin/configuracoes" className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
+            <Link to={`${adminPath}/configuracoes`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Configurações
             </Link>
           </div>
