@@ -66,7 +66,7 @@ interface LessonMeta {
 }
 
 const Aula = () => {
-  const { product = "infozap", id } = useParams<{ product?: string; id: string }>();
+  const { product = "treinamento", id } = useParams<{ product?: string; id: string }>();
   const navigate = useNavigate();
   const { session } = useAuth();
   const [lesson, setLesson] = useState<Lesson | null>(null);

@@ -41,8 +41,8 @@ Deno.serve(async (req) => {
       console.error("ensure grant failed", e);
     }
 
-    const product = order.product || "infozap";
-    const productSlug = product.startsWith("mentoria:") ? "infozap" : product;
+    const product = order.product || "treinamento";
+    const productSlug = product.startsWith("mentoria:") ? "treinamento" : product;
 
     const { data: linkData, error: linkErr } = await supabase.auth.admin.generateLink({
       type: "magiclink",

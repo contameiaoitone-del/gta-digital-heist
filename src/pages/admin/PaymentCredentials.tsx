@@ -292,7 +292,7 @@ export function PaymentCredentialsBody() {
 
 const PaymentCredentials = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
-  const { product = "infozap" } = useParams<{ product?: string }>();
+  const { product = "treinamento" } = useParams<{ product?: string }>();
   const productPath = `/${encodeURIComponent(product)}`;
   useEffect(() => {
     document.title = "Credenciais de Pagamento — Admin";

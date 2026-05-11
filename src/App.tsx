@@ -37,7 +37,7 @@ const queryClient = new QueryClient();
 
 const LegacyProductRedirect = ({ suffix = "" }: { suffix?: string }) => {
   const [searchParams] = useSearchParams();
-  const product = searchParams.get("product") || "infozap";
+  const product = searchParams.get("product") || "treinamento";
   return <Navigate to={`/${encodeURIComponent(product)}/admin${suffix}`} replace />;
 };
 
@@ -59,12 +59,12 @@ const App = () => (
             <Route path="/privacidade" element={<Privacidade />} />
             <Route path="/contato" element={<Contato />} />
             <Route path="/obrigado" element={<Obrigado />} />
-            <Route path="/membros/login" element={<Navigate to="/infozap/membros/login" replace />} />
+            <Route path="/membros/login" element={<Navigate to="/treinamento/membros/login" replace />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/membros" element={<Navigate to="/infozap/membros" replace />} />
-            <Route path="/membros/modulo/:id" element={<Navigate to="/infozap/membros" replace />} />
-            <Route path="/membros/aula/:id" element={<Navigate to="/infozap/membros" replace />} />
+            <Route path="/membros" element={<Navigate to="/treinamento/membros" replace />} />
+            <Route path="/membros/modulo/:id" element={<Navigate to="/treinamento/membros" replace />} />
+            <Route path="/membros/aula/:id" element={<Navigate to="/treinamento/membros" replace />} />
             <Route path="/membros/share/:token" element={<ShareConsume />} />
             <Route path="/admin" element={<LegacyProductRedirect />} />
             <Route path="/admin/capi-log" element={<LegacyProductRedirect suffix="/capi-log" />} />

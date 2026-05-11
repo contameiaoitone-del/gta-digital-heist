@@ -11,7 +11,7 @@ const Obrigado = () => {
   const [params] = useSearchParams();
   const metodo = params.get("metodo");
   const status = params.get("status");
-  const product = params.get("product") || "infozap";
+  const product = params.get("product") || "treinamento";
   const eventId = params.get("eventId") || "";
   const value = Number(params.get("value") || "67");
   const orderId = params.get("orderId") || undefined;

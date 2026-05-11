@@ -74,10 +74,12 @@ function extractYouTubeId(url: string): string | null {
 }
 
 const Admin = () => {
-  const { isAdmin, loading, checkedAccess } = useAuth();
+  const { isAdmin, loading, checkedAccess, session } = useAuth();
+  const userEmail = session?.user?.email?.toLowerCase() || "";
+  const canSeeTracking = userEmail === "joaolucasps2001@gmail.com";
   const { product: productParam } = useParams<{ product?: string }>();
   const [searchParams] = useSearchParams();
-  const productFilter = productParam || searchParams.get("product") || "infozap";
+  const productFilter = productParam || searchParams.get("product") || "treinamento";
   const [areaName, setAreaName] = useState<string | null>(null);
   const [modules, setModules] = useState<Module[]>([]);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
@@ -116,7 +118,7 @@ const Admin = () => {
       .insert(moduleCategoryNames.map((name, index) => ({
         name,
         position: maxPosition + index + 1,
-        ...(productFilter ? { product: productFilter } : { product: "infozap" }),
+        ...(productFilter ? { product: productFilter } : { product: "treinamento" }),
       })))
       .select("*");
 
@@ -158,7 +160,7 @@ const Admin = () => {
     const { error } = await supabase.from("module_categories").insert({
       name,
       position: categories.length + 1,
-      ...(productFilter ? { product: productFilter } : { product: "infozap" }),
+      ...(productFilter ? { product: productFilter } : { product: "treinamento" }),
     });
     if (error) toast.error(error.message);
     else {
@@ -418,9 +420,11 @@ const Admin = () => {
             <Link to={`${adminPath}/usuarios`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Usuários
             </Link>
-            <Link to={`${adminPath}/trackeamento`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
-              Trackeamento
-            </Link>
+            {canSeeTracking && (
+              <Link to={`${adminPath}/trackeamento`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
+                Trackeamento
+              </Link>
+            )}
             <Link to={`${adminPath}/configuracoes`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Configurações
             </Link>

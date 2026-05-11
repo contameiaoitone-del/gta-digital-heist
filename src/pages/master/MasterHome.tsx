@@ -19,7 +19,7 @@ import { format, subDays, startOfDay, endOfDay, eachDayOfInterval } from "date-f
 import { ptBR } from "date-fns/locale";
 import type { DateRange } from "react-day-picker";
 
-type Range = "7d" | "30d" | "custom";
+type Range = "today" | "yesterday" | "7d" | "30d" | "custom";
 
 interface Point {
   day: string;
@@ -37,6 +37,11 @@ export default function MasterHome() {
 
   const bounds = useMemo(() => {
     const now = new Date();
+    if (range === "today") return { from: startOfDay(now), to: endOfDay(now) };
+    if (range === "yesterday") {
+      const y = subDays(now, 1);
+      return { from: startOfDay(y), to: endOfDay(y) };
+    }
     if (range === "7d") return { from: startOfDay(subDays(now, 6)), to: endOfDay(now) };
     if (range === "30d") return { from: startOfDay(subDays(now, 29)), to: endOfDay(now) };
     if (custom?.from && custom?.to) return { from: startOfDay(custom.from), to: endOfDay(custom.to) };
@@ -105,17 +110,17 @@ export default function MasterHome() {
             <p className="text-sm text-gray-400">Visão consolidada da operação.</p>
           </div>
           <div className="flex items-center gap-2">
-            {(["7d", "30d", "custom"] as Range[]).map((r) => (
+            {(["today", "yesterday", "7d", "30d", "custom"] as Range[]).map((r) => (
               <button
                 key={r}
                 onClick={() => setRange(r)}
                 className={`px-3 py-1.5 rounded text-xs border transition ${
                   range === r
-                    ? "bg-[#00ff88] text-black border-[#00ff88]"
+                    ? "bg-[#d95e10] text-white border-[#d95e10]"
                     : "border-white/15 text-gray-300 hover:border-white/40"
                 }`}
               >
-                {r === "7d" ? "7 dias" : r === "30d" ? "30 dias" : "Personalizado"}
+                {r === "today" ? "Hoje" : r === "yesterday" ? "Ontem" : r === "7d" ? "7 dias" : r === "30d" ? "30 dias" : "Personalizado"}
               </button>
             ))}
             {range === "custom" && (
@@ -143,11 +148,18 @@ export default function MasterHome() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <StatCard label="Receita" value={`R$ ${totals.receita.toFixed(2)}`} accent="#00ff88" />
-          <StatCard label="Pedidos pagos" value={String(totals.pedidos)} accent="#ff2d78" />
-          <StatCard label="Sessões" value={String(totals.sessoes)} accent="#ffffff" />
-          <StatCard label="Acessos ativos" value={String(totals.acessos)} accent="#00ff88" />
+        <div className="relative">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <StatCard label="Receita" value={`R$ ${totals.receita.toFixed(2)}`} accent="#00ff88" />
+            <StatCard label="Pedidos pagos" value={String(totals.pedidos)} accent="#ff2d78" />
+            <StatCard label="Sessões" value={String(totals.sessoes)} accent="#ffffff" />
+            <StatCard label="Acessos ativos" value={String(totals.acessos)} accent="#00ff88" />
+          </div>
+          <div className="absolute inset-0 backdrop-blur-md bg-black/40 rounded-lg flex items-center justify-center pointer-events-none">
+            <span className="px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-[#d95e10] text-white shadow-lg">
+              Em breve
+            </span>
+          </div>
         </div>
 
         <div className="rounded-lg border border-white/10 bg-[#0a0a0a] p-4">
@@ -186,7 +198,51 @@ export default function MasterHome() {
               </AreaChart>
             </ResponsiveContainer>
             <div className="absolute inset-0 backdrop-blur-md bg-black/40 rounded-md flex items-center justify-center pointer-events-none">
-              <span className="px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-[#ff2d78] text-white shadow-lg">
+              <span className="px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-[#d95e10] text-white shadow-lg">
+                Em breve
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* CAPI Log preview (em breve) */}
+        <div className="rounded-lg border border-white/10 bg-[#0a0a0a] p-4 relative">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-gta text-lg tracking-wide">CAPI Log</h2>
+          </div>
+          <div className="relative">
+            <div className="overflow-x-auto rounded border border-white/10">
+              <table className="w-full text-xs">
+                <thead className="bg-white/5 text-left uppercase tracking-wider text-gray-400">
+                  <tr>
+                    <th className="px-3 py-2">Quando</th>
+                    <th className="px-3 py-2">Evento</th>
+                    <th className="px-3 py-2">OK</th>
+                    <th className="px-3 py-2">HTTP</th>
+                    <th className="px-3 py-2">Valor</th>
+                    <th className="px-3 py-2">utm_source</th>
+                    <th className="px-3 py-2">utm_campaign</th>
+                    <th className="px-3 py-2">event_id</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <tr key={i} className="border-t border-white/5">
+                      <td className="px-3 py-2 text-gray-300">--/--/---- --:--</td>
+                      <td className="px-3 py-2">Purchase</td>
+                      <td className="px-3 py-2">✓</td>
+                      <td className="px-3 py-2">200</td>
+                      <td className="px-3 py-2">R$ 0,00</td>
+                      <td className="px-3 py-2 text-gray-300">facebook</td>
+                      <td className="px-3 py-2 text-gray-300 truncate">campanha</td>
+                      <td className="px-3 py-2 font-mono text-[10px] text-gray-400">--------</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="absolute inset-0 backdrop-blur-md bg-black/40 rounded flex items-center justify-center pointer-events-none">
+              <span className="px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-[#d95e10] text-white shadow-lg">
                 Em breve
               </span>
             </div>

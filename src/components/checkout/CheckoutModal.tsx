@@ -14,7 +14,7 @@ import { useTracking, getSessionId } from "@/hooks/useTracking";
 interface CheckoutModalProps {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  product?: "infozap" | "lp2";
+  product?: "treinamento" | "lp2";
   priceCents?: number;
   productLabel?: string;
   productSubtitle?: string;
@@ -26,7 +26,7 @@ type Step = "form" | "method" | "pix" | "card";
 export const CheckoutModal = ({
   open,
   onOpenChange,
-  product = "infozap",
+  product = "treinamento",
   priceCents = 6700,
   productLabel = "Treinamento",
   productSubtitle = "Acesso vitalício + bônus",

@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
 
 const ShareConsume = () => {
-  const { product = "infozap", token } = useParams<{ product?: string; token?: string }>();
+  const { product = "treinamento", token } = useParams<{ product?: string; token?: string }>();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const ranRef = useRef(false);

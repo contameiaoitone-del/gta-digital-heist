@@ -51,7 +51,7 @@ const ytThumb = (id: string | null) => (id ? `https://i.ytimg.com/vi/${id}/hqdef
 
 const Membros = () => {
   const navigate = useNavigate();
-  const { product = "infozap" } = useParams<{ product?: string }>();
+  const { product = "treinamento" } = useParams<{ product?: string }>();
   const { isAdmin, session } = useAuth();
   const signOut = useSignOut();
   const { settings } = useSiteSettings();

@@ -75,8 +75,8 @@ Deno.serve(async (req) => {
     }
 
     // Grant access (idempotent via unique user_id+product)
-    const product = order.product || "infozap";
-    const productSlug = product.startsWith("mentoria:") ? "infozap" : product;
+    const product = order.product || "treinamento";
+    const productSlug = product.startsWith("mentoria:") ? "treinamento" : product;
     await supabase.from("member_access").upsert(
       { user_id: userId, product, order_id: order.id, active: true },
       { onConflict: "user_id,product" },

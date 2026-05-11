@@ -11,7 +11,7 @@ const AuthCallback = () => {
   useEffect(() => {
     const next = params.get("next") || "/membros";
     const productMatch = next.match(/^\/([^/]+)\/membros/);
-    const loginFallback = productMatch ? `/${productMatch[1]}/membros/login` : "/infozap/membros/login";
+    const loginFallback = productMatch ? `/${productMatch[1]}/membros/login` : "/treinamento/membros/login";
     // The Supabase JS client auto-detects the session from the URL hash.
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
       if (session) navigate(next, { replace: true });

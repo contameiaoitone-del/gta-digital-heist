@@ -136,7 +136,7 @@ Deno.serve(async (req) => {
     if (body.currency || body.value !== undefined) properties.currency = body.currency || "BRL";
     if (body.content_name || body.content_id) {
       properties.contents = [{
-        content_id: body.content_id || body.order_id || "infozap",
+        content_id: body.content_id || body.order_id || "treinamento",
         content_name: body.content_name || "InfoZap",
         content_type: "product",
         quantity: 1,

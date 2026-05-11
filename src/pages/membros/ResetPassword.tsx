@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
-  const { product = "infozap" } = useParams<{ product?: string }>();
+  const { product = "treinamento" } = useParams<{ product?: string }>();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
