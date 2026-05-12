@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
     }
 
     const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-    const siteUrl = Deno.env.get("SITE_URL") || "https://reallifeacademy.com.br";
+    const siteUrl = Deno.env.get("SITE_URL") || "https://joaolucasps.co";
 
     const { data: order } = await supabase
       .from("orders")
