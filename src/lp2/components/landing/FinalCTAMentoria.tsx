@@ -194,6 +194,12 @@ const FinalCTAMentoria = () => {
               <X className="w-4 h-4" />
             </button>
 
+            <div className="px-4 pt-4 pb-2">
+              <h3 className="text-center font-bold text-xl sm:text-2xl uppercase tracking-tight text-foreground">
+                COMO FUNCIONA A <span className="text-orange-500">MENTORIA</span>!
+              </h3>
+            </div>
+
             <div className="bg-black">
               <MentoriaVideo videoId={VTURB_VIDEO_ID} accountId={VTURB_ACCOUNT_ID} className="w-full" />
             </div>
