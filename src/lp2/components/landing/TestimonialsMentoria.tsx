@@ -1,11 +1,27 @@
 import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
 import dep1 from "@/lp2/assets/testimonials-mentoria/dep-1.png";
 import dep2 from "@/lp2/assets/testimonials-mentoria/dep-2.png";
+import dep3 from "@/lp2/assets/testimonials-mentoria/dep-3.png";
+import dep4 from "@/lp2/assets/testimonials-mentoria/dep-4.png";
+import dep5 from "@/lp2/assets/testimonials-mentoria/dep-5.png";
+import dep6 from "@/lp2/assets/testimonials-mentoria/dep-6.png";
+import dep7 from "@/lp2/assets/testimonials-mentoria/dep-7.png";
+import dep8 from "@/lp2/assets/testimonials-mentoria/dep-8.png";
+import dep9 from "@/lp2/assets/testimonials-mentoria/dep-9.png";
+import dep10 from "@/lp2/assets/testimonials-mentoria/dep-10.png";
 
 const TestimonialsMentoria = () => {
   const testimonials = [
     { id: 1, image: dep1 },
     { id: 2, image: dep2 },
+    { id: 3, image: dep3 },
+    { id: 4, image: dep4 },
+    { id: 5, image: dep5 },
+    { id: 6, image: dep6 },
+    { id: 7, image: dep7 },
+    { id: 8, image: dep8 },
+    { id: 9, image: dep9 },
+    { id: 10, image: dep10 },
   ];
 
   return (
@@ -24,14 +40,14 @@ const TestimonialsMentoria = () => {
           </div>
         </ScrollAnimation>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
           {testimonials.map((t, index) => (
             <ScrollAnimation key={t.id} delay={index * 0.1}>
-              <div className="bg-card border border-border rounded-xl overflow-hidden hover:border-purple/30 transition-colors">
+              <div className="bg-card border border-border rounded-xl overflow-hidden hover:border-purple/30 transition-colors aspect-[3/4]">
                 <img
                   src={t.image}
                   alt={`Depoimento mentoria ${t.id}`}
-                  className="w-full h-auto object-contain"
+                  className="w-full h-full object-cover object-top"
                   loading="lazy"
                   decoding="async"
                 />
