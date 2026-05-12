@@ -23,7 +23,7 @@ export interface CardPayload extends CustomerPayload {
   installments: number;
   session_id?: string;
   event_id_purchase?: string;
-  product?: "treinamento" | "lp2";
+  product?: "treinamento" | "lp2" | "lp2_97";
 }
 
 export interface CardResponse {
@@ -37,7 +37,7 @@ export interface CardResponse {
 export function useEfiCheckout() {
   const [loading, setLoading] = useState(false);
 
-  const createPix = useCallback(async (payload: CustomerPayload & { session_id?: string; event_id_purchase?: string; product?: "treinamento" | "lp2" }): Promise<PixResponse> => {
+  const createPix = useCallback(async (payload: CustomerPayload & { session_id?: string; event_id_purchase?: string; product?: "treinamento" | "lp2" | "lp2_97" }): Promise<PixResponse> => {
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("pix-create", { body: payload });

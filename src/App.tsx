@@ -27,6 +27,7 @@ const AdminTrackeamento = lazy(() => import("./pages/admin/Trackeamento"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const Lp1App = lazy(() => import("./lp1/Lp1App"));
 const Lp2App = lazy(() => import("./lp2/Lp2App"));
+const Lp2App97 = lazy(() => import("./lp2/Lp2App97"));
 const MasterHome = lazy(() => import("./pages/master/MasterHome"));
 const MemberAreas = lazy(() => import("./pages/master/MemberAreas"));
 const LandingPages = lazy(() => import("./pages/master/LandingPages"));
@@ -92,6 +93,7 @@ const App = () => (
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/lp1" element={<Lp1App />} />
             <Route path="/lp2" element={<Lp2App />} />
+            <Route path="/lp2-97" element={<Lp2App97 />} />
             {/* Redirects de rotas antigas removidas */}
             <Route path="/infozap" element={<Navigate to="/lp2" replace />} />
             <Route path="/infozap-aula" element={<Navigate to="/lp2" replace />} />
