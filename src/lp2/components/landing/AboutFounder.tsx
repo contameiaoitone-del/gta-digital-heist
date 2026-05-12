@@ -16,9 +16,9 @@ const AboutFounder = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <ScrollAnimation>
-          <div className="text-center mb-12">
-            <span className="text-purple text-sm font-semibold uppercase tracking-wider">Quem Está Por Trás</span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-4">
+          <div className="text-center mb-10 sm:mb-12">
+            <span className="text-purple text-xs sm:text-sm font-semibold uppercase tracking-wider">Quem Está Por Trás</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-3 sm:mt-4 leading-tight">
               Conheça o <span className="text-purple">João Lucas</span>
             </h2>
           </div>
