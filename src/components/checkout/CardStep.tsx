@@ -13,7 +13,7 @@ interface CardStepProps {
   customer: { name: string; email: string; phone: string; cpf: string };
   onPaid: (info: { eventId: string; orderId: string }) => void;
   onPending: () => void;
-  product?: "treinamento" | "lp2" | "lp2_97";
+  product?: "treinamento" | "lp2" | "lp2_97" | "lp2_5";
   priceCents?: number;
 }
 
