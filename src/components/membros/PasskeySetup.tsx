@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { browserSupportsWebAuthn, startRegistration } from "@simplewebauthn/browser";
 import { Fingerprint, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const DISMISS_KEY = "passkey_setup_dismissed_at";
 const DISMISS_DAYS = 7;
@@ -10,11 +11,23 @@ const DISMISS_DAYS = 7;
 const PasskeySetup = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [platformAvailable, setPlatformAvailable] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     let alive = true;
     (async () => {
       if (!browserSupportsWebAuthn()) return;
+      try {
+        const PKC: any = (window as any).PublicKeyCredential;
+        if (PKC?.isUserVerifyingPlatformAuthenticatorAvailable) {
+          const ok = await PKC.isUserVerifyingPlatformAuthenticatorAvailable();
+          if (!ok) return; // no Face ID / fingerprint on this device
+          if (alive) setPlatformAvailable(true);
+        }
+      } catch {
+        return;
+      }
       const dismissed = localStorage.getItem(DISMISS_KEY);
       if (dismissed) {
         const ageMs = Date.now() - Number(dismissed);
@@ -71,6 +84,45 @@ const PasskeySetup = () => {
   };
 
   if (!show) return null;
+
+  // Mobile: show as a centered modal so the user can't miss it.
+  if (isMobile) {
+    return (
+      <div className="fixed inset-0 z-[60] bg-black/70 flex items-end sm:items-center justify-center p-4">
+        <div className="relative bg-[#111] border border-[#00ff88]/30 rounded-2xl p-5 w-full max-w-sm shadow-2xl">
+          <button
+            onClick={dismiss}
+            aria-label="Dispensar"
+            className="absolute top-3 right-3 text-gray-400 hover:text-white"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <div className="flex flex-col items-center text-center">
+            <div className="h-14 w-14 rounded-full bg-[#00ff88]/15 flex items-center justify-center mb-3">
+              <Fingerprint className="h-7 w-7 text-[#00ff88]" />
+            </div>
+            <h3 className="text-white font-bold text-xl mb-1" style={{ fontFamily: "'Bebas Neue', cursive" }}>
+              Ative Face ID / digital
+            </h3>
+            <p className="text-sm text-gray-300 mb-5">
+              Cadastre a biometria neste aparelho e entre nas próximas vezes sem digitar senha.
+            </p>
+            <button
+              onClick={enroll}
+              disabled={loading}
+              className="w-full h-12 rounded-md font-bold uppercase tracking-wide text-sm disabled:opacity-60"
+              style={{ backgroundColor: "#00ff88", color: "#000", fontFamily: "'Bebas Neue', cursive" }}
+            >
+              {loading ? <Loader2 className="h-5 w-5 animate-spin mx-auto" /> : "Ativar agora"}
+            </button>
+            <button onClick={dismiss} className="mt-3 text-xs text-gray-400 hover:text-white">
+              Agora não
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-[1800px] mx-auto px-4 md:px-12 mt-4">
