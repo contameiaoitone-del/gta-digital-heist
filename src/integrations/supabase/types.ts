@@ -378,6 +378,7 @@ export type Database = {
           id: string
           meta_response: Json | null
           order_id: string | null
+          page_source: string | null
           session_id: string | null
           status_code: number | null
           success: boolean
@@ -396,6 +397,7 @@ export type Database = {
           id?: string
           meta_response?: Json | null
           order_id?: string | null
+          page_source?: string | null
           session_id?: string | null
           status_code?: number | null
           success?: boolean
@@ -414,6 +416,7 @@ export type Database = {
           id?: string
           meta_response?: Json | null
           order_id?: string | null
+          page_source?: string | null
           session_id?: string | null
           status_code?: number | null
           success?: boolean
