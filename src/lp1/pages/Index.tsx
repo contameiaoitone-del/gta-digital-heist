@@ -10,9 +10,9 @@ const Index = () => {
       title: "STARTER WHATS",
       description: "APRENDA TUDO DO 0",
       imageUrl: starterImage,
-      link: "/lp1/caminho1",
+      link: "/lp2",
       isLocked: false,
-      externalLink: "https://lp1.joaolucassps.co"
+      externalLink: "/lp2"
     },
     {
       id: "mentoria",
