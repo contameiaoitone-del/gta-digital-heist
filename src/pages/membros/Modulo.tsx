@@ -189,11 +189,6 @@ const Modulo = () => {
                 </span>
               </div>
             )}
-            {isMentoriaLocked && (
-              <div className="px-4 py-3 text-sm text-gray-300 inline-block bg-black/40 rounded border border-white/10">
-                {lessons.length} {lessons.length === 1 ? "aula" : "aulas"} · acesso bloqueado
-              </div>
-            )}
           </div>
         </section>
       )}
