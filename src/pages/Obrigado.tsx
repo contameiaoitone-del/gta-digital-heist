@@ -16,6 +16,7 @@ const Obrigado = () => {
   const value = Number(params.get("value") || "67");
   const orderId = params.get("orderId") || undefined;
   const isPending = status === "pendente";
+  const memberProduct = ["lp2", "lp2_97", "lp2_5"].includes(product) || product.startsWith("mentoria:") ? "treinamento" : product;
   const { trackPurchase } = useTracking();
   const [magicLink, setMagicLink] = useState<string | null>(null);
   const [autoLoginState, setAutoLoginState] = useState<"idle" | "loading" | "ready" | "failed">("idle");
@@ -73,9 +74,10 @@ const Obrigado = () => {
     if (isPending) return;
     if (countdown > 0) return;
     if (magicLink) {
+      sessionStorage.setItem("postPaymentRedirect", `/${memberProduct}/membros`);
       window.location.href = magicLink;
     }
-  }, [countdown, magicLink, isPending]);
+  }, [countdown, magicLink, isPending, memberProduct]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: "#080808" }}>
@@ -112,7 +114,10 @@ const Obrigado = () => {
             </div>
 
             <a
-              href={magicLink || `/${encodeURIComponent(product)}/membros/login`}
+              href={magicLink || `/${encodeURIComponent(memberProduct)}/membros/login`}
+              onClick={() => {
+                if (magicLink) sessionStorage.setItem("postPaymentRedirect", `/${memberProduct}/membros`);
+              }}
               className="inline-block px-6 py-3 rounded-lg font-bold uppercase tracking-wide"
               style={{ backgroundColor: "#00ff88", color: "#000", fontFamily: "'Bebas Neue', cursive" }}
             >

@@ -16,6 +16,12 @@ function randomPassword(len = 14): string {
   return out;
 }
 
+function normalizeAccessProduct(product: string): string {
+  if (["lp2", "lp2_97", "lp2_5"].includes(product)) return "treinamento";
+  if (product.startsWith("mentoria:")) return "treinamento";
+  return product;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
@@ -76,9 +82,9 @@ Deno.serve(async (req) => {
 
     // Grant access (idempotent via unique user_id+product)
     const product = order.product || "treinamento";
-    const productSlug = product.startsWith("mentoria:") ? "treinamento" : product;
+    const accessProduct = normalizeAccessProduct(product);
     await supabase.from("member_access").upsert(
-      { user_id: userId, product, order_id: order.id, active: true },
+      { user_id: userId, product: accessProduct, order_id: order.id, active: true },
       { onConflict: "user_id,product" },
     );
 
@@ -86,7 +92,7 @@ Deno.serve(async (req) => {
     const { data: linkData, error: linkErr } = await supabase.auth.admin.generateLink({
       type: "magiclink",
       email,
-      options: { redirectTo: `${siteUrl}/auth/callback?next=/${encodeURIComponent(productSlug)}/membros` },
+      options: { redirectTo: `${siteUrl}/auth/callback?next=/${encodeURIComponent(accessProduct)}/membros` },
     });
     if (linkErr) console.error("generateLink failed", linkErr);
     const magicLink = linkData?.properties?.action_link || null;
@@ -105,7 +111,7 @@ Deno.serve(async (req) => {
             email,
             password: generatedPassword,
             magicLink,
-            loginUrl: `${siteUrl}/${encodeURIComponent(productSlug)}/membros/login`,
+            loginUrl: `${siteUrl}/${encodeURIComponent(accessProduct)}/membros/login`,
           },
         },
       });

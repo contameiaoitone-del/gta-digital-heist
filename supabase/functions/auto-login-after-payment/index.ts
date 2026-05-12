@@ -8,6 +8,12 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+function normalizeAccessProduct(product: string): string {
+  if (["lp2", "lp2_97", "lp2_5"].includes(product)) return "treinamento";
+  if (product.startsWith("mentoria:")) return "treinamento";
+  return product;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
@@ -42,7 +48,7 @@ Deno.serve(async (req) => {
     }
 
     const product = order.product || "treinamento";
-    const productSlug = product.startsWith("mentoria:") ? "treinamento" : product;
+    const productSlug = normalizeAccessProduct(product);
 
     const { data: linkData, error: linkErr } = await supabase.auth.admin.generateLink({
       type: "magiclink",

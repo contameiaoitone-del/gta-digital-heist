@@ -9,9 +9,11 @@ const AuthCallback = () => {
   const [params] = useSearchParams();
 
   useEffect(() => {
-    const next = params.get("next") || "/membros";
+    const storedNext = sessionStorage.getItem("postPaymentRedirect");
+    const next = params.get("next") || storedNext || "/membros";
     const productMatch = next.match(/^\/([^/]+)\/membros/);
     const loginFallback = productMatch ? `/${productMatch[1]}/membros/login` : "/treinamento/membros/login";
+    if (storedNext) sessionStorage.removeItem("postPaymentRedirect");
     // The Supabase JS client auto-detects the session from the URL hash.
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
       if (session) navigate(next, { replace: true });
