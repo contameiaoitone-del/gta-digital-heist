@@ -30,11 +30,11 @@ const TestimonialsMentoria = () => {
         <ScrollAnimation>
           <div className="text-center mb-12">
             <span className="text-purple text-sm font-semibold uppercase tracking-wider">Depoimentos</span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-3 sm:mt-4 mb-4 sm:mb-6 leading-tight">
               O que os{" "}
               <span className="text-purple">alunos da mentoria dizem:</span>
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-2 leading-relaxed">
               Resultados reais de quem entrou em uma turma da mentoria em grupo:
             </p>
           </div>
