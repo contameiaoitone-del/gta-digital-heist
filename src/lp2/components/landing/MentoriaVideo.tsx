@@ -22,7 +22,9 @@ const MentoriaVideo = ({ videoId, className = "" }: MentoriaVideoProps) => {
       s.id = scriptId;
       s.async = true;
       s.type = "text/javascript";
-      s.src = `https://scripts.converteai.net/b792ccfe-b151-4538-84c6-42bb48a19ba4/players/${videoId}/v4/player.js`;
+      // TODO: substituir ACCOUNT_ID pelo seu ID de conta VTurb (mesmo da aba "Embed" do player).
+      // Ex.: https://scripts.converteai.net/<ACCOUNT_ID>/players/<PLAYER_ID>/v4/player.js
+      s.src = `https://scripts.converteai.net/ACCOUNT_ID/players/${videoId}/v4/player.js`;
       document.head.appendChild(s);
     }
   }, [videoId]);
