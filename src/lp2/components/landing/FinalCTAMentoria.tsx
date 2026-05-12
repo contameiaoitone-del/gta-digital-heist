@@ -20,8 +20,8 @@ function uuid(): string {
 
 function fbq(...args: unknown[]) {
   if (typeof window === "undefined") return;
-  // @ts-expect-error fbq attached globally
-  if (typeof window.fbq === "function") window.fbq(...args);
+  const w = window as unknown as { fbq?: (...a: unknown[]) => void };
+  if (typeof w.fbq === "function") w.fbq(...args);
 }
 
 const FinalCTAMentoria = () => {
