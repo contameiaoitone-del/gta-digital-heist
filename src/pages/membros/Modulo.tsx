@@ -17,6 +17,7 @@ interface Module {
   status?: string;
   product?: string;
   release_days?: number | null;
+  paywall_notice?: string | null;
 }
 interface Lesson {
   id: string;
