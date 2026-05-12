@@ -27,7 +27,7 @@ const Index = () => {
   return (
     <NetflixLayout>
       {/* Products Section */}
-      <section className="min-h-screen py-12 bg-background relative flex items-center">
+      <section className="min-h-[calc(100vh-6rem)] py-12 bg-background relative flex items-center justify-center">
         {/* Blur effects for modern look */}
         <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-[100px] pointer-events-none" />
