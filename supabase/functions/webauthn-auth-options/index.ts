@@ -15,7 +15,7 @@ const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const { email } = await req.json();
+    const { email, attachment } = await req.json();
     if (!email || typeof email !== "string") return json({ error: "Missing email" }, 400);
     const normalized = email.trim().toLowerCase();
 
@@ -32,7 +32,18 @@ Deno.serve(async (req) => {
         .from("webauthn_credentials")
         .select("credential_id, transports")
         .eq("user_id", userId);
-      allowCredentials = (creds || []).map((c: any) => ({
+      let rows = (creds || []) as any[];
+      // When the client requests platform-only (mobile w/ Face ID/digital),
+      // filter out credentials that aren't usable as a local platform authenticator.
+      // We keep credentials whose transports include "internal" (or are unknown).
+      if (attachment === "platform") {
+        rows = rows.filter((c) => {
+          const t: string[] = Array.isArray(c.transports) ? c.transports : [];
+          if (t.length === 0) return true; // unknown — let the browser decide
+          return t.includes("internal");
+        });
+      }
+      allowCredentials = rows.map((c) => ({
         id: c.credential_id,
         transports: c.transports || undefined,
       }));
