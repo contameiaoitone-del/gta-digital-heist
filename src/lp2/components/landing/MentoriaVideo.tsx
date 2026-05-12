@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 
 interface MentoriaVideoProps {
   videoId: string;
+  accountId?: string;
   className?: string;
 }
 
@@ -10,7 +11,9 @@ interface MentoriaVideoProps {
  * The VTurb script is loaded once per id and renders the player into the
  * <vturb-smartplayer> custom element.
  */
-const MentoriaVideo = ({ videoId, className = "" }: MentoriaVideoProps) => {
+const DEFAULT_ACCOUNT_ID = "574be7f8-d9bf-450a-9bfb-e024758a6c13";
+
+const MentoriaVideo = ({ videoId, accountId = DEFAULT_ACCOUNT_ID, className = "" }: MentoriaVideoProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,12 +25,10 @@ const MentoriaVideo = ({ videoId, className = "" }: MentoriaVideoProps) => {
       s.id = scriptId;
       s.async = true;
       s.type = "text/javascript";
-      // TODO: substituir ACCOUNT_ID pelo seu ID de conta VTurb (mesmo da aba "Embed" do player).
-      // Ex.: https://scripts.converteai.net/<ACCOUNT_ID>/players/<PLAYER_ID>/v4/player.js
-      s.src = `https://scripts.converteai.net/ACCOUNT_ID/players/${videoId}/v4/player.js`;
+      s.src = `https://scripts.converteai.net/${accountId}/players/${videoId}/v4/player.js`;
       document.head.appendChild(s);
     }
-  }, [videoId]);
+  }, [videoId, accountId]);
 
   return <div ref={containerRef} className={className} />;
 };
