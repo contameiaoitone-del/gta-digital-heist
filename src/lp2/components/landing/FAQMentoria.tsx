@@ -35,12 +35,12 @@ const FAQMentoria = () => {
   ];
 
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-14 sm:py-20 relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         <ScrollAnimation>
-          <div className="text-center mb-16">
-            <span className="text-purple text-sm font-semibold uppercase tracking-wider">Dúvidas</span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-6">
+          <div className="text-center mb-10 sm:mb-16">
+            <span className="text-purple text-xs sm:text-sm font-semibold uppercase tracking-wider">Dúvidas</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-3 sm:mt-4 mb-4 sm:mb-6 leading-tight">
               Perguntas{" "}
               <span className="text-purple">Frequentes</span>
             </h2>

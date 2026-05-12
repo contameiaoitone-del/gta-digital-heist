@@ -88,11 +88,11 @@ const FinalCTAMentoria = () => {
         <div className="container mx-auto px-4 relative z-10">
           <ScrollAnimation>
             <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 sm:mb-6 leading-tight">
                 Pronto para entrar na{" "}
                 <span className="text-purple">próxima turma?</span>
               </h2>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <p className="text-sm sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto px-2 leading-relaxed">
                 Entre para o grupo de espera no WhatsApp e seja avisado em primeira mão quando a próxima turma da mentoria em grupo abrir. Apenas <strong className="text-foreground">20 vagas</strong> por turma.
               </p>
 
