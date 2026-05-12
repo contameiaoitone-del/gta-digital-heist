@@ -227,6 +227,7 @@ const Admin = () => {
       category: editingModule.category?.trim() || null,
       kind,
       price_cents: kind === "mentoria" ? editingModule.price_cents! : null,
+      paywall_notice: kind === "mentoria" ? (editingModule.paywall_notice?.trim() || null) : null,
       release_days: Math.max(0, Number(editingModule.release_days) || 0),
       ...(productFilter ? { product: productFilter } : {}),
     };
