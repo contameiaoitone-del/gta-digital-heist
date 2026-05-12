@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Fingerprint, X } from "lucide-react";
 import { browserSupportsWebAuthn, startAuthentication } from "@simplewebauthn/browser";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const MembrosLogin = () => {
   const navigate = useNavigate();
@@ -17,9 +18,21 @@ const MembrosLogin = () => {
   const [bioLoading, setBioLoading] = useState(false);
   const [bioSupported, setBioSupported] = useState(false);
   const [emailWarn, setEmailWarn] = useState(false);
+  const [platformAvailable, setPlatformAvailable] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setBioSupported(browserSupportsWebAuthn());
+    try {
+      const PKC: any = (window as any).PublicKeyCredential;
+      if (PKC?.isUserVerifyingPlatformAuthenticatorAvailable) {
+        PKC.isUserVerifyingPlatformAuthenticatorAvailable()
+          .then((v: boolean) => setPlatformAvailable(!!v))
+          .catch(() => setPlatformAvailable(false));
+      }
+    } catch {
+      setPlatformAvailable(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -49,12 +62,23 @@ const MembrosLogin = () => {
     setBioLoading(true);
     try {
       const normalized = email.trim().toLowerCase();
+      // On mobile, only attempt biometrics if a platform authenticator
+      // (Face ID / fingerprint) is actually available on this device — otherwise
+      // the browser falls back to the cross-device QR Code flow.
+      if (isMobile && !platformAvailable) {
+        toast.error("Este aparelho não tem Face ID/digital configurado. Entre com a senha e ative a biometria depois.");
+        return;
+      }
       const { data: optsData, error: optsErr } = await supabase.functions.invoke("webauthn-auth-options", {
-        body: { email: normalized },
+        body: { email: normalized, attachment: isMobile ? "platform" : undefined },
       });
       if (optsErr) throw optsErr;
       if (!optsData?.hasCredentials) {
-        toast.error("Nenhuma biometria cadastrada para este e-mail. Faça login com senha e ative a biometria na área de membros.");
+        toast.error(
+          isMobile
+            ? "Nenhuma biometria cadastrada neste aparelho. Entre com a senha e ative o Face ID/digital após entrar."
+            : "Nenhuma biometria cadastrada para este e-mail. Faça login com senha e ative a biometria na área de membros."
+        );
         return;
       }
       const asseResp = await startAuthentication({ optionsJSON: optsData.options });
@@ -72,12 +96,16 @@ const MembrosLogin = () => {
       navigate(`${productPath}/membros`, { replace: true });
     } catch (e: any) {
       const msg = e?.message || "";
+      console.warn("[passkey] auth error", e);
       if (/NotAllowedError|cancel/i.test(msg)) {
-        toast.error("Biometria cancelada");
+        toast.error(
+          isMobile
+            ? "Biometria cancelada ou não disponível neste aparelho. Entre com a senha."
+            : "Biometria cancelada"
+        );
       } else {
-        toast.error("Não foi possível entrar com biometria");
+        toast.error("Não foi possível entrar com biometria. Use a senha.");
       }
-      console.error(e);
     } finally {
       setBioLoading(false);
     }
