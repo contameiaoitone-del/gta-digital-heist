@@ -224,6 +224,7 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
 
 function CapiLogBody() {
   const [rows, setRows] = useState<CapiLogRow[]>([]);
+  const [payMethods, setPayMethods] = useState<Record<string, string>>({});
   const [filter, setFilter] = useState<"all" | "Purchase" | "InitiateCheckout" | "PageView">("all");
   const [pageFilter, setPageFilter] = useState<"all" | "LP2" | "LP2-97" | "MENTORIA">("all");
   const [dateFilter, setDateFilter] = useState<"all" | "today" | "yesterday" | "custom">("all");
@@ -266,7 +267,21 @@ function CapiLogBody() {
       }
       const { data } = await q;
       if (!cancelled) {
-        setRows((data as CapiLogRow[]) || []);
+        const list = (data as CapiLogRow[]) || [];
+        setRows(list);
+        const ids = Array.from(new Set(list.map((r) => r.order_id).filter((v): v is string => !!v)));
+        if (ids.length > 0) {
+          const { data: ords } = await supabase.from("orders").select("id,payment_method").in("id", ids);
+          if (!cancelled && ords) {
+            const map: Record<string, string> = {};
+            for (const o of ords as Array<{ id: string; payment_method: string | null }>) {
+              if (o.payment_method) map[o.id] = o.payment_method;
+            }
+            setPayMethods(map);
+          }
+        } else {
+          setPayMethods({});
+        }
         setBusy(false);
       }
     })();
@@ -348,6 +363,7 @@ function CapiLogBody() {
                 <th className="px-3 py-2">Quando</th>
                 <th className="px-3 py-2">Evento</th>
                 <th className="px-3 py-2">Página</th>
+                <th className="px-3 py-2">Pgto</th>
                 <th className="px-3 py-2">OK</th>
                 <th className="px-3 py-2">HTTP</th>
                 <th className="px-3 py-2">Valor</th>
@@ -374,6 +390,7 @@ function CapiLogBody() {
                     <td className="px-3 py-2 whitespace-nowrap text-gray-300">{new Date(r.created_at).toLocaleString("pt-BR")}</td>
                     <td className="px-3 py-2">{r.event_name}</td>
                     <td className="px-3 py-2 text-gray-300">{r.page_source || "-"}</td>
+                    <td className="px-3 py-2 text-gray-300 uppercase text-[10px]">{r.order_id ? (payMethods[r.order_id] === "card" ? "Cartão" : payMethods[r.order_id] === "pix" ? "Pix" : payMethods[r.order_id] || "-") : "-"}</td>
                     <td className="px-3 py-2">
                       {r.success ? <CheckCircle2 className="h-4 w-4 text-[#00ff88]" /> : <XCircle className="h-4 w-4 text-[#ff2d78]" />}
                     </td>
