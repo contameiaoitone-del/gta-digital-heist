@@ -21,6 +21,7 @@ interface CapiLogRow {
   utm_campaign: string | null;
   utm_content: string | null;
   utm_term: string | null;
+  page_source: string | null;
 }
 
 const CapiLog = () => {
@@ -29,6 +30,7 @@ const CapiLog = () => {
   const productPath = `/${encodeURIComponent(product)}`;
   const [rows, setRows] = useState<CapiLogRow[]>([]);
   const [filter, setFilter] = useState<"all" | "Purchase" | "InitiateCheckout" | "PageView">("Purchase");
+  const [pageFilter, setPageFilter] = useState<"all" | "LP2" | "LP2-97" | "MENTORIA">("all");
   const [search, setSearch] = useState("");
   const [busy, setBusy] = useState(true);
 
@@ -38,6 +40,7 @@ const CapiLog = () => {
       setBusy(true);
       let q = supabase.from("meta_capi_log").select("*").order("created_at", { ascending: false }).limit(200);
       if (filter !== "all") q = q.eq("event_name", filter);
+      if (pageFilter !== "all") q = q.eq("page_source", pageFilter);
       const { data } = await q;
       if (!cancelled) {
         setRows((data as CapiLogRow[]) || []);
@@ -45,7 +48,7 @@ const CapiLog = () => {
       }
     })();
     return () => { cancelled = true; };
-  }, [filter]);
+  }, [filter, pageFilter]);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return rows;
@@ -79,6 +82,16 @@ const CapiLog = () => {
               {f}
             </button>
           ))}
+          <span className="ml-2 text-[10px] uppercase tracking-wider text-gray-500">Página:</span>
+          {(["all", "LP2", "LP2-97", "MENTORIA"] as const).map((p) => (
+            <button
+              key={p}
+              onClick={() => setPageFilter(p)}
+              className={`px-3 py-1.5 rounded text-xs uppercase tracking-wider ${pageFilter === p ? "bg-[#ff2d78] text-white" : "bg-white/5 text-gray-300 hover:bg-white/10"}`}
+            >
+              {p}
+            </button>
+          ))}
           <input
             type="text"
             value={search}
@@ -99,6 +112,7 @@ const CapiLog = () => {
                 <tr>
                   <th className="px-3 py-2">Quando</th>
                   <th className="px-3 py-2">Evento</th>
+                  <th className="px-3 py-2">Página</th>
                   <th className="px-3 py-2">OK</th>
                   <th className="px-3 py-2">HTTP</th>
                   <th className="px-3 py-2">Valor</th>
@@ -124,6 +138,7 @@ const CapiLog = () => {
                     <tr key={r.id} className="border-t border-white/5 hover:bg-white/5">
                       <td className="px-3 py-2 whitespace-nowrap text-gray-300">{new Date(r.created_at).toLocaleString("pt-BR")}</td>
                       <td className="px-3 py-2">{r.event_name}</td>
+                      <td className="px-3 py-2 text-gray-300">{r.page_source || "-"}</td>
                       <td className="px-3 py-2">
                         {r.success ? <CheckCircle2 className="h-4 w-4 text-[#00ff88]" /> : <XCircle className="h-4 w-4 text-[#ff2d78]" />}
                       </td>
