@@ -46,7 +46,7 @@ export default function Unsubscribe() {
         {state === "valid" && (
           <>
             <p className="text-muted-foreground mb-6">
-              Confirme para parar de receber emails do Real Life Academy.
+              Confirme para parar de receber emails do Treinamento X1.
             </p>
             <Button onClick={confirm} className="w-full">Confirmar cancelamento</Button>
           </>
