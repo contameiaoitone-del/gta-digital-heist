@@ -60,9 +60,16 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: linkErr.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    return new Response(JSON.stringify({ magic_link: linkData?.properties?.action_link }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    const props = linkData?.properties as { action_link?: string; hashed_token?: string; email_otp?: string } | undefined;
+    return new Response(
+      JSON.stringify({
+        magic_link: props?.action_link,
+        hashed_token: props?.hashed_token,
+        email,
+        redirect_path: `/${productSlug}/membros`,
+      }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
   } catch (e) {
     return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "internal" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }

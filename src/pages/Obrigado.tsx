@@ -19,6 +19,8 @@ const Obrigado = () => {
   const memberProduct = ["lp2", "lp2_97", "lp2_5"].includes(product) || product.startsWith("mentoria:") ? "treinamento" : product;
   const { trackPurchase } = useTracking();
   const [magicLink, setMagicLink] = useState<string | null>(null);
+  const [tokenHash, setTokenHash] = useState<string | null>(null);
+  const [redirectPath, setRedirectPath] = useState<string>(`/${memberProduct}/membros`);
   const [autoLoginState, setAutoLoginState] = useState<"idle" | "loading" | "ready" | "failed">("idle");
   const [countdown, setCountdown] = useState<number>(REDIRECT_DELAY_SECONDS);
 
@@ -43,9 +45,12 @@ const Obrigado = () => {
           const { data, error } = await supabase.functions.invoke("auto-login-after-payment", {
             body: { order_id: orderId },
           });
-          if (!error && (data as { magic_link?: string })?.magic_link) {
+          const d = data as { magic_link?: string; hashed_token?: string; redirect_path?: string } | null;
+          if (!error && d && (d.hashed_token || d.magic_link)) {
             if (cancelled) return;
-            setMagicLink((data as { magic_link: string }).magic_link);
+            if (d.magic_link) setMagicLink(d.magic_link);
+            if (d.hashed_token) setTokenHash(d.hashed_token);
+            if (d.redirect_path) setRedirectPath(d.redirect_path);
             setAutoLoginState("ready");
             return;
           }
@@ -69,15 +74,26 @@ const Obrigado = () => {
     return () => clearTimeout(t);
   }, [countdown, isPending]);
 
-  // 4) Auto-redirect when countdown hits 0 AND magic link is ready
+  // 4) Auto-redirect when countdown hits 0 AND we have a token: verify it
+  // client-side and navigate directly, bypassing any redirect_to issues.
   useEffect(() => {
     if (isPending) return;
     if (countdown > 0) return;
-    if (magicLink) {
-      sessionStorage.setItem("postPaymentRedirect", `/${memberProduct}/membros`);
+    if (tokenHash) {
+      (async () => {
+        const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "magiclink" });
+        if (!error) {
+          window.location.replace(redirectPath);
+        } else if (magicLink) {
+          window.location.href = magicLink;
+        } else {
+          setAutoLoginState("failed");
+        }
+      })();
+    } else if (magicLink) {
       window.location.href = magicLink;
     }
-  }, [countdown, magicLink, isPending, memberProduct]);
+  }, [countdown, tokenHash, magicLink, isPending, redirectPath]);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: "#080808" }}>
@@ -113,16 +129,27 @@ const Obrigado = () => {
                 : "Redirecionando..."}
             </div>
 
-            <a
-              href={magicLink || `/${encodeURIComponent(memberProduct)}/membros/login`}
-              onClick={() => {
-                if (magicLink) sessionStorage.setItem("postPaymentRedirect", `/${memberProduct}/membros`);
+            <button
+              type="button"
+              onClick={async () => {
+                if (tokenHash) {
+                  const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "magiclink" });
+                  if (!error) {
+                    window.location.replace(redirectPath);
+                    return;
+                  }
+                }
+                if (magicLink) {
+                  window.location.href = magicLink;
+                } else {
+                  window.location.href = `/${encodeURIComponent(memberProduct)}/membros/login`;
+                }
               }}
               className="inline-block px-6 py-3 rounded-lg font-bold uppercase tracking-wide"
-              style={{ backgroundColor: "#00ff88", color: "#000", fontFamily: "'Bebas Neue', cursive" }}
+              style={{ backgroundColor: "#00ff88", color: "#000", fontFamily: "'Bebas Neue', cursive", border: "none", cursor: "pointer" }}
             >
               Acessar área de membros agora
-            </a>
+            </button>
           </div>
         )}
 

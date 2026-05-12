@@ -1,31 +1,33 @@
-Diagnóstico dos logs:
+## Diagnóstico
 
-- O pagamento novo de R$ 5 foi aprovado: pedido `35802a3a-27e8-4718-90f6-54004f299317`, produto `lp2_5`, status `paid`.
-- O acesso foi liberado corretamente para `treinamento` no banco.
-- O auto-login também gerou magic links e houve login nos logs de autenticação.
-- O e-mail não chegou porque a fila de e-mails está acumulando mensagens como `pending` e não existe job ativo para processar `process-email-queue`.
-- O redirecionamento falhou por um detalhe no callback: quando o magic link já traz `next=/treinamento/membros`, o código prioriza esse parâmetro antes do fallback salvo em `sessionStorage`; além disso, o fluxo depende do estado React detectar a sessão depois do hash do magic link.
+- O pedido `97ed26a0-73ce-4040-808b-e595aea64c44` foi pago corretamente: `status = paid`, `product = lp2_5`, valor `R$5`.
+- O acesso foi criado corretamente em `member_access` como `product = treinamento` para o usuário comprado.
+- O problema do redirecionamento está no magic link: a função está retornando `redirect_to=https://gta-digital-heist.lovable.app`, sem `/auth/callback?next=/treinamento/membros`. Por isso, depois da autenticação, o navegador cai na home com `/#`.
+- O e-mail de acesso também está falhando: a fila tentou enviar, mas recebeu `403 no_matching_sender`, ou seja, o domínio/remetente configurado no envio não corresponde ao domínio de e-mail ativo.
 
-Plano de correção:
+## Plano de correção
 
-1. Ajustar o callback de autenticação
-   - Priorizar o redirecionamento salvo após pagamento (`postPaymentRedirect`) antes do parâmetro `next`.
-   - Garantir que `/lp2`, `/lp2_97`, `/lp2_5`, `/lp2-97` e `/lp2-5` sempre virem `/treinamento/membros`.
-   - Usar uma troca explícita do código/hash da sessão antes de navegar, para deixar o redirecionamento mais confiável.
+1. **Corrigir geração do magic link**
+   - Ajustar `auto-login-after-payment` para gerar o link usando o callback completo:
+     - `/auth/callback?next=/treinamento/membros`
+   - Garantir que `lp2`, `lp2_97`, `lp2_5`, `lp2-97` e `lp2-5` sempre apontem para `treinamento`.
+   - Remover dependência de `SITE_URL` incorreto quando ele estiver apontando para domínio/preview errado.
 
-2. Ajustar a página de obrigado
-   - Manter o redirecionamento para `/treinamento/membros` para pagamentos de LP2, LP2-97 e LP2-5.
-   - Garantir que o botão “Acessar área de membros agora” também grave o destino correto antes de abrir o magic link.
-   - Incluir o produto na URL de obrigado quando vier do Pix/cartão, para o fallback ficar correto mesmo em links antigos.
+2. **Corrigir fallback do callback de autenticação**
+   - Reforçar `AuthCallback` para trocar tokens da URL por sessão antes de navegar.
+   - Se o link chegar sem `next`, redirecionar para `/treinamento/membros`, nunca para `/`.
+   - Evitar que hash `/#` seja tratado como destino válido.
 
-3. Corrigir o processamento dos e-mails
-   - Recriar/configurar a infraestrutura de e-mail do projeto para restaurar o job que processa a fila.
-   - Reimplantar a função que processa a fila de e-mails.
-   - Validar que os e-mails `pending` saem da fila ou, caso tenham expirado, registrar o status correto.
+3. **Corrigir e-mail de acesso**
+   - Verificar o domínio de e-mail ativo em Lovable Cloud.
+   - Ajustar `send-transactional-email` para usar o sender domain correto (`notify.joaolucasps.co`) em vez de um domínio que não bate com a configuração ativa.
+   - Reimplantar as funções necessárias.
 
-4. Validar com o pedido pago de R$ 5
-   - Testar a função de auto-login para o pedido recente e confirmar que ela retorna magic link para `/treinamento/membros`.
-   - Confirmar no banco que o acesso está como `product = treinamento`.
-   - Confirmar que a fila de e-mails voltou a ser processada.
+4. **Validar com o pedido real**
+   - Testar `auto-login-after-payment` no pedido `97ed26a0-73ce-4040-808b-e595aea64c44`.
+   - Confirmar que o magic link retornado contém `/auth/callback?next=/treinamento/membros`.
+   - Confirmar que a fila de e-mail deixa de registrar `no_matching_sender` para novos envios.
 
-Observação: não vou alterar os preços nem a página original LP2/LP2-97/LP2-5; a mudança é só no pós-pagamento, redirecionamento e envio do e-mail de acesso.
+## Resultado esperado
+
+Após pagamento nas páginas de R$5, R$97 e R$147, o comprador será logado e enviado diretamente para `/treinamento/membros`, e o e-mail de acesso será enviado pelo domínio correto.
