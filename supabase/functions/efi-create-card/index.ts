@@ -20,7 +20,7 @@ const BodySchema = z.object({
   installments: z.number().int().min(1).max(12),
   session_id: z.string().trim().min(1).max(80).optional(),
   event_id_purchase: z.string().trim().min(1).max(80).optional(),
-  product: z.enum(["treinamento", "lp2", "lp2_97"]).optional(),
+  product: z.enum(["treinamento", "lp2", "lp2_97", "lp2_5"]).optional(),
 });
 
 Deno.serve(async (req) => {
