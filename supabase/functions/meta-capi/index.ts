@@ -67,6 +67,23 @@ interface CapiBody {
   currency?: string;
   content_name?: string;
   order_id?: string;
+  page_source?: string;
+}
+
+function derivePageSource(url?: string, explicit?: string): string | null {
+  if (explicit) return explicit.toUpperCase();
+  if (!url) return null;
+  try {
+    const path = new URL(url).pathname.toLowerCase();
+    if (path.startsWith("/mentoria")) return "MENTORIA";
+    if (path.startsWith("/lp2-97")) return "LP2-97";
+    if (path.startsWith("/lp2-5")) return "LP2-5";
+    if (path.startsWith("/lp2") || path === "/") return "LP2";
+    if (path.startsWith("/lp1")) return "LP1";
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 Deno.serve(async (req) => {
@@ -246,6 +263,7 @@ Deno.serve(async (req) => {
           utm_campaign: utm_campaign || null,
           utm_content: utm_content || null,
           utm_term: utm_term || null,
+          page_source: derivePageSource(body.event_source_url, body.page_source),
         });
       } catch (e) {
         console.error("meta_capi_log insert failed", e);
