@@ -7,12 +7,13 @@ export const COB_HOST = "https://cobrancas.api.efipay.com.br";
 export const PRODUCT_AMOUNT_CENTS = 6700; // R$ 67,00 — fixed server-side
 export const PRODUCT_NAME = "InfoZap";
 
-export type ProductKey = "treinamento" | "lp2" | "lp2_97";
+export type ProductKey = "treinamento" | "lp2" | "lp2_97" | "lp2_5";
 
 export const PRODUCTS: Record<ProductKey, { name: string; amount_cents: number }> = {
   infozap: { name: "InfoZap", amount_cents: 6700 },
   lp2: { name: "Comunidade X1 no Pix", amount_cents: 14700 },
   lp2_97: { name: "Comunidade X1 no Pix", amount_cents: 9700 },
+  lp2_5: { name: "Comunidade X1 no Pix", amount_cents: 500 },
 };
 
 export function getProduct(key: string | undefined | null) {
