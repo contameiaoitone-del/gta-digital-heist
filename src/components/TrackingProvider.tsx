@@ -7,7 +7,7 @@ import { ensureUtms } from "@/lib/utmAutoFill";
 import { supabase } from "@/integrations/supabase/client";
 
 // Tracking (Pixel + CAPI) is enabled on the InfoZap funnel and on the LP1/LP2 landing pages.
-const TRACKED_ROUTES = ["/lp1", "/lp2"];
+const TRACKED_ROUTES = ["/lp1", "/lp2", "/mentoria"];
 
 let pixelsLoaded = false;
 async function loadConfiguredPixels() {
