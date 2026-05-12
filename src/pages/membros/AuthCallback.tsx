@@ -10,7 +10,9 @@ const AuthCallback = () => {
 
   useEffect(() => {
     const storedNext = sessionStorage.getItem("postPaymentRedirect");
-    const next = params.get("next") || storedNext || "/membros";
+    // Priorizar destino salvo após pagamento sobre o `next` do magic link,
+    // pois o link gerado pelo Supabase pode trazer um produto antigo.
+    const next = storedNext || params.get("next") || "/treinamento/membros";
     const productMatch = next.match(/^\/([^/]+)\/membros/);
     const loginFallback = productMatch ? `/${productMatch[1]}/membros/login` : "/treinamento/membros/login";
     if (storedNext) sessionStorage.removeItem("postPaymentRedirect");
