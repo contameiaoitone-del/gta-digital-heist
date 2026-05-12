@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import HeroMentoria from "@/lp2/components/landing/HeroMentoria";
 import Problem from "@/lp2/components/landing/Problem";
 import AboutFounder from "@/lp2/components/landing/AboutFounder";
-import Testimonials from "@/lp2/components/landing/Testimonials";
+import TestimonialsMentoria from "@/lp2/components/landing/TestimonialsMentoria";
 import FinalCTAMentoria from "@/lp2/components/landing/FinalCTAMentoria";
 import FAQMentoria from "@/lp2/components/landing/FAQMentoria";
 import Footer from "@/lp2/components/landing/Footer";
@@ -16,7 +16,7 @@ const IndexMentoria = () => {
       <HeroMentoria />
       <Problem />
       <AboutFounder />
-      <Testimonials />
+      <TestimonialsMentoria />
       <FinalCTAMentoria />
       <FAQMentoria />
       <Footer />
