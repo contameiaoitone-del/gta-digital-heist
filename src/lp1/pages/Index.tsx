@@ -11,8 +11,7 @@ const Index = () => {
       description: "APRENDA TUDO DO 0",
       imageUrl: starterImage,
       link: "/lp2",
-      isLocked: false,
-      externalLink: "/lp2"
+      isLocked: false
     },
     {
       id: "mentoria",
