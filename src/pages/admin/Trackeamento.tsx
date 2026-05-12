@@ -3,7 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Plus, Trash2, CheckCircle2, XCircle, ChevronDown, ChevronRight, Eye, EyeOff, Pencil, Save, X, CalendarIcon } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Trash2, CheckCircle2, XCircle, ChevronDown, ChevronRight, Eye, EyeOff, Pencil, Save, X, CalendarIcon, RefreshCw } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
@@ -255,6 +255,7 @@ function CapiLogBody() {
     return null;
   }, [dateFilter, customRange]);
 
+  const [reloadTick, setReloadTick] = useState(0);
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -286,7 +287,7 @@ function CapiLogBody() {
       }
     })();
     return () => { cancelled = true; };
-  }, [filter, pageFilter, dateBounds]);
+  }, [filter, pageFilter, dateBounds, reloadTick]);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return rows;
@@ -350,6 +351,15 @@ function CapiLogBody() {
         <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar por SCK, UTM, order_id, event_id..."
           className="ml-auto px-3 py-1.5 rounded bg-white/5 border border-white/10 text-xs w-72 placeholder:text-gray-500 focus:outline-none focus:border-[#00ff88]" />
+        <button
+          onClick={() => setReloadTick((t) => t + 1)}
+          disabled={busy}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs uppercase tracking-wider bg-[#00ff88] text-black hover:opacity-90 disabled:opacity-50"
+          title="Atualizar logs"
+        >
+          <RefreshCw className={cn("h-3.5 w-3.5", busy && "animate-spin")} />
+          Atualizar
+        </button>
       </div>
       {busy ? (
         <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin" /></div>
