@@ -263,6 +263,7 @@ Deno.serve(async (req) => {
           utm_campaign: utm_campaign || null,
           utm_content: utm_content || null,
           utm_term: utm_term || null,
+          page_source: derivePageSource(body.event_source_url, body.page_source),
         });
       } catch (e) {
         console.error("meta_capi_log insert failed", e);
