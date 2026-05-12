@@ -200,36 +200,40 @@ const Modulo = () => {
 
       {/* Lista de aulas */}
       <div className="max-w-[1100px] mx-auto px-4 md:px-8 mt-10">
-        {isMentoriaLocked && mod ? (
-          <MentoriaPaywall
-            moduleId={mod.id}
-            moduleTitle={mod.title}
-            priceCents={mod.price_cents || 0}
-            defaultName={(session?.user?.user_metadata as { full_name?: string })?.full_name || ""}
-            onPaid={() => window.location.reload()}
-          />
-        ) : (
-          <>
+        {isMentoriaLocked && mod && (
+          <div className="mb-10">
+            <MentoriaPaywall
+              moduleId={mod.id}
+              moduleTitle={mod.title}
+              priceCents={mod.price_cents || 0}
+              notice={mod.paywall_notice || "Realize o pagamento para ter acesso às aulas gravadas"}
+              defaultName={(session?.user?.user_metadata as { full_name?: string })?.full_name || ""}
+              defaultEmail={session?.user?.email || ""}
+              onPaid={() => window.location.reload()}
+            />
+          </div>
+        )}
         <h2 className="text-2xl font-bold mb-5" style={{ fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.04em" }}>
           Aulas
         </h2>
         {!loading && lessons.length === 0 && (
           <p className="text-gray-400">Nenhuma aula publicada ainda.</p>
         )}
-        <ul className="divide-y divide-white/5 border-y border-white/5">
+        <ul className={`divide-y divide-white/5 border-y border-white/5 ${isMentoriaLocked ? "select-none" : ""}`}>
           {lessons.map((l, idx) => {
             const p = progress[l.id];
             const pct = p && l.duration_seconds ? Math.min(100, (p.watched_seconds / l.duration_seconds) * 100) : p?.completed ? 100 : 0;
             const coming = l.status === "coming_soon";
             const lockDays = lessonLockDays(l);
-            const locked = coming || (lockDays !== null && lockDays > 0);
+            const paywallLocked = isMentoriaLocked;
+            const locked = coming || (lockDays !== null && lockDays > 0) || paywallLocked;
             const RowEl: React.ElementType = locked ? "div" : Link;
             const rowProps = locked ? { "aria-disabled": true } : { to: `${productPath}/membros/aula/${l.id}` };
             return (
               <li key={l.id}>
                 <RowEl
                   {...rowProps}
-                  className={`group flex gap-4 py-4 px-2 -mx-2 rounded transition-colors ${locked ? "cursor-not-allowed opacity-70" : "hover:bg-white/[0.03]"}`}
+                  className={`group flex gap-4 py-4 px-2 -mx-2 rounded transition-colors ${locked ? "cursor-not-allowed opacity-70" : "hover:bg-white/[0.03]"} ${paywallLocked ? "blur-[3px] pointer-events-none" : ""}`}
                 >
                   <div className="text-2xl md:text-3xl text-gray-600 font-bold w-8 md:w-10 text-center flex-shrink-0" style={{ fontFamily: "'Bebas Neue', cursive" }}>
                     {idx + 1}
@@ -278,8 +282,6 @@ const Modulo = () => {
             );
           })}
         </ul>
-          </>
-        )}
       </div>
     </div>
   );
