@@ -465,6 +465,7 @@ export type Database = {
           description: string | null
           id: string
           kind: string
+          paywall_notice: string | null
           position: number
           price_cents: number | null
           product: string
@@ -482,6 +483,7 @@ export type Database = {
           description?: string | null
           id?: string
           kind?: string
+          paywall_notice?: string | null
           position?: number
           price_cents?: number | null
           product?: string
@@ -499,6 +501,7 @@ export type Database = {
           description?: string | null
           id?: string
           kind?: string
+          paywall_notice?: string | null
           position?: number
           price_cents?: number | null
           product?: string

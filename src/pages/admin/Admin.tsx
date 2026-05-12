@@ -19,6 +19,7 @@ interface Module {
   kind?: string;
   price_cents?: number | null;
   release_days?: number;
+  paywall_notice?: string | null;
 }
 interface Lesson {
   id: string;
@@ -226,6 +227,7 @@ const Admin = () => {
       category: editingModule.category?.trim() || null,
       kind,
       price_cents: kind === "mentoria" ? editingModule.price_cents! : null,
+      paywall_notice: kind === "mentoria" ? (editingModule.paywall_notice?.trim() || null) : null,
       release_days: Math.max(0, Number(editingModule.release_days) || 0),
       ...(productFilter ? { product: productFilter } : {}),
     };
@@ -589,6 +591,17 @@ const Admin = () => {
                     setEditingModule({ ...editingModule, price_cents: Number.isFinite(v) ? Math.round(v * 100) : null });
                   }}
                 />
+              </Field>
+            )}
+            {(editingModule.kind === "mentoria") && (
+              <Field label="Frase de aviso (aparece em amarelo no card de pagamento)">
+                <textarea
+                  className={inputCls + " h-20"}
+                  placeholder="Ex.: Realize o pagamento para ter acesso às aulas gravadas"
+                  value={editingModule.paywall_notice || ""}
+                  onChange={(e) => setEditingModule({ ...editingModule, paywall_notice: e.target.value })}
+                />
+                <p className="text-xs text-gray-500 mt-1">Mensagem mostrada entre o nome do módulo e o valor, num cartão amarelo.</p>
               </Field>
             )}
             <Field label="Capa do módulo (2:3 vertical — recomendado 800×1200, estilo cartaz Netflix)">
