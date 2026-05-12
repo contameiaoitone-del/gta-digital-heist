@@ -8,7 +8,9 @@ import { getCookie } from "@/lib/cookies";
 import { getSessionId } from "@/hooks/useTracking";
 
 const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/KAh47hcDL0n92QXKNg3RGP?mode=gi_t";
-const VTURB_VIDEO_ID = "691f99ddd47a3e75e2d39b65";
+const VTURB_ACCOUNT_ID = "574be7f8-d9bf-450a-9bfb-e024758a6c13";
+const VTURB_VIDEO_ID = "6a03aa75f7dfb345ee3b3dc1";
+const VTURB_M3U8_ID = "6a03aa61abc25b8656a251af";
 
 function uuid(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
@@ -32,6 +34,33 @@ const FinalCTAMentoria = () => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setPopupOpen(false); };
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
+
+    // Otimização VTurb: _plt + preloads + dns-prefetch
+    const w = window as unknown as { _plt?: number };
+    if (!w._plt) {
+      const perf = performance as Performance & { timeOrigin?: number };
+      w._plt = perf && perf.timeOrigin ? perf.timeOrigin + perf.now() : Date.now();
+    }
+    const created: HTMLLinkElement[] = [];
+    const addLink = (rel: string, href: string, asAttr?: string) => {
+      const sel = `link[data-vturb-opt="1"][href="${href}"][rel="${rel}"]`;
+      if (document.head.querySelector(sel)) return;
+      const link = document.createElement("link");
+      link.rel = rel;
+      link.href = href;
+      if (asAttr) link.setAttribute("as", asAttr);
+      link.setAttribute("data-vturb-opt", "1");
+      document.head.appendChild(link);
+      created.push(link);
+    };
+    addLink("preload", `https://scripts.converteai.net/${VTURB_ACCOUNT_ID}/players/${VTURB_VIDEO_ID}/v4/player.js`, "script");
+    addLink("preload", "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js", "script");
+    addLink("preload", `https://cdn.converteai.net/${VTURB_ACCOUNT_ID}/${VTURB_M3U8_ID}/main.m3u8`, "fetch");
+    addLink("dns-prefetch", "https://cdn.converteai.net");
+    addLink("dns-prefetch", "https://scripts.converteai.net");
+    addLink("dns-prefetch", "https://images.converteai.net");
+    addLink("dns-prefetch", "https://api.vturb.com.br");
+
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
@@ -133,7 +162,11 @@ const FinalCTAMentoria = () => {
                     onClick={() => setPopupOpen(true)}
                     className="group text-lg w-full whitespace-normal h-auto bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/25"
                   >
-                    Entrar para o grupo de espera
+                    <span className="block leading-tight">
+                      Entrar para o
+                      <br />
+                      grupo de espera
+                    </span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </div>
@@ -162,7 +195,7 @@ const FinalCTAMentoria = () => {
             </button>
 
             <div className="bg-black">
-              <MentoriaVideo videoId={VTURB_VIDEO_ID} className="w-full" />
+              <MentoriaVideo videoId={VTURB_VIDEO_ID} accountId={VTURB_ACCOUNT_ID} className="w-full" />
             </div>
 
             <div className="p-4">
@@ -171,7 +204,11 @@ const FinalCTAMentoria = () => {
                 onClick={handleEnterGroup}
                 className="group text-base w-full whitespace-normal h-auto bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/25"
               >
-                Entrar para o grupo de espera
+                <span className="block leading-tight">
+                  Entrar para o
+                  <br />
+                  grupo de espera
+                </span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
