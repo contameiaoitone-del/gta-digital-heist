@@ -101,7 +101,7 @@ export const MentoriaPaywall = ({ moduleId, moduleTitle, priceCents, notice, def
         setBusy(false); return;
       }
       // @ts-ignore
-      const tokenResp = await EfiPay.CreditCard
+      const tokenResp: { payment_token?: string } = await EfiPay.CreditCard
         .setAccount(payeeCode)
         .setEnvironment("production")
         .setCreditCardData({
