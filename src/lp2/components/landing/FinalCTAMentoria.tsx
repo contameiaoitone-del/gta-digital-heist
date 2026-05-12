@@ -39,19 +39,19 @@ const FinalCTAMentoria = () => {
   }, [popupOpen]);
 
   const guarantees = [
-    { icon: Zap, text: "Acesso ao João Lucas" },
-    { icon: Shield, text: "Grupo de espera" },
+    { icon: Zap, text: "Acesso direto ao João Lucas" },
+    { icon: Shield, text: "Grupo alinhado no mesmo objetivo" },
     { icon: Headphones, text: "Suporte direto" },
   ];
 
   const included = [
-    "4 produtos validados entregues prontos",
-    "Acompanhamento direto comigo (João Lucas)",
+    "4 produtos validados — com criativos, entregáveis e funil no WhatsApp",
+    "Acompanhamento direto comigo (João Lucas) em grupo",
+    "Calls ao vivo sem hora pra acabar — até sua dúvida sumir",
+    "Grupo de alunos alinhados no mesmo objetivo",
     "Estratégia para escolher o nicho ideal pra você",
     "Estrutura completa de tráfego e funil",
-    "Otimização de campanhas em tempo real",
-    "Plano para sua primeira venda no menor tempo",
-    "Comunidade exclusiva da turma do mês",
+    "Plano para sua primeira venda no menor tempo possível",
   ];
 
   const handleEnterGroup = async () => {
@@ -93,7 +93,7 @@ const FinalCTAMentoria = () => {
                 <span className="text-purple">próxima turma?</span>
               </h2>
               <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Entre para o grupo de espera no WhatsApp e seja avisado em primeira mão quando a próxima turma abrir.
+                Entre para o grupo de espera no WhatsApp e seja avisado em primeira mão quando a próxima turma da mentoria em grupo abrir. Apenas <strong className="text-foreground">20 vagas</strong> por turma.
               </p>
 
               <div className="flex flex-wrap justify-center gap-6 mb-10">
@@ -110,10 +110,10 @@ const FinalCTAMentoria = () => {
                 <div className="relative z-10">
                   <span className="text-sm text-purple font-semibold uppercase tracking-wider">Mentoria João Lucas</span>
                   <div className="mt-3 mb-4">
-                    <span className="text-3xl sm:text-4xl font-bold text-foreground">1 turma por mês</span>
+                    <span className="text-3xl sm:text-4xl font-bold text-foreground">Apenas 20 vagas</span>
                   </div>
                   <p className="text-sm text-muted-foreground mb-6">
-                    Vagas limitadas — apenas alunos que entram no grupo de espera são avisados
+                    1 turma por mês · só quem está no grupo de espera é avisado primeiro
                   </p>
 
                   <div className="bg-surface-elevated/50 border border-border/50 rounded-xl p-4 sm:p-5 mb-6 text-left">
