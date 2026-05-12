@@ -53,7 +53,7 @@ const HeroMentoria = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <Crown className="w-4 h-4 text-purple" />
-              <span className="text-sm text-foreground whitespace-nowrap">Mentoria 1:1 com João Lucas — 1 turma por mês</span>
+              <span className="text-sm text-foreground whitespace-nowrap">Mentoria em grupo com João Lucas — 1 turma por mês</span>
             </motion.div>
 
             <motion.h1
@@ -66,10 +66,7 @@ const HeroMentoria = () => {
               <span className="text-purple">lista de espera</span>
               <br />
               <span className="inline">da minha </span>
-              <span className="text-purple">mentoria</span>
-              <br />
-              <span className="inline">e fature com </span>
-              <span className="text-foreground">4 produtos validados</span>.
+              <span className="text-purple">mentoria em grupo</span>
             </motion.h1>
 
             <motion.p
@@ -78,7 +75,7 @@ const HeroMentoria = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <strong className="text-foreground">Acesso direto ao João Lucas</strong>. Você recebe <strong className="text-foreground">4 produtos validados</strong>, suporte para escolher seu nicho, montar sua estrutura e dar a primeira venda no <strong className="text-foreground">menor tempo possível</strong>. Apenas <strong className="text-foreground">1 turma por mês</strong>.
+              Um grupo de pessoas <strong className="text-foreground">alinhadas com o mesmo objetivo</strong>, com acesso direto ao João Lucas. Você recebe <strong className="text-foreground">4 produtos validados — com criativos, entregáveis e funil no WhatsApp</strong> — e participa de <strong className="text-foreground">calls ao vivo sem hora pra acabar</strong>, até a sua dúvida sumir. Apenas <strong className="text-foreground">1 turma por mês</strong>.
             </motion.p>
 
             <motion.div
@@ -89,7 +86,7 @@ const HeroMentoria = () => {
             >
               <div className="flex items-center gap-1 sm:gap-2 text-muted-foreground text-xs sm:text-base">
                 <Users className="w-4 h-4 sm:w-5 sm:h-5 text-purple" />
-                <span>Mentoria 1:1</span>
+                <span>Mentoria em grupo</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2 text-muted-foreground text-xs sm:text-base">
                 <Target className="w-4 h-4 sm:w-5 sm:h-5 text-purple" />
