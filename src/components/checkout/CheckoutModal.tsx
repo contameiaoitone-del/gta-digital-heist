@@ -111,7 +111,7 @@ export const CheckoutModal = ({
 
   return (
     <Dialog open={open} onOpenChange={close}>
-      <DialogContent className="max-w-md bg-[#0b0b0b] border-white/10 text-white max-h-[90vh] overflow-y-auto font-body">
+      <DialogContent className="max-w-md bg-black border-white/10 text-white max-h-[90vh] overflow-y-auto font-body">
         <DialogHeader>
           <div className="flex items-center justify-between">
             {step !== "form" && step !== "pix" && (
@@ -126,7 +126,7 @@ export const CheckoutModal = ({
           </div>
         </DialogHeader>
 
-        <div className="flex items-center justify-between bg-[#111] border border-white/10 rounded-lg px-4 py-3 mb-2">
+        <div className="flex items-center justify-between bg-black border border-white/10 rounded-lg px-4 py-3 mb-2">
           <div>
             <p className="text-xs text-gray-400 uppercase tracking-wider font-gta">{productLabel}</p>
             <p className="text-sm text-gray-300">{productSubtitle}</p>

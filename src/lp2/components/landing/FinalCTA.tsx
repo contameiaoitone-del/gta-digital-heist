@@ -93,7 +93,7 @@ const FinalCTA = () => {
         onOpenChange={setCheckoutOpen}
         product="lp2"
         priceCents={14700}
-        productLabel="Comunidade X1 no Pix"
+        productLabel="Treinamento X1 no Pix"
         productSubtitle="Acesso completo ao treinamento"
       />
     </section>
