@@ -19,6 +19,7 @@ interface Module {
   kind?: string;
   price_cents?: number | null;
   release_days?: number;
+  paywall_notice?: string | null;
 }
 interface Lesson {
   id: string;
