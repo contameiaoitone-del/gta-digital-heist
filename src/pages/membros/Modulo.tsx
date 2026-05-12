@@ -174,7 +174,7 @@ const Modulo = () => {
               {mod.title}
             </h1>
             {mod.description && <p className="text-gray-300 max-w-2xl mb-5 line-clamp-3">{mod.description}</p>}
-            {nextLesson && (
+            {nextLesson && !isMentoriaLocked && (
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => navigate(`${productPath}/membros/aula/${nextLesson.id}`)}
@@ -187,6 +187,11 @@ const Modulo = () => {
                 <span className="px-4 py-3 text-sm text-gray-300">
                   {lessons.length} {lessons.length === 1 ? "aula" : "aulas"}
                 </span>
+              </div>
+            )}
+            {isMentoriaLocked && (
+              <div className="px-4 py-3 text-sm text-gray-300 inline-block bg-black/40 rounded border border-white/10">
+                {lessons.length} {lessons.length === 1 ? "aula" : "aulas"} · acesso bloqueado
               </div>
             )}
           </div>
