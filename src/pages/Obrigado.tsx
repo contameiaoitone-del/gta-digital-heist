@@ -153,16 +153,10 @@ const Obrigado = () => {
           </div>
         )}
 
-        <div className="rounded-xl border p-6 text-left mb-8" style={{ borderColor: "#222", backgroundColor: "#111" }}>
-          <h2 className="text-lg font-bold mb-3" style={{ color: "#00ff88", fontFamily: "'Bebas Neue', cursive", letterSpacing: "0.05em" }}>
-            Próximos passos
-          </h2>
-          <ol className="space-y-2 text-sm text-gray-300 list-decimal list-inside">
-            <li>Você será logado automaticamente em instantes.</li>
-            <li>Também enviamos seu login e senha no e-mail cadastrado.</li>
-            <li>Comece pelo módulo "Seja Bem Vindo".</li>
-            <li>Entre no grupo exclusivo do WhatsApp.</li>
-          </ol>
+        <div className="rounded-xl border p-6 text-center mb-8" style={{ borderColor: "#222", backgroundColor: "#111" }}>
+          <p className="text-sm text-gray-300 leading-relaxed">
+            Você será redirecionado para a área de membros e receberá o seu acesso de login via e-mail.
+          </p>
         </div>
 
         <Link to="/" className="text-sm text-gray-400 hover:text-white underline">
