@@ -1,30 +1,31 @@
-## Objetivo
-Melhorar a qualidade da thumbnail das aulas VTurb na lista "Continue assistindo" (e demais carrosséis), com fallback automático em HD e opção de upload manual no admin.
+Diagnóstico dos logs:
 
-## Mudanças
+- O pagamento novo de R$ 5 foi aprovado: pedido `35802a3a-27e8-4718-90f6-54004f299317`, produto `lp2_5`, status `paid`.
+- O acesso foi liberado corretamente para `treinamento` no banco.
+- O auto-login também gerou magic links e houve login nos logs de autenticação.
+- O e-mail não chegou porque a fila de e-mails está acumulando mensagens como `pending` e não existe job ativo para processar `process-email-queue`.
+- O redirecionamento falhou por um detalhe no callback: quando o magic link já traz `next=/treinamento/membros`, o código prioriza esse parâmetro antes do fallback salvo em `sessionStorage`; além disso, o fluxo depende do estado React detectar a sessão depois do hash do magic link.
 
-### 1) Fallback HD automático para VTurb (frontend)
-Em `src/pages/membros/Membros.tsx` (e reaproveitar em `Modulo.tsx` se aplicável):
-- Substituir `vturbThumb()` para gerar a URL em alta resolução do CDN da VTurb:
-  - `https://images.converteai.net/{accountId}/players/{playerId}/thumbnail.jpg`
-- Renderizar via novo helper `<SmartThumb>` (componente leve em `src/components/membros/SmartThumb.tsx`) que:
-  - Tenta a URL HD principal.
-  - Em caso de erro de carregamento (`onError`), faz fallback para a versão padrão `thumbnail.jpg` da VTurb e, se também falhar, para a capa do módulo.
-- Aplicar o `SmartThumb` no `EpisodeCard` (substituindo o `<img>` atual) sem mudar layout.
+Plano de correção:
 
-### 2) Upload manual de capa por aula (admin)
-Em `src/pages/admin/Admin.tsx`, dentro do bloco do form de aula (logo após o campo VTurb, ~linha 700):
-- Adicionar novo `Field "Capa personalizada da aula (opcional — sobrescreve a thumbnail automática)"`.
-- Reutilizar o helper `uploadLessonFile()` já existente (bucket `lesson-attachments`, público).
-- Mostrar preview e botão "Remover" para limpar `thumbnail_url`.
-- Corrigir `saveLesson` (linha 278): manter `thumbnail_url` manual sem ser sobrescrito quando o vídeo é VTurb. A lógica passa a ser:
-  - Se YouTube: usa a thumb do YT automaticamente (mantém comportamento atual).
-  - Caso contrário: preserva `editingLesson.thumbnail_url` (manual) ou `null` (deixa o frontend gerar a HD do VTurb).
+1. Ajustar o callback de autenticação
+   - Priorizar o redirecionamento salvo após pagamento (`postPaymentRedirect`) antes do parâmetro `next`.
+   - Garantir que `/lp2`, `/lp2_97`, `/lp2_5`, `/lp2-97` e `/lp2-5` sempre virem `/treinamento/membros`.
+   - Usar uma troca explícita do código/hash da sessão antes de navegar, para deixar o redirecionamento mais confiável.
 
-### 3) Sem mudanças de schema
-A coluna `thumbnail_url` em `lessons` já existe e o bucket `lesson-attachments` já está público. Não há migration.
+2. Ajustar a página de obrigado
+   - Manter o redirecionamento para `/treinamento/membros` para pagamentos de LP2, LP2-97 e LP2-5.
+   - Garantir que o botão “Acessar área de membros agora” também grave o destino correto antes de abrir o magic link.
+   - Incluir o produto na URL de obrigado quando vier do Pix/cartão, para o fallback ficar correto mesmo em links antigos.
 
-## Resultado
-- Aulas VTurb passam a exibir a thumbnail em alta automaticamente, sem ação manual.
-- Quando o criador quiser uma capa personalizada (ex.: arte custom), basta enviar pelo admin — ela tem prioridade.
-- Cascata de fallback: capa manual → VTurb HD → VTurb padrão → capa do módulo.
+3. Corrigir o processamento dos e-mails
+   - Recriar/configurar a infraestrutura de e-mail do projeto para restaurar o job que processa a fila.
+   - Reimplantar a função que processa a fila de e-mails.
+   - Validar que os e-mails `pending` saem da fila ou, caso tenham expirado, registrar o status correto.
+
+4. Validar com o pedido pago de R$ 5
+   - Testar a função de auto-login para o pedido recente e confirmar que ela retorna magic link para `/treinamento/membros`.
+   - Confirmar no banco que o acesso está como `product = treinamento`.
+   - Confirmar que a fila de e-mails voltou a ser processada.
+
+Observação: não vou alterar os preços nem a página original LP2/LP2-97/LP2-5; a mudança é só no pós-pagamento, redirecionamento e envio do e-mail de acesso.
