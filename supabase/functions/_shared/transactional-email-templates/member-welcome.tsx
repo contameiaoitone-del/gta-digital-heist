@@ -4,7 +4,7 @@ import {
 } from 'npm:@react-email/components@0.0.22'
 import type { TemplateEntry } from './registry.ts'
 
-const SITE_NAME = 'Real Life Academy'
+const SITE_NAME = 'Treinamento X1'
 
 interface MemberWelcomeProps {
   name?: string
@@ -75,14 +75,14 @@ const MemberWelcomeEmail = ({
 
 export const template = {
   component: MemberWelcomeEmail,
-  subject: 'Seu acesso ao Real Life Academy está liberado 🎉',
+  subject: 'Seu acesso ao Treinamento X1 está liberado 🎉',
   displayName: 'Boas-vindas área de membros',
   previewData: {
     name: 'João',
     email: 'joao@exemplo.com',
     password: 'Abc123XyZ!',
-    magicLink: 'https://reallifeacademy.com.br/membros/auth?token=abc',
-    loginUrl: 'https://reallifeacademy.com.br/membros/login',
+    magicLink: 'https://joaolucasps.co/membros/auth?token=abc',
+    loginUrl: 'https://joaolucasps.co/membros/login',
   },
 } satisfies TemplateEntry
 
