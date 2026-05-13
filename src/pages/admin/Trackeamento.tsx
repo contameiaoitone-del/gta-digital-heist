@@ -222,6 +222,76 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
   );
 }
 
+const CAPI_EVENT_OPTIONS = ["Purchase", "InitiateCheckout", "Lead", "PageView"] as const;
+const CAPI_PAGE_OPTIONS = ["LP1", "LP2", "LP2-97", "MENTORIA"] as const;
+const CAPI_FILTERS_KEY = "admin.trackeamento.capiFilters.v2";
+
+function loadCapiFilters(): { events: string[]; pages: string[]; search: string } {
+  try {
+    const raw = localStorage.getItem(CAPI_FILTERS_KEY);
+    if (raw) {
+      const p = JSON.parse(raw);
+      return {
+        events: Array.isArray(p.events) ? p.events : [...CAPI_EVENT_OPTIONS],
+        pages: Array.isArray(p.pages) ? p.pages : [...CAPI_PAGE_OPTIONS],
+        search: typeof p.search === "string" ? p.search : "",
+      };
+    }
+  } catch {}
+  return { events: [...CAPI_EVENT_OPTIONS], pages: [...CAPI_PAGE_OPTIONS], search: "" };
+}
+
+function CapiMultiSelect({
+  label, options, selected, onChange, accent,
+}: {
+  label: string;
+  options: readonly string[];
+  selected: string[];
+  onChange: (next: string[]) => void;
+  accent: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
+  const allSelected = selected.length === options.length;
+  const summary = allSelected ? "Todos" : selected.length === 0 ? "Nenhum" : selected.length === 1 ? selected[0] : `${selected.length} selecionados`;
+  const toggle = (opt: string) => onChange(selected.includes(opt) ? selected.filter((s) => s !== opt) : [...selected, opt]);
+  return (
+    <div className="relative" ref={ref}>
+      <button type="button" onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-2 px-3 py-1.5 rounded text-xs uppercase tracking-wider bg-white/5 text-gray-200 hover:bg-white/10 border border-white/10">
+        <span className="text-gray-500">{label}:</span>
+        <span style={{ color: accent }}>{summary}</span>
+        <ChevronDown className="h-3 w-3 opacity-60" />
+      </button>
+      {open && (
+        <div className="absolute z-30 mt-1 min-w-[200px] rounded border border-white/10 bg-[#0f0f0f] shadow-lg p-1">
+          <button type="button" onClick={() => onChange(allSelected ? [] : [...options])}
+            className="w-full text-left px-3 py-1.5 text-[11px] uppercase tracking-wider text-gray-400 hover:bg-white/5 rounded">
+            {allSelected ? "Desmarcar todos" : "Selecionar todos"}
+          </button>
+          <div className="h-px bg-white/10 my-1" />
+          {options.map((opt) => {
+            const checked = selected.includes(opt);
+            return (
+              <label key={opt} className="flex items-center gap-2 px-3 py-1.5 text-xs text-gray-200 hover:bg-white/5 rounded cursor-pointer">
+                <input type="checkbox" checked={checked} onChange={() => toggle(opt)} style={{ accentColor: accent }} />
+                <span>{opt}</span>
+              </label>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function CapiLogBody() {
   const [rows, setRows] = useState<CapiLogRow[]>([]);
   const [payMethods, setPayMethods] = useState<Record<string, string>>({});
