@@ -119,3 +119,39 @@ export function getZzgateWebhookUrl(): string {
   // SUPABASE_URL is like https://<ref>.supabase.co
   return `${url}/functions/v1/zzgate-webhook`;
 }
+
+export interface ZzgateTransactionStatus {
+  status: string; // e.g. "PAID", "PENDING", "REFUNDED"
+  raw: unknown;
+}
+
+/**
+ * Polls ZZGate for the current status of a transaction. Used as a fallback
+ * when the postback (webhook) doesn't reach us.
+ */
+export async function getZzgateTransactionStatus(
+  clientId: string,
+  clientSecret: string,
+  transactionId: string,
+): Promise<ZzgateTransactionStatus | null> {
+  const token = await getZzgateAccessToken(clientId, clientSecret);
+  // ZZGate exposes the transaction details under /v2/transactions/{id}.
+  const r = await fetch(`${ZZGATE_HOST}/v2/transactions/${transactionId}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) {
+    console.warn("zzgate transaction lookup failed", r.status, data);
+    return null;
+  }
+  const status = String(
+    (data as { status?: string; transactionStatus?: string })?.status ??
+      (data as { transactionStatus?: string })?.transactionStatus ??
+      "",
+  ).toUpperCase();
+  return { status, raw: data };
+}
