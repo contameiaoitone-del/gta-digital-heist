@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
+import { Loader2, ArrowLeft, CheckCircle2, XCircle, ChevronDown } from "lucide-react";
 
 interface CapiLogRow {
   id: string;
@@ -24,23 +24,139 @@ interface CapiLogRow {
   page_source: string | null;
 }
 
+const EVENT_OPTIONS = ["Purchase", "InitiateCheckout", "Lead", "PageView"] as const;
+const PAGE_OPTIONS = ["LP1", "LP2", "LP2-97", "MENTORIA"] as const;
+const STORAGE_KEY = "admin.capiLog.filters.v1";
+
+type Filters = {
+  events: string[];
+  pages: string[];
+  search: string;
+};
+
+function loadFilters(): Filters {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return {
+        events: Array.isArray(parsed.events) ? parsed.events : [...EVENT_OPTIONS],
+        pages: Array.isArray(parsed.pages) ? parsed.pages : [...PAGE_OPTIONS],
+        search: typeof parsed.search === "string" ? parsed.search : "",
+      };
+    }
+  } catch {}
+  return { events: [...EVENT_OPTIONS], pages: [...PAGE_OPTIONS], search: "" };
+}
+
+function MultiSelect({
+  label,
+  options,
+  selected,
+  onChange,
+  accent,
+}: {
+  label: string;
+  options: readonly string[];
+  selected: string[];
+  onChange: (next: string[]) => void;
+  accent: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
+  const allSelected = selected.length === options.length;
+  const summary = allSelected
+    ? "Todos"
+    : selected.length === 0
+    ? "Nenhum"
+    : selected.length === 1
+    ? selected[0]
+    : `${selected.length} selecionados`;
+  const toggle = (opt: string) => {
+    onChange(selected.includes(opt) ? selected.filter((s) => s !== opt) : [...selected, opt]);
+  };
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-2 px-3 py-1.5 rounded text-xs uppercase tracking-wider bg-white/5 text-gray-200 hover:bg-white/10 border border-white/10"
+      >
+        <span className="text-gray-500">{label}:</span>
+        <span style={{ color: accent }}>{summary}</span>
+        <ChevronDown className="h-3 w-3 opacity-60" />
+      </button>
+      {open && (
+        <div className="absolute z-20 mt-1 min-w-[200px] rounded border border-white/10 bg-[#0f0f0f] shadow-lg p-1">
+          <button
+            onClick={() => onChange(allSelected ? [] : [...options])}
+            className="w-full text-left px-3 py-1.5 text-[11px] uppercase tracking-wider text-gray-400 hover:bg-white/5 rounded"
+          >
+            {allSelected ? "Desmarcar todos" : "Selecionar todos"}
+          </button>
+          <div className="h-px bg-white/10 my-1" />
+          {options.map((opt) => {
+            const checked = selected.includes(opt);
+            return (
+              <label
+                key={opt}
+                className="flex items-center gap-2 px-3 py-1.5 text-xs text-gray-200 hover:bg-white/5 rounded cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={() => toggle(opt)}
+                  className="accent-current"
+                  style={{ accentColor: accent }}
+                />
+                <span>{opt}</span>
+              </label>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 const CapiLog = () => {
   const { isAdmin, loading, checkedAccess } = useAuth();
   const { product = "treinamento" } = useParams<{ product?: string }>();
   const productPath = `/${encodeURIComponent(product)}`;
   const [rows, setRows] = useState<CapiLogRow[]>([]);
-  const [filter, setFilter] = useState<"all" | "Purchase" | "InitiateCheckout" | "PageView">("Purchase");
-  const [pageFilter, setPageFilter] = useState<"all" | "LP2" | "LP2-97" | "MENTORIA">("all");
-  const [search, setSearch] = useState("");
+  const initial = useRef<Filters>(loadFilters());
+  const [events, setEvents] = useState<string[]>(initial.current.events);
+  const [pages, setPages] = useState<string[]>(initial.current.pages);
+  const [search, setSearch] = useState<string>(initial.current.search);
   const [busy, setBusy] = useState(true);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ events, pages, search }));
+    } catch {}
+  }, [events, pages, search]);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       setBusy(true);
       let q = supabase.from("meta_capi_log").select("*").order("created_at", { ascending: false }).limit(200);
-      if (filter !== "all") q = q.eq("event_name", filter);
-      if (pageFilter !== "all") q = q.eq("page_source", pageFilter);
+      if (events.length === 0) {
+        if (!cancelled) { setRows([]); setBusy(false); }
+        return;
+      }
+      if (events.length < EVENT_OPTIONS.length) q = q.in("event_name", events);
+      if (pages.length === 0) {
+        if (!cancelled) { setRows([]); setBusy(false); }
+        return;
+      }
+      if (pages.length < PAGE_OPTIONS.length) q = q.in("page_source", pages);
       const { data } = await q;
       if (!cancelled) {
         setRows((data as CapiLogRow[]) || []);
@@ -48,7 +164,7 @@ const CapiLog = () => {
       }
     })();
     return () => { cancelled = true; };
-  }, [filter, pageFilter]);
+  }, [events, pages]);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return rows;
@@ -73,25 +189,8 @@ const CapiLog = () => {
         </div>
 
         <div className="flex flex-wrap gap-2 mb-4 items-center">
-          {(["Purchase", "InitiateCheckout", "PageView", "all"] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded text-xs uppercase tracking-wider ${filter === f ? "bg-[#00ff88] text-black" : "bg-white/5 text-gray-300 hover:bg-white/10"}`}
-            >
-              {f}
-            </button>
-          ))}
-          <span className="ml-2 text-[10px] uppercase tracking-wider text-gray-500">Página:</span>
-          {(["all", "LP2", "LP2-97", "MENTORIA"] as const).map((p) => (
-            <button
-              key={p}
-              onClick={() => setPageFilter(p)}
-              className={`px-3 py-1.5 rounded text-xs uppercase tracking-wider ${pageFilter === p ? "bg-[#ff2d78] text-white" : "bg-white/5 text-gray-300 hover:bg-white/10"}`}
-            >
-              {p}
-            </button>
-          ))}
+          <MultiSelect label="Eventos" options={EVENT_OPTIONS} selected={events} onChange={setEvents} accent="#00ff88" />
+          <MultiSelect label="Páginas" options={PAGE_OPTIONS} selected={pages} onChange={setPages} accent="#ff2d78" />
           <input
             type="text"
             value={search}
