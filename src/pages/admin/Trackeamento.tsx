@@ -305,6 +305,7 @@ function CapiLogBody() {
   const [search, setSearch] = useState<string>(initial.current.search);
   const [busy, setBusy] = useState(true);
   const [manualOpen, setManualOpen] = useState(false);
+  const [manualInitial, setManualInitial] = useState<{ eventName?: string; value?: number | null; orderId?: string | null } | undefined>();
 
   useEffect(() => {
     try { localStorage.setItem(CAPI_FILTERS_KEY, JSON.stringify({ events, pages, search })); } catch {}
@@ -429,17 +430,10 @@ function CapiLogBody() {
           <RefreshCw className={cn("h-3.5 w-3.5", busy && "animate-spin")} />
           Atualizar
         </button>
-        <button
-          onClick={() => setManualOpen(true)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs uppercase tracking-wider bg-[#00ff88]/10 text-[#00ff88] hover:bg-[#00ff88]/20 border border-[#00ff88]/30"
-          title="Disparar evento manualmente"
-        >
-          <Send className="h-3.5 w-3.5" />
-          Disparar manualmente
-        </button>
       </div>
       {manualOpen && (
         <ManualFireModal
+          initial={manualInitial}
           onClose={() => setManualOpen(false)}
           onFired={() => setReloadTick((t) => t + 1)}
         />
