@@ -200,21 +200,26 @@ Deno.serve(async (req) => {
     // Resolve target pixels: prefer DB-managed list; fall back to env vars.
     const { data: dbPixels } = await sbAdmin
       .from("tracking_pixels")
-      .select("pixel_id, access_token")
+      .select("pixel_id, access_token, label")
       .eq("platform", "meta")
       .eq("active", true);
-    let targets: Array<{ pixel_id: string; access_token: string }> = [];
-    for (const p of (dbPixels || []) as Array<{ pixel_id: string; access_token: string | null }>) {
-      if (p.pixel_id && p.access_token) targets.push({ pixel_id: p.pixel_id, access_token: p.access_token });
+    let targets: Array<{ pixel_id: string; access_token: string; label: string | null }> = [];
+    for (const p of (dbPixels || []) as Array<{ pixel_id: string; access_token: string | null; label: string | null }>) {
+      if (p.pixel_id && p.access_token) targets.push({ pixel_id: p.pixel_id, access_token: p.access_token, label: p.label });
     }
     if (targets.length === 0 && ENV_PIXEL_ID && ENV_ACCESS_TOKEN) {
-      targets.push({ pixel_id: ENV_PIXEL_ID, access_token: ENV_ACCESS_TOKEN });
+      targets.push({ pixel_id: ENV_PIXEL_ID, access_token: ENV_ACCESS_TOKEN, label: null });
     }
     if (body.target_pixel_id) {
       targets = targets.filter((t) => t.pixel_id === body.target_pixel_id);
       if (targets.length === 0) {
         return json({ error: "target_pixel_not_active", target_pixel_id: body.target_pixel_id }, 400);
       }
+    } else if (session?.pixel_id) {
+      // Route to the pixel assigned to this session. Fall back to all if not in active list.
+      const sessionPixel = session.pixel_id as string;
+      const filtered = targets.filter((t) => t.pixel_id === sessionPixel);
+      if (filtered.length > 0) targets = filtered;
     }
     if (targets.length === 0) {
       return json({ error: "meta_not_configured" }, 500);
@@ -275,6 +280,8 @@ Deno.serve(async (req) => {
           utm_content: utm_content || null,
           utm_term: utm_term || null,
           page_source: derivePageSource(body.event_source_url, body.page_source),
+          pixel_id: t.pixel_id,
+          pixel_label: t.label,
         });
       } catch (e) {
         console.error("meta_capi_log insert failed", e);
