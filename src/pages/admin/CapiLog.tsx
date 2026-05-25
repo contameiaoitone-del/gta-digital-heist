@@ -130,7 +130,7 @@ const EVENT_FIRE_OPTIONS = ["PageView", "ViewContent", "InitiateCheckout", "Lead
 
 interface PixelOpt { id: string; pixel_id: string; label: string | null }
 
-function ManualFireModal({ onClose, onFired }: { onClose: () => void; onFired: () => void }) {
+export function ManualFireModal({ onClose, onFired }: { onClose: () => void; onFired: () => void }) {
   const [pixels, setPixels] = useState<PixelOpt[]>([]);
   const [pixelId, setPixelId] = useState<string>("");
   const [eventName, setEventName] = useState<string>("PageView");

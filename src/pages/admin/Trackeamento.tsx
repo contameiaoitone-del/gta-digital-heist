@@ -3,7 +3,8 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Plus, Trash2, CheckCircle2, XCircle, ChevronDown, ChevronRight, Eye, EyeOff, Pencil, Save, X, CalendarIcon, RefreshCw } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, Trash2, CheckCircle2, XCircle, ChevronDown, ChevronRight, Eye, EyeOff, Pencil, Save, X, CalendarIcon, RefreshCw, Send } from "lucide-react";
+import { ManualFireModal } from "./CapiLog";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
@@ -303,6 +304,7 @@ function CapiLogBody() {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [search, setSearch] = useState<string>(initial.current.search);
   const [busy, setBusy] = useState(true);
+  const [manualOpen, setManualOpen] = useState(false);
 
   useEffect(() => {
     try { localStorage.setItem(CAPI_FILTERS_KEY, JSON.stringify({ events, pages, search })); } catch {}
@@ -427,7 +429,21 @@ function CapiLogBody() {
           <RefreshCw className={cn("h-3.5 w-3.5", busy && "animate-spin")} />
           Atualizar
         </button>
+        <button
+          onClick={() => setManualOpen(true)}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs uppercase tracking-wider bg-[#00ff88]/10 text-[#00ff88] hover:bg-[#00ff88]/20 border border-[#00ff88]/30"
+          title="Disparar evento manualmente"
+        >
+          <Send className="h-3.5 w-3.5" />
+          Disparar manualmente
+        </button>
       </div>
+      {manualOpen && (
+        <ManualFireModal
+          onClose={() => setManualOpen(false)}
+          onFired={() => setReloadTick((t) => t + 1)}
+        />
+      )}
       {busy ? (
         <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin" /></div>
       ) : filtered.length === 0 ? (
