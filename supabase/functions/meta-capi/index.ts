@@ -48,6 +48,10 @@ interface CapiBody {
   event_id: string;
   event_source_url?: string;
   session_id?: string;
+  // When provided, send only to this pixel id (must be active in tracking_pixels).
+  target_pixel_id?: string;
+  // Marks the request as a manual test fire from the admin (bypasses Purchase dedup).
+  manual?: boolean;
   // Direct user fields (override session lookup)
   email?: string;
   phone?: string;
@@ -199,19 +203,26 @@ Deno.serve(async (req) => {
       .select("pixel_id, access_token")
       .eq("platform", "meta")
       .eq("active", true);
-    const targets: Array<{ pixel_id: string; access_token: string }> = [];
+    let targets: Array<{ pixel_id: string; access_token: string }> = [];
     for (const p of (dbPixels || []) as Array<{ pixel_id: string; access_token: string | null }>) {
       if (p.pixel_id && p.access_token) targets.push({ pixel_id: p.pixel_id, access_token: p.access_token });
     }
     if (targets.length === 0 && ENV_PIXEL_ID && ENV_ACCESS_TOKEN) {
       targets.push({ pixel_id: ENV_PIXEL_ID, access_token: ENV_ACCESS_TOKEN });
     }
+    if (body.target_pixel_id) {
+      targets = targets.filter((t) => t.pixel_id === body.target_pixel_id);
+      if (targets.length === 0) {
+        return json({ error: "target_pixel_not_active", target_pixel_id: body.target_pixel_id }, 400);
+      }
+    }
     if (targets.length === 0) {
       return json({ error: "meta_not_configured" }, 500);
     }
 
     // Idempotency: if Purchase with this event_id already succeeded, skip.
-    if (body.event_name === "Purchase" && body.event_id) {
+    // Manual fires from the admin bypass dedup.
+    if (!body.manual && body.event_name === "Purchase" && body.event_id) {
       const { data: dup } = await sbAdmin
         .from("meta_capi_log")
         .select("id")
