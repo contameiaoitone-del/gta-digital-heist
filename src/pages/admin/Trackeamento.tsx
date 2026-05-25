@@ -41,6 +41,8 @@ interface CapiLogRow {
   utm_content: string | null;
   utm_term: string | null;
   page_source: string | null;
+  pixel_id: string | null;
+  pixel_label: string | null;
 }
 
 function Section({ title, defaultOpen = false, children }: { title: string; defaultOpen?: boolean; children: React.ReactNode }) {
@@ -452,6 +454,7 @@ function CapiLogBody() {
                 <th className="px-3 py-2">Evento</th>
                 <th className="px-3 py-2">Página</th>
                 <th className="px-3 py-2">Pgto</th>
+                <th className="px-3 py-2">Pixel</th>
                 <th className="px-3 py-2">OK</th>
                 <th className="px-3 py-2">HTTP</th>
                 <th className="px-3 py-2">Valor</th>
@@ -491,6 +494,9 @@ function CapiLogBody() {
                     <td className="px-3 py-2">{r.event_name}</td>
                     <td className="px-3 py-2 text-gray-300">{r.page_source || "-"}</td>
                     <td className="px-3 py-2 text-gray-300 uppercase text-[10px]">{r.order_id ? (payMethods[r.order_id] === "card" ? "Cartão" : payMethods[r.order_id] === "pix" ? "Pix" : payMethods[r.order_id] || "-") : "-"}</td>
+                    <td className="px-3 py-2 text-gray-300" title={r.pixel_id || ""}>
+                      {r.pixel_label || (r.pixel_id ? `${r.pixel_id.slice(0, 6)}…${r.pixel_id.slice(-4)}` : "-")}
+                    </td>
                     <td className="px-3 py-2">
                       {r.success ? <CheckCircle2 className="h-4 w-4 text-[#00ff88]" /> : <XCircle className="h-4 w-4 text-[#ff2d78]" />}
                     </td>
