@@ -305,6 +305,7 @@ function CapiLogBody() {
   const [search, setSearch] = useState<string>(initial.current.search);
   const [busy, setBusy] = useState(true);
   const [manualOpen, setManualOpen] = useState(false);
+  const [manualInitial, setManualInitial] = useState<{ eventName?: string; value?: number | null; orderId?: string | null } | undefined>();
 
   useEffect(() => {
     try { localStorage.setItem(CAPI_FILTERS_KEY, JSON.stringify({ events, pages, search })); } catch {}
@@ -429,17 +430,10 @@ function CapiLogBody() {
           <RefreshCw className={cn("h-3.5 w-3.5", busy && "animate-spin")} />
           Atualizar
         </button>
-        <button
-          onClick={() => setManualOpen(true)}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs uppercase tracking-wider bg-[#00ff88]/10 text-[#00ff88] hover:bg-[#00ff88]/20 border border-[#00ff88]/30"
-          title="Disparar evento manualmente"
-        >
-          <Send className="h-3.5 w-3.5" />
-          Disparar manualmente
-        </button>
       </div>
       {manualOpen && (
         <ManualFireModal
+          initial={manualInitial}
           onClose={() => setManualOpen(false)}
           onFired={() => setReloadTick((t) => t + 1)}
         />
@@ -453,6 +447,7 @@ function CapiLogBody() {
           <table className="w-full text-xs">
             <thead className="bg-white/5 text-left uppercase tracking-wider text-gray-400">
               <tr>
+                <th className="px-3 py-2"></th>
                 <th className="px-3 py-2">Quando</th>
                 <th className="px-3 py-2">Evento</th>
                 <th className="px-3 py-2">Página</th>
@@ -480,6 +475,18 @@ function CapiLogBody() {
                 ].filter(Boolean).join("\n");
                 return (
                   <tr key={r.id} className="border-t border-white/5 hover:bg-white/5">
+                    <td className="px-2 py-2">
+                      <button
+                        onClick={() => {
+                          setManualInitial({ eventName: r.event_name, value: r.value, orderId: r.order_id });
+                          setManualOpen(true);
+                        }}
+                        title="Disparar este evento manualmente"
+                        className="inline-flex items-center justify-center h-7 w-7 rounded text-[#00ff88] hover:bg-[#00ff88]/15 border border-[#00ff88]/30"
+                      >
+                        <Send className="h-3.5 w-3.5" />
+                      </button>
+                    </td>
                     <td className="px-3 py-2 whitespace-nowrap text-gray-300">{new Date(r.created_at).toLocaleString("pt-BR")}</td>
                     <td className="px-3 py-2">{r.event_name}</td>
                     <td className="px-3 py-2 text-gray-300">{r.page_source || "-"}</td>
