@@ -379,6 +379,8 @@ export type Database = {
           meta_response: Json | null
           order_id: string | null
           page_source: string | null
+          pixel_id: string | null
+          pixel_label: string | null
           session_id: string | null
           status_code: number | null
           success: boolean
@@ -398,6 +400,8 @@ export type Database = {
           meta_response?: Json | null
           order_id?: string | null
           page_source?: string | null
+          pixel_id?: string | null
+          pixel_label?: string | null
           session_id?: string | null
           status_code?: number | null
           success?: boolean
@@ -417,6 +421,8 @@ export type Database = {
           meta_response?: Json | null
           order_id?: string | null
           page_source?: string | null
+          pixel_id?: string | null
+          pixel_label?: string | null
           session_id?: string | null
           status_code?: number | null
           success?: boolean
@@ -891,6 +897,7 @@ export type Database = {
           last_name: string | null
           page_location: string | null
           phone: string | null
+          pixel_id: string | null
           sck: string
           state: string | null
           ttclid: string | null
@@ -923,6 +930,7 @@ export type Database = {
           last_name?: string | null
           page_location?: string | null
           phone?: string | null
+          pixel_id?: string | null
           sck: string
           state?: string | null
           ttclid?: string | null
@@ -955,6 +963,7 @@ export type Database = {
           last_name?: string | null
           page_location?: string | null
           phone?: string | null
+          pixel_id?: string | null
           sck?: string
           state?: string | null
           ttclid?: string | null
