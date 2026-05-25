@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { Loader2, ArrowLeft, CheckCircle2, XCircle, ChevronDown } from "lucide-react";
+import { Loader2, ArrowLeft, CheckCircle2, XCircle, ChevronDown, Send, X } from "lucide-react";
+import { getSessionId } from "@/hooks/useTracking";
 
 interface CapiLogRow {
   id: string;
@@ -135,6 +136,8 @@ const CapiLog = () => {
   const [pages, setPages] = useState<string[]>(initial.current.pages);
   const [search, setSearch] = useState<string>(initial.current.search);
   const [busy, setBusy] = useState(true);
+  const [manualOpen, setManualOpen] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     try {
@@ -164,7 +167,7 @@ const CapiLog = () => {
       }
     })();
     return () => { cancelled = true; };
-  }, [events, pages]);
+  }, [events, pages, reloadKey]);
 
   const filtered = useMemo(() => {
     if (!search.trim()) return rows;
@@ -191,6 +194,12 @@ const CapiLog = () => {
         <div className="flex flex-wrap gap-2 mb-4 items-center">
           <MultiSelect label="Eventos" options={EVENT_OPTIONS} selected={events} onChange={setEvents} accent="#00ff88" />
           <MultiSelect label="Páginas" options={PAGE_OPTIONS} selected={pages} onChange={setPages} accent="#ff2d78" />
+          <button
+            onClick={() => setManualOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs uppercase tracking-wider bg-[#00ff88]/10 text-[#00ff88] hover:bg-[#00ff88]/20 border border-[#00ff88]/30"
+          >
+            <Send className="h-3 w-3" /> Disparar manualmente
+          </button>
           <input
             type="text"
             value={search}
@@ -199,6 +208,13 @@ const CapiLog = () => {
             className="ml-auto px-3 py-1.5 rounded bg-white/5 border border-white/10 text-xs w-72 placeholder:text-gray-500 focus:outline-none focus:border-[#00ff88]"
           />
         </div>
+
+        {manualOpen && (
+          <ManualFireModal
+            onClose={() => setManualOpen(false)}
+            onFired={() => setReloadKey((k) => k + 1)}
+          />
+        )}
 
         {busy ? (
           <div className="flex justify-center py-10"><Loader2 className="h-6 w-6 animate-spin" /></div>
