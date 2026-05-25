@@ -24,8 +24,27 @@ async function loadConfiguredPixels() {
     const rows = data as Array<{ platform: string; pixel_id: string }>;
     const meta = rows.filter((r) => r.platform === "meta");
     const tiktok = rows.filter((r) => r.platform === "tiktok");
+
+    // Assign one Meta pixel per session (deterministic split server-side).
+    let assignedMeta: string | null = null;
+    if (meta.length > 1) {
+      try {
+        const { getSessionId } = await import("@/hooks/useTracking");
+        const sck = getSessionId();
+        const { data: assign } = await supabase.functions.invoke("assign-session-pixel", {
+          body: { sck },
+        });
+        const r = assign as { pixel_id?: string } | null;
+        if (r?.pixel_id) assignedMeta = r.pixel_id;
+      } catch (e) {
+        console.warn("assign-session-pixel failed, loading all meta pixels", e);
+      }
+    }
+
     if (meta.length === 0) ensurePixel();
+    else if (assignedMeta) ensurePixel(assignedMeta);
     else for (const m of meta) ensurePixel(m.pixel_id);
+
     if (tiktok.length === 0) ensureTtq();
     else for (const t of tiktok) ensureTtq(t.pixel_id);
   } catch {
