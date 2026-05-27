@@ -29,6 +29,7 @@ const Lp1App = lazy(() => import("./lp1/Lp1App"));
 const Lp2App = lazy(() => import("./lp2/Lp2App"));
 const Lp2App97 = lazy(() => import("./lp2/Lp2App97"));
 const Lp2App5 = lazy(() => import("./lp2/Lp2App5"));
+const Lp2AppVsl97 = lazy(() => import("./lp2/Lp2AppVsl97"));
 const MentoriaApp = lazy(() => import("./lp2/MentoriaApp"));
 const MasterHome = lazy(() => import("./pages/master/MasterHome"));
 const MemberAreas = lazy(() => import("./pages/master/MemberAreas"));
@@ -97,6 +98,7 @@ const App = () => (
             <Route path="/lp2" element={<Lp2App />} />
             <Route path="/lp2-97" element={<Lp2App97 />} />
             <Route path="/lp2-5" element={<Lp2App5 />} />
+            <Route path="/lp97-vsl" element={<Lp2AppVsl97 />} />
             <Route path="/mentoria" element={<MentoriaApp />} />
             {/* Redirects de rotas antigas removidas */}
             <Route path="/infozap" element={<Navigate to="/lp2" replace />} />
