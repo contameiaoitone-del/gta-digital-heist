@@ -22,13 +22,12 @@ const VslHero = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
-            Faça de{" "}
-            <span className="text-purple">R$100 a R$300 de lucro</span>{" "}
-            com WhatsApp
+            Faça de <span className="text-purple">R$100</span> a{" "}
+            <span className="text-purple">R$300</span> de lucro com WhatsApp
           </h1>
 
           <div className="flex flex-wrap justify-center gap-3 mb-8">
-            <span className="inline-flex items-center gap-2 rounded-full border border-purple/40 bg-purple/10 px-4 py-1.5 text-sm font-semibold text-purple">
+            <span className="inline-flex items-center gap-2 rounded-full border border-red-500/50 bg-red-500/10 px-4 py-1.5 text-sm font-semibold text-red-500">
               Sem Bloqueios
             </span>
             <span className="inline-flex items-center gap-2 rounded-full border border-green-500/40 bg-green-500/10 px-4 py-1.5 text-sm font-semibold text-green-500">
@@ -47,7 +46,7 @@ const VslHero = () => {
           <Button
             size="xl"
             onClick={scrollToCTA}
-            className="group mt-8 text-lg whitespace-normal h-auto bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/25"
+            className="group mt-8 w-full max-w-md text-lg whitespace-normal h-auto py-5 bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/25"
           >
             Quero fazer parte agora
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
