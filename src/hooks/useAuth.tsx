@@ -60,7 +60,7 @@ export function useAuth() {
     (async () => {
       const userId = state.session!.user.id;
       const [accessRes, roleRes] = await Promise.all([
-        supabase.from("member_access").select("id").eq("user_id", userId).eq("active", true).maybeSingle(),
+        supabase.from("member_access").select("id").eq("user_id", userId).eq("active", true).limit(1),
         supabase.from("user_roles").select("role").eq("user_id", userId),
       ]);
       if (cancelled) return;
@@ -70,7 +70,7 @@ export function useAuth() {
       const isAdmin = isMaster || roles.includes("admin");
       setState((s) => ({
         ...s,
-        hasAccess: !!accessRes.data || isAdmin,
+        hasAccess: (Array.isArray(accessRes.data) && accessRes.data.length > 0) || isAdmin,
         isAdmin,
         isMaster,
         isSuperAdmin,
