@@ -1,41 +1,42 @@
-## Nova rota: `/lp97-vsl`
+## O que vai ser feito
 
-Cópia da `/lp2-97` com simplificação no topo: substituir Hero + Problem + WhatYouGet por uma única seção com a VSL (VTurb) e um botão CTA. Restante da página permanece idêntico.
+Remover o script do **Google Tag Manager** do arquivo `index.html`, que hoje carrega globalmente em todas as rotas do site.
 
-### Arquivos a criar
+## Impacto no tracking da Meta — ZERO
 
-1. **`src/lp2/components/landing/VslHero.tsx`** — nova seção
-   - Container responsivo, padding superior generoso (header free).
-   - Placeholder para o script VTurb (um `<div>` com `id` ou comentário `<!-- INSIRA AQUI O CÓDIGO DA VTURB -->`) para você colar depois.
-   - Wrapper `max-w-3xl mx-auto aspect-[9/16] md:aspect-video` (ajustável) com borda/sombra padrão da LP.
-   - Abaixo do vídeo: botão `variant="hero" size="xl"` com texto **"Quero fazer parte agora"** que faz scroll suave para `#final-cta` (id já existente no `FinalCTA97`).
+Confirmei lendo o código que o trackeamento da Meta **não depende do GTM**:
 
-2. **`src/lp2/pages/IndexVsl97.tsx`** — nova página
-   - Ordem das seções:
-     ```
-     VslHero
-     Features
-     AboutFounder
-     Testimonials
-     FinalCTA97
-     FAQ
-     Footer
-     ```
-   - Sem Hero original, sem Problem, sem WhatYouGet.
+- **Meta Pixel (client-side)** é carregado diretamente via `src/lib/metaPixel.ts` (função `ensurePixel`), injetado pelo `TrackingProvider.tsx` nas rotas `/lp1`, `/lp2` e `/mentoria` (e sub-rotas como `/lp97`, `/lp97-vsl`, `/lp2-5`).
+- **Meta CAPI (server-side)** é disparado pela Edge Function `meta-capi` chamada pelo hook `useTracking.ts` — totalmente independente do GTM.
+- **Eventos** (`PageView`, `InitiateCheckout`, `Purchase`) são enviados via `window.fbq(...)` diretamente, sem passar por `dataLayer.push` do GTM.
+- Cookies `_fbp` / `_fbc` são criados pelo próprio script do Pixel da Meta (`fbevents.js`), não pelo GTM.
 
-3. **`src/lp2/Lp2AppVsl97.tsx`** — wrapper do app (espelha `Lp2App97.tsx`) renderizando `IndexVsl97`.
+Ou seja: remover o GTM **não afeta** Pixel, CAPI, deduplicação de eventos, nem o sistema SCK de matching com webhook do CaktoPay.
 
-### Arquivo a editar
+## O que será removido
 
-4. **`src/App.tsx`**
-   - Adicionar `const Lp2AppVsl97 = lazy(() => import("./lp2/Lp2AppVsl97"));`
-   - Adicionar rota: `<Route path="/lp97-vsl" element={<Lp2AppVsl97 />} />` antes da catch-all.
+No arquivo `index.html`, o bloco:
 
-### Garantias
+```text
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){...})(window,document,'script','dataLayer','euln474r=...');</script>
+<!-- End Google Tag Manager -->
+```
 
-- Nenhuma alteração em `Lp2App97`, `Index97`, `Hero`, `Problem` ou `WhatYouGet` — a rota `/lp2-97` continua exatamente como está.
-- Tracking/CTA da página existente (`FinalCTA97`) permanece, então o botão da VSL apenas rola até ele.
+## O que NÃO será removido (continua intacto)
 
-### O que você precisará fazer depois
+- Otimização do VTurb (preloads e dns-prefetch) no `<head>`
+- Fontes Google (Bebas Neue, Teko, Barlow)
+- Meta tags de SEO/OG/Twitter
+- Atributos `data-*` para GTM nos botões CaktoPay (ficam inertes, sem efeito colateral — podem ser limpos depois se desejar)
+- Toda a stack de tracking da Meta (Pixel + CAPI + SCK)
+- Tracking do TikTok Pixel (também independente do GTM)
 
-Colar o snippet da VTurb dentro do placeholder em `VslHero.tsx` (vou deixar marcado e comentado).
+## Efeitos colaterais a considerar
+
+1. Qualquer tag que estava sendo disparada **apenas via container GTM** (ex.: Google Ads, GA4, eventos auxiliares configurados na Stape) **deixará de disparar**. Se você usa Google Ads/Analytics pelo GTM, precisará reativar de outra forma depois.
+2. Os atributos `data-event=...` nos botões de checkout (usados pelo GTM React Tracking) ficarão presentes no HTML mas sem listener — sem impacto funcional.
+
+## Arquivo alterado
+
+- `index.html` — remover apenas o bloco GTM
