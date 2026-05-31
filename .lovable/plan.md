@@ -1,42 +1,34 @@
-## O que vai ser feito
+## Causa raiz
 
-Remover o script do **Google Tag Manager** do arquivo `index.html`, que hoje carrega globalmente em todas as rotas do site.
+O pedido de mentoria do Victor (`1266f47c-e8a8-419e-ac2b-fa83ad499c19`, produto `mentoria:b4763894-a720-4238-b448-a0204369d807`) foi pago em 30/05 às 05:00. O webhook do ZZGate disparou normalmente e chamou a função `grant-member-access`, mas o acesso à mentoria **nunca foi criado** — só existia o acesso antigo a `treinamento`. Tive que liberar manualmente (`granted_at` 16:41).
 
-## Impacto no tracking da Meta — ZERO
+O bug está em `supabase/functions/grant-member-access/index.ts`, função `normalizeAccessProduct`:
 
-Confirmei lendo o código que o trackeamento da Meta **não depende do GTM**:
-
-- **Meta Pixel (client-side)** é carregado diretamente via `src/lib/metaPixel.ts` (função `ensurePixel`), injetado pelo `TrackingProvider.tsx` nas rotas `/lp1`, `/lp2` e `/mentoria` (e sub-rotas como `/lp97`, `/lp97-vsl`, `/lp2-5`).
-- **Meta CAPI (server-side)** é disparado pela Edge Function `meta-capi` chamada pelo hook `useTracking.ts` — totalmente independente do GTM.
-- **Eventos** (`PageView`, `InitiateCheckout`, `Purchase`) são enviados via `window.fbq(...)` diretamente, sem passar por `dataLayer.push` do GTM.
-- Cookies `_fbp` / `_fbc` são criados pelo próprio script do Pixel da Meta (`fbevents.js`), não pelo GTM.
-
-Ou seja: remover o GTM **não afeta** Pixel, CAPI, deduplicação de eventos, nem o sistema SCK de matching com webhook do CaktoPay.
-
-## O que será removido
-
-No arquivo `index.html`, o bloco:
-
-```text
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){...})(window,document,'script','dataLayer','euln474r=...');</script>
-<!-- End Google Tag Manager -->
+```ts
+function normalizeAccessProduct(product: string): string {
+  if (["lp2", "lp2_97", "lp2_5"].includes(product)) return "treinamento";
+  if (product.startsWith("mentoria:")) return "treinamento";  // ← BUG
+  return product;
+}
 ```
 
-## O que NÃO será removido (continua intacto)
+Quando o produto é `mentoria:<id>`, a função normaliza para `"treinamento"` e faz upsert com `onConflict: "user_id,product"`. Como o usuário já tinha `treinamento` ativo (da compra anterior do lp2_97), o upsert vira no-op e **nenhuma linha de `mentoria:<id>` é criada**. Sem essa linha, a RLS de `lessons`/`modules` bloqueia o módulo pago de mentoria:
 
-- Otimização do VTurb (preloads e dns-prefetch) no `<head>`
-- Fontes Google (Bebas Neue, Teko, Barlow)
-- Meta tags de SEO/OG/Twitter
-- Atributos `data-*` para GTM nos botões CaktoPay (ficam inertes, sem efeito colateral — podem ser limpos depois se desejar)
-- Toda a stack de tracking da Meta (Pixel + CAPI + SCK)
-- Tracking do TikTok Pixel (também independente do GTM)
+```sql
+has_active_access(auth.uid(), 'mentoria:' || m.id)
+```
 
-## Efeitos colaterais a considerar
+## Correção
 
-1. Qualquer tag que estava sendo disparada **apenas via container GTM** (ex.: Google Ads, GA4, eventos auxiliares configurados na Stape) **deixará de disparar**. Se você usa Google Ads/Analytics pelo GTM, precisará reativar de outra forma depois.
-2. Os atributos `data-event=...` nos botões de checkout (usados pelo GTM React Tracking) ficarão presentes no HTML mas sem listener — sem impacto funcional.
+Em `supabase/functions/grant-member-access/index.ts`:
 
-## Arquivo alterado
+1. Remover a linha `if (product.startsWith("mentoria:")) return "treinamento";` de `normalizeAccessProduct`. Mentorias devem preservar o produto `mentoria:<module_id>` para que o upsert crie a linha correta.
+2. Manter o comportamento de pular email de boas-vindas para add-ons de mentoria (já está correto via `isMentoriaAddon`).
 
-- `index.html` — remover apenas o bloco GTM
+## Backfill (one-off)
+
+Verificar via query se há outros pedidos pagos com `product LIKE 'mentoria:%'` cujo `user_id` não tem linha correspondente em `member_access` e inserir os faltantes. Pela leitura inicial, o caso do Victor já foi corrigido manualmente, mas vou rodar a verificação para garantir que nenhum outro aluno está bloqueado.
+
+## Verificação
+
+Após o fix, simular reinvocação da `grant-member-access` para o `order_id 1266f47c-...` (idempotente via `onConflict: user_id,product`) e confirmar que a linha `mentoria:b4763894-...` é criada automaticamente.
