@@ -18,7 +18,6 @@ function randomPassword(len = 14): string {
 
 function normalizeAccessProduct(product: string): string {
   if (["lp2", "lp2_97", "lp2_5"].includes(product)) return "treinamento";
-  if (product.startsWith("mentoria:")) return "treinamento";
   return product;
 }
 
