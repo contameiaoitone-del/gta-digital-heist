@@ -16,8 +16,8 @@ async function loadConfiguredPixels() {
   try {
     const { data, error } = await supabase.rpc("get_active_tracking_pixels");
     if (error || !data || (data as Array<unknown>).length === 0) {
-      // Fallback: original hard-coded pixels
-      ensurePixel();
+      // No active pixels configured — do NOT load any fallback pixel.
+      // TikTok keeps its own loader fallback.
       ensureTtq();
       return;
     }
@@ -41,14 +41,15 @@ async function loadConfiguredPixels() {
       }
     }
 
-    if (meta.length === 0) ensurePixel();
-    else if (assignedMeta) ensurePixel(assignedMeta);
+    if (meta.length === 0) {
+      // No Meta pixel configured: do not load anything.
+    } else if (assignedMeta) ensurePixel(assignedMeta);
     else for (const m of meta) ensurePixel(m.pixel_id);
 
     if (tiktok.length === 0) ensureTtq();
     else for (const t of tiktok) ensureTtq(t.pixel_id);
   } catch {
-    ensurePixel();
+    // On any failure, only ensure TikTok (which has its own default).
     ensureTtq();
   }
 }
