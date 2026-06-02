@@ -1,6 +1,6 @@
 // Meta Pixel loader — loads only on demand (e.g., /infozap routes).
-export const META_PIXEL_ID = "1533634077714814";
-
+// IMPORTANT: no hardcoded pixel ID. Callers MUST pass the pixel ID from the
+// admin-managed `tracking_pixels` table (RPC `get_active_tracking_pixels`).
 declare global {
   interface Window {
     fbq?: ((...args: unknown[]) => void) & { callMethod?: unknown; queue?: unknown[]; loaded?: boolean; version?: string; push?: unknown };
@@ -13,8 +13,12 @@ let noscriptInjected = false;
 const initedPixels = new Set<string>();
 
 /** Idempotently inject the Meta Pixel base snippet and init the given pixel id. */
-export function ensurePixel(pixelId: string = META_PIXEL_ID): void {
+export function ensurePixel(pixelId?: string): void {
   if (typeof window === "undefined") return;
+  if (!pixelId) {
+    console.warn("[pixel] ensurePixel called without pixelId — skipping (no fallback)");
+    return;
+  }
 
   if (!snippetInjected && !window.fbq) {
     /* eslint-disable */
