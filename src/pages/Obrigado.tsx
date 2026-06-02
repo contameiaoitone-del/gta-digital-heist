@@ -28,8 +28,18 @@ const Obrigado = () => {
   useEffect(() => {
     document.title = "Pagamento confirmado — Treinamento";
     if (!isPending && eventId) {
-      ensurePixel();
-      trackPurchase({ value, eventId, orderId, productName: "Treinamento", currency: "BRL" });
+      (async () => {
+        try {
+          const { data } = await supabase.rpc("get_active_tracking_pixels");
+          const rows = (data || []) as Array<{ platform: string; pixel_id: string }>;
+          for (const m of rows.filter((r) => r.platform === "meta")) {
+            ensurePixel(m.pixel_id);
+          }
+        } catch {
+          /* no fallback pixel — never load an unknown one */
+        }
+        trackPurchase({ value, eventId, orderId, productName: "Treinamento", currency: "BRL" });
+      })();
     }
   }, [isPending, eventId, value, orderId, trackPurchase]);
 
