@@ -548,7 +548,7 @@ const Trackeamento = () => {
           <PixelManager
             platform="meta"
             title="do Facebook"
-            idPlaceholder="Pixel ID (ex.: 1533634077714814)"
+            idPlaceholder="Pixel ID (ex.: 1234567890123456)"
             tokenPlaceholder="Access Token (CAPI)"
           />
         </Section>
