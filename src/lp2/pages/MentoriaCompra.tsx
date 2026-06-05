@@ -8,7 +8,7 @@ import t6 from "@/lp2/assets/mentoria-compra/t6.png";
 import tvideo from "@/lp2/assets/mentoria-compra/tvideo.mp4";
 import waLogo from "@/lp2/assets/mentoria-compra/whatsapp-logo.png";
 
-const CHECKOUT_URL = "#checkout";
+const CHECKOUT_URL = "https://checkout.infinitepay.io/jb-empreendimentoss/YT1rMiHkhl";
 
 interface RevealProps {
   children: ReactNode;
