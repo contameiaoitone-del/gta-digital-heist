@@ -5,7 +5,8 @@ import t2 from "@/lp2/assets/mentoria-compra/t2.png";
 import t4 from "@/lp2/assets/mentoria-compra/t4.png";
 import t5 from "@/lp2/assets/mentoria-compra/t5.png";
 import t6 from "@/lp2/assets/mentoria-compra/t6.png";
-import tvideo from "@/lp2/assets/mentoria-compra/tvideo.mp4";
+import tvideoAsset from "@/lp2/assets/mentoria-compra/tvideo.mp4.asset.json";
+const tvideo = tvideoAsset.url;
 import waLogo from "@/lp2/assets/mentoria-compra/whatsapp-logo.png";
 
 const CHECKOUT_URL = "https://checkout.infinitepay.io/jb-empreendimentoss/YT1rMiHkhl";
@@ -217,7 +218,7 @@ function Depoimentos() {
                   src={d.src}
                   controls
                   playsInline
-                  preload="none"
+                  preload="metadata"
                   className="w-full h-auto bg-black block"
                 />
               ) : (
