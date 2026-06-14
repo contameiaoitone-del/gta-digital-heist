@@ -20,7 +20,7 @@ const Index = () => {
       imageUrl: mentoriaImage,
       link: "/lp1/mentoria",
       isLocked: false,
-      externalLink: "https://chat.whatsapp.com/KAh47hcDL0n92QXKNg3RGP?mode=gi_t"
+      externalLink: "https://chat.whatsapp.com/Hoxecl51TAh1LF6a5xbBvy?mode=gi_t"
     }
   ];
 
