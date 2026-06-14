@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getCookie } from "@/lib/cookies";
 import { getSessionId } from "@/hooks/useTracking";
 
-const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/KAh47hcDL0n92QXKNg3RGP?mode=gi_t";
+const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/Hoxecl51TAh1LF6a5xbBvy?mode=gi_t";
 const VTURB_ACCOUNT_ID = "574be7f8-d9bf-450a-9bfb-e024758a6c13";
 const VTURB_VIDEO_ID = "6a03aa75f7dfb345ee3b3dc1";
 const VTURB_M3U8_ID = "6a03aa61abc25b8656a251af";
