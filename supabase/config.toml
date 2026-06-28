@@ -1,0 +1,16 @@
+project_id = "kbvaljdqhosgnghsntcz"
+
+[functions.webauthn-auth-options]
+verify_jwt = false
+
+[functions.webauthn-auth-verify]
+verify_jwt = false
+
+[functions.share-link-consume]
+verify_jwt = false
+
+[functions.change-member-email]
+verify_jwt = false
+
+[functions.process-email-queue]
+verify_jwt = true

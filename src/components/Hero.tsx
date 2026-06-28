@@ -1,0 +1,137 @@
+import { useRef, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import heroImage from "@/assets/real-life-academy-collage.webp";
+import { GTALogo } from "@/components/GTALogo";
+import { useCheckoutUrl } from "@/hooks/useCheckoutUrl";
+export const Hero = () => {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const pauseVideo = () => {
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow?.postMessage({ type: 'pause' }, '*');
+    }
+  };
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        pauseVideo();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  const { getCheckoutUrl } = useCheckoutUrl();
+  const checkoutUrl = getCheckoutUrl("https://pay.cakto.com.br/35g8dhq_697665");
+
+  return (
+    <section className="relative flex overflow-hidden items-start justify-start pt-20 pb-12 md:min-h-screen md:items-center md:justify-center md:pt-8 md:pb-12">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src={heroImage} 
+          alt="Real Life Academy - Vice City" 
+          className="w-full h-full object-cover opacity-20 object-center md:object-[15%_center]" 
+        />
+        {/* Neon Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-pink-900/20"></div>
+        {/* Vignette Effect */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,transparent_50%,hsl(var(--background)/0.6)_100%)]"></div>
+        {/* Bottom Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+      </div>
+
+      {/* Scanline Effect */}
+      <div className="absolute inset-0 z-0 opacity-10 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(255,255,255,0.03)_2px,rgba(255,255,255,0.03)_4px)]"></div>
+
+      {/* Animated Color Glow */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-neon-purple/5 via-transparent to-neon-pink/5 animate-pulse"></div>
+
+      {/* Atmospheric Effects */}
+      <div className="absolute inset-0 z-0 noise-texture opacity-30"></div>
+      
+      {/* Retro Grid Effect - Increased opacity */}
+      <div className="absolute inset-0 z-0 opacity-10">
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_49%,hsl(330_85%_65%_/_0.2)_50%,transparent_51%)] bg-[length:80px_80px]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(0deg,transparent_49%,hsl(270_60%_70%_/_0.2)_50%,transparent_51%)] bg-[length:80px_80px]"></div>
+      </div>
+
+      {/* Content with Glassmorphism Card */}
+      <div className="container mx-auto px-6 sm:px-4 z-10 text-center animate-fade-in">
+        <div className="max-w-4xl mx-auto flex flex-col items-center">
+          {/* Content without card background */}
+          <div className="w-full">
+            {/* Logo - Centralizada */}
+            <div className="mb-4 w-full flex justify-center">
+              <GTALogo />
+            </div>
+
+            {/* Título Principal */}
+            <h1 
+              className="mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl text-foreground font-bold max-w-3xl mx-auto leading-tight animate-slide-up" 
+              style={{
+                animationDelay: "0.2s",
+                textShadow: "0 0 30px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.7), 0 4px 20px hsl(var(--primary) / 0.4), 2px 2px 4px rgba(0,0,0,0.9)"
+              }}
+            >
+              Fazer dinheiro na Internet é uma <span className="text-neon-pink">Habilidade</span>.
+            </h1>
+
+            {/* Subtítulo */}
+            <p 
+              className="mb-8 text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-slide-up"
+              style={{
+                animationDelay: "0.3s",
+                textShadow: "0 0 20px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.8), 2px 2px 4px rgba(0,0,0,0.9)"
+              }}
+            >
+              O tempo está passando, o mundo está mudando, e você está ficando para trás. Tome o controle do seu futuro e aprenda de verdade a sair do ZERO para pelo menos seus primeiros R$10.000/mês
+            </p>
+
+            {/* VSL Video */}
+            <div 
+              className="relative max-w-sm mx-auto mb-8 aspect-[9/16] rounded-lg overflow-hidden border border-white/20 shadow-[0_0_50px_rgba(212,0,166,0.2)] animate-slide-up" 
+              style={{ animationDelay: '0.35s' }}
+            >
+              <iframe 
+                ref={iframeRef}
+                id="panda-86126053-4c22-4460-9555-f3f2abbac6c4" 
+                src="https://player-vz-a0225c98-3ba.tv.pandavideo.com.br/embed/?v=86126053-4c22-4460-9555-f3f2abbac6c4" 
+                className="absolute inset-0 w-full h-full"
+                style={{ border: 'none' }}
+                allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" 
+                allowFullScreen
+              />
+            </div>
+
+            {/* CTA Buttons */}
+            <div 
+              className="flex justify-center items-center w-full sm:w-auto animate-slide-up" 
+              style={{ animationDelay: "0.4s" }}
+            >
+              <Button variant="hero" size="lg" className="group w-full sm:w-auto" asChild>
+                <a 
+                  href={checkoutUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onClick={pauseVideo}
+                  data-gtm-category="checkout"
+                  data-gtm-action="click"
+                  data-gtm-label="hero-cta"
+                >
+                  COMEÇAR AGORA
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-2 md:h-8 bg-gradient-to-t from-background to-transparent z-0"></div>
+    </section>
+  );
+};

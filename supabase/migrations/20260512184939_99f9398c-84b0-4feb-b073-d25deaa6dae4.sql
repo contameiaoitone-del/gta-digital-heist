@@ -1,0 +1,1 @@
+CREATE POLICY "Admins view orders" ON public.orders FOR SELECT USING (has_role(auth.uid(), 'admin'::app_role));
