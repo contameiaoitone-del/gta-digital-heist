@@ -3,7 +3,7 @@ import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Trash2, KeyRound, Check, X, UserPlus, Fingerprint, Search } from "lucide-react";
+import { ArrowLeft, Loader2, Trash2, KeyRound, Check, X, UserPlus, Fingerprint, Search, Send } from "lucide-react";
 import { useResolvedArea } from "@/hooks/useResolvedArea";
 
 interface AdminUser {
@@ -37,6 +37,7 @@ const Users = () => {
   const [busy, setBusy] = useState(false);
   const [pwUserId, setPwUserId] = useState<string | null>(null);
   const [newPassword, setNewPassword] = useState("");
+  const [resendingId, setResendingId] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [cEmail, setCEmail] = useState("");
   const [cPassword, setCPassword] = useState("");
@@ -126,6 +127,17 @@ const Users = () => {
     if (!confirm(`Excluir definitivamente ${u.email}? Esta ação NÃO pode ser desfeita.`)) return;
     const r = await call({ action: "delete_user", user_id: u.id });
     if (r) { toast.success("Usuário excluído"); load(); }
+  };
+
+  const resendAccess = async (u: AdminUser) => {
+    if (!confirm(
+      `Reenviar acesso para ${u.email}?\n\n` +
+      `Será GERADA UMA SENHA NOVA (a atual deixa de valer) e enviado um e-mail com a senha nova + link de acesso automático (magic link).`,
+    )) return;
+    setResendingId(u.id);
+    const r = await call({ action: "resend_access", user_id: u.id, product: productFilter });
+    setResendingId(null);
+    if (r) toast.success("Acesso reenviado — e-mail com senha nova + magic link a caminho");
   };
 
   const resetBiometrics = async (u: AdminUser) => {
@@ -259,6 +271,9 @@ const Users = () => {
                       })}
                       <td className="px-3 py-2">
                         <div className="flex justify-end gap-1">
+                          <button onClick={() => resendAccess(u)} disabled={resendingId === u.id} className="p-2 rounded border border-white/15 hover:border-[#00ff88] disabled:opacity-50" title="Reenviar acesso (senha nova + magic link)">
+                            {resendingId === u.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                          </button>
                           <button onClick={() => { setPwUserId(u.id); setNewPassword(""); }} className="p-2 rounded border border-white/15 hover:border-[#00ff88]" title="Alterar senha">
                             <KeyRound className="h-4 w-4" />
                           </button>

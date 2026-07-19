@@ -5,9 +5,11 @@ import t2 from "@/lp2/assets/mentoria-compra/t2.png";
 import t4 from "@/lp2/assets/mentoria-compra/t4.png";
 import t5 from "@/lp2/assets/mentoria-compra/t5.png";
 import t6 from "@/lp2/assets/mentoria-compra/t6.png";
-import tvideoAsset from "@/lp2/assets/mentoria-compra/tvideo.mp4.asset.json";
-const tvideo = tvideoAsset.url;
 import waLogo from "@/lp2/assets/mentoria-compra/whatsapp-logo.png";
+
+// Vídeo de depoimento servido como asset estático em public/ (mais leve que
+// empacotar 14MB no bundle). Substitui o artefato Lovable órfão removido.
+const tvideo = "/lp2/tvideo.mp4";
 
 const CHECKOUT_URL = "https://checkout.infinitepay.io/jb-empreendimentoss/YT1rMiHkhl";
 

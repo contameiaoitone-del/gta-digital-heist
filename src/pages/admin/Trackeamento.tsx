@@ -324,11 +324,12 @@ function Chip({ label, active, onClick, accent }: { label: string; active: boole
   );
 }
 
-function MetricCard({ label, value, accent }: { label: string; value: string; accent?: string }) {
+function MetricCard({ label, value, accent, sub }: { label: string; value: string; accent?: string; sub?: string }) {
   return (
     <div className="bg-[#141417] rounded-lg p-3">
       <div className="text-[11px] text-gray-400">{label}</div>
       <div className="text-2xl font-semibold" style={{ color: accent || "#fff" }}>{value}</div>
+      {sub && <div className="text-[10px] text-gray-500 mt-0.5">{sub}</div>}
     </div>
   );
 }
@@ -375,6 +376,9 @@ function CapiLogBody() {
   const [manualOpen, setManualOpen] = useState(false);
   const [manualInitial, setManualInitial] = useState<{ eventName?: string; value?: number | null; orderId?: string | null } | undefined>();
   const [reloadTick, setReloadTick] = useState(0);
+  // Vendas recusadas pela EFI (cartão não aprovado: status != 'paid', raw EFI = "unpaid")
+  const [refused, setRefused] = useState<{ count: number; value: number }>({ count: 0, value: 0 });
+  const [refusedBusy, setRefusedBusy] = useState(true);
 
   useEffect(() => {
     try { localStorage.setItem(CAPI_FILTERS_KEY, JSON.stringify({ events, pages, period, search })); } catch {}
@@ -457,6 +461,31 @@ function CapiLogBody() {
     return () => { cancelled = true; };
   }, [pages, dateBounds, reloadTick]);
 
+  // Vendas recusadas (cartão/EFI) no período — vêm de `orders`, não do CAPI log
+  // (recusa não dispara Purchase). Cartão com status != 'paid' = EFI "unpaid".
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setRefusedBusy(true);
+      const { data } = await supabase
+        .from("orders")
+        .select("amount_cents")
+        .eq("payment_method", "card")
+        .neq("status", "paid")
+        .gte("created_at", dateBounds.from.toISOString())
+        .lt("created_at", dateBounds.to.toISOString())
+        .limit(5000);
+      if (cancelled) return;
+      const list = (data as Array<{ amount_cents: number | null }>) || [];
+      setRefused({
+        count: list.length,
+        value: list.reduce((s, o) => s + (Number(o.amount_cents) || 0), 0) / 100,
+      });
+      setRefusedBusy(false);
+    })();
+    return () => { cancelled = true; };
+  }, [dateBounds, reloadTick]);
+
   const filtered = useMemo(() => {
     if (!search.trim()) return rows;
     const s = search.toLowerCase();
@@ -468,6 +497,7 @@ function CapiLogBody() {
 
   const conv = stats.checkout_count > 0 ? `${((stats.sales_count / stats.checkout_count) * 100).toFixed(1)}%` : "—";
   const revenueLabel = `R$ ${Math.round(stats.revenue).toLocaleString("pt-BR")}`;
+  const refusedValueLabel = `R$ ${Math.round(refused.value).toLocaleString("pt-BR")} não capturados`;
 
   return (
     <div>
@@ -543,7 +573,14 @@ function CapiLogBody() {
         <MetricCard label="Vendas" value={statsBusy ? "…" : String(stats.sales_count)} accent="#00ff88" />
         <MetricCard label="Receita" value={statsBusy ? "…" : revenueLabel} />
         <MetricCard label="Leads (cadastros)" value={statsBusy ? "…" : String(stats.leads_count)} />
+        <MetricCard label="Checkouts iniciados" value={statsBusy ? "…" : String(stats.checkout_count)} accent="#38bdf8" />
         <MetricCard label="Conversão checkout→venda" value={statsBusy ? "…" : conv} />
+        <MetricCard
+          label="Recusadas (cartão · EFI)"
+          value={refusedBusy ? "…" : String(refused.count)}
+          accent="#ff6b35"
+          sub={refusedBusy ? undefined : refusedValueLabel}
+        />
       </div>
 
       {/* Rankings de vendas */}

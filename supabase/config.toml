@@ -14,3 +14,14 @@ verify_jwt = false
 
 [functions.process-email-queue]
 verify_jwt = true
+
+# Gateway postbacks are called by EXTERNAL systems (ZZGate / Efí) that do not
+# carry our Supabase JWT. They MUST NOT require JWT, otherwise the gateway hits
+# the auth gate and gets 401 *before* our code runs — silently dropping paid
+# PIX notifications (orders stuck `pending`, no access, no Purchase). Auth is
+# instead enforced inside the function (order lookup + amount check).
+[functions.zzgate-webhook]
+verify_jwt = false
+
+[functions.efi-webhook]
+verify_jwt = false

@@ -2,7 +2,7 @@ import NetflixLayout from "@/lp1/components/NetflixLayout";
 import ProductCard from "@/lp1/components/ProductCard";
 import starterImage from "@/lp1/assets/comunidade-x1.png";
 import mentoriaImage from "@/lp1/assets/comunidade-x1-mentoria.png";
-import zapDataBanner from "@/lp1/assets/COMUNIDADE_X1_2.png.asset.json";
+import zapDataBanner from "@/lp1/assets/acesso-zapdata.png";
 
 const Index = () => {
   const products = [
@@ -27,7 +27,7 @@ const Index = () => {
       id: "zapdata",
       title: "ACESSO ZAPDATA",
       description: "FERRAMENTA DE VENDAS NO WHATSAPP",
-      imageUrl: zapDataBanner.url,
+      imageUrl: zapDataBanner,
       link: "#",
       isLocked: false,
       externalLink: "https://zapdata.co/lp?utm_source=instajoao"

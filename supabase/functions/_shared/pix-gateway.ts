@@ -117,7 +117,12 @@ export async function createZzgatePix(input: CreateZzgatePixInput): Promise<Crea
 export function getZzgateWebhookUrl(): string {
   const url = Deno.env.get("SUPABASE_URL")!;
   // SUPABASE_URL is like https://<ref>.supabase.co
-  return `${url}/functions/v1/zzgate-webhook`;
+  const base = `${url}/functions/v1/zzgate-webhook`;
+  // The webhook runs with verify_jwt=false (ZZGate can't carry our JWT), so we
+  // authenticate the postback with a shared secret embedded in the URL. ZZGate
+  // echoes the full postbackUrl on delivery, and the function checks `?s`.
+  const secret = Deno.env.get("ZZGATE_WEBHOOK_SECRET");
+  return secret ? `${base}?s=${encodeURIComponent(secret)}` : base;
 }
 
 export interface ZzgateTransactionStatus {

@@ -16,6 +16,16 @@ const json = (data: unknown, status = 200) =>
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+const SITE_URL = Deno.env.get("SITE_URL") || "https://joaolucasps.co";
+
+function randomPassword(len = 14): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$";
+  let out = "";
+  const buf = new Uint8Array(len);
+  crypto.getRandomValues(buf);
+  for (let i = 0; i < len; i++) out += chars[buf[i] % chars.length];
+  return out;
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -94,6 +104,49 @@ Deno.serve(async (req) => {
       const { error } = await admin.auth.admin.updateUserById(user_id, { password });
       if (error) return json({ error: error.message }, 400);
       return json({ ok: true });
+    }
+
+    // Reenvia o acesso: gera uma senha NOVA (a original é hash, não recuperável),
+    // redefine, gera magic link e reenvia o e-mail de boas-vindas (senha + link).
+    if (action === "resend_access") {
+      const { user_id, product } = body;
+      if (!user_id) return json({ error: "user_id obrigatório" }, 400);
+      const { data: got, error: getErr } = await admin.auth.admin.getUserById(user_id);
+      if (getErr || !got?.user) return json({ error: getErr?.message || "usuário não encontrado" }, 404);
+      const email = (got.user.email || "").trim().toLowerCase();
+      if (!email) return json({ error: "usuário sem e-mail" }, 400);
+      const accessProduct = (typeof product === "string" && product.trim()) ? product.trim() : "treinamento";
+      const firstName = (((got.user.user_metadata as Record<string, unknown>)?.full_name as string) || "").split(" ")[0] || "aluno";
+
+      const newPassword = randomPassword(14);
+      const { error: upErr } = await admin.auth.admin.updateUserById(user_id, { password: newPassword });
+      if (upErr) return json({ error: upErr.message }, 400);
+
+      const { data: linkData, error: linkErr } = await admin.auth.admin.generateLink({
+        type: "magiclink",
+        email,
+        options: { redirectTo: `${SITE_URL}/auth/callback?next=/${encodeURIComponent(accessProduct)}/membros` },
+      });
+      if (linkErr) console.error("resend_access generateLink failed", linkErr);
+      const magicLink = linkData?.properties?.action_link || null;
+
+      // idempotencyKey única por reenvio → a fila NÃO deduplica (sempre reenvia).
+      const { error: mailErr } = await admin.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "member-welcome",
+          recipientEmail: email,
+          idempotencyKey: `resend-access-${user_id}-${Date.now()}`,
+          templateData: {
+            name: firstName,
+            email,
+            password: newPassword,
+            magicLink,
+            loginUrl: `${SITE_URL}/${encodeURIComponent(accessProduct)}/membros/login`,
+          },
+        },
+      });
+      if (mailErr) return json({ error: `falha ao enfileirar e-mail: ${mailErr.message}` }, 500);
+      return json({ ok: true, email });
     }
 
     // NOTA: a action "set_admin" foi removida — atribuição de roles privilegiadas

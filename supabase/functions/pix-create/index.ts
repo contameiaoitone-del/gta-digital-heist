@@ -106,8 +106,14 @@ Deno.serve(async (req) => {
         });
       } catch (e) {
         console.error("zzgate create failed", e);
-        // remove the orphan order
-        await supabase.from("orders").delete().eq("id", order.id);
+        // Do NOT delete the order. ZZGate may have already registered the
+        // charge/QR on its side even when the response to us fails (timeout,
+        // partial body, missing transactionId). Deleting orphans any payment
+        // the customer still makes — the postback arrives for an order that no
+        // longer exists (no access, no Purchase). Mark it 'failed' so the record
+        // survives; if the customer pays anyway, zzgate-webhook finds it
+        // (update is `.neq('status','paid')`) and recovers it automatically.
+        await supabase.from("orders").update({ status: "failed" }).eq("id", order.id);
         return jsonResponse({ error: "zzgate_failed", detail: String(e) }, 502);
       }
     }
