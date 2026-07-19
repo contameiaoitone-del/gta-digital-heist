@@ -10,6 +10,7 @@ import Footer from "@/lp2/components/landing/Footer";
 const IndexMentoriaTemp = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
+    document.title = "Mentoria";
   }, []);
   return (
     <div className="min-h-screen bg-background text-foreground">

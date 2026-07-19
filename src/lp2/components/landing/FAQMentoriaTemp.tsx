@@ -19,7 +19,7 @@ const FAQMentoriaTemp = () => {
     },
     {
       question: "Quanto custa a mentoria?",
-      answer: "R$ 997, com acesso válido por 3 meses.",
+      answer: "De R$ 997 por R$ 797 enquanto o desconto estiver valendo, com acesso válido por 3 meses.",
     },
     {
       question: "Por quanto tempo eu tenho acesso?",

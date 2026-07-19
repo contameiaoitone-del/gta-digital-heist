@@ -1,11 +1,16 @@
 import { Video, Clock } from "lucide-react";
 import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
 import EntrarMentoriaButton from "@/lp2/components/landing/EntrarMentoriaButton";
+import CountdownDesconto from "@/lp2/components/landing/CountdownDesconto";
 import { supabase } from "@/integrations/supabase/client";
 import { getCookie } from "@/lib/cookies";
 import { getSessionId } from "@/hooks/useTracking";
 
-const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/Hoxecl51TAh1LF6a5xbBvy?mode=gi_t";
+const CHECKOUT_URL = "https://checkout.infinitepay.io/jb-empreendimentoss/BxLpe73dya";
+
+const PRECO_CHEIO = 997;
+const DESCONTO = 200;
+const PRECO_COM_DESCONTO = PRECO_CHEIO - DESCONTO;
 
 function uuid(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
@@ -34,10 +39,17 @@ const FinalCTAMentoriaTemp = () => {
       const sessionId = getSessionId();
       const eventId = uuid();
       const pageUrl = window.location.href;
-      fbq("track", "Lead", { content_name: "Mentoria - Entrada", source: "mentoria_temp" }, { eventID: eventId });
+      // O botão agora leva a um checkout pago, então o evento correto é
+      // InitiateCheckout (com o valor já com desconto), e não Lead.
+      fbq(
+        "track",
+        "InitiateCheckout",
+        { content_name: "Mentoria - Entrada", value: PRECO_COM_DESCONTO, currency: "BRL", source: "mentoria_temp" },
+        { eventID: eventId },
+      );
       supabase.functions.invoke("meta-capi", {
         body: {
-          event_name: "Lead",
+          event_name: "InitiateCheckout",
           event_id: eventId,
           event_source_url: pageUrl,
           session_id: sessionId,
@@ -45,11 +57,13 @@ const FinalCTAMentoriaTemp = () => {
           fbp: getCookie("_fbp") || "",
           user_agent: navigator.userAgent,
           content_name: "Mentoria - Entrada",
+          value: PRECO_COM_DESCONTO,
+          currency: "BRL",
           page_source: "MENTORIA",
         },
       }).catch(() => {});
     } catch { /* tracking best-effort */ }
-    window.open(WHATSAPP_GROUP_URL, "_blank", "noopener,noreferrer");
+    window.open(CHECKOUT_URL, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -94,13 +108,25 @@ const FinalCTAMentoriaTemp = () => {
                 </div>
 
                 <div className="mb-6 pt-5 border-t border-border/50">
-                  <span className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">
+                  <span className="block text-xs uppercase tracking-wider text-muted-foreground mb-2">
                     Investimento
                   </span>
+
+                  <div className="flex items-center justify-center gap-2.5 mb-1.5">
+                    <span className="text-lg sm:text-xl text-muted-foreground line-through decoration-2">
+                      R$ {PRECO_CHEIO}
+                    </span>
+                    <span className="rounded-full bg-green-600/15 border border-green-600/30 px-2.5 py-0.5 text-xs sm:text-sm font-semibold text-green-500">
+                      −R$ {DESCONTO}
+                    </span>
+                  </div>
+
                   <span className="block text-4xl sm:text-5xl font-bold text-foreground leading-none">
-                    R$ 997
+                    R$ {PRECO_COM_DESCONTO}
                   </span>
                 </div>
+
+                <CountdownDesconto />
 
                 <EntrarMentoriaButton onClick={handleEnter} />
 
