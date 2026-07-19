@@ -10,7 +10,10 @@ import dep8 from "@/lp2/assets/testimonials-mentoria/dep-8.png";
 import dep9 from "@/lp2/assets/testimonials-mentoria/dep-9.png";
 import dep10 from "@/lp2/assets/testimonials-mentoria/dep-10.png";
 
-const TestimonialsMentoria = () => {
+// `subtitle` é sobrescrito na /mentoria-temp, onde não existe o modelo de turma.
+const TestimonialsMentoria = ({
+  subtitle = "Resultados reais de quem entrou em uma turma da mentoria em grupo:",
+}: { subtitle?: string } = {}) => {
   const testimonials = [
     { id: 1, image: dep1 },
     { id: 2, image: dep2 },
@@ -35,7 +38,7 @@ const TestimonialsMentoria = () => {
               <span className="text-purple">alunos da mentoria dizem:</span>
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-2 leading-relaxed">
-              Resultados reais de quem entrou em uma turma da mentoria em grupo:
+              {subtitle}
             </p>
           </div>
         </ScrollAnimation>

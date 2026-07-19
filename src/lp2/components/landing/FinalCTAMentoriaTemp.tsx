@@ -1,6 +1,6 @@
-import { Button } from "@/lp2/components/ui/button";
-import { ArrowRight, Video, Clock } from "lucide-react";
+import { Video, Clock } from "lucide-react";
 import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
+import EntrarMentoriaButton from "@/lp2/components/landing/EntrarMentoriaButton";
 import { supabase } from "@/integrations/supabase/client";
 import { getCookie } from "@/lib/cookies";
 import { getSessionId } from "@/hooks/useTracking";
@@ -93,14 +93,16 @@ const FinalCTAMentoriaTemp = () => {
                   </div>
                 </div>
 
-                <Button
-                  size="xl"
-                  onClick={handleEnter}
-                  className="group text-lg w-full whitespace-normal h-auto bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/25"
-                >
-                  <span className="block leading-tight">Quero entrar na mentoria</span>
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <div className="mb-6 pt-5 border-t border-border/50">
+                  <span className="block text-xs uppercase tracking-wider text-muted-foreground mb-1">
+                    Investimento
+                  </span>
+                  <span className="block text-4xl sm:text-5xl font-bold text-foreground leading-none">
+                    R$ 997
+                  </span>
+                </div>
+
+                <EntrarMentoriaButton onClick={handleEnter} />
 
                 <p className="mt-3 flex items-center justify-center gap-1.5 text-xs sm:text-sm text-muted-foreground">
                   <Clock className="w-3.5 h-3.5" />

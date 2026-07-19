@@ -1,12 +1,19 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import MentoriaVideo from "@/lp2/components/landing/MentoriaVideo";
+import EntrarMentoriaButton from "@/lp2/components/landing/EntrarMentoriaButton";
 
 // Cabeçalho da página de mentoria (versão temp): sem vídeo de fundo, sem
 // título/subtítulo antigos — apenas a headline e o VSL do VTurb logo abaixo.
 const VTURB_ACCOUNT_ID = "574be7f8-d9bf-450a-9bfb-e024758a6c13";
-const VTURB_VIDEO_ID = "6a57f37fc117205d639fbd9a";
-const VTURB_M3U8_ID = "6a57f342aa981e9bb8a8c1b5";
+const VTURB_VIDEO_ID = "6a5d14ed1d4aa0165f20c9f4";
+const VTURB_M3U8_ID = "6a5d14bfb822af094c7a8060";
+
+// O botão do topo não converte direto: leva a pessoa até a seção final, onde
+// estão o preço, o que ela recebe e o botão que abre o grupo.
+const scrollToCTA = () => {
+  document.getElementById("final-cta")?.scrollIntoView({ behavior: "smooth", block: "center" });
+};
 
 const HeroMentoriaTemp = () => {
   useEffect(() => {
@@ -57,6 +64,15 @@ const HeroMentoriaTemp = () => {
             transition={{ duration: 0.6, delay: 0.15 }}
           >
             <MentoriaVideo videoId={VTURB_VIDEO_ID} accountId={VTURB_ACCOUNT_ID} className="w-full" />
+          </motion.div>
+
+          <motion.div
+            className="w-full max-w-lg mx-auto mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <EntrarMentoriaButton onClick={scrollToCTA} />
           </motion.div>
         </div>
       </div>
