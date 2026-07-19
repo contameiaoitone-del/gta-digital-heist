@@ -1,20 +1,21 @@
 import { X, Check, AlertTriangle, TrendingDown, Ban, Frown } from "lucide-react";
 import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
 
-const Problem = () => {
+const DEFAULT_SOLUTIONS = [
+  "Produtos validados entregues prontos pra você vender hoje",
+  "O cliente recebe primeiro e paga depois — conversão de 20 a 30%",
+  "Estrutura de tráfego completa: campanha que vira máquina de venda",
+  "Escala sem cair chip — rodízio, múltiplos números e operação blindada",
+  "Pix cai direto na sua conta, na hora, todo dia",
+];
+
+// `solutions` é sobrescrito na /mentoria-temp, que não promete entrega de produtos.
+const Problem = ({ solutions = DEFAULT_SOLUTIONS }: { solutions?: string[] } = {}) => {
   const problems = [
     { icon: AlertTriangle, text: '"Já comprei curso, segui tudo, e fiquei na mesma — ou pior."' },
     { icon: TrendingDown, text: '"Tentei drop, afiliado, tráfego direto, encapsulado… só sangrei dinheiro."' },
     { icon: Ban, text: '"Não sei por onde começar de verdade — é informação demais e ação de menos."' },
     { icon: Frown, text: '"Não tenho mais dinheiro pra arriscar. Cada real que sobra é sagrado."' },
-  ];
-
-  const solutions = [
-    "Produtos validados entregues prontos pra você vender hoje",
-    "O cliente recebe primeiro e paga depois — conversão de 20 a 30%",
-    "Estrutura de tráfego completa: campanha que vira máquina de venda",
-    "Escala sem cair chip — rodízio, múltiplos números e operação blindada",
-    "Pix cai direto na sua conta, na hora, todo dia",
   ];
 
   return (

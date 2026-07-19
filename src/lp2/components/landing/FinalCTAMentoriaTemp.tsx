@@ -88,7 +88,7 @@ const FinalCTAMentoriaTemp = () => {
                       <Video className="w-7 h-7 text-purple" />
                     </div>
                     <span className="text-sm sm:text-base font-medium text-foreground leading-snug">
-                      Call em Grupo toda semana
+                      Call todo sábado às 14h
                     </span>
                   </div>
                 </div>
@@ -106,7 +106,7 @@ const FinalCTAMentoriaTemp = () => {
 
                 <p className="mt-3 flex items-center justify-center gap-1.5 text-xs sm:text-sm text-muted-foreground">
                   <Clock className="w-3.5 h-3.5" />
-                  Acesso válido por 6 meses
+                  Acesso válido por 3 meses
                 </p>
               </div>
             </div>

@@ -15,23 +15,23 @@ const FAQMentoriaTemp = () => {
   const faqs = [
     {
       question: "Como funciona a mentoria?",
-      answer: "Você tem acesso direto a mim (João Lucas): uma call em grupo toda semana e o grupo de networking no WhatsApp com os outros mentorados. Eu te entrego 4 produtos validados e te acompanho na escolha do nicho, na montagem da estrutura e nas primeiras vendas.",
+      answer: "Você tem acesso direto a mim (João Lucas): uma call em grupo todo sábado às 14h e o grupo de networking no WhatsApp com os outros mentorados. Eu te acompanho na escolha do nicho, na montagem da estrutura e nas primeiras vendas.",
     },
     {
       question: "Quanto custa a mentoria?",
-      answer: "R$ 997, com acesso válido por 6 meses.",
+      answer: "R$ 997, com acesso válido por 3 meses.",
     },
     {
       question: "Por quanto tempo eu tenho acesso?",
-      answer: "6 meses a partir da sua entrada. Durante esse período você participa de todas as calls semanais e fica no grupo de networking.",
+      answer: "3 meses a partir da sua entrada. Durante esse período você participa de todas as calls de sábado e fica no grupo de networking.",
     },
     {
       question: "O que eu recebo ao entrar?",
-      answer: "Call em grupo toda semana comigo e o grupo de networking no WhatsApp com os outros mentorados, além dos 4 produtos validados e do acompanhamento até a primeira venda.",
+      answer: "Call em grupo todo sábado às 14h comigo e o grupo de networking no WhatsApp com os outros mentorados, além do acompanhamento até a primeira venda.",
     },
     {
       question: "Preciso ter experiência?",
-      answer: "Não. Eu te ajudo a escolher entre 4 produtos validados o que faz mais sentido pra você e te oriento passo a passo até a primeira venda.",
+      answer: "Não. Eu te ajudo a escolher o caminho que faz mais sentido pra você e te oriento passo a passo até a primeira venda.",
     },
     {
       question: "Como faço para entrar?",

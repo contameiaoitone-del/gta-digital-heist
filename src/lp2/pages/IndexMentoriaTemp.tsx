@@ -14,7 +14,14 @@ const IndexMentoriaTemp = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <HeroMentoriaTemp />
-      <Problem />
+      <Problem
+        solutions={[
+          "O cliente recebe primeiro e paga depois — conversão de 20 a 30%",
+          "Estrutura de tráfego completa: campanha que vira máquina de venda",
+          "Escala sem cair chip — rodízio, múltiplos números e operação blindada",
+          "Pix cai direto na sua conta, na hora, todo dia",
+        ]}
+      />
       <AboutFounder />
       <TestimonialsMentoria subtitle="Resultados reais de quem já passou pela mentoria em grupo:" />
       <FinalCTAMentoriaTemp />
