@@ -13,7 +13,7 @@ import Footer from "@/lp2/components/landing/Footer";
  * outro checkout. Tudo o que varia entra por prop, então a /mentoria-temp
  * segue com os defaults dos componentes.
  */
-const CHECKOUT_MENTORIA = "https://checkout.infinitepay.io/jb-empreendimentoss/YT1rMiHkhl";
+const CHECKOUT_MENTORIA = "https://checkout.infinitepay.io/jb-empreendimentoss/7WrU4PGAWN";
 
 const IndexMentoria = () => {
   useEffect(() => {
