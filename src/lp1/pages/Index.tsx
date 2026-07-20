@@ -1,19 +1,10 @@
 import NetflixLayout from "@/lp1/components/NetflixLayout";
 import ProductCard from "@/lp1/components/ProductCard";
-import starterImage from "@/lp1/assets/comunidade-x1.png";
 import mentoriaImage from "@/lp1/assets/comunidade-x1-mentoria.png";
 import zapDataBanner from "@/lp1/assets/acesso-zapdata.png";
 
 const Index = () => {
   const products = [
-    {
-      id: "caminho1",
-      title: "STARTER WHATS",
-      description: "APRENDA TUDO DO 0",
-      imageUrl: starterImage,
-      link: "/lp2",
-      isLocked: false
-    },
     {
       id: "mentoria",
       title: "MENTORIA JOÃO LUCAS",
@@ -21,7 +12,7 @@ const Index = () => {
       imageUrl: mentoriaImage,
       link: "/lp1/mentoria",
       isLocked: false,
-      externalLink: "https://chat.whatsapp.com/Hoxecl51TAh1LF6a5xbBvy?mode=gi_t"
+      externalLink: "https://joaolucasps.co/mentoria"
     },
     {
       id: "zapdata",
