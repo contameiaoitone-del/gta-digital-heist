@@ -11,7 +11,13 @@ import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
  * cima do modelo de lista de espera + turma mensal, que não vale aqui: nesta
  * página a entrada é imediata e o preço é exibido na tela.
  */
-const FAQMentoriaTemp = () => {
+// `respostaPreco` é sobrescrita na /mentoria, que cobra o valor cheio sem desconto.
+const RESPOSTA_PRECO_PADRAO =
+  "De R$ 997 por R$ 797 enquanto o desconto estiver valendo, com acesso válido por 3 meses.";
+
+const FAQMentoriaTemp = ({
+  respostaPreco = RESPOSTA_PRECO_PADRAO,
+}: { respostaPreco?: string } = {}) => {
   const faqs = [
     {
       question: "Como funciona a mentoria?",
@@ -19,7 +25,7 @@ const FAQMentoriaTemp = () => {
     },
     {
       question: "Quanto custa a mentoria?",
-      answer: "De R$ 997 por R$ 797 enquanto o desconto estiver valendo, com acesso válido por 3 meses.",
+      answer: respostaPreco,
     },
     {
       question: "Por quanto tempo eu tenho acesso?",

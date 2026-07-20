@@ -6,11 +6,20 @@ import { supabase } from "@/integrations/supabase/client";
 import { getCookie } from "@/lib/cookies";
 import { getSessionId } from "@/hooks/useTracking";
 
-const CHECKOUT_URL = "https://checkout.infinitepay.io/jb-empreendimentoss/BxLpe73dya";
+// Defaults = o que a /mentoria-temp já exibe. A /mentoria reaproveita este
+// componente passando outro checkout e preço cheio, sem desconto nem contador.
+const CHECKOUT_URL_PADRAO = "https://checkout.infinitepay.io/jb-empreendimentoss/BxLpe73dya";
+const PRECO_PADRAO = 797;
+const PRECO_DE_PADRAO = 997;
 
-const PRECO_CHEIO = 997;
-const DESCONTO = 200;
-const PRECO_COM_DESCONTO = PRECO_CHEIO - DESCONTO;
+type FinalCTAProps = {
+  checkoutUrl?: string;
+  /** valor efetivamente cobrado */
+  preco?: number;
+  /** valor riscado; `null` = sem desconto */
+  precoDe?: number | null;
+  mostrarContador?: boolean;
+};
 
 function uuid(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
@@ -33,7 +42,12 @@ const WhatsAppIcon = ({ className = "" }: { className?: string }) => (
   </svg>
 );
 
-const FinalCTAMentoriaTemp = () => {
+const FinalCTAMentoriaTemp = ({
+  checkoutUrl = CHECKOUT_URL_PADRAO,
+  preco = PRECO_PADRAO,
+  precoDe = PRECO_DE_PADRAO,
+  mostrarContador = true,
+}: FinalCTAProps = {}) => {
   const handleEnter = async () => {
     try {
       const sessionId = getSessionId();
@@ -44,7 +58,8 @@ const FinalCTAMentoriaTemp = () => {
       fbq(
         "track",
         "InitiateCheckout",
-        { content_name: "Mentoria - Entrada", value: PRECO_COM_DESCONTO, currency: "BRL", source: "mentoria_temp" },
+        // `source` sai da rota para distinguir /mentoria de /mentoria-temp no relatório.
+        { content_name: "Mentoria - Entrada", value: preco, currency: "BRL", source: window.location.pathname.replace(/^\//, "") || "mentoria" },
         { eventID: eventId },
       );
       supabase.functions.invoke("meta-capi", {
@@ -57,13 +72,13 @@ const FinalCTAMentoriaTemp = () => {
           fbp: getCookie("_fbp") || "",
           user_agent: navigator.userAgent,
           content_name: "Mentoria - Entrada",
-          value: PRECO_COM_DESCONTO,
+          value: preco,
           currency: "BRL",
           page_source: "MENTORIA",
         },
       }).catch(() => {});
     } catch { /* tracking best-effort */ }
-    window.open(CHECKOUT_URL, "_blank", "noopener,noreferrer");
+    window.open(checkoutUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -112,21 +127,23 @@ const FinalCTAMentoriaTemp = () => {
                     Investimento
                   </span>
 
-                  <div className="flex items-center justify-center gap-2.5 mb-1.5">
-                    <span className="text-lg sm:text-xl text-muted-foreground line-through decoration-2">
-                      R$ {PRECO_CHEIO}
-                    </span>
-                    <span className="rounded-full bg-green-600/15 border border-green-600/30 px-2.5 py-0.5 text-xs sm:text-sm font-semibold text-green-500">
-                      −R$ {DESCONTO}
-                    </span>
-                  </div>
+                  {precoDe != null && (
+                    <div className="flex items-center justify-center gap-2.5 mb-1.5">
+                      <span className="text-lg sm:text-xl text-muted-foreground line-through decoration-2">
+                        R$ {precoDe}
+                      </span>
+                      <span className="rounded-full bg-green-600/15 border border-green-600/30 px-2.5 py-0.5 text-xs sm:text-sm font-semibold text-green-500">
+                        −R$ {precoDe - preco}
+                      </span>
+                    </div>
+                  )}
 
                   <span className="block text-4xl sm:text-5xl font-bold text-foreground leading-none">
-                    R$ {PRECO_COM_DESCONTO}
+                    R$ {preco}
                   </span>
                 </div>
 
-                <CountdownDesconto />
+                {mostrarContador && <CountdownDesconto />}
 
                 <EntrarMentoriaButton onClick={handleEnter} />
 
