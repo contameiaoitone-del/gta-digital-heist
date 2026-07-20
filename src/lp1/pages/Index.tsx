@@ -30,7 +30,7 @@ const Index = () => {
       imageUrl: zapDataBanner,
       link: "#",
       isLocked: false,
-      externalLink: "https://zapdata.co/lp?utm_source=instajoao"
+      externalLink: "https://zapdata.co"
     }
   ];
 
