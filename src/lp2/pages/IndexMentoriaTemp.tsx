@@ -7,6 +7,10 @@ import FinalCTAMentoriaTemp from "@/lp2/components/landing/FinalCTAMentoriaTemp"
 import FAQMentoriaTemp from "@/lp2/components/landing/FAQMentoriaTemp";
 import Footer from "@/lp2/components/landing/Footer";
 
+// Mesmo conteúdo, preço e checkout da /mentoria: R$ 997 cheio, sem desconto
+// nem contador, apontando para o mesmo link.
+const CHECKOUT_MENTORIA = "https://checkout.infinitepay.io/jb-empreendimentoss/7WrU4PGAWN";
+
 const IndexMentoriaTemp = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,8 +29,13 @@ const IndexMentoriaTemp = () => {
       />
       <AboutFounder />
       <TestimonialsMentoria subtitle="Resultados reais de quem já passou pela mentoria em grupo:" />
-      <FinalCTAMentoriaTemp />
-      <FAQMentoriaTemp />
+      <FinalCTAMentoriaTemp
+        checkoutUrl={CHECKOUT_MENTORIA}
+        preco={997}
+        precoDe={null}
+        mostrarContador={false}
+      />
+      <FAQMentoriaTemp respostaPreco="R$ 997, com acesso válido por 3 meses." />
       <Footer />
     </div>
   );
