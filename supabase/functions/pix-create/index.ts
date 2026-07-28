@@ -20,6 +20,10 @@ import {
   getZzgateWebhookUrl,
 } from "../_shared/pix-gateway.ts";
 
+// Lead magnets (aula avulsa) integram direto com a Efí, sem passar pelo
+// ZZGate — independe do gateway ativo escolhido pro resto do site.
+const FORCE_EFI_PRODUCTS = new Set(["lm_x1global", "lm_fotoia"]);
+
 const BodySchema = z.object({
   name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(160),
@@ -50,7 +54,7 @@ Deno.serve(async (req) => {
     const supabase = serviceClient();
     const reais = product.amount_cents / 100;
 
-    if (settings.active_pix_gateway === "zzgate") {
+    if (settings.active_pix_gateway === "zzgate" && !FORCE_EFI_PRODUCTS.has(product.key)) {
       if (!settings.zzgate_client_id || !settings.zzgate_client_secret) {
         return jsonResponse({ error: "zzgate_not_configured" }, 500);
       }
