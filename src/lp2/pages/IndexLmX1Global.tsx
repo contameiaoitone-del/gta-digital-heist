@@ -3,7 +3,6 @@ import { PlayCircle, Layers, Package, Image, Globe, Zap, Users, Award } from "lu
 import HeroLeadMagnet from "@/lp2/components/landing/HeroLeadMagnet";
 import AboutFounder from "@/lp2/components/landing/AboutFounder";
 import FinalCTALeadMagnet from "@/lp2/components/landing/FinalCTALeadMagnet";
-import FAQLeadMagnet from "@/lp2/components/landing/FAQLeadMagnet";
 import Footer from "@/lp2/components/landing/Footer";
 
 // Lead magnet: aula avulsa "X1 Global" — mesma base visual da /mentoria, sem
@@ -31,29 +30,6 @@ const IndexLmX1Global = () => {
         buttonLabel="Adquirir Aula"
       />
 
-      <AboutFounder
-        highlights={[
-          { icon: Zap, text: "6 anos rodando operações no WhatsApp" },
-          { icon: Globe, text: "Vendendo X1 fora do Brasil" },
-          { icon: Users, text: "Criador do treinamento X1 no Pix" },
-          { icon: Award, text: "Método validado com centenas de alunos" },
-        ]}
-        bioParagraphs={[
-          <p key="p1">
-            Eu sou <strong className="text-foreground">João Lucas</strong>, criador do treinamento de X1 no Pix.
-            Depois de <strong className="text-foreground">6 anos</strong> rodando essa operação no Brasil, montei a
-            estrutura para vender X1 em outros países — e é exatamente esse método que você vai aprender nesta aula.
-          </p>,
-          <p key="p2">
-            Não sou guru de palco. Sou operador. Essa é a aula prática que uso para vender no X1 fora do Brasil, sem
-            depender de fronteira nem de um único idioma.
-          </p>,
-          <p key="p3" className="text-purple font-semibold text-lg">
-            Se você já sabe vender no Brasil, essa aula te mostra como escalar isso para o mundo todo.
-          </p>,
-        ]}
-      />
-
       <FinalCTALeadMagnet
         headline={
           <>
@@ -74,36 +50,26 @@ const IndexLmX1Global = () => {
         buttonLabel="Adquirir Aula"
       />
 
-      <FAQLeadMagnet
-        faqs={[
-          {
-            question: "Como funciona a aula?",
-            answer:
-              "É uma aula completa e gravada sobre como vender no X1 em outros países. Assim que a compra é aprovada, você recebe o acesso na área de membros e pode assistir quando quiser.",
-          },
-          {
-            question: "Quanto custa?",
-            answer: "R$ 20, pagamento único, sem mensalidade.",
-          },
-          {
-            question: "Por quanto tempo eu tenho acesso?",
-            answer: "Acesso vitalício — você pode assistir quantas vezes quiser, sem prazo de expiração.",
-          },
-          {
-            question: "O que eu recebo ao comprar?",
-            answer:
-              "A aula completa de X1 Global na área de membros, 2 funis validados em 2 idiomas diferentes, entregáveis traduzidos, criativos traduzidos e validados, e a forma de recebimento global.",
-          },
-          {
-            question: "Preciso ter experiência com X1 no Pix?",
-            answer:
-              "Ajuda, mas não é obrigatório. A aula mostra o passo a passo para adaptar a operação para outros países.",
-          },
-          {
-            question: "Como faço para comprar?",
-            answer:
-              "É só clicar no botão Adquirir Aula, preencher seus dados e pagar via Pix ou cartão. O acesso é liberado na hora.",
-          },
+      <AboutFounder
+        highlights={[
+          { icon: Zap, text: "6 anos rodando operações no WhatsApp" },
+          { icon: Globe, text: "Vendendo X1 fora do Brasil" },
+          { icon: Users, text: "Criador do treinamento X1 no Pix" },
+          { icon: Award, text: "Método validado com centenas de alunos" },
+        ]}
+        bioParagraphs={[
+          <p key="p1">
+            Eu sou <strong className="text-foreground">João Lucas</strong>, criador do treinamento de X1 no Pix.
+            Depois de <strong className="text-foreground">6 anos</strong> rodando essa operação no Brasil, montei a
+            estrutura para vender X1 em outros países — e é exatamente esse método que você vai aprender nesta aula.
+          </p>,
+          <p key="p2">
+            Não sou guru de palco. Sou operador. Essa é a aula prática que uso para vender no X1 fora do Brasil, sem
+            depender de fronteira nem de um único idioma.
+          </p>,
+          <p key="p3" className="text-purple font-semibold text-lg">
+            Se você já sabe vender no Brasil, essa aula te mostra como escalar isso para o mundo todo.
+          </p>,
         ]}
       />
 

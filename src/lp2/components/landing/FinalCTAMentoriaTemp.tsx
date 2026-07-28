@@ -48,6 +48,47 @@ const DiscordIcon = ({ className = "" }: { className?: string }) => (
   </svg>
 );
 
+// Título curto (âncora visual) + descrição mais longa abaixo — lê melhor no
+// mobile do que uma frase única quebrando em 3-4 linhas dentro do card.
+const ACCESS_ITEMS = [
+  {
+    icon: WhatsAppIcon,
+    iconBg: "bg-green-600/15",
+    iconColor: "text-green-500",
+    title: "Networking",
+    description: "Grupo exclusivo para trocar ideia e fazer parcerias com os outros mentorados",
+  },
+  {
+    icon: Video,
+    iconBg: "bg-purple/15",
+    iconColor: "text-purple",
+    title: "Call Semanal",
+    description: "Encontro ao vivo comigo, todo sábado às 14h, para tirar dúvidas e acompanhar sua evolução",
+  },
+  {
+    icon: MonitorPlay,
+    iconBg: "bg-purple/15",
+    iconColor: "text-purple",
+    title: "Área de Membros",
+    description: "Todas as calls já gravadas, disponíveis para assistir quando você quiser",
+  },
+  {
+    icon: Package,
+    iconBg: "bg-purple/15",
+    iconColor: "text-purple",
+    title: "Ofertas Prontas",
+    description: "Funis, entregáveis e criativos validados de diferentes nichos, prontos pra usar",
+  },
+  {
+    icon: DiscordIcon,
+    iconBg: "bg-indigo-500/15",
+    iconColor: "text-indigo-400",
+    title: "Discord",
+    description: "Comunidade exclusiva para trocar ideia e fazer networking com os outros mentorados",
+    full: true,
+  },
+];
+
 const FinalCTAMentoriaTemp = ({
   checkoutUrl = CHECKOUT_URL_PADRAO,
   preco = PRECO_PADRAO,
@@ -110,46 +151,26 @@ const FinalCTAMentoriaTemp = ({
                 <h3 className="text-base font-semibold mt-3 mb-5">O que você vai ter acesso:</h3>
 
                 <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6">
-                  <div className="bg-surface-elevated/50 border border-border/50 rounded-xl p-4 flex flex-col items-center text-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-green-600/15 flex items-center justify-center">
-                      <WhatsAppIcon className="w-7 h-7 text-green-500" />
+                  {ACCESS_ITEMS.map((item, index) => (
+                    <div
+                      key={index}
+                      className={`bg-surface-elevated/50 border border-border/50 rounded-xl p-4 flex flex-col items-center text-center gap-3 ${
+                        item.full ? "col-span-2" : ""
+                      }`}
+                    >
+                      <div className={`w-12 h-12 rounded-full ${item.iconBg} flex items-center justify-center`}>
+                        <item.icon className={`w-7 h-7 ${item.iconColor}`} />
+                      </div>
+                      <div>
+                        <span className="block text-sm sm:text-base font-semibold text-foreground leading-snug">
+                          {item.title}
+                        </span>
+                        <p className="mt-1 text-xs sm:text-sm text-muted-foreground leading-snug">
+                          {item.description}
+                        </p>
+                      </div>
                     </div>
-                    <span className="text-sm sm:text-base font-medium text-foreground leading-snug">
-                      Grupo de Networking com os mentorados
-                    </span>
-                  </div>
-                  <div className="bg-surface-elevated/50 border border-border/50 rounded-xl p-4 flex flex-col items-center text-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-purple/15 flex items-center justify-center">
-                      <Video className="w-7 h-7 text-purple" />
-                    </div>
-                    <span className="text-sm sm:text-base font-medium text-foreground leading-snug">
-                      Call todo sábado às 14h
-                    </span>
-                  </div>
-                  <div className="bg-surface-elevated/50 border border-border/50 rounded-xl p-4 flex flex-col items-center text-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-purple/15 flex items-center justify-center">
-                      <MonitorPlay className="w-7 h-7 text-purple" />
-                    </div>
-                    <span className="text-sm sm:text-base font-medium text-foreground leading-snug">
-                      Área de Membros com todas as calls gravadas
-                    </span>
-                  </div>
-                  <div className="bg-surface-elevated/50 border border-border/50 rounded-xl p-4 flex flex-col items-center text-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-purple/15 flex items-center justify-center">
-                      <Package className="w-7 h-7 text-purple" />
-                    </div>
-                    <span className="text-sm sm:text-base font-medium text-foreground leading-snug">
-                      Acesso a ofertas com funis, entregáveis e criativos de diferentes nichos
-                    </span>
-                  </div>
-                  <div className="col-span-2 bg-surface-elevated/50 border border-border/50 rounded-xl p-4 flex flex-col items-center text-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-indigo-500/15 flex items-center justify-center">
-                      <DiscordIcon className="w-7 h-7 text-indigo-400" />
-                    </div>
-                    <span className="text-sm sm:text-base font-medium text-foreground leading-snug">
-                      Discord para Networking com os mentorados
-                    </span>
-                  </div>
+                  ))}
                 </div>
 
                 <div className="mb-6 pt-5 border-t border-border/50">
