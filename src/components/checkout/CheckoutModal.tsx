@@ -14,7 +14,7 @@ import { useTracking, getSessionId } from "@/hooks/useTracking";
 interface CheckoutModalProps {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  product?: "treinamento" | "lp2" | "lp2_97" | "lp2_5";
+  product?: "treinamento" | "lp2" | "lp2_97" | "lp2_5" | "lm_x1global" | "lm_fotoia";
   priceCents?: number;
   productLabel?: string;
   productSubtitle?: string;

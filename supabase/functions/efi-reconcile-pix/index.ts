@@ -4,7 +4,7 @@
 // We poll it, match each received Pix to a pending order (by amount + payer CPF
 // within a time window) and confirm it — same side-effects as zzgate-webhook
 // (mark paid + Meta/TikTok CAPI + member access). Idempotent.
-import { corsHeaders, jsonResponse, getMtlsClient, getPixAccessToken, PIX_HOST } from "../_shared/efi.ts";
+import { corsHeaders, jsonResponse, getMtlsClient, getPixAccessToken, PIX_HOST, getProduct } from "../_shared/efi.ts";
 import { serviceClient } from "../_shared/pix-gateway.ts";
 
 type EfiPix = {
@@ -36,7 +36,7 @@ async function confirmOrder(supabase: ReturnType<typeof serviceClient>, orderId:
   if (error || !updated) return "update_noop";
 
   const purchaseEid = updated.event_id_purchase || crypto.randomUUID();
-  const contentName = updated.product === "lp2" ? "Comunidade X1 no Pix" : "InfoZap";
+  const contentName = getProduct(updated.product).name;
   const capiBody = {
     event_id: purchaseEid,
     session_id: updated.session_id || undefined,

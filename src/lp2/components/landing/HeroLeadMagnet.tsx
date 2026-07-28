@@ -1,24 +1,27 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, ReactNode } from "react";
 import MentoriaVideo from "@/lp2/components/landing/MentoriaVideo";
 import EntrarMentoriaButton from "@/lp2/components/landing/EntrarMentoriaButton";
 
-// Cabeçalho da página de mentoria (versão temp): sem vídeo de fundo, sem
-// título/subtítulo antigos — apenas a headline e o VSL do VTurb logo abaixo.
+// Cabeçalho genérico para páginas de lead magnet (aula avulsa): mesma estrutura
+// da HeroMentoriaTemp (headline + VSL do VTurb), mas com vídeo, headline e
+// texto do botão configuráveis por página.
 const VTURB_ACCOUNT_ID = "574be7f8-d9bf-450a-9bfb-e024758a6c13";
-const VTURB_VIDEO_ID = "6a68f1392708cda8092f29b9";
-const VTURB_M3U8_ID = "6a68f109a9935db927663c3b";
 
-// O botão do topo não converte direto: leva a pessoa até a seção final, onde
-// estão o preço, o que ela recebe e o botão que abre o grupo.
+interface HeroLeadMagnetProps {
+  headline: ReactNode;
+  videoId: string;
+  m3u8Id: string;
+  buttonLabel: string;
+}
+
 const scrollToCTA = () => {
   document.getElementById("final-cta")?.scrollIntoView({ behavior: "smooth", block: "center" });
 };
 
-const HeroMentoriaTemp = () => {
+const HeroLeadMagnet = ({ headline, videoId, m3u8Id, buttonLabel }: HeroLeadMagnetProps) => {
   useEffect(() => {
-    // Otimização VTurb: _plt + preloads + dns-prefetch (o vídeo é o do topo,
-    // então pré-carregamos já na montagem).
+    // Otimização VTurb: _plt + preloads + dns-prefetch, específicos deste vídeo.
     const w = window as unknown as { _plt?: number };
     if (!w._plt) {
       const perf = performance as Performance & { timeOrigin?: number };
@@ -34,14 +37,14 @@ const HeroMentoriaTemp = () => {
       link.setAttribute("data-vturb-opt", "1");
       document.head.appendChild(link);
     };
-    addLink("preload", `https://scripts.converteai.net/${VTURB_ACCOUNT_ID}/players/${VTURB_VIDEO_ID}/v4/player.js`, "script");
+    addLink("preload", `https://scripts.converteai.net/${VTURB_ACCOUNT_ID}/players/${videoId}/v4/player.js`, "script");
     addLink("preload", "https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js", "script");
-    addLink("preload", `https://cdn.converteai.net/${VTURB_ACCOUNT_ID}/${VTURB_M3U8_ID}/main.m3u8`, "fetch");
+    addLink("preload", `https://cdn.converteai.net/${VTURB_ACCOUNT_ID}/${m3u8Id}/main.m3u8`, "fetch");
     addLink("dns-prefetch", "https://cdn.converteai.net");
     addLink("dns-prefetch", "https://scripts.converteai.net");
     addLink("dns-prefetch", "https://images.converteai.net");
     addLink("dns-prefetch", "https://license.vturb.com");
-  }, []);
+  }, [videoId, m3u8Id]);
 
   return (
     <section className="relative overflow-hidden pt-10 md:pt-16 pb-6 md:pb-10">
@@ -54,7 +57,7 @@ const HeroMentoriaTemp = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Destrave suas Vendas no <span className="text-purple">WhatsApp</span>
+            {headline}
           </motion.h1>
 
           <motion.div
@@ -63,7 +66,7 @@ const HeroMentoriaTemp = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
           >
-            <MentoriaVideo videoId={VTURB_VIDEO_ID} accountId={VTURB_ACCOUNT_ID} className="w-full" />
+            <MentoriaVideo videoId={videoId} accountId={VTURB_ACCOUNT_ID} className="w-full" />
           </motion.div>
 
           <motion.div
@@ -72,7 +75,7 @@ const HeroMentoriaTemp = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <EntrarMentoriaButton onClick={scrollToCTA} />
+            <EntrarMentoriaButton onClick={scrollToCTA} label={buttonLabel} />
           </motion.div>
         </div>
       </div>
@@ -80,4 +83,4 @@ const HeroMentoriaTemp = () => {
   );
 };
 
-export default HeroMentoriaTemp;
+export default HeroLeadMagnet;

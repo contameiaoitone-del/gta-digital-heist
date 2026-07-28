@@ -1,15 +1,46 @@
+import { ReactNode } from "react";
 import { Zap, Target, Users, Award } from "lucide-react";
 import ScrollAnimation from "@/lp2/components/ui/scroll-animation";
 import joaoLucasPhoto from "@/lp2/assets/joao-lucas.jpg";
 
-const AboutFounder = () => {
-  const highlights = [
-    { icon: Zap, text: "6 anos rodando operações no WhatsApp" },
-    { icon: Target, text: "Operador, não guru de palco" },
-    { icon: Users, text: "Criador do treinamento X1 no Pix" },
-    { icon: Award, text: "Método validado com centenas de alunos" },
-  ];
+export interface Highlight {
+  icon: typeof Zap;
+  text: string;
+}
 
+const DEFAULT_HIGHLIGHTS: Highlight[] = [
+  { icon: Zap, text: "6 anos rodando operações no WhatsApp" },
+  { icon: Target, text: "Operador, não guru de palco" },
+  { icon: Users, text: "Criador do treinamento X1 no Pix" },
+  { icon: Award, text: "Método validado com centenas de alunos" },
+];
+
+const DEFAULT_BIO: ReactNode[] = [
+  <p key="p1">
+    Eu sou <strong className="text-foreground">João Lucas</strong>, criador do treinamento de X1 no Pix.
+    Rodo operações no WhatsApp há <strong className="text-foreground">6 anos</strong>, e meu objetivo é te entregar
+    o método completo para você ter resultado de verdade.
+  </p>,
+  <p key="p2">
+    Não sou guru de palco. Sou operador. Cada aula que você vai assistir é algo que já testei
+    com dinheiro real, que já funcionou na prática e que continua rodando hoje.
+  </p>,
+  <p key="p3" className="text-foreground font-medium border-l-4 border-purple pl-4">
+    Minha metodologia é para pessoas sérias que estão aqui para fazer disto um negócio.
+    De forma alguma é aceitável não ter venda todos os dias.
+  </p>,
+  <p key="p4" className="text-purple font-semibold text-lg">
+    Se você não tiver resultado, não é por falta de método. Será por falta de execução.
+    Eu te entrego tudo que você precisa.
+  </p>,
+];
+
+// `highlights`/`bioParagraphs` são sobrescritos nas páginas de lead magnet
+// (aulas avulsas), que vendem um tema específico e não a mentoria/X1 no Pix.
+const AboutFounder = ({
+  highlights = DEFAULT_HIGHLIGHTS,
+  bioParagraphs = DEFAULT_BIO,
+}: { highlights?: Highlight[]; bioParagraphs?: ReactNode[] } = {}) => {
   return (
     <section id="quem-e-joao" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-glow opacity-30" />
@@ -59,23 +90,7 @@ const AboutFounder = () => {
                 </div>
 
                 <div className="space-y-4 text-muted-foreground leading-relaxed">
-                  <p>
-                    Eu sou <strong className="text-foreground">João Lucas</strong>, criador do treinamento de X1 no Pix.
-                    Rodo operações no WhatsApp há <strong className="text-foreground">6 anos</strong>, e meu objetivo é te entregar
-                    o método completo para você ter resultado de verdade.
-                  </p>
-                  <p>
-                    Não sou guru de palco. Sou operador. Cada aula que você vai assistir é algo que já testei
-                    com dinheiro real, que já funcionou na prática e que continua rodando hoje.
-                  </p>
-                  <p className="text-foreground font-medium border-l-4 border-purple pl-4">
-                    Minha metodologia é para pessoas sérias que estão aqui para fazer disto um negócio.
-                    De forma alguma é aceitável não ter venda todos os dias.
-                  </p>
-                  <p className="text-purple font-semibold text-lg">
-                    Se você não tiver resultado, não é por falta de método. Será por falta de execução.
-                    Eu te entrego tudo que você precisa.
-                  </p>
+                  {bioParagraphs}
                 </div>
               </div>
             </ScrollAnimation>

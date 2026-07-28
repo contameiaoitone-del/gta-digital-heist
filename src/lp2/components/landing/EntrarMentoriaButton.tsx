@@ -9,9 +9,11 @@ import { cn } from "@/lp2/lib/utils";
 const EntrarMentoriaButton = ({
   onClick,
   className,
+  label = "Entrar na mentoria",
 }: {
   onClick: () => void;
   className?: string;
+  label?: string;
 }) => (
   <button
     type="button"
@@ -28,7 +30,7 @@ const EntrarMentoriaButton = ({
       className,
     )}
   >
-    <span>Entrar na mentoria</span>
+    <span>{label}</span>
     <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
   </button>
 );

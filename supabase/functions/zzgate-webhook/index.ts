@@ -10,7 +10,7 @@
 //   2. Ack `200` immediately, then run the heavy side-effects (Meta/TikTok/
 //      grant-access) in the background via EdgeRuntime.waitUntil — so a slow
 //      processing chain can't make ZZGate time out and drop the delivery.
-import { corsHeaders, jsonResponse } from "../_shared/efi.ts";
+import { corsHeaders, jsonResponse, getProduct } from "../_shared/efi.ts";
 import { serviceClient } from "../_shared/pix-gateway.ts";
 
 type ReceivePix = Record<string, unknown> & {
@@ -84,7 +84,7 @@ async function processZzgatePostback(rb: ReceivePix, logId: string | null): Prom
   }
 
   const purchaseEid = updated.event_id_purchase || crypto.randomUUID();
-  const contentName = updated.product === "lp2" ? "Comunidade X1 no Pix" : "InfoZap";
+  const contentName = getProduct(updated.product).name;
   const capiBody = {
     event_id: purchaseEid,
     session_id: updated.session_id || undefined,

@@ -2,7 +2,7 @@
 // own client cert is presented at the network layer (handled by Supabase edge
 // runtime). No HMAC needed. We accept and idempotently mark orders as paid.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
-import { corsHeaders, jsonResponse } from "../_shared/efi.ts";
+import { corsHeaders, jsonResponse, getProduct } from "../_shared/efi.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -37,7 +37,7 @@ Deno.serve(async (req) => {
       if (!updated) continue;
 
       const purchaseEid = updated.event_id_purchase || crypto.randomUUID();
-      const contentName = updated.product === "lp2" ? "Comunidade X1 no Pix" : "InfoZap";
+      const contentName = getProduct(updated.product).name;
       const capiBody = {
         event_id: purchaseEid,
         session_id: updated.session_id || undefined,
