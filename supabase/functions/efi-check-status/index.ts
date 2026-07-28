@@ -57,6 +57,13 @@ Deno.serve(async (req) => {
             })
             .eq("id", order.id)
             .neq("status", "paid");
+          // See pix-check-status: this poller can win the paid-race, so it
+          // must also fire the integration dispatch. Idempotent.
+          try {
+            await supabase.functions.invoke("integration-dispatch", { body: { order_id: order.id } });
+          } catch (e) {
+            console.error("integration-dispatch (efi-check-status) failed", e);
+          }
           return jsonResponse({
             order_id: order.id,
             status: "paid",

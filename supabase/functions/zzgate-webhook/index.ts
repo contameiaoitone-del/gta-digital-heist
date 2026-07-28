@@ -113,6 +113,11 @@ async function processZzgatePostback(rb: ReceivePix, logId: string | null): Prom
   } catch (e) {
     console.error("grant access (zzgate) failed", e);
   }
+  try {
+    await supabase.functions.invoke("integration-dispatch", { body: { order_id: updated.id } });
+  } catch (e) {
+    console.error("integration-dispatch (zzgate) failed", e);
+  }
 
   return finish("paid");
 }

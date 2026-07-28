@@ -433,6 +433,9 @@ const Admin = () => {
             <Link to={`${adminPath}/configuracoes`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
               Configurações
             </Link>
+            <Link to={`${adminPath}/integracoes`} className="text-xs px-3 py-1.5 rounded border border-white/15 hover:border-[#00ff88] text-gray-300 hover:text-white">
+              Integração
+            </Link>
           </div>
         </div>
       </header>

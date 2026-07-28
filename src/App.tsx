@@ -24,6 +24,7 @@ const ResetPassword = lazy(() => import("./pages/membros/ResetPassword"));
 const ShareConsume = lazy(() => import("./pages/membros/ShareConsume"));
 const AdminConfiguracoes = lazy(() => import("./pages/admin/Configuracoes"));
 const AdminTrackeamento = lazy(() => import("./pages/admin/Trackeamento"));
+const AdminIntegracoes = lazy(() => import("./pages/admin/Integracoes"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const Lp1App = lazy(() => import("./lp1/Lp1App"));
 const Lp2App = lazy(() => import("./lp2/Lp2App"));
@@ -82,6 +83,7 @@ const App = () => (
             <Route path="/admin/credenciais" element={<LegacyProductRedirect suffix="/credenciais" />} />
             <Route path="/admin/configuracoes" element={<LegacyProductRedirect suffix="/configuracoes" />} />
             <Route path="/admin/trackeamento" element={<LegacyProductRedirect suffix="/trackeamento" />} />
+            <Route path="/admin/integracoes" element={<LegacyProductRedirect suffix="/integracoes" />} />
             <Route path="/:product/membros/login" element={<MembrosLogin />} />
             <Route path="/:product/reset-password" element={<ResetPassword />} />
             <Route path="/:product/membros" element={<RequireAuth><Membros /></RequireAuth>} />
@@ -94,6 +96,7 @@ const App = () => (
             <Route path="/:product/admin/credenciais" element={<RequireAuth requireAdmin><AdminPaymentCredentials /></RequireAuth>} />
             <Route path="/:product/admin/configuracoes" element={<RequireAuth requireAdmin><AdminConfiguracoes /></RequireAuth>} />
             <Route path="/:product/admin/trackeamento" element={<RequireAuth requireAdmin><AdminTrackeamento /></RequireAuth>} />
+            <Route path="/:product/admin/integracoes" element={<RequireAuth requireAdmin><AdminIntegracoes /></RequireAuth>} />
 
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/lp1" element={<Lp1App />} />

@@ -77,6 +77,14 @@ Deno.serve(async (req) => {
       } catch (e) {
         console.error("grant access (pix) failed", e);
       }
+
+      try {
+        await supabase.functions.invoke("integration-dispatch", {
+          body: { order_id: updated.id },
+        });
+      } catch (e) {
+        console.error("integration-dispatch (pix) failed", e);
+      }
     }
     return jsonResponse({ ok: true });
   } catch (e) {

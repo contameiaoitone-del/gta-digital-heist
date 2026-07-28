@@ -52,6 +52,7 @@ async function confirmOrder(supabase: ReturnType<typeof serviceClient>, orderId:
   try { await supabase.functions.invoke("meta-capi", { body: { ...capiBody, event_name: "Purchase" } }); } catch (e) { console.error("capi purchase (efi-reconcile) failed", e); }
   try { await supabase.functions.invoke("tiktok-events", { body: { ...capiBody, event_name: "CompletePayment" } }); } catch (e) { console.error("tiktok (efi-reconcile) failed", e); }
   try { await supabase.functions.invoke("grant-member-access", { body: { order_id: updated.id } }); } catch (e) { console.error("grant access (efi-reconcile) failed", e); }
+  try { await supabase.functions.invoke("integration-dispatch", { body: { order_id: updated.id } }); } catch (e) { console.error("integration-dispatch (efi-reconcile) failed", e); }
   return "paid";
 }
 

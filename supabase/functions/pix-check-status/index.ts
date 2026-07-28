@@ -61,6 +61,15 @@ Deno.serve(async (req) => {
             })
             .eq("id", order.id)
             .neq("status", "paid");
+          // This poller can win the paid-race against the webhook/reconcile
+          // paths (all use .neq("status","paid")), so it must also fire the
+          // integration dispatch — otherwise a sale confirmed here would
+          // never trigger the outbound webhook. Idempotent, safe if it races.
+          try {
+            await supabase.functions.invoke("integration-dispatch", { body: { order_id: order.id } });
+          } catch (e) {
+            console.error("integration-dispatch (pix-check-status) failed", e);
+          }
           return jsonResponse({
             order_id: order.id,
             status: "paid",
