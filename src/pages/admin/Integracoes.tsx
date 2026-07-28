@@ -17,6 +17,9 @@ import {
   CheckCircle2,
   XCircle,
   RefreshCw,
+  ChevronDown,
+  ChevronRight,
+  Dices,
 } from "lucide-react";
 
 type EventKey = "initiate_checkout" | "purchase" | "lead";
@@ -127,6 +130,26 @@ function EventCheckboxes({ value, onChange }: { value: EventKey[]; onChange: (v:
 
 const emptyForm = { name: "", targetUrl: "", secret: "", apiKey: "", events: ["purchase"] as EventKey[], product: "", active: true };
 
+function randomEventId(): string {
+  return `test-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+const emptyTestParams = {
+  email: "teste@example.com",
+  name: "Teste Integração",
+  phone: "",
+  amountReais: "1,00",
+  eventId: "",
+};
+
+interface TestResult {
+  ok: boolean;
+  status?: number | null;
+  response?: unknown;
+  error?: string;
+  sent?: unknown;
+}
+
 function IntegrationForm({
   initial,
   onCancel,
@@ -147,6 +170,9 @@ function IntegrationForm({
   const [form, setForm] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState(false);
+  const [testOpen, setTestOpen] = useState(false);
+  const [testParams, setTestParams] = useState(emptyTestParams);
+  const [testResult, setTestResult] = useState<TestResult | null>(null);
 
   const save = async () => {
     if (!form.name.trim()) return toast.error("Informe um nome");
@@ -171,23 +197,32 @@ function IntegrationForm({
   };
 
   const test = async () => {
+    if (!testParams.email.trim()) return toast.error("Informe um e-mail de teste");
+    const amountCents = Math.round((parseFloat(testParams.amountReais.replace(",", ".")) || 0) * 100);
     setTesting(true);
+    setTestResult(null);
     const { data, error } = await supabase.functions.invoke("integrations?action=test", {
       body: {
         id: initial.id,
         target_url: form.targetUrl.trim() || undefined,
         secret: form.secret.trim() || undefined,
         api_key: form.apiKey.trim() || undefined,
+        sample_email: testParams.email.trim(),
+        sample_name: testParams.name.trim() || undefined,
+        sample_phone: testParams.phone.trim() || undefined,
+        sample_amount: amountCents,
+        sample_event_id: testParams.eventId.trim() || undefined,
       },
     });
     setTesting(false);
     if (error) return toast.error("Falha ao testar: " + error.message);
-    const r = data as { ok: boolean; status?: number; response?: unknown; error?: string };
+    const r = data as TestResult;
+    setTestResult(r);
     if (r.ok) {
       const magic = (r.response as { magic_link?: string } | undefined)?.magic_link;
       toast.success(`Teste OK — HTTP ${r.status}${magic ? " · magic_link recebido" : ""}`);
     } else {
-      toast.error(`Teste falhou — ${r.status ? `HTTP ${r.status}` : r.error}: ${JSON.stringify(r.response ?? "")}`.slice(0, 300));
+      toast.error(`Teste falhou — ${r.status ? `HTTP ${r.status}` : r.error}`);
     }
   };
 
@@ -251,8 +286,106 @@ function IntegrationForm({
         <input type="checkbox" checked={form.active} onChange={(e) => setForm((f) => ({ ...f, active: e.target.checked }))} className="accent-[#00ff88]" />
         Ativa
       </label>
+
+      <div className="border border-white/10 rounded">
+        <button
+          type="button"
+          onClick={() => setTestOpen((o) => !o)}
+          className="w-full flex items-center gap-2 px-3 py-2 text-left text-xs text-gray-400 hover:text-white"
+        >
+          {testOpen ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
+          Parâmetros do teste
+        </button>
+        {testOpen && (
+          <div className="px-3 pb-3 space-y-2">
+            <p className="text-[11px] text-gray-600">
+              Body enviado no teste: só estes campos, sem produto — igual ao que uma compra real dispara.
+            </p>
+            <div className="grid md:grid-cols-2 gap-2">
+              <div>
+                <label className="block text-[11px] text-gray-500 mb-1">E-mail</label>
+                <input
+                  className={inputCls}
+                  value={testParams.email}
+                  onChange={(e) => setTestParams((p) => ({ ...p, email: e.target.value }))}
+                  placeholder="teste@example.com"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] text-gray-500 mb-1">Nome</label>
+                <input
+                  className={inputCls}
+                  value={testParams.name}
+                  onChange={(e) => setTestParams((p) => ({ ...p, name: e.target.value }))}
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] text-gray-500 mb-1">Telefone</label>
+                <input
+                  className={inputCls}
+                  value={testParams.phone}
+                  onChange={(e) => setTestParams((p) => ({ ...p, phone: e.target.value }))}
+                  placeholder="(opcional)"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] text-gray-500 mb-1">Valor (R$)</label>
+                <input
+                  className={inputCls}
+                  value={testParams.amountReais}
+                  onChange={(e) => setTestParams((p) => ({ ...p, amountReais: e.target.value }))}
+                  placeholder="1,00"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-[11px] text-gray-500 mb-1">
+                event_id — deixe em branco para um aleatório, ou repita um valor para validar idempotência
+                (o mesmo event_id 2x deve responder "already_processed")
+              </label>
+              <div className="flex gap-2">
+                <input
+                  className={inputCls}
+                  value={testParams.eventId}
+                  onChange={(e) => setTestParams((p) => ({ ...p, eventId: e.target.value }))}
+                  placeholder="(aleatório)"
+                />
+                <button
+                  type="button"
+                  onClick={() => setTestParams((p) => ({ ...p, eventId: randomEventId() }))}
+                  title="Gerar novo event_id"
+                  className="px-3 rounded border border-white/15 text-gray-300 hover:text-white hover:border-[#00ff88]"
+                >
+                  <Dices className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+
+            {testResult && (
+              <div className="mt-2 rounded border border-white/10 bg-black/40 p-3 text-xs">
+                <div className="flex items-center gap-2 mb-2">
+                  {testResult.ok ? <CheckCircle2 className="h-4 w-4 text-[#00ff88]" /> : <XCircle className="h-4 w-4 text-[#ff2d78]" />}
+                  <span className="font-semibold">{testResult.status ? `HTTP ${testResult.status}` : testResult.error || "sem resposta"}</span>
+                </div>
+                <p className="text-[11px] text-gray-500 mb-1">Enviado:</p>
+                <pre className="whitespace-pre-wrap break-all text-gray-400 mb-2">{JSON.stringify(testResult.sent, null, 2)}</pre>
+                <p className="text-[11px] text-gray-500 mb-1">Resposta:</p>
+                <pre className="whitespace-pre-wrap break-all text-gray-300">{JSON.stringify(testResult.response ?? testResult.error, null, 2)}</pre>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
       <div className="flex gap-2 pt-1">
-        <button onClick={test} disabled={testing} className="px-4 py-2 rounded border border-white/15 hover:border-[#00ff88] text-sm flex items-center gap-2 disabled:opacity-50">
+        <button
+          onClick={() => {
+            if (!testOpen) setTestOpen(true);
+            void test();
+          }}
+          disabled={testing}
+          className="px-4 py-2 rounded border border-white/15 hover:border-[#00ff88] text-sm flex items-center gap-2 disabled:opacity-50"
+        >
           {testing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Zap className="h-4 w-4" />} Testar
         </button>
         {onCancel && (

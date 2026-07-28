@@ -42,7 +42,12 @@ const TestSchema = z.object({
   secret: z.string().optional(),
   api_key: z.string().optional(),
   sample_email: z.string().email().optional(),
+  sample_name: z.string().max(200).optional(),
+  sample_phone: z.string().max(40).optional(),
   sample_amount: z.number().int().optional(),
+  // Editable so the admin can validate idempotency: resend the same event_id
+  // and confirm the destination replies already_processed instead of firing twice.
+  sample_event_id: z.string().max(200).optional(),
 });
 
 Deno.serve(async (req) => {
@@ -173,9 +178,9 @@ Deno.serve(async (req) => {
       const sec = cleanSecret(secret);
       const sample = {
         email: b.sample_email || "teste@example.com",
-        name: "Teste Integração",
-        event_id: `test-${crypto.randomUUID()}`,
-        phone: "",
+        name: b.sample_name || "Teste Integração",
+        event_id: b.sample_event_id?.trim() || `test-${crypto.randomUUID()}`,
+        phone: b.sample_phone || "",
         amount: b.sample_amount ?? 100,
       };
       try {
@@ -196,9 +201,11 @@ Deno.serve(async (req) => {
         } catch {
           json = { raw: text };
         }
-        return jsonResponse({ ok: r.ok, status: r.status, response: json });
+        // Echo back what was actually sent so the admin can see/reuse the
+        // event_id (e.g. to resend the same value and confirm idempotency).
+        return jsonResponse({ ok: r.ok, status: r.status, response: json, sent: sample });
       } catch (e) {
-        return jsonResponse({ ok: false, error: String(e) }, 200);
+        return jsonResponse({ ok: false, error: String(e), sent: sample }, 200);
       }
     }
 
