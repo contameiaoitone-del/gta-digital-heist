@@ -17,7 +17,7 @@ function randomPassword(len = 14): string {
 }
 
 function normalizeAccessProduct(product: string): string {
-  if (["lp2", "lp2_97", "lp2_5"].includes(product)) return "treinamento";
+  if (["lp2", "lp2_97", "lp2_5", "lm_x1global", "lm_fotoia"].includes(product)) return "treinamento";
   return product;
 }
 

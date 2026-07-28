@@ -37,6 +37,8 @@ const ROUTE_OPTIONS = [
   { value: "lp2_97", label: "/lp97-vsl (R$ 97)" },
   { value: "lp2_5", label: "/lp2-5 (R$ 5)" },
   { value: "treinamento", label: "/lp1 · treinamento" },
+  { value: "lm_x1global", label: "/lm-x1global (R$ 20)" },
+  { value: "lm_fotoia", label: "/lm-fotoia (R$ 20)" },
 ];
 
 interface IntegrationRow {
