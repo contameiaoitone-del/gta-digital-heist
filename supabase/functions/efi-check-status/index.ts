@@ -4,6 +4,8 @@ import {
   jsonResponse,
   getMtlsClient,
   getPixAccessToken,
+  getProduct,
+  getPageSource,
   PIX_HOST,
 } from "../_shared/efi.ts";
 
@@ -23,7 +25,7 @@ Deno.serve(async (req) => {
     );
     const { data: order, error } = await supabase
       .from("orders")
-      .select("id, status, payment_method, efi_txid")
+      .select("id, status, payment_method, efi_txid, product, customer_name, customer_email, customer_phone, customer_cpf, amount_cents, session_id, event_id_purchase")
       .eq("id", order_id)
       .maybeSingle();
     if (error || !order) return jsonResponse({ error: "not_found" }, 404);
@@ -57,8 +59,40 @@ Deno.serve(async (req) => {
             })
             .eq("id", order.id)
             .neq("status", "paid");
-          // See pix-check-status: this poller can win the paid-race, so it
-          // must also fire the integration dispatch. Idempotent.
+          // See pix-check-status: this poller can win the paid-race against
+          // the webhook/reconcile paths, so it must also fire the same side
+          // effects — CAPI (Meta/TikTok), member access grant, and the
+          // integration dispatch. Idempotent downstream (meta-capi dedupes by
+          // event_id), safe if it races.
+          const purchaseEid = order.event_id_purchase || crypto.randomUUID();
+          const capiBody = {
+            event_id: purchaseEid,
+            session_id: order.session_id || undefined,
+            full_name: order.customer_name,
+            email: order.customer_email,
+            phone: order.customer_phone,
+            cpf: order.customer_cpf,
+            value: (order.amount_cents || 0) / 100,
+            currency: "BRL",
+            content_name: getProduct(order.product).name,
+            order_id: order.id,
+            page_source: getPageSource(order.product),
+          };
+          try {
+            await supabase.functions.invoke("meta-capi", { body: { ...capiBody, event_name: "Purchase" } });
+          } catch (e) {
+            console.error("capi purchase (efi-check-status) failed", e);
+          }
+          try {
+            await supabase.functions.invoke("tiktok-events", { body: { ...capiBody, event_name: "CompletePayment" } });
+          } catch (e) {
+            console.error("tiktok purchase (efi-check-status) failed", e);
+          }
+          try {
+            await supabase.functions.invoke("grant-member-access", { body: { order_id: order.id } });
+          } catch (e) {
+            console.error("grant access (efi-check-status) failed", e);
+          }
           try {
             await supabase.functions.invoke("integration-dispatch", { body: { order_id: order.id } });
           } catch (e) {

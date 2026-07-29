@@ -20,21 +20,13 @@ function onlyDigits(s: string | undefined | null): string {
   return (s ?? "").replace(/\D/g, "");
 }
 
-// Confirm one order: mark paid + fire the same side-effects zzgate-webhook does.
-async function confirmOrder(supabase: ReturnType<typeof serviceClient>, orderId: string, efiTxid: string | undefined, paidAtIso: string, pix: EfiPix): Promise<string> {
-  const { data: updated, error } = await supabase
-    .from("orders")
-    .update({
-      status: "paid",
-      paid_at: paidAtIso,
-      raw: { efi_reconcile: pix, reconciled_at: new Date().toISOString() },
-    })
-    .eq("id", orderId)
-    .neq("status", "paid")
-    .select("id, product, customer_name, customer_email, customer_phone, customer_cpf, amount_cents, session_id, event_id_purchase")
-    .maybeSingle();
-  if (error || !updated) return "update_noop";
-
+// Fire the same side-effects zzgate-webhook does. Runs in the background (see
+// confirmOrder) so one slow order (a slow Meta/TikTok/webhook call) can't
+// starve the rest of the batch — this loop reconciles every matched Pix from
+// the last `minutes` window in one invocation, and awaiting each order's full
+// chain in sequence risked the run being cut off before reaching later orders
+// (their `paid_at` would be set, but Purchase/webhook never fired).
+async function fireSideEffects(supabase: ReturnType<typeof serviceClient>, updated: { id: string; product: string; customer_name: string | null; customer_email: string | null; customer_phone: string | null; customer_cpf: string | null; amount_cents: number | null; session_id: string | null; event_id_purchase: string | null }): Promise<void> {
   const purchaseEid = updated.event_id_purchase || crypto.randomUUID();
   const contentName = getProduct(updated.product).name;
   const capiBody = {
@@ -54,6 +46,33 @@ async function confirmOrder(supabase: ReturnType<typeof serviceClient>, orderId:
   try { await supabase.functions.invoke("tiktok-events", { body: { ...capiBody, event_name: "CompletePayment" } }); } catch (e) { console.error("tiktok (efi-reconcile) failed", e); }
   try { await supabase.functions.invoke("grant-member-access", { body: { order_id: updated.id } }); } catch (e) { console.error("grant access (efi-reconcile) failed", e); }
   try { await supabase.functions.invoke("integration-dispatch", { body: { order_id: updated.id } }); } catch (e) { console.error("integration-dispatch (efi-reconcile) failed", e); }
+}
+
+// Confirm one order: mark paid, then schedule the side-effects in the
+// background (EdgeRuntime.waitUntil) instead of blocking this order's turn
+// in the reconcile loop on 4 sequential external calls.
+async function confirmOrder(supabase: ReturnType<typeof serviceClient>, orderId: string, efiTxid: string | undefined, paidAtIso: string, pix: EfiPix): Promise<string> {
+  const { data: updated, error } = await supabase
+    .from("orders")
+    .update({
+      status: "paid",
+      paid_at: paidAtIso,
+      raw: { efi_reconcile: pix, reconciled_at: new Date().toISOString() },
+    })
+    .eq("id", orderId)
+    .neq("status", "paid")
+    .select("id, product, customer_name, customer_email, customer_phone, customer_cpf, amount_cents, session_id, event_id_purchase")
+    .maybeSingle();
+  if (error || !updated) return "update_noop";
+
+  const work = fireSideEffects(supabase, updated).catch((e) => console.error("efi-reconcile side effects error", e));
+  // @ts-ignore EdgeRuntime is provided by the Supabase edge runtime
+  if (typeof EdgeRuntime !== "undefined" && EdgeRuntime?.waitUntil) {
+    // @ts-ignore
+    EdgeRuntime.waitUntil(work);
+  } else {
+    await work;
+  }
   return "paid";
 }
 
