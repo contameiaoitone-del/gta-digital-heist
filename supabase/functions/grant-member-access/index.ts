@@ -17,9 +17,14 @@ function randomPassword(len = 14): string {
 }
 
 function normalizeAccessProduct(product: string): string {
-  if (["lp2", "lp2_97", "lp2_5", "lm_x1global", "lm_fotoia"].includes(product)) return "treinamento";
+  if (["lp2", "lp2_97", "lp2_5"].includes(product)) return "treinamento";
   return product;
 }
+
+// Lead magnets (aula avulsa) vendidos só pra disparar o webhook de compra
+// (Integração/ZZFUNNELS) — não devem abrir conta nem liberar nenhuma área
+// de membros interna.
+const NO_MEMBER_ACCESS_PRODUCTS = new Set(["lm_x1global", "lm_fotoia"]);
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -42,6 +47,10 @@ Deno.serve(async (req) => {
     }
     if (order.status !== "paid") {
       return new Response(JSON.stringify({ error: "order not paid" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    if (NO_MEMBER_ACCESS_PRODUCTS.has(order.product || "")) {
+      return new Response(JSON.stringify({ ok: true, skipped: "no_member_access_product" }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     const email = (order.customer_email || "").trim().toLowerCase();

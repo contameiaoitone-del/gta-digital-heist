@@ -7,6 +7,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 const REDIRECT_DELAY_SECONDS = 4;
 
+// Lead magnets (aula avulsa) não abrem conta nem área de membros — só
+// confirmar o pagamento e orientar a checar o e-mail, sem redirecionar.
+const NO_MEMBER_ACCESS_PRODUCTS = ["lm_x1global", "lm_fotoia"];
+
 const Obrigado = () => {
   const [params] = useSearchParams();
   const metodo = params.get("metodo");
@@ -16,6 +20,7 @@ const Obrigado = () => {
   const value = Number(params.get("value") || "67");
   const orderId = params.get("orderId") || undefined;
   const isPending = status === "pendente";
+  const skipAccess = NO_MEMBER_ACCESS_PRODUCTS.includes(product);
   const memberProduct = ["lp2", "lp2_97", "lp2_5"].includes(product) || product.startsWith("mentoria:") ? "treinamento" : product;
   const { trackPurchase } = useTracking();
   const [magicLink, setMagicLink] = useState<string | null>(null);
@@ -45,7 +50,7 @@ const Obrigado = () => {
 
   // 2) Fetch magic link in parallel (do NOT redirect immediately — wait for countdown)
   useEffect(() => {
-    if (isPending || !orderId) return;
+    if (isPending || !orderId || skipAccess) return;
     let cancelled = false;
     setAutoLoginState("loading");
     (async () => {
@@ -87,16 +92,16 @@ const Obrigado = () => {
 
   // 3) Countdown timer — runs only when not pending
   useEffect(() => {
-    if (isPending) return;
+    if (isPending || skipAccess) return;
     if (countdown <= 0) return;
     const t = setTimeout(() => setCountdown((c) => c - 1), 1000);
     return () => clearTimeout(t);
-  }, [countdown, isPending]);
+  }, [countdown, isPending, skipAccess]);
 
   // 4) Auto-redirect when countdown hits 0 AND we have a token: verify it
   // client-side and navigate directly, bypassing any redirect_to issues.
   useEffect(() => {
-    if (isPending) return;
+    if (isPending || skipAccess) return;
     if (countdown > 0) return;
     if (tokenHash) {
       (async () => {
@@ -130,12 +135,14 @@ const Obrigado = () => {
         <p className="text-gray-300 mb-6 leading-relaxed">
           {isPending
             ? "Seu pagamento está sendo processado pela operadora do cartão. Assim que aprovado, você receberá os dados de acesso no e-mail cadastrado."
+            : skipAccess
+            ? "Pagamento aprovado! Verifique seu e-mail para mais informações."
             : metodo === "pix"
             ? "Recebemos seu Pix. Estamos liberando sua conta agora..."
             : "Seu pagamento foi aprovado. Estamos liberando sua conta agora..."}
         </p>
 
-        {!isPending && (
+        {!isPending && !skipAccess && (
           <div className="mb-6 space-y-3">
             <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
               {autoLoginState === "loading" && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -172,11 +179,13 @@ const Obrigado = () => {
           </div>
         )}
 
-        <div className="rounded-xl border p-6 text-center mb-8" style={{ borderColor: "#222", backgroundColor: "#111" }}>
-          <p className="text-sm text-gray-300 leading-relaxed">
-            Você será redirecionado para a área de membros e receberá o seu acesso de login via e-mail.
-          </p>
-        </div>
+        {!skipAccess && (
+          <div className="rounded-xl border p-6 text-center mb-8" style={{ borderColor: "#222", backgroundColor: "#111" }}>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Você será redirecionado para a área de membros e receberá o seu acesso de login via e-mail.
+            </p>
+          </div>
+        )}
 
         <Link to="/" className="text-sm text-gray-400 hover:text-white underline">
           Voltar para o início

@@ -96,11 +96,11 @@ export const CheckoutModal = ({
   const onPixPaid = () => {
     const eid = pixData?.event_id_purchase || "";
     onOpenChange(false);
-    navigate(`/obrigado?metodo=pix&eventId=${encodeURIComponent(eid)}&value=${priceReais}&orderId=${encodeURIComponent(pixData?.order_id || "")}`);
+    navigate(`/obrigado?metodo=pix&eventId=${encodeURIComponent(eid)}&value=${priceReais}&orderId=${encodeURIComponent(pixData?.order_id || "")}&product=${encodeURIComponent(product)}`);
   };
   const onCardPaid = (info: { eventId: string; orderId: string }) => {
     onOpenChange(false);
-    navigate(`/obrigado?metodo=cartao&eventId=${encodeURIComponent(info.eventId)}&value=${priceReais}&orderId=${encodeURIComponent(info.orderId)}`);
+    navigate(`/obrigado?metodo=cartao&eventId=${encodeURIComponent(info.eventId)}&value=${priceReais}&orderId=${encodeURIComponent(info.orderId)}&product=${encodeURIComponent(product)}`);
   };
   const onCardPending = () => {
     onOpenChange(false);
