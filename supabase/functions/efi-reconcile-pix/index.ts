@@ -4,7 +4,7 @@
 // We poll it, match each received Pix to a pending order (by amount + payer CPF
 // within a time window) and confirm it — same side-effects as zzgate-webhook
 // (mark paid + Meta/TikTok CAPI + member access). Idempotent.
-import { corsHeaders, jsonResponse, getMtlsClient, getPixAccessToken, PIX_HOST, getProduct } from "../_shared/efi.ts";
+import { corsHeaders, jsonResponse, getMtlsClient, getPixAccessToken, PIX_HOST, getProduct, getPageSource } from "../_shared/efi.ts";
 import { serviceClient } from "../_shared/pix-gateway.ts";
 
 type EfiPix = {
@@ -48,6 +48,7 @@ async function confirmOrder(supabase: ReturnType<typeof serviceClient>, orderId:
     currency: "BRL",
     content_name: contentName,
     order_id: updated.id,
+    page_source: getPageSource(updated.product),
   };
   try { await supabase.functions.invoke("meta-capi", { body: { ...capiBody, event_name: "Purchase" } }); } catch (e) { console.error("capi purchase (efi-reconcile) failed", e); }
   try { await supabase.functions.invoke("tiktok-events", { body: { ...capiBody, event_name: "CompletePayment" } }); } catch (e) { console.error("tiktok (efi-reconcile) failed", e); }

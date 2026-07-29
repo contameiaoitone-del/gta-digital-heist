@@ -23,6 +23,22 @@ export function getProduct(key: string | undefined | null) {
   return PRODUCTS[k] ? { key: k, ...PRODUCTS[k] } : { key: "treinamento" as ProductKey, ...PRODUCTS.infozap };
 }
 
+// Rótulo de página usada pelo CAPI Log do admin (filtro "MOSTRAR APENAS").
+// Mantém o mesmo vocabulário do derivePageSource (meta-capi), mas por
+// orders.product em vez de URL — cobre eventos de Purchase assíncronos
+// (Pix), que não têm event_source_url disponível.
+export function getPageSource(product: string | undefined | null): string | null {
+  const p = product || "";
+  if (p === "treinamento") return "LP1";
+  if (p === "lp2") return "LP2";
+  if (p === "lp2_97") return "LP97-VSL";
+  if (p === "lp2_5") return "LP2-5";
+  if (p.startsWith("mentoria:")) return "MENTORIA";
+  if (p === "lm_x1global") return "LM-X1GLOBAL";
+  if (p === "lm_fotoia") return "LM-FOTOIA";
+  return null;
+}
+
 export const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":

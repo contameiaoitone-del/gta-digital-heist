@@ -228,7 +228,7 @@ function PixelManager({ platform, title, idPlaceholder, tokenPlaceholder }: {
 // ---------------- CAPI Log (dashboard + lista detalhada) ----------------
 
 const CAPI_EVENT_OPTIONS = ["Purchase", "Lead", "InitiateCheckout", "PageView"] as const;
-const CAPI_PAGE_OPTIONS = ["LP1", "LP2", "LP97-VSL", "LP2-97", "LP2-5", "MENTORIA", "MANUAL"] as const;
+const CAPI_PAGE_OPTIONS = ["LP1", "LP2", "LP97-VSL", "LP2-97", "LP2-5", "MENTORIA", "LM-X1GLOBAL", "LM-FOTOIA", "MANUAL"] as const;
 const PERIOD_OPTIONS = [
   { key: "hoje", label: "Hoje" },
   { key: "ontem", label: "Ontem" },

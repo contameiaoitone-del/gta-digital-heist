@@ -85,6 +85,8 @@ function derivePageSource(url?: string, explicit?: string): string | null {
     if (path.startsWith("/lp2-5")) return "LP2-5";
     if (path.startsWith("/lp2") || path === "/") return "LP2";
     if (path.startsWith("/lp1")) return "LP1";
+    if (path.startsWith("/lm-x1global")) return "LM-X1GLOBAL";
+    if (path.startsWith("/lm-fotoia")) return "LM-FOTOIA";
     return null;
   } catch {
     return null;
