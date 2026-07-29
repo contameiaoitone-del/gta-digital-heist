@@ -9,6 +9,7 @@ import {
   getCobAccessToken,
   COB_HOST,
   getProduct,
+  getPageSource,
 } from "../_shared/efi.ts";
 
 const BodySchema = z.object({
@@ -125,6 +126,7 @@ Deno.serve(async (req) => {
             currency: "BRL",
             content_name: product.name,
             order_id: order.id,
+            page_source: getPageSource(product.key),
           },
         });
       } catch (e) {
