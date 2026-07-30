@@ -634,6 +634,7 @@ function CapiLogBody() {
                 <th className="px-3 py-2">Valor</th>
                 <th className="px-3 py-2">SCK</th>
                 <th className="px-3 py-2">utm_source</th>
+                <th className="px-3 py-2">utm_medium</th>
                 <th className="px-3 py-2">utm_campaign</th>
                 <th className="px-3 py-2">utm_content</th>
                 <th className="px-3 py-2">event_id</th>
@@ -678,6 +679,7 @@ function CapiLogBody() {
                     <td className="px-3 py-2">{r.value != null ? `R$ ${Number(r.value).toFixed(2)}` : "-"}</td>
                     <td className="px-3 py-2 font-mono text-[10px] text-gray-400" title={r.session_id || ""}>{r.session_id?.slice(0, 8) || "-"}</td>
                     <td className="px-3 py-2 text-gray-300" title={utmTooltip}>{r.utm_source || "-"}</td>
+                    <td className="px-3 py-2 text-gray-300" title={utmTooltip}>{r.utm_medium || "-"}</td>
                     <td className="px-3 py-2 text-gray-300 max-w-[160px] truncate" title={utmTooltip}>{r.utm_campaign || "-"}</td>
                     <td className="px-3 py-2 text-gray-300 max-w-[160px] truncate" title={utmTooltip}>{r.utm_content || "-"}</td>
                     <td className="px-3 py-2 font-mono text-[10px] text-gray-400" title={r.event_id || ""}>{r.event_id?.slice(0, 8) || "-"}</td>
