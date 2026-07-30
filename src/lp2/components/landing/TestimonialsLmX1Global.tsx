@@ -29,11 +29,11 @@ const TestimonialsLmX1Global = () => {
         <div className="grid grid-cols-2 gap-3 sm:gap-4 max-w-2xl mx-auto">
           {testimonials.map((t, index) => (
             <ScrollAnimation key={t.id} delay={index * 0.1}>
-              <div className="bg-card border border-border rounded-xl overflow-hidden hover:border-purple/30 transition-colors">
+              <div className="bg-card border border-border rounded-xl overflow-hidden hover:border-purple/30 transition-colors aspect-[3/4]">
                 <img
                   src={t.image}
                   alt={`Depoimento X1 Global ${t.id}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                   loading="lazy"
                   decoding="async"
                 />
