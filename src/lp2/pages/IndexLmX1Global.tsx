@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { PlayCircle, Layers, Package, Image, Globe, Zap, Users, Award } from "lucide-react";
 import HeroLeadMagnet from "@/lp2/components/landing/HeroLeadMagnet";
 import AboutFounder from "@/lp2/components/landing/AboutFounder";
+import TestimonialsLmX1Global from "@/lp2/components/landing/TestimonialsLmX1Global";
 import FinalCTALeadMagnet from "@/lp2/components/landing/FinalCTALeadMagnet";
 import Footer from "@/lp2/components/landing/Footer";
 
@@ -29,6 +30,8 @@ const IndexLmX1Global = () => {
         m3u8Id={M3U8_ID}
         buttonLabel="Adquirir Aula"
       />
+
+      <TestimonialsLmX1Global />
 
       <FinalCTALeadMagnet
         headline={
