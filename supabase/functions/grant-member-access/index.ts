@@ -24,7 +24,7 @@ function normalizeAccessProduct(product: string): string {
 // Lead magnets (aula avulsa) vendidos só pra disparar o webhook de compra
 // (Integração/ZZFUNNELS) — não devem abrir conta nem liberar nenhuma área
 // de membros interna.
-const NO_MEMBER_ACCESS_PRODUCTS = new Set(["lm_x1global", "lm_fotoia"]);
+const NO_MEMBER_ACCESS_PRODUCTS = new Set(["lm_x1global", "lm_fotoia", "lm_low"]);
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });

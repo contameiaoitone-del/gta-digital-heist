@@ -9,7 +9,7 @@ const REDIRECT_DELAY_SECONDS = 4;
 
 // Lead magnets (aula avulsa) não abrem conta nem área de membros — só
 // confirmar o pagamento e orientar a checar o e-mail, sem redirecionar.
-const NO_MEMBER_ACCESS_PRODUCTS = ["lm_x1global", "lm_fotoia"];
+const NO_MEMBER_ACCESS_PRODUCTS = ["lm_x1global", "lm_fotoia", "lm_low"];
 
 const Obrigado = () => {
   const [params] = useSearchParams();

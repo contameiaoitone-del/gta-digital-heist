@@ -22,7 +22,7 @@ import {
 
 // Lead magnets (aula avulsa) integram direto com a Efí, sem passar pelo
 // ZZGate — independe do gateway ativo escolhido pro resto do site.
-const FORCE_EFI_PRODUCTS = new Set(["lm_x1global", "lm_fotoia"]);
+const FORCE_EFI_PRODUCTS = new Set(["lm_x1global", "lm_fotoia", "lm_low"]);
 
 const BodySchema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -31,7 +31,7 @@ const BodySchema = z.object({
   cpf: z.string().trim().min(11).max(20),
   session_id: z.string().trim().min(1).max(80).optional(),
   event_id_purchase: z.string().trim().min(1).max(80).optional(),
-  product: z.enum(["treinamento", "lp2", "lp2_97", "lp2_5", "lm_x1global", "lm_fotoia"]).optional(),
+  product: z.enum(["treinamento", "lp2", "lp2_97", "lp2_5", "lm_x1global", "lm_fotoia", "lm_low"]).optional(),
 });
 
 Deno.serve(async (req) => {

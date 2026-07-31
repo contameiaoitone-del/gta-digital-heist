@@ -7,7 +7,7 @@ export const COB_HOST = "https://cobrancas.api.efipay.com.br";
 export const PRODUCT_AMOUNT_CENTS = 6700; // R$ 67,00 — fixed server-side
 export const PRODUCT_NAME = "InfoZap";
 
-export type ProductKey = "treinamento" | "lp2" | "lp2_97" | "lp2_5" | "lm_x1global" | "lm_fotoia";
+export type ProductKey = "treinamento" | "lp2" | "lp2_97" | "lp2_5" | "lm_x1global" | "lm_fotoia" | "lm_low";
 
 export const PRODUCTS: Record<ProductKey, { name: string; amount_cents: number }> = {
   infozap: { name: "InfoZap", amount_cents: 6700 },
@@ -16,6 +16,7 @@ export const PRODUCTS: Record<ProductKey, { name: string; amount_cents: number }
   lp2_5: { name: "Comunidade X1 no Pix", amount_cents: 500 },
   lm_x1global: { name: "Aula X1 Global", amount_cents: 2000 },
   lm_fotoia: { name: "Aula Foto com IA", amount_cents: 2000 },
+  lm_low: { name: "Aula Low Ticket", amount_cents: 2000 },
 };
 
 export function getProduct(key: string | undefined | null) {
@@ -36,6 +37,7 @@ export function getPageSource(product: string | undefined | null): string | null
   if (p.startsWith("mentoria:")) return "MENTORIA";
   if (p === "lm_x1global") return "LM-X1GLOBAL";
   if (p === "lm_fotoia") return "LM-FOTOIA";
+  if (p === "lm_low") return "LM-LOW";
   return null;
 }
 
