@@ -88,13 +88,39 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "no user id" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // Grant access (idempotent via unique user_id+product)
     const product = order.product || "treinamento";
     const accessProduct = normalizeAccessProduct(product);
+
+    // Was access already granted before this call? Multiple confirm paths
+    // (pix-check-status, efi-check-status, efi-reconcile-pix, webhooks) can
+    // all race to call this function for the same just-paid order, and
+    // member_access.upsert is safely idempotent — but generateLink() below
+    // mints a NEW token every call, so a second call sends the welcome email
+    // with different content under the SAME idempotency key. Resend rejects
+    // that reused-key-different-body combo with a 409, and the retry loop
+    // just dead-letters it — the customer never gets the email at all. Check
+    // BEFORE upserting, and skip the magic-link+email step entirely on a
+    // repeat call (their account/access already exists either way).
+    const { data: existingAccess } = await supabase
+      .from("member_access")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("product", accessProduct)
+      .maybeSingle();
+    const alreadyGranted = !!existingAccess;
+
+    // Grant access (idempotent via unique user_id+product)
     await supabase.from("member_access").upsert(
       { user_id: userId, product: accessProduct, order_id: order.id, active: true },
       { onConflict: "user_id,product" },
     );
+
+    if (alreadyGranted) {
+      return new Response(
+        JSON.stringify({ ok: true, user_id: userId, is_new_user: false, already_processed: true }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
 
     // Generate magic link for auto-login
     const { data: linkData, error: linkErr } = await supabase.auth.admin.generateLink({

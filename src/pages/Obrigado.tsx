@@ -28,6 +28,12 @@ const Obrigado = () => {
   const [redirectPath, setRedirectPath] = useState<string>(`/${memberProduct}/membros`);
   const [autoLoginState, setAutoLoginState] = useState<"idle" | "loading" | "ready" | "failed">("idle");
   const [countdown, setCountdown] = useState<number>(REDIRECT_DELAY_SECONDS);
+  // Lead magnets: a área de acesso é externa (ZZFUNNELS), liberada de forma
+  // assíncrona pelo webhook de Integração — não temos isso no request de
+  // pagamento, então pollamos até o magic_link aparecer.
+  const [lmAccessLink, setLmAccessLink] = useState<string | null>(null);
+  const [lmPollState, setLmPollState] = useState<"idle" | "loading" | "ready" | "timeout">("idle");
+  const [lmCountdown, setLmCountdown] = useState<number>(REDIRECT_DELAY_SECONDS);
 
   // 1) Fire Purchase Pixel ASAP on mount (deduped with CAPI via shared eventId)
   useEffect(() => {
@@ -90,6 +96,50 @@ const Obrigado = () => {
     };
   }, [isPending, orderId]);
 
+  // 2b) Lead magnets: poll for the outbound webhook's magic_link (fired
+  // asynchronously by the backend once the order is confirmed) and, once it
+  // shows up, start a countdown to auto-redirect the buyer straight in.
+  useEffect(() => {
+    if (isPending || !orderId || !skipAccess) return;
+    let cancelled = false;
+    setLmPollState("loading");
+    (async () => {
+      for (let i = 0; i < 20; i++) {
+        if (cancelled) return;
+        try {
+          const { data } = await supabase.functions.invoke("check-lm-access-link", {
+            body: { order_id: orderId },
+          });
+          const d = data as { ready?: boolean; magic_link?: string } | null;
+          if (d?.ready && d.magic_link) {
+            if (cancelled) return;
+            setLmAccessLink(d.magic_link);
+            setLmPollState("ready");
+            return;
+          }
+        } catch {
+          /* retry */
+        }
+        await new Promise((r) => setTimeout(r, 2500));
+      }
+      if (!cancelled) setLmPollState("timeout");
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isPending, orderId, skipAccess]);
+
+  // 2c) Countdown + auto-redirect once the lead-magnet access link is ready.
+  useEffect(() => {
+    if (!skipAccess || lmPollState !== "ready") return;
+    if (lmCountdown <= 0) {
+      if (lmAccessLink) window.location.href = lmAccessLink;
+      return;
+    }
+    const t = setTimeout(() => setLmCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [skipAccess, lmPollState, lmCountdown, lmAccessLink]);
+
   // 3) Countdown timer — runs only when not pending
   useEffect(() => {
     if (isPending || skipAccess) return;
@@ -136,11 +186,34 @@ const Obrigado = () => {
           {isPending
             ? "Seu pagamento está sendo processado pela operadora do cartão. Assim que aprovado, você receberá os dados de acesso no e-mail cadastrado."
             : skipAccess
-            ? "Pagamento aprovado! Verifique seu e-mail para mais informações."
+            ? lmPollState === "timeout"
+              ? "Pagamento aprovado! Verifique seu e-mail para mais informações."
+              : "Pagamento aprovado! Estamos liberando seu acesso..."
             : metodo === "pix"
             ? "Recebemos seu Pix. Estamos liberando sua conta agora..."
             : "Seu pagamento foi aprovado. Estamos liberando sua conta agora..."}
         </p>
+
+        {!isPending && skipAccess && lmPollState !== "timeout" && (
+          <div className="mb-6 space-y-3">
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
+              {lmPollState === "loading" && <Loader2 className="h-4 w-4 animate-spin" />}
+              {lmPollState === "ready"
+                ? `Redirecionando para o seu acesso em ${lmCountdown}s...`
+                : "Aguardando confirmação do acesso..."}
+            </div>
+
+            {lmPollState === "ready" && lmAccessLink && (
+              <a
+                href={lmAccessLink}
+                className="inline-block px-6 py-3 rounded-lg font-bold uppercase tracking-wide"
+                style={{ backgroundColor: "#00ff88", color: "#000", fontFamily: "'Bebas Neue', cursive" }}
+              >
+                Acessar agora
+              </a>
+            )}
+          </div>
+        )}
 
         {!isPending && !skipAccess && (
           <div className="mb-6 space-y-3">
