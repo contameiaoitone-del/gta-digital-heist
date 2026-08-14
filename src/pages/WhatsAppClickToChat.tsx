@@ -1,10 +1,11 @@
 const PHONE = "5531973504913";
 const PHONE_DISPLAY = "+55 31 97350-4913";
 const MESSAGE = "¡Quiero sesiones de fotos profesionales sin salir de casa!";
+const REDIRECT_MESSAGE = "Hola, vengo de TikTok, ¡estoy interesada en sesiones de fotos!";
 
-const encodedMessage = encodeURIComponent(MESSAGE);
-const appLink = `https://api.whatsapp.com/send/?phone=${PHONE}&text=${encodedMessage}&type=phone_number&app_absent=0`;
-const webLink = `https://web.whatsapp.com/send?phone=${PHONE}&text=${encodedMessage}`;
+const redirectLink = `https://wa.me/${PHONE}?text=${encodeURIComponent(REDIRECT_MESSAGE)}`;
+const appLink = redirectLink;
+const webLink = redirectLink;
 const downloadLink = "https://www.whatsapp.com/download";
 
 const WhatsAppLogo = ({ size = 28 }: { size?: number }) => (
@@ -66,7 +67,7 @@ const WhatsAppClickToChat = () => {
     <div className="min-h-screen bg-white text-[#111] flex flex-col">
       <header className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
         <a
-          href={downloadLink}
+          href={redirectLink}
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-full border border-gray-200 px-4 py-2 text-sm font-semibold flex items-center gap-2"
