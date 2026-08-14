@@ -37,6 +37,7 @@ const MentoriaCompra = lazy(() => import("./lp2/pages/MentoriaCompra"));
 const LmX1GlobalApp = lazy(() => import("./lp2/LmX1GlobalApp"));
 const LmFotoIAApp = lazy(() => import("./lp2/LmFotoIAApp"));
 const LmLowApp = lazy(() => import("./lp2/LmLowApp"));
+const WhatsAppClickToChat = lazy(() => import("./pages/WhatsAppClickToChat"));
 const MasterHome = lazy(() => import("./pages/master/MasterHome"));
 const MemberAreas = lazy(() => import("./pages/master/MemberAreas"));
 const LandingPages = lazy(() => import("./pages/master/LandingPages"));
@@ -113,6 +114,7 @@ const App = () => (
             <Route path="/lm-x1global" element={<LmX1GlobalApp />} />
             <Route path="/lm-fotoia" element={<LmFotoIAApp />} />
             <Route path="/lm-low" element={<LmLowApp />} />
+            <Route path="/zap" element={<WhatsAppClickToChat />} />
             {/* Redirects de rotas antigas removidas */}
             <Route path="/infozap" element={<Navigate to="/lp2" replace />} />
             <Route path="/infozap-aula" element={<Navigate to="/lp2" replace />} />
