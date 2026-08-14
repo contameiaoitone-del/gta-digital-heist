@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate, useSearchParams } from "react-r
 import { lazy, Suspense } from "react";
 import NotFound from "./pages/NotFound";
 import { TrackingProvider } from "./components/TrackingProvider";
+import WhatsAppClickToChat from "./pages/WhatsAppClickToChat";
 
 const Termos = lazy(() => import("./pages/legal/Termos"));
 const Privacidade = lazy(() => import("./pages/legal/Privacidade"));
@@ -37,7 +38,6 @@ const MentoriaCompra = lazy(() => import("./lp2/pages/MentoriaCompra"));
 const LmX1GlobalApp = lazy(() => import("./lp2/LmX1GlobalApp"));
 const LmFotoIAApp = lazy(() => import("./lp2/LmFotoIAApp"));
 const LmLowApp = lazy(() => import("./lp2/LmLowApp"));
-const WhatsAppClickToChat = lazy(() => import("./pages/WhatsAppClickToChat"));
 const MasterHome = lazy(() => import("./pages/master/MasterHome"));
 const MemberAreas = lazy(() => import("./pages/master/MemberAreas"));
 const LandingPages = lazy(() => import("./pages/master/LandingPages"));
