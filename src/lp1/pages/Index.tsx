@@ -21,7 +21,7 @@ const Index = () => {
       imageUrl: zapDataBanner,
       link: "#",
       isLocked: false,
-      externalLink: "https://zapdata.co"
+      externalLink: "https://zapdata.co/lp/"
     }
   ];
 
