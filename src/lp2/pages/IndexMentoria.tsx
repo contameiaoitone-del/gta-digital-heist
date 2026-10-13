@@ -1,46 +1,54 @@
 import { useEffect } from "react";
-import HeroMentoriaTemp from "@/lp2/components/landing/HeroMentoriaTemp";
-import Problem from "@/lp2/components/landing/Problem";
-import AboutFounder from "@/lp2/components/landing/AboutFounder";
-import TestimonialsMentoria from "@/lp2/components/landing/TestimonialsMentoria";
-import FinalCTAMentoriaTemp from "@/lp2/components/landing/FinalCTAMentoriaTemp";
-import FAQMentoriaTemp from "@/lp2/components/landing/FAQMentoriaTemp";
-import Footer from "@/lp2/components/landing/Footer";
 
-/**
- * /mentoria — mesmo conteúdo da /mentoria-temp, com duas diferenças:
- * cobra o valor cheio (R$ 997, sem desconto nem contador) e aponta para
- * outro checkout. Tudo o que varia entra por prop, então a /mentoria-temp
- * segue com os defaults dos componentes.
- */
-const CHECKOUT_MENTORIA = "https://checkout.infinitepay.io/jb-empreendimentoss/7WrU4PGAWN";
+// Dígito em formato de placar (flip card): argolas no topo, divisão no meio.
+const Digit = ({ value }: { value: string }) => (
+  <div className="relative w-16 h-24 sm:w-24 sm:h-36 md:w-28 md:h-40 rounded-xl bg-gradient-to-b from-[#2a2a2a] to-[#161616] border border-white/10 shadow-lg shadow-black/60 flex items-center justify-center">
+    <div className="absolute -top-2 inset-x-0 flex justify-around px-3 sm:px-5">
+      <span className="w-2.5 h-4 sm:w-3 sm:h-5 rounded-full border-2 border-[#ff6a00]" />
+      <span className="w-2.5 h-4 sm:w-3 sm:h-5 rounded-full border-2 border-[#ff6a00]" />
+    </div>
+    <span
+      className="text-6xl sm:text-8xl md:text-9xl leading-none text-white"
+      style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+      aria-hidden="true"
+    >
+      {value}
+    </span>
+    <div className="absolute inset-x-0 top-1/2 h-px bg-black/80 shadow-[0_1px_0_rgba(255,255,255,0.08)]" />
+  </div>
+);
 
+// /mentoria encerrada: só aviso, timer zerado (placar) e CTA para o Zapdata.
 const IndexMentoria = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = "Mentoria";
+    document.title = "Mentoria encerrada";
   }, []);
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <HeroMentoriaTemp />
-      <Problem
-        solutions={[
-          "O cliente recebe primeiro e paga depois — conversão de 20 a 30%",
-          "Estrutura de tráfego completa: campanha que vira máquina de venda",
-          "Escala sem cair chip — rodízio, múltiplos números e operação blindada",
-          "Pix cai direto na sua conta, na hora, todo dia",
-        ]}
-      />
-      <AboutFounder />
-      <TestimonialsMentoria subtitle="Resultados reais de quem já passou pela mentoria em grupo:" />
-      <FinalCTAMentoriaTemp
-        checkoutUrl={CHECKOUT_MENTORIA}
-        preco={997}
-        precoDe={null}
-        mostrarContador={false}
-      />
-      <FAQMentoriaTemp respostaPreco="R$ 997, com acesso válido por 3 meses." />
-      <Footer />
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center gap-10 px-4 text-center">
+      <div className="space-y-2">
+        <h1 className="text-3xl sm:text-5xl font-bold">
+          Mentoria <span className="text-red-500">encerrada</span>
+        </h1>
+        <p className="text-sm sm:text-base font-light text-white/60">Talvez volte ano que vem :)</p>
+      </div>
+
+      <div role="timer" aria-label="00:00" className="flex items-center gap-1">
+        <Digit value="0" />
+        <Digit value="0" />
+        <span className="text-4xl sm:text-6xl font-bold text-white/70 -mx-0.5" aria-hidden="true">:</span>
+        <Digit value="0" />
+        <Digit value="0" />
+      </div>
+
+      <a
+        href="https://zapdata.co/lp/"
+        className="rounded-xl px-8 py-4 text-lg font-bold text-white"
+        style={{ backgroundColor: "#ff6a00" }}
+      >
+        Teste o Zapdata
+      </a>
     </div>
   );
 };
