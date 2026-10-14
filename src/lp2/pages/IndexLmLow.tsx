@@ -49,6 +49,7 @@ const IndexLmLow = () => {
           { icon: Package, label: "Acesso a todos os entregáveis" },
         ]}
         product="lm_low"
+        priceCents={9400}
         productLabel="Aula Low Ticket"
         productSubtitle="Acesso vitalício à aula completa"
         buttonLabel="Adquirir Aula"

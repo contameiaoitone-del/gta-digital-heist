@@ -40,7 +40,7 @@ export function useEfiCheckout() {
   const createPix = useCallback(async (payload: CustomerPayload & { session_id?: string; event_id_purchase?: string; product?: "treinamento" | "lp2" | "lp2_97" | "lp2_5" | "lm_x1global" | "lm_fotoia" | "lm_low" }): Promise<PixResponse> => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("pix-create", { body: payload });
+      const { data, error } = await supabase.functions.invoke("gta-pix-create", { body: payload });
       if (error) throw new Error(error.message);
       if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
       return data as PixResponse;
@@ -50,7 +50,7 @@ export function useEfiCheckout() {
   }, []);
 
   const checkStatus = useCallback(async (orderId: string): Promise<{ status: string }> => {
-    const { data, error } = await supabase.functions.invoke("pix-check-status", {
+    const { data, error } = await supabase.functions.invoke("gta-pix-check-status", {
       body: { order_id: orderId },
     });
     if (error) throw new Error(error.message);
@@ -60,7 +60,7 @@ export function useEfiCheckout() {
   const createCard = useCallback(async (payload: CardPayload): Promise<CardResponse> => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("efi-create-card", { body: payload });
+      const { data, error } = await supabase.functions.invoke("gta-efi-create-card", { body: payload });
       if (error) throw new Error(error.message);
       if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
       return data as CardResponse;

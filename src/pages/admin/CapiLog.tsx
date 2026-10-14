@@ -57,7 +57,7 @@ export function ManualFireModal({
       const num = Number(value);
       if (!Number.isNaN(num) && num > 0) payload.value = num;
       if (orderId.trim()) payload.order_id = orderId.trim();
-      const { data, error } = await supabase.functions.invoke("meta-capi", { body: payload });
+      const { data, error } = await supabase.functions.invoke("gta-meta-capi", { body: payload });
       if (error) {
         setResult({ ok: false, msg: error.message || "Erro ao disparar" });
       } else {

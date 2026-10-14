@@ -60,7 +60,7 @@ export const CardStep = ({ customer, onPaid, onPending, product = "treinamento",
   const [payeeCode, setPayeeCode] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.functions.invoke("efi-config").then(({ data }) => {
+    supabase.functions.invoke("gta-efi-config").then(({ data }) => {
       if (data && typeof (data as { payee_code?: string }).payee_code === "string") {
         setPayeeCode((data as { payee_code: string }).payee_code);
       }

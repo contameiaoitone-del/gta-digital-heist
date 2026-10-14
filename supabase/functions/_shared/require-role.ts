@@ -24,7 +24,7 @@ export async function requirePrivileged(req: Request): Promise<RoleGuard> {
   const userId = claimsData?.claims?.sub as string | undefined;
   if (claimsErr || !userId) return { error: "unauthorized", status: 401 };
 
-  const svc = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+  const svc = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { db: { schema: "gta" } });
   const { data: roleRows } = await svc.from("user_roles").select("role").eq("user_id", userId);
   const roles = (roleRows || []).map((r: { role: string }) => r.role);
   if (!roles.some((r) => ADMIN_ROLES.includes(r))) return { error: "forbidden", status: 403 };

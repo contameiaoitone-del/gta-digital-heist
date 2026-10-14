@@ -107,7 +107,7 @@ const Obrigado = () => {
       for (let i = 0; i < 20; i++) {
         if (cancelled) return;
         try {
-          const { data } = await supabase.functions.invoke("check-lm-access-link", {
+          const { data } = await supabase.functions.invoke("gta-check-lm-access-link", {
             body: { order_id: orderId },
           });
           const d = data as { ready?: boolean; magic_link?: string } | null;

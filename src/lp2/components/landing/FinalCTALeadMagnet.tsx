@@ -5,9 +5,9 @@ import EntrarMentoriaButton from "@/lp2/components/landing/EntrarMentoriaButton"
 import { CheckoutModal } from "@/components/checkout/CheckoutModal";
 
 // CTA final genérico para páginas de lead magnet (aula avulsa): mesmo visual
-// do FinalCTAMentoriaTemp, mas preço fixo (R$20, vitalício) e checkout via
+// do FinalCTAMentoriaTemp, mas pagamento único (vitalício) e checkout via
 // popup EFI (CheckoutModal, igual à /lp97-vsl) em vez de link de redirect.
-const PRICE_CENTS = 2000;
+// O preço vem da página e precisa bater com PRODUCTS em _shared/efi.ts.
 
 interface AccessItem {
   icon: LucideIcon;
@@ -18,7 +18,8 @@ interface FinalCTALeadMagnetProps {
   headline: ReactNode;
   subtitle: string;
   accessItems: AccessItem[];
-  product: "lm_x1global" | "lm_fotoia";
+  product: "lm_x1global" | "lm_fotoia" | "lm_low";
+  priceCents: number;
   productLabel: string;
   productSubtitle: string;
   buttonLabel: string;
@@ -29,6 +30,7 @@ const FinalCTALeadMagnet = ({
   subtitle,
   accessItems,
   product,
+  priceCents,
   productLabel,
   productSubtitle,
   buttonLabel,
@@ -81,7 +83,7 @@ const FinalCTALeadMagnet = ({
                     Investimento
                   </span>
                   <span className="block text-4xl sm:text-5xl font-bold text-foreground leading-none">
-                    R$ {PRICE_CENTS / 100}
+                    R$ {priceCents / 100}
                   </span>
                 </div>
 
@@ -98,7 +100,7 @@ const FinalCTALeadMagnet = ({
         open={checkoutOpen}
         onOpenChange={setCheckoutOpen}
         product={product}
-        priceCents={PRICE_CENTS}
+        priceCents={priceCents}
         productLabel={productLabel}
         productSubtitle={productSubtitle}
       />

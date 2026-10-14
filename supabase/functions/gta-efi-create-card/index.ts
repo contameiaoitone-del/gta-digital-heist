@@ -83,6 +83,7 @@ Deno.serve(async (req) => {
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      { db: { schema: "gta" } },
     );
     const { data: order, error: dbErr } = await supabase
       .from("orders")
@@ -112,7 +113,7 @@ Deno.serve(async (req) => {
     // Fire Purchase via CAPI immediately if approved (server-side dedup pair)
     if (isApproved) {
       try {
-        await supabase.functions.invoke("meta-capi", {
+        await supabase.functions.invoke("gta-meta-capi", {
           body: {
             event_name: "Purchase",
             event_id: purchaseEventId,
@@ -133,14 +134,7 @@ Deno.serve(async (req) => {
         console.error("capi purchase (card) failed", e);
       }
       try {
-        await supabase.functions.invoke("grant-member-access", {
-          body: { order_id: order.id },
-        });
-      } catch (e) {
-        console.error("grant access (card) failed", e);
-      }
-      try {
-        await supabase.functions.invoke("integration-dispatch", { body: { order_id: order.id } });
+        await supabase.functions.invoke("gta-integration-dispatch", { body: { order_id: order.id } });
       } catch (e) {
         console.error("integration-dispatch (card) failed", e);
       }

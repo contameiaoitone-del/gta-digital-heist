@@ -42,10 +42,9 @@ async function fireSideEffects(supabase: ReturnType<typeof serviceClient>, updat
     order_id: updated.id,
     page_source: getPageSource(updated.product),
   };
-  try { await supabase.functions.invoke("meta-capi", { body: { ...capiBody, event_name: "Purchase" } }); } catch (e) { console.error("capi purchase (efi-reconcile) failed", e); }
-  try { await supabase.functions.invoke("tiktok-events", { body: { ...capiBody, event_name: "CompletePayment" } }); } catch (e) { console.error("tiktok (efi-reconcile) failed", e); }
-  try { await supabase.functions.invoke("grant-member-access", { body: { order_id: updated.id } }); } catch (e) { console.error("grant access (efi-reconcile) failed", e); }
-  try { await supabase.functions.invoke("integration-dispatch", { body: { order_id: updated.id } }); } catch (e) { console.error("integration-dispatch (efi-reconcile) failed", e); }
+  try { await supabase.functions.invoke("gta-meta-capi", { body: { ...capiBody, event_name: "Purchase" } }); } catch (e) { console.error("capi purchase (efi-reconcile) failed", e); }
+  try { await supabase.functions.invoke("gta-tiktok-events", { body: { ...capiBody, event_name: "CompletePayment" } }); } catch (e) { console.error("tiktok (efi-reconcile) failed", e); }
+  try { await supabase.functions.invoke("gta-integration-dispatch", { body: { order_id: updated.id } }); } catch (e) { console.error("integration-dispatch (efi-reconcile) failed", e); }
 }
 
 // Confirm one order: mark paid, then schedule the side-effects in the

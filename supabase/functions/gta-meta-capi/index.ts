@@ -114,6 +114,7 @@ Deno.serve(async (req) => {
       const sb = createClient(
         Deno.env.get("SUPABASE_URL")!,
         Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+        { db: { schema: "gta" } },
       );
       const { data } = await sb
         .from("visitor_sessions")
@@ -199,6 +200,7 @@ Deno.serve(async (req) => {
     const sbAdmin = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      { db: { schema: "gta" } },
     );
 
     // Resolve target pixels: prefer DB-managed list; fall back to env vars.

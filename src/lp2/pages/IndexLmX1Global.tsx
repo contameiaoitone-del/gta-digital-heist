@@ -48,6 +48,7 @@ const IndexLmX1Global = () => {
           { icon: Globe, label: "Acesso a forma de recebimento global" },
         ]}
         product="lm_x1global"
+        priceCents={9400}
         productLabel="Aula X1 Global"
         productSubtitle="Acesso vitalício à aula completa"
         buttonLabel="Adquirir Aula"

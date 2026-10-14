@@ -89,7 +89,7 @@ export function PaymentCredentialsBody() {
   const [testingEfi, setTestingEfi] = useState(false);
 
   const refresh = async () => {
-    const { data, error } = await supabase.functions.invoke("payment-settings", { method: "GET" });
+    const { data, error } = await supabase.functions.invoke("gta-payment-settings", { method: "GET" });
     if (error) {
       toast.error("Erro ao carregar configurações");
       return;
@@ -112,7 +112,7 @@ export function PaymentCredentialsBody() {
   }, []);
 
   const saveGateway = async () => {
-    const { error } = await supabase.functions.invoke("payment-settings?action=update", {
+    const { error } = await supabase.functions.invoke("gta-payment-settings?action=update", {
       body: { active_pix_gateway: gateway },
     });
     if (error) toast.error("Erro ao salvar gateway");
@@ -129,7 +129,7 @@ export function PaymentCredentialsBody() {
     if (efiClientSecret.trim()) body.efi_client_secret = efiClientSecret.trim();
     if (efiCert.trim()) body.efi_cert_pem = efiCert.trim();
     if (efiKey.trim()) body.efi_key_pem = efiKey.trim();
-    const { error } = await supabase.functions.invoke("payment-settings?action=update", { body });
+    const { error } = await supabase.functions.invoke("gta-payment-settings?action=update", { body });
     setSavingEfi(false);
     if (error) return toast.error("Erro ao salvar credenciais Efí");
     toast.success("Credenciais Efí salvas");
@@ -140,7 +140,7 @@ export function PaymentCredentialsBody() {
     setSavingZz(true);
     const body: Record<string, unknown> = { zzgate_client_id: zzClientId };
     if (zzClientSecret.trim()) body.zzgate_client_secret = zzClientSecret.trim();
-    const { error } = await supabase.functions.invoke("payment-settings?action=update", { body });
+    const { error } = await supabase.functions.invoke("gta-payment-settings?action=update", { body });
     setSavingZz(false);
     if (error) return toast.error("Erro ao salvar credenciais ZZGate");
     toast.success("Credenciais ZZGate salvas");
@@ -153,7 +153,7 @@ export function PaymentCredentialsBody() {
       return;
     }
     setTestingZz(true);
-    const { data, error } = await supabase.functions.invoke("payment-settings?action=test", {
+    const { data, error } = await supabase.functions.invoke("gta-payment-settings?action=test", {
       body: {
         gateway: "zzgate",
         client_id: zzClientId.trim(),
@@ -173,7 +173,7 @@ export function PaymentCredentialsBody() {
       body.client_id = efiClientId.trim();
       body.client_secret = efiClientSecret.trim();
     }
-    const { data, error } = await supabase.functions.invoke("payment-settings?action=test", { body });
+    const { data, error } = await supabase.functions.invoke("gta-payment-settings?action=test", { body });
     setTestingEfi(false);
     if (error) return toast.error("Falha no teste: " + error.message);
     if ((data as { ok: boolean }).ok) toast.success("Conexão OK com a Efí Bank");

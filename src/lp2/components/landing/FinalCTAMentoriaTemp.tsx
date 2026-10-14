@@ -109,7 +109,7 @@ const FinalCTAMentoriaTemp = ({
         { content_name: "Mentoria - Entrada", value: preco, currency: "BRL", source: window.location.pathname.replace(/^\//, "") || "mentoria" },
         { eventID: eventId },
       );
-      supabase.functions.invoke("meta-capi", {
+      supabase.functions.invoke("gta-meta-capi", {
         body: {
           event_name: "InitiateCheckout",
           event_id: eventId,

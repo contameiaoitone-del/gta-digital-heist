@@ -91,7 +91,7 @@ const FinalCTAMentoria = () => {
       // Pixel client-side dedup
       fbq("track", "Lead", { content_name: "Mentoria - Lista de espera", source: "popup_whatsapp" }, { eventID: eventId });
       // CAPI server-side com page_source = MENTORIA
-      supabase.functions.invoke("meta-capi", {
+      supabase.functions.invoke("gta-meta-capi", {
         body: {
           event_name: "Lead",
           event_id: eventId,

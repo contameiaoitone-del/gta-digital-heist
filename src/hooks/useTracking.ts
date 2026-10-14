@@ -132,17 +132,17 @@ async function waitForFbp(timeoutMs = 1500): Promise<string> {
 }
 
 async function callCapi(payload: Record<string, unknown>) {
-  try { await supabase.functions.invoke("meta-capi", { body: payload }); }
+  try { await supabase.functions.invoke("gta-meta-capi", { body: payload }); }
   catch (e) { console.warn("capi error", e); }
 }
 
 async function callTiktok(payload: Record<string, unknown>) {
-  try { await supabase.functions.invoke("tiktok-events", { body: payload }); }
+  try { await supabase.functions.invoke("gta-tiktok-events", { body: payload }); }
   catch (e) { console.warn("tiktok-events error", e); }
 }
 
 async function callTrack(payload: Record<string, unknown>) {
-  try { await supabase.functions.invoke("track-session", { body: payload }); }
+  try { await supabase.functions.invoke("gta-track-session", { body: payload }); }
   catch (e) { console.warn("track-session error", e); }
 }
 

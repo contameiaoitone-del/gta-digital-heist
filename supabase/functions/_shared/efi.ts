@@ -14,9 +14,9 @@ export const PRODUCTS: Record<ProductKey, { name: string; amount_cents: number }
   lp2: { name: "Comunidade X1 no Pix", amount_cents: 14700 },
   lp2_97: { name: "Comunidade X1 no Pix", amount_cents: 9700 },
   lp2_5: { name: "Comunidade X1 no Pix", amount_cents: 500 },
-  lm_x1global: { name: "Aula X1 Global", amount_cents: 2000 },
+  lm_x1global: { name: "Aula X1 Global", amount_cents: 9400 },
   lm_fotoia: { name: "Aula Foto com IA", amount_cents: 2000 },
-  lm_low: { name: "Aula Low Ticket", amount_cents: 2000 },
+  lm_low: { name: "Aula Low Ticket", amount_cents: 9400 },
 };
 
 export function getProduct(key: string | undefined | null) {

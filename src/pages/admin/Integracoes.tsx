@@ -37,9 +37,9 @@ const ROUTE_OPTIONS = [
   { value: "lp2_97", label: "/lp97-vsl (R$ 97)" },
   { value: "lp2_5", label: "/lp2-5 (R$ 5)" },
   { value: "treinamento", label: "/lp1 · treinamento" },
-  { value: "lm_x1global", label: "/lm-x1global (R$ 20)" },
+  { value: "lm_x1global", label: "/lm-x1global (R$ 94)" },
   { value: "lm_fotoia", label: "/lm-fotoia (R$ 20)" },
-  { value: "lm_low", label: "/lm-low (R$ 20)" },
+  { value: "lm_low", label: "/lm-low (R$ 94)" },
 ];
 
 interface IntegrationRow {
@@ -192,7 +192,7 @@ function IntegrationForm({
     if (form.apiKey.trim()) body.api_key = form.apiKey.trim();
     const action = initial.id ? "update" : "create";
     if (initial.id) body.id = initial.id;
-    const { error } = await supabase.functions.invoke(`integrations?action=${action}`, { body });
+    const { error } = await supabase.functions.invoke(`gta-integrations?action=${action}`, { body });
     setSaving(false);
     if (error) return toast.error("Erro ao salvar: " + error.message);
     toast.success(initial.id ? "Integração atualizada" : "Integração cadastrada");
@@ -204,7 +204,7 @@ function IntegrationForm({
     const amountCents = Math.round((parseFloat(testParams.amountReais.replace(",", ".")) || 0) * 100);
     setTesting(true);
     setTestResult(null);
-    const { data, error } = await supabase.functions.invoke("integrations?action=test", {
+    const { data, error } = await supabase.functions.invoke("gta-integrations?action=test", {
       body: {
         id: initial.id,
         target_url: form.targetUrl.trim() || undefined,
@@ -412,7 +412,7 @@ function IntegrationsManager() {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase.functions.invoke("integrations?action=list", { method: "GET" });
+    const { data, error } = await supabase.functions.invoke("gta-integrations?action=list", { method: "GET" });
     if (error) toast.error("Erro ao carregar integrações: " + error.message);
     setItems((data as IntegrationRow[]) || []);
     setLoading(false);
@@ -423,7 +423,7 @@ function IntegrationsManager() {
   }, []);
 
   const toggleActive = async (it: IntegrationRow) => {
-    const { error } = await supabase.functions.invoke("integrations?action=update", {
+    const { error } = await supabase.functions.invoke("gta-integrations?action=update", {
       body: { id: it.id, active: !it.active },
     });
     if (error) return toast.error(error.message);
@@ -432,7 +432,7 @@ function IntegrationsManager() {
 
   const remove = async (it: IntegrationRow) => {
     if (!confirm(`Excluir a integração "${it.name}"?`)) return;
-    const { error } = await supabase.functions.invoke("integrations?action=delete", { body: { id: it.id } });
+    const { error } = await supabase.functions.invoke("gta-integrations?action=delete", { body: { id: it.id } });
     if (error) return toast.error(error.message);
     toast.success("Integração excluída");
     load();
@@ -549,7 +549,7 @@ function DeliveriesLog() {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase.functions.invoke("integrations?action=deliveries", { method: "GET" });
+    const { data, error } = await supabase.functions.invoke("gta-integrations?action=deliveries", { method: "GET" });
     if (error) toast.error("Erro ao carregar entregas: " + error.message);
     setRows((data as DeliveryRow[]) || []);
     setLoading(false);
@@ -557,7 +557,7 @@ function DeliveriesLog() {
 
   const retry = async (r: DeliveryRow) => {
     setRetrying(r.id);
-    const { data, error } = await supabase.functions.invoke("integrations?action=retry", {
+    const { data, error } = await supabase.functions.invoke("gta-integrations?action=retry", {
       body: { delivery_id: r.id },
     });
     setRetrying(null);

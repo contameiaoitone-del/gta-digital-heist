@@ -8,7 +8,10 @@ const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+// Projeto compartilhado: tabelas do funil vivem no schema `gta` (o `public` é de outro app).
+// O cast mantém os tipos gerados (que descrevem as tabelas) sem mexer no types.ts.
+export const supabase = createClient<Database, "public">(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  db: { schema: "gta" as "public" },
   auth: {
     storage: localStorage,
     persistSession: true,

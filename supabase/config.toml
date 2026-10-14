@@ -1,4 +1,4 @@
-project_id = "kbvaljdqhosgnghsntcz"
+project_id = "wadmkjpceltxrqqnlvjs"
 
 [functions.webauthn-auth-options]
 verify_jwt = false

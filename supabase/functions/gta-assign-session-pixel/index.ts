@@ -31,6 +31,7 @@ Deno.serve(async (req) => {
     const sb = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      { db: { schema: "gta" } },
     );
 
     // Active Meta pixels (ordered for stable index)

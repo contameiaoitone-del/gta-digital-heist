@@ -44,7 +44,7 @@ export const MentoriaPaywall = ({ moduleId, moduleTitle, priceCents, notice, def
   useEffect(() => () => { if (pollRef.current) window.clearInterval(pollRef.current); }, []);
 
   useEffect(() => {
-    supabase.functions.invoke("efi-config").then(({ data }) => {
+    supabase.functions.invoke("gta-efi-config").then(({ data }) => {
       if (data && typeof (data as { payee_code?: string }).payee_code === "string") {
         setPayeeCode((data as { payee_code: string }).payee_code);
       }
@@ -65,7 +65,7 @@ export const MentoriaPaywall = ({ moduleId, moduleTitle, priceCents, notice, def
     }
     setPix(data as PixData);
     pollRef.current = window.setInterval(async () => {
-      const { data: s } = await supabase.functions.invoke("pix-check-status", {
+      const { data: s } = await supabase.functions.invoke("gta-pix-check-status", {
         body: { order_id: (data as PixData).order_id },
       });
       if ((s as { status?: string })?.status === "paid") {

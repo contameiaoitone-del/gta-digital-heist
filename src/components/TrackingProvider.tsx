@@ -31,7 +31,7 @@ async function loadConfiguredPixels() {
       try {
         const { getSessionId } = await import("@/hooks/useTracking");
         const sck = getSessionId();
-        const { data: assign } = await supabase.functions.invoke("assign-session-pixel", {
+        const { data: assign } = await supabase.functions.invoke("gta-assign-session-pixel", {
           body: { sck },
         });
         const r = assign as { pixel_id?: string } | null;

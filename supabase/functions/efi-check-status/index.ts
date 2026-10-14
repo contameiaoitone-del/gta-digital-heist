@@ -79,22 +79,17 @@ Deno.serve(async (req) => {
             page_source: getPageSource(order.product),
           };
           try {
-            await supabase.functions.invoke("meta-capi", { body: { ...capiBody, event_name: "Purchase" } });
+            await supabase.functions.invoke("gta-meta-capi", { body: { ...capiBody, event_name: "Purchase" } });
           } catch (e) {
             console.error("capi purchase (efi-check-status) failed", e);
           }
           try {
-            await supabase.functions.invoke("tiktok-events", { body: { ...capiBody, event_name: "CompletePayment" } });
+            await supabase.functions.invoke("gta-tiktok-events", { body: { ...capiBody, event_name: "CompletePayment" } });
           } catch (e) {
             console.error("tiktok purchase (efi-check-status) failed", e);
           }
           try {
-            await supabase.functions.invoke("grant-member-access", { body: { order_id: order.id } });
-          } catch (e) {
-            console.error("grant access (efi-check-status) failed", e);
-          }
-          try {
-            await supabase.functions.invoke("integration-dispatch", { body: { order_id: order.id } });
+            await supabase.functions.invoke("gta-integration-dispatch", { body: { order_id: order.id } });
           } catch (e) {
             console.error("integration-dispatch (efi-check-status) failed", e);
           }

@@ -77,6 +77,7 @@ Deno.serve(async (req) => {
     const sb = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      { db: { schema: "gta" } },
     );
     if (body.session_id) {
       const { data } = await sb.from("visitor_sessions").select("*").eq("sck", body.session_id).maybeSingle();

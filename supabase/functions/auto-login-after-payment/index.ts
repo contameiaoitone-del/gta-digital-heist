@@ -48,11 +48,6 @@ Deno.serve(async (req) => {
     // Ensure access exists (in case webhook ran but grant didn't). This is safe
     // to run for any paid order regardless of caller — it's idempotent and the
     // welcome e-mail is deduped, so it never leaks anything or double-sends.
-    try {
-      await supabase.functions.invoke("grant-member-access", { body: { order_id: order.id } });
-    } catch (e) {
-      console.error("ensure grant failed", e);
-    }
 
     const product = order.product || "treinamento";
     const productSlug = normalizeAccessProduct(product);

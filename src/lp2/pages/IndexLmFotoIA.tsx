@@ -43,6 +43,7 @@ const IndexLmFotoIA = () => {
           { icon: FileText, label: "Acesso a doc com prompts de diversos nichos" },
         ]}
         product="lm_fotoia"
+        priceCents={2000}
         productLabel="Aula Foto com IA"
         productSubtitle="Acesso vitalício à aula completa"
         buttonLabel="Adquirir Aula"

@@ -126,11 +126,6 @@ Deno.serve(async (req) => {
     }
 
     if (isApproved) {
-      try {
-        await supabase.functions.invoke("grant-member-access", { body: { order_id: order.id } });
-      } catch (e) {
-        console.error("grant-access failed", e);
-      }
     }
 
     return jsonResponse({

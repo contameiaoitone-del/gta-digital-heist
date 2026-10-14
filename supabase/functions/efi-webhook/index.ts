@@ -54,7 +54,7 @@ Deno.serve(async (req) => {
 
       // Fire Purchase via Meta CAPI
       try {
-        await supabase.functions.invoke("meta-capi", {
+        await supabase.functions.invoke("gta-meta-capi", {
           body: { ...capiBody, event_name: "Purchase" },
         });
       } catch (e) {
@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
 
       // Fire CompletePayment via TikTok Events API (same event_id for dedup)
       try {
-        await supabase.functions.invoke("tiktok-events", {
+        await supabase.functions.invoke("gta-tiktok-events", {
           body: { ...capiBody, event_name: "CompletePayment" },
         });
       } catch (e) {
@@ -71,16 +71,9 @@ Deno.serve(async (req) => {
       }
 
       // Grant member access (creates user, sends welcome email)
-      try {
-        await supabase.functions.invoke("grant-member-access", {
-          body: { order_id: updated.id },
-        });
-      } catch (e) {
-        console.error("grant access (pix) failed", e);
-      }
 
       try {
-        await supabase.functions.invoke("integration-dispatch", {
+        await supabase.functions.invoke("gta-integration-dispatch", {
           body: { order_id: updated.id },
         });
       } catch (e) {

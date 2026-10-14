@@ -104,7 +104,7 @@ Deno.serve(async (req) => {
       if (!delivery_id || typeof delivery_id !== "string") return jsonResponse({ error: "missing_delivery_id" }, 400);
       // Admin-gated (requirePrivileged above); delegates the actual re-POST to
       // integration-dispatch, which owns the fetch/retry/logging logic.
-      const { data, error } = await svc.functions.invoke("integration-dispatch", {
+      const { data, error } = await svc.functions.invoke("gta-integration-dispatch", {
         body: { retry_delivery_id: delivery_id },
       });
       if (error) return jsonResponse({ error: "dispatch_failed", detail: error.message }, 500);
