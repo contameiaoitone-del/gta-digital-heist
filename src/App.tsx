@@ -7,6 +7,7 @@ import { lazy, Suspense } from "react";
 import NotFound from "./pages/NotFound";
 import { TrackingProvider } from "./components/TrackingProvider";
 import WhatsAppClickToChat from "./pages/WhatsAppClickToChat";
+import DevGeoSwitch from "./components/checkout/DevGeoSwitch";
 
 const Termos = lazy(() => import("./pages/legal/Termos"));
 const Privacidade = lazy(() => import("./pages/legal/Privacidade"));
@@ -66,6 +67,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <TrackingProvider />
+        {import.meta.env.DEV && <DevGeoSwitch />}
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
             <Route path="/" element={<ToLp1 />} />

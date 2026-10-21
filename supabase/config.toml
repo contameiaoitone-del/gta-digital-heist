@@ -25,3 +25,6 @@ verify_jwt = false
 
 [functions.efi-webhook]
 verify_jwt = false
+# Webhook da Xpag: sistema externo, sem JWT nosso. Auth: token HMAC na URL + reconsulta da cobrança na API.
+[functions.gta-xpag-webhook]
+verify_jwt = false

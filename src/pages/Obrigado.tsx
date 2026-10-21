@@ -18,6 +18,7 @@ const Obrigado = () => {
   const product = params.get("product") || "treinamento";
   const eventId = params.get("eventId") || "";
   const value = Number(params.get("value") || "67");
+  const currency = params.get("currency") || "BRL"; // vendas fora do Brasil (Xpag) vêm em MXN/COP/CLP/USD
   const orderId = params.get("orderId") || undefined;
   const isPending = status === "pendente";
   const skipAccess = NO_MEMBER_ACCESS_PRODUCTS.includes(product);
@@ -49,10 +50,10 @@ const Obrigado = () => {
         } catch {
           /* no fallback pixel — never load an unknown one */
         }
-        trackPurchase({ value, eventId, orderId, productName: "Treinamento", currency: "BRL" });
+        trackPurchase({ value, eventId, orderId, productName: "Treinamento", currency });
       })();
     }
-  }, [isPending, eventId, value, orderId, trackPurchase]);
+  }, [isPending, eventId, value, orderId, currency, trackPurchase]);
 
   // 2) Fetch magic link in parallel (do NOT redirect immediately — wait for countdown)
   useEffect(() => {

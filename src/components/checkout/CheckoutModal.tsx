@@ -10,6 +10,8 @@ import { useEfiCheckout, type PixResponse } from "@/hooks/useEfiCheckout";
 import { PixStep } from "./PixStep";
 import { CardStep } from "./CardStep";
 import { useTracking, getSessionId } from "@/hooks/useTracking";
+import { useCheckoutGeo } from "@/hooks/useCheckoutGeo";
+import { IntlCheckoutModal } from "./IntlCheckoutModal";
 
 interface CheckoutModalProps {
   open: boolean;
@@ -23,7 +25,30 @@ interface CheckoutModalProps {
 
 type Step = "form" | "method" | "pix" | "card";
 
-export const CheckoutModal = ({
+/**
+ * Brasil (ou país desconhecido, ou produto que não vende fora): checkout Pix/cartão de sempre, intacto.
+ * Fora do Brasil (só lm_x1global e lm_low): Xpag, sem Pix. O país vem do servidor (gta-geo).
+ */
+export const CheckoutModal = (props: CheckoutModalProps) => {
+  const geo = useCheckoutGeo(props.product ?? "treinamento");
+  if (geo && geo.region !== "BR" && geo.currency && geo.amount && geo.methods && geo.lang) {
+    return (
+      <IntlCheckoutModal
+        open={props.open}
+        onOpenChange={props.onOpenChange}
+        product={props.product ?? "treinamento"}
+        productLabel={props.productLabel ?? "Treinamento"}
+        productSubtitle={props.productSubtitle ?? ""}
+        geo={geo as Parameters<typeof IntlCheckoutModal>[0]["geo"]}
+      />
+    );
+  }
+  // Enquanto o país carrega (no máximo ~3,5 s; começa ao montar a página), o modal aguarda para não
+  // disparar InitiateCheckout em BRL para quem está fora do Brasil.
+  return <CheckoutModalBR {...props} open={props.open && geo !== null} />;
+};
+
+const CheckoutModalBR = ({
   open,
   onOpenChange,
   product = "treinamento",
