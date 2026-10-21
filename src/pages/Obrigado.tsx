@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { CheckCircle2, Clock, Loader2 } from "lucide-react";
 import { useTracking, getSessionId } from "@/hooks/useTracking";
 import { ensurePixel } from "@/lib/metaPixel";
@@ -260,9 +260,9 @@ const Obrigado = () => {
           </div>
         )}
 
-        <Link to="/" className="text-sm text-gray-400 hover:text-white underline">
-          Voltar para o início
-        </Link>
+        <a href="https://zzfunnels.co/aulas-mentoria/membros" className="text-sm text-gray-400 hover:text-white underline">
+          Ir para a área de membros
+        </a>
       </div>
     </div>
   );

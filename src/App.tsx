@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useSearchParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useSearchParams } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import NotFound from "./pages/NotFound";
 import { TrackingProvider } from "./components/TrackingProvider";
@@ -28,7 +28,6 @@ const AdminTrackeamento = lazy(() => import("./pages/admin/Trackeamento"));
 const AdminIntegracoes = lazy(() => import("./pages/admin/Integracoes"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const Lp1App = lazy(() => import("./lp1/Lp1App"));
-const Lp2App = lazy(() => import("./lp2/Lp2App"));
 const Lp2App97 = lazy(() => import("./lp2/Lp2App97"));
 const Lp2App5 = lazy(() => import("./lp2/Lp2App5"));
 const Lp2AppVsl97 = lazy(() => import("./lp2/Lp2AppVsl97"));
@@ -47,6 +46,13 @@ import { RequireAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
 
+// A oferta antiga de R$ 147 (/lp2) saiu do ar: raiz, /lp2 e rotas antigas vão para a
+// página de links (/lp1), preservando os parâmetros (utm_*) para o rastreamento.
+const ToLp1 = () => {
+  const { search } = useLocation();
+  return <Navigate to={`/lp1${search}`} replace />;
+};
+
 const LegacyProductRedirect = ({ suffix = "" }: { suffix?: string }) => {
   const [searchParams] = useSearchParams();
   const product = searchParams.get("product") || "treinamento";
@@ -62,7 +68,7 @@ const App = () => (
         <TrackingProvider />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>
-            <Route path="/" element={<Lp2App />} />
+            <Route path="/" element={<ToLp1 />} />
             <Route path="/home/login" element={<MasterLogin />} />
             <Route path="/home" element={<RequireAuth requireMaster><MasterHome /></RequireAuth>} />
             <Route path="/areas" element={<RequireAuth requireMaster><MemberAreas /></RequireAuth>} />
@@ -103,7 +109,7 @@ const App = () => (
 
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/lp1" element={<Lp1App />} />
-            <Route path="/lp2" element={<Lp2App />} />
+            <Route path="/lp2" element={<ToLp1 />} />
             <Route path="/lp2-97" element={<Lp2App97 />} />
             <Route path="/lp2-5" element={<Lp2App5 />} />
             <Route path="/lp97-vsl" element={<Lp2AppVsl97 />} />
@@ -114,8 +120,8 @@ const App = () => (
             <Route path="/lm-low" element={<LmLowApp />} />
             <Route path="/zap" element={<WhatsAppClickToChat />} />
             {/* Redirects de rotas antigas removidas */}
-            <Route path="/infozap" element={<Navigate to="/lp2" replace />} />
-            <Route path="/infozap-aula" element={<Navigate to="/lp2" replace />} />
+            <Route path="/infozap" element={<ToLp1 />} />
+            <Route path="/infozap-aula" element={<ToLp1 />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
