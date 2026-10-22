@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchBrlRates, toBrl, type Rates } from "@/lib/fx";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2, Plus, Trash2, CheckCircle2, XCircle, ChevronDown, ChevronRight, Eye, EyeOff, Pencil, Save, X, CalendarIcon, RefreshCw, Send } from "lucide-react";
@@ -261,6 +262,8 @@ interface RankItem { label: string; n: number }
 interface Stats {
   sales_count: number;
   revenue: number;
+  foreign_sales: number;
+  unpriced_sales: number;
   leads_count: number;
   checkout_count: number;
   top_content_sales: RankItem[];
@@ -269,15 +272,16 @@ interface Stats {
   top_campaign_leads: RankItem[];
 }
 const EMPTY_STATS: Stats = {
-  sales_count: 0, revenue: 0, leads_count: 0, checkout_count: 0,
+  sales_count: 0, revenue: 0, foreign_sales: 0, unpriced_sales: 0, leads_count: 0, checkout_count: 0,
   top_content_sales: [], top_campaign_sales: [], top_content_leads: [], top_campaign_leads: [],
 };
 
-interface StatRow { event_id: string | null; event_name: string; success: boolean; value: number | null; utm_content: string | null; utm_campaign: string | null }
+interface StatRow { order_id: string | null; event_id: string | null; event_name: string; success: boolean; value: number | null; utm_content: string | null; utm_campaign: string | null }
 
 // Conta vendas/leads por event_id DISTINTO (vários pixels gravam o mesmo evento)
 // e rankeia UTM_CONTENT / UTM_CAMPAIGN — tudo no cliente, sem depender de RPC.
-function aggregate(rows: StatRow[]): Stats {
+// `foreign` = pedidos em moeda diferente de BRL (order_id -> moeda); a receita soma tudo já convertido em R$.
+function aggregate(rows: StatRow[], foreign: Record<string, string>, rates: Rates): Stats {
   const seen = new Map<string, StatRow>();
   for (const r of rows) {
     if (!r.event_id) continue;
@@ -297,9 +301,13 @@ function aggregate(rows: StatRow[]): Stats {
     }
     return [...m.entries()].map(([label, n]) => ({ label, n })).sort((a, b) => b.n - a.n).slice(0, 8);
   };
+  const curOf = (r: StatRow) => (r.order_id && foreign[r.order_id]) || "BRL";
+  const brl = (r: StatRow) => toBrl(Number(r.value) || 0, curOf(r), rates);
   return {
     sales_count: purch.length,
-    revenue: purch.reduce((s, r) => s + (Number(r.value) || 0), 0),
+    revenue: purch.reduce((s, r) => s + (brl(r) ?? 0), 0),
+    foreign_sales: purch.filter((r) => curOf(r) !== "BRL").length,
+    unpriced_sales: purch.filter((r) => brl(r) === null).length,
     leads_count: leads.length,
     checkout_count: checkouts.length,
     top_content_sales: top(purch, "utm_content", "(sem utm_content)"),
@@ -363,7 +371,11 @@ function RankingPanel({ title, subtitle, items, color }: { title: string; subtit
 function CapiLogBody() {
   const [rows, setRows] = useState<CapiLogRow[]>([]);
   const [payMethods, setPayMethods] = useState<Record<string, string>>({});
-  const [stats, setStats] = useState<Stats>(EMPTY_STATS);
+  const [statRows, setStatRows] = useState<StatRow[]>([]);
+  // Pedidos em outra moeda (Xpag: MXN/COP/CLP/USDT) e cotações p/ converter em R$
+  const [foreign, setForeign] = useState<Record<string, string>>({});
+  const [rates, setRates] = useState<Rates>({});
+  const stats = useMemo(() => (statRows.length ? aggregate(statRows, foreign, rates) : EMPTY_STATS), [statRows, foreign, rates]);
   const initial = useRef<CapiFilters>(loadCapiFilters());
   const [events, setEvents] = useState<string[]>(initial.current.events);
   const [pages, setPages] = useState<string[]>(initial.current.pages);
@@ -447,7 +459,7 @@ function CapiLogBody() {
       setStatsBusy(true);
       let q = supabase
         .from("meta_capi_log")
-        .select("event_id,event_name,success,value,utm_content,utm_campaign")
+        .select("order_id,event_id,event_name,success,value,utm_content,utm_campaign")
         .gte("created_at", dateBounds.from.toISOString())
         .lt("created_at", dateBounds.to.toISOString())
         .in("event_name", ["Purchase", "Lead", "InitiateCheckout"])
@@ -455,11 +467,26 @@ function CapiLogBody() {
       if (pages.length > 0) q = q.in("page_source", pages);
       const { data } = await q;
       if (cancelled) return;
-      setStats(aggregate((data as StatRow[]) || []));
+      setStatRows((data as StatRow[]) || []);
       setStatsBusy(false);
     })();
     return () => { cancelled = true; };
   }, [pages, dateBounds, reloadTick]);
+
+  // Pedidos em moeda estrangeira (poucos: só vendas fora do Brasil) + cotação do dia.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase.from("orders").select("id,currency").neq("currency", "BRL").limit(5000);
+      if (cancelled) return;
+      const map: Record<string, string> = {};
+      for (const o of (data as Array<{ id: string; currency: string | null }>) || []) if (o.currency) map[o.id] = o.currency;
+      setForeign(map);
+      const r = await fetchBrlRates(Object.values(map));
+      if (!cancelled) setRates(r);
+    })();
+    return () => { cancelled = true; };
+  }, [reloadTick]);
 
   // Vendas recusadas (cartão/EFI) no período — vêm de `orders`, não do CAPI log
   // (recusa não dispara Purchase). Cartão com status != 'paid' = EFI "unpaid".
@@ -497,6 +524,20 @@ function CapiLogBody() {
 
   const conv = stats.checkout_count > 0 ? `${((stats.sales_count / stats.checkout_count) * 100).toFixed(1)}%` : "—";
   const revenueLabel = `R$ ${Math.round(stats.revenue).toLocaleString("pt-BR")}`;
+  // Valor da linha: em R$; se o pedido foi em outra moeda, converte e mostra a moeda original ao lado.
+  const renderValue = (r: CapiLogRow) => {
+    if (r.value == null) return "-";
+    const cur = (r.order_id && foreign[r.order_id]) || "BRL";
+    if (cur === "BRL") return `R$ ${Number(r.value).toFixed(2)}`;
+    const orig = `${cur} ${Number(r.value).toLocaleString("pt-BR")}`;
+    const brl = toBrl(Number(r.value), cur, rates);
+    return brl === null
+      ? <span className="text-amber-400" title="sem cotação">{orig}</span>
+      : <>R$ {brl.toFixed(2)} <span className="text-[10px] text-gray-400">({orig})</span></>;
+  };
+  const revenueSub = stats.foreign_sales > 0
+    ? `inclui ${stats.foreign_sales} venda${stats.foreign_sales > 1 ? "s" : ""} em outra moeda, convertida${stats.foreign_sales > 1 ? "s" : ""} em R${stats.unpriced_sales > 0 ? ` (${stats.unpriced_sales} sem cotação, fora da soma)` : ""}`
+    : undefined;
   const refusedValueLabel = `R$ ${Math.round(refused.value).toLocaleString("pt-BR")} não capturados`;
 
   return (
@@ -571,7 +612,7 @@ function CapiLogBody() {
       {/* Cards */}
       <div className="grid gap-2.5 mb-4" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" }}>
         <MetricCard label="Vendas" value={statsBusy ? "…" : String(stats.sales_count)} accent="#00ff88" />
-        <MetricCard label="Receita" value={statsBusy ? "…" : revenueLabel} />
+        <MetricCard label="Receita" value={statsBusy ? "…" : revenueLabel} sub={statsBusy ? undefined : revenueSub} />
         <MetricCard label="Leads (cadastros)" value={statsBusy ? "…" : String(stats.leads_count)} />
         <MetricCard label="Checkouts iniciados" value={statsBusy ? "…" : String(stats.checkout_count)} accent="#38bdf8" />
         <MetricCard label="Conversão checkout→venda" value={statsBusy ? "…" : conv} />
@@ -676,7 +717,7 @@ function CapiLogBody() {
                       {r.success ? <CheckCircle2 className="h-4 w-4 text-[#00ff88]" /> : <XCircle className="h-4 w-4 text-[#ff2d78]" />}
                     </td>
                     <td className="px-3 py-2">{r.status_code ?? "-"}</td>
-                    <td className="px-3 py-2">{r.value != null ? `R$ ${Number(r.value).toFixed(2)}` : "-"}</td>
+                    <td className="px-3 py-2">{renderValue(r)}</td>
                     <td className="px-3 py-2 font-mono text-[10px] text-gray-400" title={r.session_id || ""}>{r.session_id?.slice(0, 8) || "-"}</td>
                     <td className="px-3 py-2 text-gray-300" title={utmTooltip}>{r.utm_source || "-"}</td>
                     <td className="px-3 py-2 text-gray-300" title={utmTooltip}>{r.utm_medium || "-"}</td>

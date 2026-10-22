@@ -525,6 +525,7 @@ export type Database = {
       orders: {
         Row: {
           amount_cents: number
+          currency: string
           area_id: string | null
           created_at: string
           customer_cpf: string
@@ -554,6 +555,7 @@ export type Database = {
         }
         Insert: {
           amount_cents: number
+          currency?: string
           area_id?: string | null
           created_at?: string
           customer_cpf: string
@@ -583,6 +585,7 @@ export type Database = {
         }
         Update: {
           amount_cents?: number
+          currency?: string
           area_id?: string | null
           created_at?: string
           customer_cpf?: string
