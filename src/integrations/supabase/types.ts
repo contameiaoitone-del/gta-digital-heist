@@ -371,6 +371,7 @@ export type Database = {
       }
       meta_capi_log: {
         Row: {
+          currency: string | null
           created_at: string
           error: string | null
           event_id: string | null
@@ -392,6 +393,7 @@ export type Database = {
           value: number | null
         }
         Insert: {
+          currency?: string | null
           created_at?: string
           error?: string | null
           event_id?: string | null
@@ -413,6 +415,7 @@ export type Database = {
           value?: number | null
         }
         Update: {
+          currency?: string | null
           created_at?: string
           error?: string | null
           event_id?: string | null

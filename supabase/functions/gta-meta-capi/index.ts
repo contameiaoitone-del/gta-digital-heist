@@ -276,6 +276,8 @@ Deno.serve(async (req) => {
           order_id: body.order_id || null,
           session_id: body.session_id || null,
           value: body.value ?? null,
+          // moeda enviada ao Meta (BRL por padrão); null em eventos sem valor
+          currency: body.currency || body.value !== undefined ? (body.currency || "BRL") : null,
           status_code: status || null,
           success: ok,
           meta_response: metaResp ?? null,

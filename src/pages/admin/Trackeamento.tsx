@@ -44,6 +44,7 @@ interface CapiLogRow {
   page_source: string | null;
   pixel_id: string | null;
   pixel_label: string | null;
+  currency?: string | null;
 }
 
 function Section({ title, defaultOpen = false, children }: { title: string; defaultOpen?: boolean; children: React.ReactNode }) {
@@ -276,7 +277,12 @@ const EMPTY_STATS: Stats = {
   top_content_sales: [], top_campaign_sales: [], top_content_leads: [], top_campaign_leads: [],
 };
 
-interface StatRow { order_id: string | null; event_id: string | null; event_name: string; success: boolean; value: number | null; utm_content: string | null; utm_campaign: string | null }
+interface StatRow { order_id: string | null; event_id: string | null; event_name: string; success: boolean; value: number | null; currency?: string | null; utm_content: string | null; utm_campaign: string | null }
+
+// Moeda do evento: a gravada no log (vale p/ qualquer origem, inclusive upgrades do ZZFUNNELS); se for linha antiga sem moeda,
+// cai no mapa de pedidos estrangeiros (order_id -> moeda).
+const rowCurrency = (r: { currency?: string | null; order_id: string | null }, foreign: Record<string, string>) =>
+  (r.currency && r.currency !== "BRL" ? r.currency : (r.order_id && foreign[r.order_id]) || "BRL");
 
 // Conta vendas/leads por event_id DISTINTO (vários pixels gravam o mesmo evento)
 // e rankeia UTM_CONTENT / UTM_CAMPAIGN — tudo no cliente, sem depender de RPC.
@@ -301,7 +307,7 @@ function aggregate(rows: StatRow[], foreign: Record<string, string>, rates: Rate
     }
     return [...m.entries()].map(([label, n]) => ({ label, n })).sort((a, b) => b.n - a.n).slice(0, 8);
   };
-  const curOf = (r: StatRow) => (r.order_id && foreign[r.order_id]) || "BRL";
+  const curOf = (r: StatRow) => rowCurrency(r, foreign);
   const brl = (r: StatRow) => toBrl(Number(r.value) || 0, curOf(r), rates);
   return {
     sales_count: purch.length,
@@ -459,7 +465,7 @@ function CapiLogBody() {
       setStatsBusy(true);
       let q = supabase
         .from("meta_capi_log")
-        .select("order_id,event_id,event_name,success,value,utm_content,utm_campaign")
+        .select("order_id,event_id,event_name,success,value,currency,utm_content,utm_campaign")
         .gte("created_at", dateBounds.from.toISOString())
         .lt("created_at", dateBounds.to.toISOString())
         .in("event_name", ["Purchase", "Lead", "InitiateCheckout"])
@@ -482,7 +488,8 @@ function CapiLogBody() {
       const map: Record<string, string> = {};
       for (const o of (data as Array<{ id: string; currency: string | null }>) || []) if (o.currency) map[o.id] = o.currency;
       setForeign(map);
-      const r = await fetchBrlRates(Object.values(map));
+      // moedas das vendas internacionais (USDT conta como USD): sempre busca as 4, pois a moeda agora vem do log
+      const r = await fetchBrlRates([...Object.values(map), "USD", "COP", "MXN", "CLP"]);
       if (!cancelled) setRates(r);
     })();
     return () => { cancelled = true; };
@@ -527,7 +534,7 @@ function CapiLogBody() {
   // Valor da linha: em R$; se o pedido foi em outra moeda, converte e mostra a moeda original ao lado.
   const renderValue = (r: CapiLogRow) => {
     if (r.value == null) return "-";
-    const cur = (r.order_id && foreign[r.order_id]) || "BRL";
+    const cur = rowCurrency(r, foreign);
     if (cur === "BRL") return `R$ ${Number(r.value).toFixed(2)}`;
     const orig = `${cur} ${Number(r.value).toLocaleString("pt-BR")}`;
     const brl = toBrl(Number(r.value), cur, rates);
